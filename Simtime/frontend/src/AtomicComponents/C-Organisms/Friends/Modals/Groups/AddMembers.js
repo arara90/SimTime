@@ -15,6 +15,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: solid 1px red;
 `;
 
 const SearchWrap = styled.div`

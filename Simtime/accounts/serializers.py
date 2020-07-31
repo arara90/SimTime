@@ -52,10 +52,11 @@ class RelationshipSerializer(serializers.ModelSerializer):
 
 class FriendSerializer(serializers.ModelSerializer):
     friend = UserSerializer()
+    relationshipId = serializers.IntegerField(source='id')
 
     class Meta:
         model = Relationship
-        fields = ('id', 'friend', 'subscribe', 'dispatch')
+        fields = ('relationshipId', 'friend', 'subscribe', 'dispatch')
 
 
 # Group
