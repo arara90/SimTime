@@ -43,6 +43,8 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function FriendList(props) {
+  console.log(props.relationships)
+
   const renderButton = useCallback(
     (fn, status, content = "차단", color = "TEXT_LINK") => {
       if (status) {
@@ -65,15 +67,17 @@ function FriendList(props) {
           <ButtonWrap width={buttonDefaultSize + buttonMargin + 2 + "px"}>
             <StyledButtonWithImage
               width="auto"
-              imgurl="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets//img/icons/check.png"
+              button = {{
+                content: "차단",
+                url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png"}
+              }
               imgLocation="right"
               onClick={(e) => {
                 e.preventDefault();
                 fn();
               }}
-            >
-              차단
-            </StyledButtonWithImage>
+            />
+
           </ButtonWrap>
         );
       }
@@ -81,40 +85,40 @@ function FriendList(props) {
     []
   );
 
-  const renderRows = (friends = []) => {
-    return friends.map((data, index) => {
+  const renderRows = (relationships = []) => {
+    return relationships.map((relationship, index) => {
       return (
-        <TableRow rowNum={index} key={data.friend.username}>
+        <TableRow rowNum={index} key={relationship.friend.username}>
           <UserCard
-            username={data.friend.username}
+            username={relationship.friend.username}
             imageSize="32px"
-            url={data.friend.profile_image}
+            url={relationship.friend.profile_image}
           ></UserCard>
           <Buttons>
             {renderButton(
               () => {
                 props.editFriend({
-                  id: data.id,
-                  subscribe: !data.subscribe,
+                  id: relationship.relationshipId,
+                  subscribe: !relationship.subscribe,
                 });
               },
-              data.subscribe,
+              relationship.subscribe,
               "수신차단"
             )}
             {renderButton(
               () => {
                 props.editFriend({
-                  id: data.id,
-                  dispatch: !data.dispatch,
+                  id: relationship.relationshipId,
+                  dispatch: !relationship.dispatch,
                 });
               },
-              data.dispatch,
+              relationship.dispatch,
 
               "발신차단"
             )}
             {renderButton(
               () => {
-                props.deleteFriend(data.id);
+                props.deleteFriend(relationship.relationshipId);
               },
               1,
               "삭제",
@@ -126,7 +130,7 @@ function FriendList(props) {
     });
   };
 
-  return <Fragment>{renderRows(props.datas)}</Fragment>;
+  return <Fragment>{renderRows(props.relationships)}</Fragment>;
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -141,9 +145,11 @@ export default connect(null, mapDispatchToProps)(FriendList);
 FriendList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
+  relationships: PropTypes.array
 };
 
 FriendList.defaultProps = {
   title: "Table Title",
   headers: null,
+  relationships: []
 };

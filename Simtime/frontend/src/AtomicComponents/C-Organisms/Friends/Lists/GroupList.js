@@ -44,6 +44,7 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function GroupList(props) {
+  const { groups } = props;
   const { handleModal, closeModal } = useContext(ModalContext);
 
   const clickEvent = (e, cb) => {
@@ -51,10 +52,10 @@ function GroupList(props) {
     cb();
   };
 
-  const mngMembers = async (id) => {
-    const friends = await props.getMemebers(id);
-    console.log("friends", friends);
-    handleModal(<EditMembers datas={friends} onClose={closeModal} />);
+  const editMembers = async (groupId) => {
+    const members = await props.getMemebers(groupId);
+    console.log("editMembers" , groups)
+    handleModal(<EditMembers selectedGroup={groups.selectedGroup}  onClose={closeModal} />);
   };
 
   const renderButton = useCallback(
@@ -82,13 +83,13 @@ function GroupList(props) {
             username={group.groupname}
             imageSize="32px"
             // url={group.profile_image}
-            url="https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
+            url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
           ></UserCard>
           <Buttons>
             {renderButton("이름변경", () =>
               handleModal(<EditGroup group={group} onClose={closeModal} />)
             )}
-            {renderButton("멤버관리", () => mngMembers(group.id))}
+            {renderButton("멤버관리", () => editMembers(group.id))}
             {renderButton(
               "삭제",
               () => props.deleteGroup(group.id),
@@ -100,14 +101,15 @@ function GroupList(props) {
     });
   };
 
-  return <Wrap>{renderRows(props.groups)}</Wrap>;
+  return <Wrap>{renderRows(groups)}</Wrap>;
 }
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  groups: state.groups.groups,
-});
 
-export default connect(mapStateToProps, { deleteGroup, getGroup, getMemebers })(
+// const mapStateToProps = (state) => ({
+//   user: state.auth.user,
+//   groups: state.groups.groups,
+// });
+
+export default connect(null, { deleteGroup, getGroup, getMemebers })(
   GroupList
 );
 
@@ -120,5 +122,5 @@ GroupList.propTypes = {
 GroupList.defaultProps = {
   title: "Table Title",
   headers: null,
-  groups: null,
+  groups: [],
 };

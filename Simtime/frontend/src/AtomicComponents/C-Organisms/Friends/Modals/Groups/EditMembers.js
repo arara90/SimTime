@@ -11,7 +11,7 @@ import ImageUser from "../../../../A-Atomics/ImageUser";
 import Image from "../../../../A-Atomics/Image";
 import Header from "../../../../A-Atomics/Font/Header";
 import MemberList from "../../Lists/MemberList";
-import AddMembers from "./AddMembers";
+import AddMembers from "./Table/AddMembers";
 
 const Wrap = styled.div`
   width: 100%;
@@ -58,6 +58,9 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
+
+  const { selectedGroup } = props;
+
   const buttons = [
     { content: "Members", urk: null },
     {
@@ -71,19 +74,6 @@ function EditMembers(props) {
   const [tab, setTab] = useState(buttons[0].content);
   const [selectedMembers, setselectedMembers] = useState([]);
 
-  const friends = props.selectedGroup.members.reduce(
-    (acc, item) => [
-      ...acc,
-      {
-        id: item.RGmapId,
-        relationshipId: item.relationship.id, //relationshipid
-        friendId: item.relationship.friend.id,
-        username: item.relationship.friend.username,
-        profile_image: item.relationship.friend.profile_image,
-      },
-    ],
-    []
-  );
 
   return (
     <BasicModal title="Edit Group">
@@ -99,27 +89,24 @@ function EditMembers(props) {
             {/* // urk={props.selectedGroup.group.profile_image}> */}
             <AddImage
               src={
-                "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png"
+                "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
               }
             />
           </GroupImage>
-          <GroupName type="h3">{props.selectedGroup.group.groupname}</GroupName>
+          <GroupName type="h3">{selectedGroup.group.groupname}</GroupName>
         </Group>
         <Table
           button={tab != "Members"}
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {tab == "Members" ? <MemberList datas={friends} /> : <AddMembers />}
+          {tab == "Members" ? <MemberList members={selectedGroup.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />}
         </Table>
       </Wrap>
     </BasicModal>
   );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  selectedGroup: state.groups.selectedGroup,
-});
 
-export default connect(mapStateToProps, { deleteMemebers })(EditMembers);
+
+export default connect(null, { deleteMemebers })(EditMembers);

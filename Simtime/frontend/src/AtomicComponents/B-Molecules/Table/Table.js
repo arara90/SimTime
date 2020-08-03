@@ -31,8 +31,6 @@ const TableContent = styled.div`
 
 function Table(props) {
   const renderButton = (button) => {
-    console.log(button);
-
     return (
       <ButtonWithImage
         height="20px"
@@ -91,7 +89,7 @@ Table.defaultProps = {
   button: {
     content: "Add",
     url:
-      "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png",
+      "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
   },
   width: "48%",
   rowNum: 5,

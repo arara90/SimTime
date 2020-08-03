@@ -56,11 +56,7 @@ function EditGroup(props) {
   );
 }
 
-// const mapStateToProps = (state) => ({
-//   user: state.auth.user,
-//   group: state.groups.selectedGroup
-// });
-//export default EditGroup;
+
 export default connect(null, { editGroup })(EditGroup);
 
 EditGroup.propTypes = {

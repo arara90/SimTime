@@ -39,7 +39,7 @@ function SelectedItem(props) {
       <Content {...props} fontSize="12px" color="MAIN_COLOR">
         {props.children}
       </Content>
-      <DeleteIcon onClick={props.deleteItem} src="/static/assets/img/icons/close.png" width="8px" height="8px" />
+      <DeleteIcon onClick={props.deleteItem} src="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/close.png" width="8px" height="8px" />
     </ContentWrap>
   );
 }

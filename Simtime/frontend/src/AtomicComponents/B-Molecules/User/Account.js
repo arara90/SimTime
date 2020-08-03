@@ -117,7 +117,7 @@ Account.propTypes = {
   };
 
 Account.defaultProps = {
-    defaultUrl:"/static/assets/img/icons/add-yellow.png",
+    defaultUrl:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
     username: "unknown",
     imageSize: "40px"
 
