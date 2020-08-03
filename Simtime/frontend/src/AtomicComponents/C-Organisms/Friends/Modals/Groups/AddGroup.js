@@ -42,13 +42,18 @@ function AddGroup(props) {
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [isValid, setIsValid] = useState(false);
 
-
+  function getTableData(relationships){
+   return relationships.map((relationship) => {
+      return { id: relationship.relationshipId, ...relationship.friend };
+    });
+  }
+  
+  //initializing
   useEffect(()=>{
-    var friendsList = relationships.filter(
-      (relationship) => relationship.friend[map_field[field]].includes(keyword))
-    setFilteredFriendList(friendsList);
+    setFilteredFriendList(getTableData(relationships));
   }, [])
 
+  //funcs 
   const checkValidation = (groupname) => {
     inputRef.current.classList.remove("valid-value", "invalid-value");
     console.log("checkValidation", groupname, groups)
@@ -98,18 +103,11 @@ function AddGroup(props) {
   //친구 내에서 검색
   const searchFriends = (field, keyword) => {
     var map_field = {Username: "username", "E-mail": "email", Phone: "phone" };
-    var res_filed= map_field[field]
     var filtered = relationships.filter((relationship) =>
-      relationship.friend[res_filed].includes(keyword)
+      relationship.friend[map_field[field]].includes(keyword)
     );
-
-    console.log("filtered", filtered)
     //resultTable Data에 맞게 정제
-    var res = filtered.map((relationship) => {
-          return { id: relationship.relationshipId, ...relationship.friend };
-        });
-
-     setFilteredFriendList(res);
+     setFilteredFriendList(getTableData(filtered));
   };
 
   const renderAddMember = () => {

@@ -133,9 +133,8 @@ export const editGroup = (group) => (dispatch) => {
 // };
 
 export const getMemebers = (id) => (dispatch) => {
-  console.log("getMemebers id", id);
   return axiosInstance
-    .get(`/api/groupmember/${id}`)
+    .get(`/api/groupmember/${id}/`)
     .then((res) => {
       console.log("groupMemebers res", res.data);
       dispatch({

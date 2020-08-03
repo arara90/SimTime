@@ -1,4 +1,4 @@
-import React, { useState, Fragment, createRef } from "react";
+import React, { useState, useEffect, Fragment, createRef } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
@@ -58,21 +58,26 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
-
-  const { selectedGroup } = props;
-
   const buttons = [
-    { content: "Members", urk: null },
-    {
-      content: "Add",
-      url:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png",
+    { content: "Members", url: null },
+    { content: "Add",
+      url: "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
     },
   ];
 
+  const { selectedGroup, relationships } = props;
+  const [group, setGroup] = useState({groupname:""})
+  const [members, setMembers] = useState({})
+  const [tab, setTab] = useState("Members");
   const [users, setUsers] = useState([]);
-  const [tab, setTab] = useState(buttons[0].content);
   const [selectedMembers, setselectedMembers] = useState([]);
+
+
+
+  useEffect(()=>{
+    setGroup(selectedGroup)
+  }, [selectedGroup])
+
 
 
   return (
@@ -86,27 +91,27 @@ function EditMembers(props) {
               "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
             }
           >
-            {/* // urk={props.selectedGroup.group.profile_image}> */}
-            <AddImage
+            {/* // url={selectedGroup.group.profile_image}> */}
+          <AddImage
               src={
                 "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
               }
             />
           </GroupImage>
-          <GroupName type="h3">{selectedGroup.group.groupname}</GroupName>
+          <GroupName type="h3">{group.groupname}</GroupName>
         </Group>
+        
         <Table
           button={tab != "Members"}
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {tab == "Members" ? <MemberList members={selectedGroup.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />}
+          {console.log("group", group, members)}
+          {/* {tab == "Members" ? <MemberList members={group.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />} */}
         </Table>
       </Wrap>
     </BasicModal>
   );
 }
-
-
 
 export default connect(null, { deleteMemebers })(EditMembers);

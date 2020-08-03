@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useEffect, useCallback, useState, useContext } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -44,7 +44,7 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function GroupList(props) {
-  const { groups } = props;
+  const { groups, selectedGroup, relationships } = props;
   const { handleModal, closeModal } = useContext(ModalContext);
 
   const clickEvent = (e, cb) => {
@@ -53,9 +53,9 @@ function GroupList(props) {
   };
 
   const editMembers = async (groupId) => {
+    console.log("editMemberseditMemberseditMemberseditMemberseditMemberseditMembers")
     const members = await props.getMemebers(groupId);
-    console.log("editMembers" , groups)
-    handleModal(<EditMembers selectedGroup={groups.selectedGroup}  onClose={closeModal} />);
+    handleModal(<EditMembers selectedGroup={groups.find(group=>group.id==groupId)} relationships={relationships} onClose={closeModal} />);
   };
 
   const renderButton = useCallback(
@@ -103,11 +103,6 @@ function GroupList(props) {
 
   return <Wrap>{renderRows(groups)}</Wrap>;
 }
-
-// const mapStateToProps = (state) => ({
-//   user: state.auth.user,
-//   groups: state.groups.groups,
-// });
 
 export default connect(null, { deleteGroup, getGroup, getMemebers })(
   GroupList

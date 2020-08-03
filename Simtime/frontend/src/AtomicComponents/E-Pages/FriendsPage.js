@@ -44,12 +44,13 @@ const ContentWrap = styled.div`
 `;
 
 function FriendsPage(props) {
-  const {groups, friends} = props;
-  const { handleModal, closeModal } = useContext(ModalContext);
+
+  const {handleModal, closeModal } = useContext(ModalContext);
   const [groupDatas, setGroupDatas] = useState({});
   const [friendDatas, setFriendDatas] = useState({});
 
   useEffect( () => {
+
     async function getDatas(){
       var friend = await props.getFriends();
       var group = await props.getGroups();
@@ -60,14 +61,17 @@ function FriendsPage(props) {
   },[]);
 
   useEffect(() => {
-    // console.log("friendsef" , friends)
-    setFriendDatas(friends);
-  },[JSON.stringify(friends)]);
+    console.log("friendsef" , props.friends)
+    setFriendDatas(props.friends);
+  },[JSON.stringify(props.friends)]);
 
   useEffect(() => {
-    // console.log("groupsef" , groups)
-    setGroupDatas(groups);
-  },[JSON.stringify(groups)]);
+    console.log("groupsef" , props.groups.groups)
+    console.log("groupsef" , props.groups.selectedGroup)
+    setGroupDatas(props.groups);
+    // console.log(JSON.stringify(groups.groups))
+    // console.log(JSON.stringify(groups.selectedGroup))
+  },[JSON.stringify(props.groups)]);
 
   return (
     <Wrap>
