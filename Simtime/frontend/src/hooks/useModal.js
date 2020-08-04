@@ -23,5 +23,5 @@ export default () => {
     }
   };
 
-  return { modal, setModal, handleModal, openModal, closeModal, modalContent };
+  return { modal, setModal, modalContent, setModalContent ,handleModal, openModal, closeModal };
 };

@@ -33,21 +33,10 @@ const ContentWrap = styled.div`
   }
 `;
 
-// const ModalPotal = (props) => {
-//   const el = document.getElementById("app-modal");
-//   return ReactDOM.createPortal(
-//   <Fragment>
-//       <MyModal>
-//         <ContentWrap>
-//             {props.children}
-//         </ContentWrap>
-//       </MyModal>
-//   </Fragment>, el);
-// };
 
-const ModalPotal = (props) => {
+export const ModalContextPortal = (props) => {
   const el = document.getElementById("app-modal");
-  let { modalContent, handleModal, modal } = React.useContext(ModalContext);
+  let { modalContent, modal } = React.useContext(ModalContext);
   if (modal) {
     return ReactDOM.createPortal(
       <Fragment>
@@ -62,4 +51,18 @@ const ModalPotal = (props) => {
   } else return null;
 };
 
-export default ModalPotal;
+
+export const ModalPortalBasic = (props) => {
+  const el = document.getElementById("app-modal");
+  return ReactDOM.createPortal(
+  <Fragment>
+      <MyModal>
+        <ContentWrap>
+            {props.children}
+        </ContentWrap>
+      </MyModal>
+  </Fragment>, el);
+};
+
+
+export default ModalContextPortal;

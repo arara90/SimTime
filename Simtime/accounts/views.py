@@ -243,7 +243,12 @@ class GroupMemberAPI(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk):
+        # mapObjects = Relationship_FriendGroup_MAP.objects.select_related('relationship').select_related('relationship__friend').filter(group=pk).values('id', 'relationship'
+        #     ,'relationship__friend_id', 'relationship__friend__username'
+        #     , 'relationship__friend__profile_image', 'relationship__friend__email'
+        #  )
         mapObjects = Relationship_FriendGroup_MAP.objects.filter(group=pk)
+    
         if mapObjects:
             serializer = GroupMemberSerializer(mapObjects, many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

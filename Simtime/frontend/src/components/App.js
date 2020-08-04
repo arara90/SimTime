@@ -82,7 +82,7 @@ class App extends Component {
                       <PrivateRoute
                         exact
                         path="/friends"
-                        component={FriendsPage}
+                        component={TestPage}
                       />
                       <PrivateRoute
                         exact

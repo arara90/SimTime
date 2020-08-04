@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { MAIN_COLOR } from "../Colors";
 import BasicModal from "../B-Molecules/Modal/BasicModal";
 
+
 const Wrap = styled.div`
   width: 100%;
   height: 100%;
@@ -13,6 +14,11 @@ const Wrap = styled.div`
 
 
 function TestModal(props) {
+
+
+  React.useEffect(() => {
+      console.log("useEffect", selectedGroup)
+  }, [])
 
   const buttons = [
     { content: "Members", url: null },
@@ -27,9 +33,9 @@ function TestModal(props) {
   return (
     <BasicModal title="Edit Group">
       <Wrap className="TestModelWrap">
-          {console.log("ㄸEdtgroup")} 
+          {console.log("ㄸEdtgroup", selectedGroup)} 
           <div>
-              {selectedGroup ? selectedGroup.group.groupname: "nn"}
+              {selectedGroup.group ? selectedGroup.group.groupname: "nn"}
           </div> 
       </Wrap>
     </BasicModal>

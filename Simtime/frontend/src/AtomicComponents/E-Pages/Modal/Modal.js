@@ -3,11 +3,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import GlobalStyle from "../../GlobalStyle";
-
-import ColoredButton from "../Button/ColoredButton";
-import CloseButton from "../Button/CloseButton";
+import Image from "../../A-Atomics/Image";
 import { MAIN_COLOR } from "../../Colors";
+import GlobalStyle from "../../GlobalStyle";
 
 const MyModal = styled.div`
   background: rgba(0, 0, 0, 0.25);
@@ -30,17 +28,16 @@ const ContentWrap = styled.div`
   flex-direction: column-reverse;
   justify-content: flex-start;
   align-items: flex-end;
-
   @media only screen and (max-width: 320px) {
     width: 98%;
     position: relative;
   }
 `;
 
-const StyledCloseButton = styled(CloseButton)`
-  background-color: white;
-  cursor: pointer;
+const CloseButton = styled(Image)`
+background-color: ${MAIN_COLOR};
   @media only screen and (max-width: 320px) {
+    
     position: absolute;
     right: 6px;
   }
@@ -52,22 +49,19 @@ const Modal = (props) => {
     <Fragment>
       <GlobalStyle />
       <MyModal>
-        <ContentWrap onClick={onClose}>
+        <ContentWrap>
           {children}
+          <CloseButton
+            onClick={onClose}
+            src="static/img/icons/close-wh.png"
+            width="20px"
+            height="20px"
+          ></CloseButton>
         </ContentWrap>
       </MyModal>
     </Fragment>
   );
 };
-
-// const mapStateToProps = (state) => ({
-//   event: state.events.selectedEvent[0],
-//   user: state.auth.user,
-// });
-
-// export default connect(mapStateToProps, { getEvent, editEvent, addEvent })(
-//   Modal
-// );
 
 export default Modal;
 
