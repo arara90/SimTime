@@ -15,7 +15,6 @@ import Header from "../A-Atomics/Font/Header";
 // import Search from "../B-Molecules/Filter/Search";
 import Friends from "../D-Templates/Friends/Friends"
 import Groups from "../D-Templates/Friends/Groups"
-
 const Wrap = styled.div`
   overflow: hidden;
 `;
@@ -44,34 +43,16 @@ const ContentWrap = styled.div`
 `;
 
 function FriendsPage(props) {
-
   const {handleModal, closeModal } = useContext(ModalContext);
-  const [groupDatas, setGroupDatas] = useState({});
-  const [friendDatas, setFriendDatas] = useState({});
-
-  useEffect( () => {
-
+  
+  React.useEffect(() => {
     async function getDatas(){
       var friend = await props.getFriends();
       var group = await props.getGroups();
     }
-
     getDatas();
-
   },[]);
 
-  useEffect(() => {
-    console.log("friendsef" , props.friends)
-    setFriendDatas(props.friends);
-  },[JSON.stringify(props.friends)]);
-
-  useEffect(() => {
-    console.log("groupsef" , props.groups.groups)
-    console.log("groupsef" , props.groups.selectedGroup)
-    setGroupDatas(props.groups);
-    // console.log(JSON.stringify(groups.groups))
-    // console.log(JSON.stringify(groups.selectedGroup))
-  },[JSON.stringify(props.groups)]);
 
   return (
     <Wrap>
@@ -81,8 +62,8 @@ function FriendsPage(props) {
           {/* <StyledSearch width="125px" desc="Find a friend" height="25px" /> */}
         </SectionTitle>
         <ContentWrap>
-          <Friends relationships={friendDatas.relationships} rowNum={6} rowHeight="45px" width="48%" />
-          <Friends relationships={friendDatas.relationships} rowNum={6} rowHeight="45px" width="48%" />
+          <Friends relationships={props.friends.relationships} rowNum={6} rowHeight="45px" width="48%" />
+          <Friends relationships={props.groups.selectedGroup.members?props.groups.selectedGroup.members[0].friend:[]} rowNum={6} rowHeight="45px" width="48%" />
         </ContentWrap>
       </Section> 
       
@@ -91,7 +72,7 @@ function FriendsPage(props) {
           Group
         </Header>
         <ContentWrap>
-          <Groups groups={groupDatas} relationships={friendDatas} rowNum={5} rowHeight="45px" width="100%" />
+          <Groups groups={props.groups} relationships={props.friends.relationships} rowNum={5} rowHeight="45px" width="100%" />
         </ContentWrap>
       </Section> 
     </Wrap>

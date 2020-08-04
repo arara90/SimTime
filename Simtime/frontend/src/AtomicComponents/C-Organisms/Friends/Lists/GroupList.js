@@ -45,21 +45,43 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 
 function GroupList(props) {
   const { groups, selectedGroup, relationships } = props;
-  const { handleModal, closeModal } = useContext(ModalContext);
+  const { openModal, closeModal, handleModal } = useContext(ModalContext);
+  const [currModal, setCurrModal] = useState("")
 
   const clickEvent = (e, cb) => {
     e.preventDefault();
     cb();
   };
 
+  
+  const onCloseModal =() => {
+    closeModal();
+    setCurrModal("");
+  }
+
+  useEffect(()=>{
+
+    console.log('selectedGroup', selectedGroup)
+
+  }, [JSON.stringify(props.selectedGroup)]
+  )
+ 
+  useEffect(()=>{
+    if(currModal.includes("멤버관리")) {
+      handleModal( <EditMembers selectedGroup={props.selectedGroup} 
+          relationships={props.relationships} 
+          onClose={closeModal} />);
+        }
+        console.log(currModal)
+  }, [currModal])
+
+
   const editMembers = async (groupId) => {
-    console.log("editMemberseditMemberseditMemberseditMemberseditMemberseditMembers")
     const members = await props.getMemebers(groupId);
-    handleModal(<EditMembers selectedGroup={groups.find(group=>group.id==groupId)} relationships={relationships} onClose={closeModal} />);
+    setCurrModal("멤버관리" + groupId);
   };
 
-  const renderButton = useCallback(
-    (content = "삭제", fn, color = "TEXT_LINK") => {
+  const renderButton = (content = "삭제", fn, color = "TEXT_LINK") => {
       return (
         <ButtonWrap>
           <TextButton
@@ -71,9 +93,7 @@ function GroupList(props) {
           </TextButton>
         </ButtonWrap>
       );
-    },
-    []
-  );
+    }
 
   const renderRows = (groups) => {
     return groups.map((group, index) => {
@@ -83,18 +103,12 @@ function GroupList(props) {
             username={group.groupname}
             imageSize="32px"
             // url={group.profile_image}
-            url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
+            url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
           ></UserCard>
           <Buttons>
-            {renderButton("이름변경", () =>
-              handleModal(<EditGroup group={group} onClose={closeModal} />)
-            )}
+            {renderButton("이름변경", () => {handleModal(<EditGroup group={group} onClose={closeModal} />)})}
             {renderButton("멤버관리", () => editMembers(group.id))}
-            {renderButton(
-              "삭제",
-              () => props.deleteGroup(group.id),
-              "TEXT_WARNING"
-            )}
+            {renderButton("삭제", () => props.deleteGroup(group.id), "TEXT_WARNING")}
           </Buttons>
         </TableRow>
       );
@@ -111,11 +125,11 @@ export default connect(null, { deleteGroup, getGroup, getMemebers })(
 GroupList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
-  groups: PropTypes.array,
+
 };
 
 GroupList.defaultProps = {
   title: "Table Title",
   headers: null,
-  groups: [],
+
 };

@@ -35,7 +35,7 @@ const MySelect = styled.div`
       ? `
       background-size: 15px;
       background-repeat: no-repeat;
-      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/arrow-down2.png");
+      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/arrow-down2.png");
       background-position: 88% center;`
       : null};
 `;
@@ -78,7 +78,7 @@ const Option = styled.div`
       font-weight: 600;
       background-size: 12px;
       background-repeat: no-repeat;
-      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check.png");
+      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png");
       background-position: 88% center;`
       : null}
 `;

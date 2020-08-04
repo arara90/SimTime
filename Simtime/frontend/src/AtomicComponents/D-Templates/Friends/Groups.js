@@ -16,34 +16,21 @@ import AddGroup from "../../C-Organisms/Friends/Modals/Groups/AddGroup";
 
 
 function Groups(props) {
-  const { groups } = props;
-  const { relationships } = props.relationships;
-
-  const [groupList, setGroupList] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState({});
+  const { groups, relationships } = props;
   const { handleModal, closeModal } = useContext(ModalContext);
-
-  useEffect(
-    ()=>{
-      if(groups){
-        setGroupList(groups.groups);
-        setSelectedGroup(groups.selectedGroup);
-      }
-    }, [JSON.stringify(props.groups)]
-  )
-
+  console.log(groups);
   
-
   return (
     <Table title="My Groups" 
       addButton={true} 
-      handleAddBtnClick={() => handleModal(<AddGroup groups={groups} relationships={relationships} onClose={closeModal} />)}
+      handleAddBtnClick={() => 
+        handleModal(<AddGroup groups={groups.groups} relationships={relationships} onClose={closeModal} />)
+      }
       width={props.width}
       rowHeight={props.width}
       rowNum={props.rowNum}
     >
-      {console.log('selectedGroup', selectedGroup)}
-      <GroupList groups={groupList} selectedGroup={selectedGroup} relationships={relationships} />
+      <GroupList groups={groups.groups} selectedGroup={groups.selectedGroup} relationships={relationships} />
   </Table>
   );
 }

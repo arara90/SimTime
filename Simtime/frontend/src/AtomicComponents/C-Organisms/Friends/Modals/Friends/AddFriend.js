@@ -52,7 +52,7 @@ function AddFriend(props) {
     return (
       <Fragment>
         <SearchWrap>
-          <SearchBar newFriends search={(users) => setUsers(users)} />
+          <SearchBar newFriends afterSearch={(users) => setUsers(users)} />
         </SearchWrap>
         <ResultWrap>
           <Result

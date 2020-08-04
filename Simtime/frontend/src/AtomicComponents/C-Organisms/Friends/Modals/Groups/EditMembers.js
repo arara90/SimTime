@@ -1,6 +1,7 @@
-import React, { useState, useEffect, Fragment, createRef } from "react";
+import React, {Fragment, createRef, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { deleteMemebers } from "../../../../../actions/groups";
 
@@ -58,27 +59,9 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
-  const buttons = [
-    { content: "Members", url: null },
-    { content: "Add",
-      url: "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
-    },
-  ];
-
-  const { selectedGroup, relationships } = props;
-  const [group, setGroup] = useState({groupname:""})
-  const [members, setMembers] = useState({})
-  const [tab, setTab] = useState("Members");
-  const [users, setUsers] = useState([]);
-  const [selectedMembers, setselectedMembers] = useState([]);
-
-
-
-  useEffect(()=>{
-    setGroup(selectedGroup)
-  }, [selectedGroup])
-
-
+    const { selectedGroup, relationships, buttons } = props;
+    const [tab, setTab] = useState("Members");
+    const [selectedMembers, setselectedMembers] = useState([]);
 
   return (
     <BasicModal title="Edit Group">
@@ -88,17 +71,17 @@ function EditMembers(props) {
             height="60px"
             width="60px"
             url={
-              "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
+              "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
             }
           >
             {/* // url={selectedGroup.group.profile_image}> */}
           <AddImage
               src={
-                "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
+                "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
               }
             />
           </GroupImage>
-          <GroupName type="h3">{group.groupname}</GroupName>
+          <GroupName type="h3">{selectedGroup.group.groupname}</GroupName> 
         </Group>
         
         <Table
@@ -106,8 +89,7 @@ function EditMembers(props) {
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {console.log("group", group, members)}
-          {/* {tab == "Members" ? <MemberList members={group.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />} */}
+          {tab == "Members" ? <MemberList members={selectedGroup.members} /> : <AddMembers groupId={selectedGroup.group.id} members={selectedGroup.members} relationships = {relationships} />}
         </Table>
       </Wrap>
     </BasicModal>
@@ -115,3 +97,24 @@ function EditMembers(props) {
 }
 
 export default connect(null, { deleteMemebers })(EditMembers);
+
+EditMembers.propTypes = {
+  title: PropTypes.string,
+  headers: PropTypes.array,
+  selectedGoup: PropTypes.object,
+  relationships: PropTypes.array,
+  buttons : PropTypes.array,
+};
+
+EditMembers.defaultProps = {
+  title: "Table Title",
+  headers: null,
+  selectedGoup: {group: {id: "", groupname:"unknown"}, members: [] },
+  relationships: [], 
+  buttons : [
+    { content: "Members", url: null },
+    { content: "Add",
+      url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
+    },
+  ]
+};

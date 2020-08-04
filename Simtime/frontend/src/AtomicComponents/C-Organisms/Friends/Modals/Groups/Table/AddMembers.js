@@ -36,32 +36,67 @@ const MyItem = styled(SelectedItem)`
   white-space: nowrap;
 `;
 
-function AddMembers(props) {
-  const { members, groupId } = props;
-  const membersIndex = members.reduce(
+const flatDatas= (datas)=> {
+  return [datas.reduce(
+    (acc, data ) => ({
+      ...acc,
+      id : data.relationshipId,
+      username: data.friend.username,
+      email: data.friend.email,
+      profile_image: data.friend.profile_image,
+
+    }),{}
+    )]
+}
+const getCandidates = (relationships, membersIndex) => {
+  var res = relationships.filter((relationship) => !membersIndex[relationship.relationshipId])
+  return flatDatas(res)
+}
+
+
+const getMappedMembers= (members)=> {
+  return members.reduce(
     (acc, member ) => ({
       ...acc,
-      [member.relationship.relationshipId]: member.relationship.relationshipId,
-    }),
-    {}
-  );
+      [member.relationship.relationshipId]: member.relationship,
+    }),{}
+    );
+}
 
-  console.log(groupId, members)
+
+
+
+function AddMembers(props) {
+  const { members, groupId, relationships } = props;
+
+  var memberIndex = getMappedMembers(members)
+
+  const [candidates, setCandidates] = useState(getCandidates(relationships, memberIndex));
+  const [tableData, setTableData] = useState(candidates);
+  const [selectedFriends, setSelectedFriends] = useState(getMappedMembers(members));
+
+  // React.useEffect(()=>{
+  //   setCandidates(getCandidates(members, memberIndex));
+  //   setTableData(tableData.filter((data) => !memberIndex[data.relationshipId]))
+  //   // setMemberIndex(getIndexMembers(members));
+  // }, [members] );
+
+  console.log("candidates, ", candidates)
   
-  const [nonMembers, setNonMembers] = useState(members.filter((member) => !membersIndex[member.relationshipId]));
 
-  // //검색용 id index
-  // const flatGroupMembers = (members) => {
-  //   return selectedGroup.members.reduce(
-  //     (acc, member) => ({
-  //       ...acc,
-  //       [member.relationship.relationshipId]: member.relationship.relationshipId,
-  //     }),
-  //     {}
+
+
+  // useEffect(() => {
+  //   console.log("useEffect setCandidatesToDisplay", candidates);
+  //   // searchHandler(keyword);
+  //   setCandidatesToDisplay(
+  //     candidates.filter((candidate) => !selectedFriends.includes(candidate.id))
   //   );
-  // };
+  // }, [JSON.stringify(candidates)]);
 
 
+
+  
 //   const clickEvent = async (e) => {
 //     e.preventDefault();
 //     var groupId = props.selectedGroup.group.id;
@@ -88,32 +123,29 @@ function AddMembers(props) {
 //     }
 //   };
 
-//   return (
-//     <Wrap>
-//       <SearchWrap>
-//         <SearchBar
-//           search={(res) => setCandidates(res)}
-//           candidates={nonMembers}
-//         />
-//       </SearchWrap>
-//       <ResultWrap>
-//         <Result
-//           multiple
-//           datas={candidates}
-//           width="100%"
-//           rowNum={5}
-//           selectHandler={(res) => {
-//             setSelectedFriends(res);
-//           }}
-//         />
-//       </ResultWrap>
+  return (
+    <Wrap>
+      <SearchWrap>
+        <SearchBar
+          afterSearch={(res) => setTableData(res)}
+          candidates={candidates}
+        />
+      </SearchWrap>
+      <ResultWrap>
+        <Result
+          multiple
+          datas={tableData}
+          width="100%"
+          rowNum={5}
+          selectHandler={(res) => {
+            setSelectedFriends(res);
+          }}
+        />
+      </ResultWrap>
 
-//       <Button onClick={(e) => clickEvent(e)}>Done</Button>
-//     </Wrap>
-//   );
-// }
-
-return <div></div>
+      {/* <Button onClick={(e) => clickEvent(e)}>Done</Button> */}
+    </Wrap>
+  );
 }
 
 

@@ -32,6 +32,7 @@ const Result = styled(ResultTable)``;
 function AddGroup(props) {
   const { groups, relationships } = props;
   const inputRef = createRef(null);
+  console.log()
 
   //UI
   const [groupname, setGroupName] = useState("");

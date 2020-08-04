@@ -51,7 +51,7 @@ const MyInput = styled.input`
     // border: solid 1px ${ST_GREEN};
     background-size: 18px;
     background-repeat: no-repeat;
-    background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check-valid.png");
+    background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check-valid.png");
     background-position: 94% center;
   }
 

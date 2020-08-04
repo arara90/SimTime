@@ -21,7 +21,7 @@ import Header from "../AtomicComponents/D-Templates/Header";
 import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
 import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
-
+import TestPage from "../AtomicComponents/E-Pages/TestPage";
 import { ModalProvider } from "../contexts/modalContext";
 import { MenuProvider } from "../contexts/menuContext";
 

@@ -37,9 +37,9 @@ function SearchBar(props) {
     height,
     width,
     newFriends,
-    relationships,
     searchUsers,
-    searchFriends,
+    candidates,
+    afterSearch
   } = props;
 
 
@@ -52,12 +52,33 @@ function SearchBar(props) {
     searchRef.current.focus();
   };
 
+  const searchFriends = (field, keyword) => {
+    var fieldMap = {Username: "username", "E-mail": "email", Phone: "phone",};
+
+    var filterOption = fieldMap[field];
+    var filtered = candidates.reduce((acc, candidate) => {
+      console.log(filterOption, candidate)
+      if (candidate[filterOption].includes(keyword)) acc.push(candidate);
+        return acc;
+      } , []);
+
+
+    return filtered;
+  }
+
+  
   const searchHandler = async (keyword) => {
-    if (newFriends) {
-      var res = await searchUsers(field, keyword);
+    if (keyword.length == 0) {
+      var res = candidates;
     } else {
-      var res = searchFriends(field, keyword);
+      if (newFriends) {
+        var res = await searchUsers(field, keyword);
+      } else {
+        var res = searchFriends(field, keyword);
+      }
     }
+    console.log("res", res)
+    afterSearch(res);
   };
 
   return (
@@ -94,6 +115,7 @@ SearchBar.propTypes = {
   width: PropTypes.string,
   setResult: PropTypes.func,
   candidates: PropTypes.array,
+  afterSearch: PropTypes.func
 };
 
 SearchBar.defaultProps = {
@@ -103,4 +125,5 @@ SearchBar.defaultProps = {
     console.log("SearchBar - Default setResult : ", res);
   },
   candidates: [],
+  afterSearch: ()=>{}
 };

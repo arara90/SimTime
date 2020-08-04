@@ -15,7 +15,7 @@ const Wrap = styled.div`
     props.isSelected && props.selectIcon
       ? `background-size :14px;
       background-repeat: no-repeat;
-      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check.png");
+      background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png");
       background-position: 92% center;`
       : ""};
 `;
