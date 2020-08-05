@@ -3,42 +3,66 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 //context
 import { ModalContext } from "../../contexts/modalContext";
-import { ModalPortalBasic } from "../A-Atomics/Modal/ModalPortal"
+import ModalContextPortal, {
+  ModalPortalBasic,
+} from "../A-Atomics/Modal/ModalPortal";
 //redux-actions
 import { getMemebers, getGroups } from "../../actions/groups";
 // import { getHosts } from "../../actions/invitations"
-import TestModal from "./TestModal"
+import TestModal from "./TestModal";
 
 const Wrap = styled.div`
   overflow: hidden;
 `;
 
-const Bt = styled.button`
-`;
+const Bt = styled.button``;
 
 const Content = React.memo((selectedGroup, relationships, closeModal) => {
-  return <TestModal selectedGroup={selectedGroup} relationships={relationships} onClose={closeModal} />
+  return (
+    <TestModal
+      selectedGroup={selectedGroup}
+      relationships={relationships}
+      onClose={closeModal}
+    />
+  );
 });
 
-
 function TestPage(props) {
-  const {groups, relationships} = props;
-  const {modal, setModal, closeModal } = useContext(ModalContext);
+  const { groups, relationships } = props;
+  const { modal, setModal, closeModal, handleModal } = useContext(ModalContext);
   const ref = React.createRef();
-  React.useEffect( ()=>{
-      props.getGroups();
-  }, [])
+  React.useEffect(() => {
+    props.getGroups();
+  }, []);
 
- var getMem = async (selectedGroup) => {
+  var getMem = async (selectedGroup) => {
     var ss = await props.getMemebers(ref.current.value);
-    setModal(true);
-    }
-    
+    // setModal(true);
+    handleModal(
+      <TestModal
+        selectedGroup={groups.selectedGroup}
+        relationships={props.relationships}
+        onClose={closeModal}
+      />
+    );
+  };
+
   return (
     <Wrap>
-      <Bt onClick={() => getMem(groups.selectedGroup) } > click </Bt>
+      <Bt onClick={() => getMem(groups.selectedGroup)}> click </Bt>
       <input ref={ref}></input>
-      {modal && ( <ModalPortalBasic children={<TestModal selectedGroup={groups.selectedGroup} relationships={props.relationships} onClose={closeModal} />}/>)}
+      {modal && (
+        <ModalPortalBasic
+          className="dd"
+          children={
+            <TestModal
+              selectedGroup={groups.selectedGroup}
+              relationships={props.relationships}
+              onClose={closeModal}
+            />
+          }
+        />
+      )}
     </Wrap>
   );
 }
@@ -49,10 +73,7 @@ const mapStateToProps = (state) => ({
   relationships: state.friends,
 });
 
-
-export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
-
-
+export default connect(mapStateToProps, { getMemebers, getGroups })(TestPage);
 
 // import React, { useState, useEffect, useContext } from "react";
 // import styled from "styled-components";
@@ -73,7 +94,6 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 // const Bt = styled.button`
 // `;
 
-
 // function TestPage(props) {
 //   const {groups, relationships} = props;
 //   // const {modal, handleModal, closeModal, openModal } = useContext(ModalContext);
@@ -89,7 +109,6 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 //     setIsOpenModal(false);
 //   };
 
-
 //   React.useEffect( ()=>{
 //       props.getGroups();
 //   }, [])
@@ -98,7 +117,7 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 // //     console.log("update!")
 // //     handleModal(renderModal());
 // // }, [groups.selectedGroup])
-  
+
 // //   const renderModal = () => {
 // //     return (<TestModal selectedGroup={groups.selectedGroup} onClose={closeModal} />)
 // //   }
@@ -108,7 +127,6 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 //     setIsOpenModal(true)
 //     }
 
-    
 //  var ref = React.createRef();
 //   return (
 //     <Wrap>
@@ -116,7 +134,7 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 //       <Bt onClick={() => { getMem(groups.selectedGroup)}} > click </Bt>
 //       <Bt onClick={()=>{getMem(groups.selectedGroup)}}>member</Bt>
 //       <input ref={ref}></input>
-      
+
 //       {isModalOpen && (
 //         <ModalPortalBasic
 //           children={
@@ -143,4 +161,3 @@ export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
 // // };
 
 // export default connect(mapStateToProps, {getMemebers, getGroups})(TestPage);
-
