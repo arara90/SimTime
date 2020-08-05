@@ -52,22 +52,11 @@ const Modal = (props) => {
     <Fragment>
       <GlobalStyle />
       <MyModal>
-        <ContentWrap onClick={onClose}>
-          {children}
-        </ContentWrap>
+        <ContentWrap onClick={onClose}>{children}</ContentWrap>
       </MyModal>
     </Fragment>
   );
 };
-
-// const mapStateToProps = (state) => ({
-//   event: state.events.selectedEvent[0],
-//   user: state.auth.user,
-// });
-
-// export default connect(mapStateToProps, { getEvent, editEvent, addEvent })(
-//   Modal
-// );
 
 export default Modal;
 

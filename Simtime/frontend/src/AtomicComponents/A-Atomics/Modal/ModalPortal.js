@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
-import styled from "styled-components"
+import styled from "styled-components";
 import { ModalContext } from "../../../contexts/modalContext";
 import GlobalStyle from "../../GlobalStyle";
 
@@ -33,36 +33,31 @@ const ContentWrap = styled.div`
   }
 `;
 
-
 export const ModalContextPortal = (props) => {
   const el = document.getElementById("app-modal");
   let { modalContent, modal } = React.useContext(ModalContext);
   if (modal) {
     return ReactDOM.createPortal(
       <Fragment>
-             <MyModal>
-               <ContentWrap>
-                  {modalContent}
-               </ContentWrap>
-             </MyModal>
-         </Fragment>,
+        <MyModal className="modalcontextPotal">
+          <ContentWrap>{modalContent}</ContentWrap>
+        </MyModal>
+      </Fragment>,
       el
     );
   } else return null;
 };
 
-
 export const ModalPortalBasic = (props) => {
   const el = document.getElementById("app-modal");
   return ReactDOM.createPortal(
-  <Fragment>
-      <MyModal>
-        <ContentWrap>
-            {props.children}
-        </ContentWrap>
+    <Fragment>
+      <MyModal className="modalcontextPotal">
+        <ContentWrap>{props.children}</ContentWrap>
       </MyModal>
-  </Fragment>, el);
+    </Fragment>,
+    el
+  );
 };
-
 
 export default ModalContextPortal;
