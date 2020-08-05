@@ -8,7 +8,7 @@ import { ModalPortalBasic } from "../A-Atomics/Modal/ModalPortal"
 import { getMemebers, getGroups } from "../../actions/groups";
 // import { getHosts } from "../../actions/invitations"
 import TestModal from "./TestModal"
-
+import Test from "./Test"
 const Wrap = styled.div`
   overflow: hidden;
 `;
@@ -34,9 +34,26 @@ function TestPage(props) {
     setModal(true);
     }
     
+  
+  const [data, setData] = React.useState(1)
+
+
+  var ppp = () => {
+    console.log("test", data)
+  }
+  var testFn = (keyword)=>{
+    console.log("test", data, keyword)
+  }
+
+console.log(data)
+
   return (
     <Wrap>
       <Bt onClick={() => getMem(groups.selectedGroup) } > click </Bt>
+      <Bt onClick={()=> setData(prev=>prev+1)}> +++++++++++++ </Bt>
+      <Bt onClick={()=>ppp(data)}> hhhhhhhhhhhhhlllllloooooooooo </Bt>
+
+      <Test  fn={ppp} testFn={testFn} />
       <input ref={ref}></input>
       {modal && ( <ModalPortalBasic children={<TestModal selectedGroup={groups.selectedGroup} relationships={props.relationships} onClose={closeModal} />}/>)}
     </Wrap>
