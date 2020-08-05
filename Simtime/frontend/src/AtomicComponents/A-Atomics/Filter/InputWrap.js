@@ -64,7 +64,7 @@ function InputWrap(props) {
 
   const handleChange = useCallback((e) => {
     e.stopPropagation();
-    changeHandler(e.target.value);
+    changeHandler(e.target.value, props.datas);
     setMyValue(e.target.value);
   }, []);
 
@@ -77,16 +77,18 @@ function InputWrap(props) {
   });
 
   const defaultInput = () => {
+    console.log("input", props.datas)
     return (
       <MyInput
         name={name}
         placeholder={desc}
         readOnly={readOnly}
         value={readOnly ? value : myValue}
-        onChange={(e) => handleChange(e)}
+        onChange={(e) => handleChange(e,props.datas)}
         onKeyUp={(e) => handleKeyUp(e)}
         cursor={cursor}
         ref={innerRef}
+        datas={props.datas}
       ></MyInput>
     );
   };

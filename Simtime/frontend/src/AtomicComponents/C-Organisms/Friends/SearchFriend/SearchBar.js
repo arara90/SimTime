@@ -33,9 +33,9 @@ const Result = styled(ResultTable)``;
 const Groups = styled(ResultTable)``;
 
 function SearchBar(props) {
-  const { height, width, newFriends, searchUsers, searchFriends } = props;
-
+  const { height, width, newFriends, searchUsers,searchFriends } = props;
   const [field, setField] = useState("Username");
+
   const selectRef = createRef();
   const searchRef = createRef();
 
@@ -43,11 +43,15 @@ function SearchBar(props) {
     setField(option);
     searchRef.current.focus();
   };
+  
 
-  const searchHandler = (keyword) => {
-    if (newFriends) searchUsers(field, keyword);
-    else searchFriends(field, keyword);
+  const searchHandler = (keyword, datas) => {
+    if (newFriends) var res = searchUsers(field, keyword);
+    else {
+      searchFriends(field, keyword, datas)
+    }
   };
+
 
   return (
     <Fragment>
@@ -58,6 +62,7 @@ function SearchBar(props) {
           width="102px"
           ref={selectRef}
           handleOptionChange={handleOptionChange}
+
         />
         <StyledSearch
           width="auto"
@@ -65,6 +70,7 @@ function SearchBar(props) {
           height="25px"
           ref={searchRef}
           searchHandler={searchHandler}
+          datas={props.datas} 
         />
       </SearchWrap>
     </Fragment>

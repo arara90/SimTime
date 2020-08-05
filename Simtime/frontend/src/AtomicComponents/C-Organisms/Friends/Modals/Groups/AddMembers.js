@@ -75,6 +75,7 @@ function AddMembers(props) {
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [tableData, setTableData] = useState(candidates);
 
+
   React.useEffect(() => {
     var newData = tableData.filter(
       (data) => !selectedFriends.includes(data.id)
@@ -97,23 +98,28 @@ function AddMembers(props) {
   };
 
   //친구 내에서 검색
-  const searchFriends = (field, keyword) => {
+  // 얘만 실행하면... 되돌아와..
+  const searchFriends = (field, keyword, datas) => {
     console.log("?", field, keyword);
-    console.log("?", candidates);
-
+    console.log("datas?", datas)
     var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
     var filtered = candidates.filter((candidate) =>
       candidate[map_field[field]].includes(keyword)
     );
-    console.log("?", filtered);
+    setTableData(filtered)
+  }
 
-    setTableData(filtered);
-  };
-
+// datas={getCandidates(getNonMembers(relationships, flatGroupMembers(members)))
+// datas={candidates(nonMembers)} afterSearch={(res)=>setTableData(res)}
+  //const [fn, setFn] = useState( ()=>members=> members.length )
+  
   return (
     <Wrap>
       <SearchWrap>
-        <SearchBar searchFriends={searchFriends} />
+        <SearchBar searchFriends={searchFriends} 
+        datas={candidates} 
+        // afterSearch={(res)=>setTableData(res)}
+         />
       </SearchWrap>
       <ResultWrap>
         <Result
@@ -121,17 +127,12 @@ function AddMembers(props) {
           datas={tableData}
           width="100%"
           rowNum={5}
-          selectHandler={(res) => {
-            setSelectedFriends(res);
-          }}
+          selectHandler={setSelectedFriends}
         >
           {console.log("tableData", tableData)}
         </Result>
       </ResultWrap>
-      {console.log("candidates", candidates)}
-      {console.log("nonMembers", nonMembers)}
-      {console.log("memer", members)}
-      {console.log("selectedFriends", selectedFriends)}
+
 
       <Button onClick={(e) => clickEvent(e)}>Done</Button>
     </Wrap>
