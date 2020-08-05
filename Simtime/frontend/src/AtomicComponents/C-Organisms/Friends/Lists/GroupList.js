@@ -46,17 +46,30 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function GroupList(props) {
-  const { modal, setModal, handleModal, closeModal } = useContext(ModalContext);
+  const { groups, selectedGroup, relationships } = props;
+  let { handleContextModal, closeContextModal } = React.useContext(
+    ModalContext
+  );
+  const [modal, setModal] = useState(false);
 
   const clickEvent = (e, cb) => {
     e.preventDefault();
     cb();
   };
 
-  const mngMembers = async (id) => {
+  const editMembers = async (id) => {
     const friends = await props.getMemebers(id);
     setModal(!modal);
-    // handleModal(<EditMembers datas={friends} onClose={closeModal} />);
+  };
+
+  const renderModal = (selectedGroup, relationships) => {
+    return (
+      <EditMembers
+        selectedGroup={selectedGroup}
+        relationships={relationships}
+        closeModal={() => setModal(false)}
+      />
+    );
   };
 
   const renderButton = useCallback(
@@ -88,7 +101,9 @@ function GroupList(props) {
           ></UserCard>
           <Buttons>
             {renderButton("이름변경", () =>
-              handleModal(<EditGroup group={group} onClose={closeModal} />)
+              handleContextModal(
+                <EditGroup group={group} closeModal={closeContextModal} />
+              )
             )}
             {renderButton("멤버관리", () => editMembers(group.id))}
             {renderButton(
@@ -107,13 +122,7 @@ function GroupList(props) {
       {renderRows(props.groups)}
       {modal && (
         <ModalPortalBasic
-          children={
-            <EditMembers
-              selectedGroup={props.selectedGroup}
-              relationships={props.relationships}
-              onClose={closeModal}
-            />
-          }
+          children={<Modal>{renderModal(selectedGroup, relationships)}</Modal>}
         />
       )}
     </Wrap>
@@ -126,10 +135,14 @@ GroupList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
   groups: PropTypes.array,
+  selectedGroup: PropTypes.object,
+  relationships: PropTypes.array,
 };
 
 GroupList.defaultProps = {
   title: "Table Title",
   headers: null,
   groups: [],
+  selectedGroup: { group: {}, members: [] },
+  relationships: [],
 };

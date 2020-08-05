@@ -1,5 +1,11 @@
 import "babel-polyfill";
-import React, { Fragment, useEffect, useState, useCallback, createRef } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+  useCallback,
+  createRef,
+} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -30,7 +36,7 @@ const ArrowParagraph = styled(Paragraph)`
 const Result = styled(ResultTable)``;
 
 function AddGroup(props) {
-  const { groups, relationships } = props;
+  const { groups, relationships, closeModal } = props;
   const inputRef = createRef(null);
 
   //UI
@@ -42,21 +48,21 @@ function AddGroup(props) {
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [isValid, setIsValid] = useState(false);
 
-  function getTableData(relationships){
-   return relationships.map((relationship) => {
+  function getTableData(relationships) {
+    return relationships.map((relationship) => {
       return { id: relationship.relationshipId, ...relationship.friend };
     });
   }
-  
-  //initializing
-  useEffect(()=>{
-    setFilteredFriendList(getTableData(relationships));
-  }, [])
 
-  //funcs 
+  //initializing
+  useEffect(() => {
+    setFilteredFriendList(getTableData(relationships));
+  }, []);
+
+  //funcs
   const checkValidation = (groupname) => {
     inputRef.current.classList.remove("valid-value", "invalid-value");
-    console.log("checkValidation", groupname, groups)
+    console.log("checkValidation", groupname, groups);
     if (groupname != "") {
       let res = !groups.find((group) => group.groupname === groupname);
       //valid state 저장
@@ -65,7 +71,7 @@ function AddGroup(props) {
       if (res) inputRef.current.classList.add("valid-value");
       else inputRef.current.classList.add("invalid-value");
       // inputRef.current.style.backgroundColor = "red";
-    }else {
+    } else {
       inputRef.current.classList.add("invalid-value");
     }
   };
@@ -77,20 +83,18 @@ function AddGroup(props) {
   });
 
   const handleSubmit = async () => {
-    console.log("hello")
+    console.log("hello");
     if (isValid) {
       try {
-        const group = await props.createGroup(groupname)
-        if(selectedFriends.length > 0) {
+        const group = await props.createGroup(groupname);
+        if (selectedFriends.length > 0) {
           var mambersTogroup = selectedFriends.map((relationshipId) => {
-                      return { relationship: relationshipId, group: group.id };
-                    });
-          console.log("mambersTogroup", mambersTogroup)
+            return { relationship: relationshipId, group: group.id };
+          });
+          console.log("mambersTogroup", mambersTogroup);
           await props.addToGroup(mambersTogroup);
         }
         props.onClose();
-        
-      
       } catch (err) {
         console.log("relationshipError", err);
       }
@@ -102,18 +106,18 @@ function AddGroup(props) {
 
   //친구 내에서 검색
   const searchFriends = (field, keyword) => {
-    var map_field = {Username: "username", "E-mail": "email", Phone: "phone" };
+    var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
     var filtered = relationships.filter((relationship) =>
       relationship.friend[map_field[field]].includes(keyword)
     );
     //resultTable Data에 맞게 정제
-     setFilteredFriendList(getTableData(filtered));
+    setFilteredFriendList(getTableData(filtered));
   };
 
   const renderAddMember = () => {
     return (
       <Fragment>
-        <StyledSearchBar searchFriends={searchFriends}/>
+        <StyledSearchBar searchFriends={searchFriends} />
         <ResultWrap>
           <Result
             datas={filteredFriendList}
@@ -166,7 +170,6 @@ function AddGroup(props) {
     );
   };
 
-
   return (
     <DefaultModal
       title="Add Group"
@@ -174,6 +177,7 @@ function AddGroup(props) {
       totalPage={0}
       handleSubmit={handleSubmit}
       height="auto"
+      closeModal={closeModal}
     ></DefaultModal>
   );
 }
@@ -184,9 +188,13 @@ export default connect(null, { createGroup, addToGroup })(AddGroup);
 AddGroup.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
+  closeModal: PropTypes.func,
 };
 
 AddGroup.defaultProps = {
   height: "520px",
   width: "320px",
+  closeModal: () => {
+    console.log("Waring clsModal");
+  },
 };

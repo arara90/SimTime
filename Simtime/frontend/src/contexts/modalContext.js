@@ -1,5 +1,5 @@
 import React from "react";
-import useModal from "../hooks/useModal";
+import useContextModal from "../hooks/useContextModal";
 import ModalContextPortal from "../AtomicComponents/A-Atomics/Modal/ModalPortal";
 
 let ModalContext;
@@ -7,23 +7,23 @@ let { Provider } = (ModalContext = React.createContext());
 
 let ModalProvider = ({ children }) => {
   let {
-    modal,
-    setModal,
-    handleModal,
-    openModal,
-    closeModal,
-    modalContent,
-  } = useModal();
+    contextModal,
+    setContextModal,
+    handleContextModal,
+    openContextModal,
+    closeContextModal,
+    contextModalContent,
+  } = useContextModal();
 
   return (
     <Provider
       value={{
-        modal,
-        setModal,
-        handleModal,
-        openModal,
-        closeModal,
-        modalContent,
+        contextModal,
+        setContextModal,
+        handleContextModal,
+        openContextModal,
+        closeContextModal,
+        contextModalContent,
       }}
     >
       <ModalContextPortal />

@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-
 import { ModalContext } from "../../../contexts/modalContext";
 import Header from "../Font/Header";
-import CloseButton from "../Button/CloseButton"
+import CloseButton from "../Button/CloseButton";
 import * as Colors from "../../Colors";
 
 const Wrap = styled.div`
@@ -21,16 +20,20 @@ const StyledCloseButton = styled(CloseButton)`
   position: absolute;
   right: 5px;
   top: 5px;
-`
+  border-color: blue;
+`;
 
 function ModalTitle(props) {
-  const { closeModal } = React.useContext(ModalContext);
+  // const { closeContextModal } = React.useContext(ModalContext);
   return (
     <Wrap {...props}>
       <Header type="h2" color="ST_WHITE">
         {props.children}
       </Header>
-      <StyledCloseButton onClick={()=>closeModal()} />
+      <StyledCloseButton
+        // onClick={props.closeModal ? props.closeModal : closeContextModal}
+        onClick={props.closeModal}
+      />
     </Wrap>
   );
 }
@@ -41,10 +44,14 @@ ModalTitle.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   color: PropTypes.string,
+  closeModal: PropTypes.func,
 };
 
 ModalTitle.defaultProps = {
   height: "36px",
   width: "100%",
   color: "MAIN_COLOR",
+  closeModal: () => {
+    console.log("Warning clsModal");
+  },
 };

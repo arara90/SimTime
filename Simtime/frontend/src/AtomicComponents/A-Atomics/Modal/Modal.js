@@ -43,16 +43,13 @@ const StyledCloseButton = styled(CloseButton)`
 `;
 
 const Modal = (props) => {
-  const { onClose, children } = props;
+  const { children } = props;
 
   return (
     <Fragment>
       <GlobalStyle />
       <MyModal>
-        <ContentWrap closeFn={onClose}>
-          <StyledCloseButton onClick={onClose} />
-          {children}
-        </ContentWrap>
+        <ContentWrap>{children}</ContentWrap>
       </MyModal>
     </Fragment>
   );
@@ -70,9 +67,9 @@ const Modal = (props) => {
 export default Modal;
 
 Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
 };
 
 Modal.defaultProps = {
-  onClose: () => {},
+  closeModal: () => {},
 };

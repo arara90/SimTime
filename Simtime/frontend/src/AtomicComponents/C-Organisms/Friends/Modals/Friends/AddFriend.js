@@ -24,6 +24,7 @@ const Result = styled(ResultTable)``;
 const Groups = styled(ResultTable)``;
 
 function AddFriend(props) {
+  const { closeModal } = props;
   const [friend, setFriend] = useState([]);
   const [groups, setGroups] = useState([]);
   const [users, setUsers] = useState([]);
@@ -35,11 +36,9 @@ function AddFriend(props) {
         friend: friend[0],
       });
 
-
       var groupData = groups.map((group) => {
         return { relationship: relationship.data.relationshipId, group: group };
       });
-
 
       const group = await props.addToGroup(groupData);
       props.onClose();
@@ -92,6 +91,7 @@ function AddFriend(props) {
       totalPage={0}
       handleSubmit={() => handleSubmit()}
       height="500px"
+      closeModal={closeModal}
     ></DefaultModal>
   );
 }
@@ -106,9 +106,13 @@ export default connect(mapStateToProps, { addfriend, addToGroup })(AddFriend);
 AddFriend.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
+  closeModal: PropTypes.func,
 };
 
 AddFriend.defaultProps = {
   height: "520px",
   width: "320px",
+  closeModal: () => {
+    console.log("Warning clsModal");
+  },
 };

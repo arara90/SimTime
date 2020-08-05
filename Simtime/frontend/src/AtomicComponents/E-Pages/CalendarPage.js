@@ -65,7 +65,9 @@ const StyledDetail = styled(Detail)`
 `;
 
 function CalendarPage() {
-  const { handleModal, closeModal } = React.useContext(ModalContext);
+  const { handleContextModal, closeContextModal } = React.useContext(
+    ModalContext
+  );
 
   return (
     <Wrap>
@@ -78,7 +80,9 @@ function CalendarPage() {
         <StyledDashedButton
           hasIcon={true}
           src="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/edit2.png"
-          onClick={() => handleModal(<EventMaker onClose={closeModal} />)}
+          onClick={() =>
+            handleContextModal(<EventMaker closeModal={closeContextModal} />)
+          }
         >
           Add a new event
         </StyledDashedButton>

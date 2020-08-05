@@ -40,7 +40,7 @@ const TextButton = styled(Paragraph)`
 `;
 
 function MemberList(props) {
-  const {members} = props;
+  const { members } = props;
 
   const flatMembers = members.reduce(
     (acc, item) => [
@@ -63,6 +63,7 @@ function MemberList(props) {
           color={"ST_RED"}
           type="button"
           onClick={(e) => {
+            e.stopPropagation();
             e.preventDefault();
             fn();
           }}

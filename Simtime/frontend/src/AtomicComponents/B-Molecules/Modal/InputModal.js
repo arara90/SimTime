@@ -169,7 +169,9 @@ function InputModal(props) {
   return (
     <Wrap {...props}>
       <HeaderWrap>
-        {props.title && <ModalTitle>{props.title}</ModalTitle>}
+        {props.title && (
+          <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
+        )}
       </HeaderWrap>
 
       <ContentWrap encType="multipart/form-data">
@@ -187,6 +189,7 @@ InputModal.propTypes = {
   width: PropTypes.string,
   totalPage: PropTypes.number,
   title: PropTypes.string,
+  closeModal: PropTypes.func,
 };
 
 InputModal.defaultProps = {
@@ -194,4 +197,5 @@ InputModal.defaultProps = {
   width: "320px",
   totalPage: 1,
   title: null,
+  closeModal: () => {},
 };

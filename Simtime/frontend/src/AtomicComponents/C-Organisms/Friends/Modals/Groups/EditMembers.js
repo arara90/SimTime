@@ -12,7 +12,7 @@ import ImageUser from "../../../../A-Atomics/ImageUser";
 import Image from "../../../../A-Atomics/Image";
 import Header from "../../../../A-Atomics/Font/Header";
 import MemberList from "../../Lists/MemberList";
-import AddMembers from "./Table/AddMembers";
+import AddMembers from "./AddMembers";
 
 const Wrap = styled.div`
   width: 100%;
@@ -59,28 +59,11 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
-  const buttons = [
-    { content: "Members", urk: null },
-    {
-      content: "Add",
-      url:
-        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
-    },
-  ];
-
-  const { selectedGroup, relationships } = props;
-  const [group, setGroup] = useState({ groupname: "" });
-  const [members, setMembers] = useState({});
+  const { selectedGroup, relationships, buttons, closeModal } = props;
   const [tab, setTab] = useState("Members");
-  const [users, setUsers] = useState([]);
-  const [selectedMembers, setselectedMembers] = useState([]);
-
-  useEffect(() => {
-    setGroup(selectedGroup);
-  }, [selectedGroup]);
 
   return (
-    <BasicModal title="Edit Group">
+    <BasicModal title="Edit Group" closeModal={closeModal}>
       <Wrap className="EditMembersWrap">
         <Group>
           <GroupImage
@@ -97,7 +80,7 @@ function EditMembers(props) {
               }
             />
           </GroupImage>
-          <GroupName type="h3">{group.groupname}</GroupName>
+          <GroupName type="h3">{selectedGroup.group.groupname}</GroupName>
         </Group>
 
         <Table
@@ -105,20 +88,22 @@ function EditMembers(props) {
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {console.log("group", group, members)}
-          {/* {tab == "Members" ? <MemberList members={group.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />} */}
+          {tab == "Members" ? (
+            <MemberList members={selectedGroup.members} />
+          ) : (
+            <AddMembers
+              groupId={selectedGroup.group.id}
+              members={selectedGroup.members}
+              relationships={relationships}
+            />
+          )}
         </Table>
       </Wrap>
     </BasicModal>
   );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  selectedGroup: state.groups.selectedGroup,
-});
-
-export default connect(mapStateToProps, { deleteMemebers })(EditMembers);
+export default connect(null, { deleteMemebers })(EditMembers);
 
 EditMembers.propTypes = {
   title: PropTypes.string,
@@ -126,6 +111,7 @@ EditMembers.propTypes = {
   selectedGoup: PropTypes.object,
   relationships: PropTypes.array,
   buttons: PropTypes.array,
+  closeModal: PropTypes.func,
 };
 
 EditMembers.defaultProps = {
@@ -141,4 +127,7 @@ EditMembers.defaultProps = {
         "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
     },
   ],
+  closeModal: () => {
+    console.log("Waring clsModal");
+  },
 };

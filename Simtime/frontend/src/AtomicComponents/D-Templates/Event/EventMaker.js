@@ -217,7 +217,7 @@ function EventMaker(props) {
       props.addEvent(myEvent, image);
     }
 
-    // props.onClose();
+    // props.closeModal();
   };
 
   const handleChangeFile = (e) => {

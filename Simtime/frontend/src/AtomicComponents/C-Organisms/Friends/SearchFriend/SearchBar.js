@@ -33,15 +33,7 @@ const Result = styled(ResultTable)``;
 const Groups = styled(ResultTable)``;
 
 function SearchBar(props) {
-  const {
-    height,
-    width,
-    newFriends,
-    relationships,
-    searchUsers,
-    searchFriends,
-  } = props;
-
+  const { height, width, newFriends, searchUsers, searchFriends } = props;
 
   const [field, setField] = useState("Username");
   const selectRef = createRef();
@@ -52,12 +44,9 @@ function SearchBar(props) {
     searchRef.current.focus();
   };
 
-  const searchHandler = async (keyword) => {
-    if (newFriends) {
-      var res = await searchUsers(field, keyword);
-    } else {
-      var res = searchFriends(field, keyword);
-    }
+  const searchHandler = (keyword) => {
+    if (newFriends) searchUsers(field, keyword);
+    else searchFriends(field, keyword);
   };
 
   return (
@@ -82,12 +71,8 @@ function SearchBar(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  friends: state.friends.friends,
-});
-// export default SearchBars;
-export default connect(mapStateToProps, { searchUsers })(SearchBar);
+// // export default SearchBars;
+export default connect(null, { searchUsers })(SearchBar);
 
 SearchBar.propTypes = {
   height: PropTypes.string,

@@ -151,7 +151,9 @@ function DialogModal(props) {
   return (
     <Wrap {...props}>
       <HeaderWrap className="HeaderWrap">
-        {props.title && <ModalTitle>{props.title}</ModalTitle>}
+        {props.title && (
+          <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
+        )}
         {/* <BarWrap><ProgressBar /></BarWrap> */}
       </HeaderWrap>
 
@@ -170,6 +172,7 @@ DialogModal.propTypes = {
   width: PropTypes.string,
   totalPage: PropTypes.number,
   title: PropTypes.string,
+  closeModal: PropTypes.func,
 };
 
 DialogModal.defaultProps = {
@@ -177,4 +180,5 @@ DialogModal.defaultProps = {
   width: "320px",
   totalPage: 1,
   title: null,
+  closeModal: () => {},
 };

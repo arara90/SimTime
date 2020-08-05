@@ -67,7 +67,7 @@ const ContentWrap = styled.div`
 
   display: flex;
   flex-direction: column;
-  align-items : center;
+  align-items: center;
 `;
 
 const TableContent = styled.div`
@@ -75,17 +75,15 @@ const TableContent = styled.div`
   width: 100%;
 `;
 
-
-
 function TabTable(props) {
   const [activeTab, setActiveTab] = useState(props.buttons[0].content);
 
-    
   const clickHandler = (e, tab) => {
     e.preventDefault();
-    setActiveTab(tab)
+    e.stopPropagation();
+    setActiveTab(tab);
     props.changeHandler(tab);
-  }
+  };
 
   const renderButtons = (buttons) => {
     return buttons.map((button) => {
@@ -94,7 +92,11 @@ function TabTable(props) {
           key={button.content}
           active={activeTab == button.content}
           button={button}
-          onClick={ activeTab == button.content ?  undefined : (e) => clickHandler(e, button.content)}
+          onClick={
+            activeTab == button.content
+              ? undefined
+              : (e) => clickHandler(e, button.content)
+          }
         />
       );
     });
@@ -147,7 +149,7 @@ TabTable.defaultProps = {
     },
   ],
   width: "100%",
-  height:"auto",
+  height: "auto",
   rowHeight: "45px",
   headers: null,
   datas: null,

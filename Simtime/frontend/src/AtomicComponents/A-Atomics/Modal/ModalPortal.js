@@ -54,12 +54,12 @@ const ContentWrap = styled.div`
 
 export const ModalContextPortal = (props) => {
   const el = document.getElementById("app-modal");
-  let { modalContent, modal } = React.useContext(ModalContext);
-  if (modal) {
+  let { contextModalContent, contextModal } = React.useContext(ModalContext);
+  if (contextModal) {
     return ReactDOM.createPortal(
       <Fragment>
         <MyModal className="modalcontextPotal">
-          <ContentWrap>{modalContent}</ContentWrap>
+          <ContentWrap>{contextModalContent}</ContentWrap>
         </MyModal>
       </Fragment>,
       el

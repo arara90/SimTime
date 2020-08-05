@@ -38,90 +38,100 @@ const MyItem = styled(SelectedItem)`
   white-space: nowrap;
 `;
 
-function AddMembers(props) {
-  const { friends, selectedGroup } = props;
-
-  // const setStateAsync = (state) => {
-  //   return new Promise((resolve) => {
-  //     this.setState(state, resolve)
-  //   });
-  // }
-
-  // handleChange = (e) => {
-  //   return this.setStateAsync({[e.target.name]: e.target.value})
-  // }
-
-  const flatGroupMembers = (members) => {
-    return members.reduce(
-      (acc, member) => ({
-        ...acc,
-        [member.relationship.id]: member.relationship.id,
-      }),
-      {}
-    );
-  };
-  const [groupMembers, setGroupMembers] = useState(
-    flatGroupMembers(selectedGroup.members)
+//search하기 위해 id를 index로
+const flatGroupMembers = (members) => {
+  return members.reduce(
+    (acc, member) => ({
+      ...acc,
+      [member.relationship.relationshipId]: member.relationship.relationshipId,
+    }),
+    {}
   );
-  const [nonMembers, setNonMembers] = useState(
-    friends.filter((friend) => !groupMembers[friend.id])
-  );
+};
 
-  const [candidates, setCandidates] = useState([
+// 친구 중에 멤버가 아닌 사람 구하기
+const getNonMembers = (relationships, groupMembers) => {
+  return relationships.filter((friend) => !groupMembers[friend.relationshipId]);
+};
+
+//TableData 형태로 만들기
+const getCandidates = (nonMembers) => {
+  return [
     ...new Set(
       nonMembers.map((friend) => {
-        return { ...friend.friend, id: friend.id };
+        return { ...friend.friend, id: friend.relationshipId };
       })
     ),
-  ]);
-  const [selectedFriends, setSelectedFriends] = useState([]);
+  ];
+};
 
-  const clickEvent = async (e) => {
+function AddMembers(props) {
+  const { relationships, members, groupId } = props;
+
+  var flatMembers = flatGroupMembers(members);
+  var nonMembers = getNonMembers(relationships, flatMembers);
+  var candidates = getCandidates(nonMembers);
+
+  const [selectedFriends, setSelectedFriends] = useState([]);
+  const [tableData, setTableData] = useState(candidates);
+
+  React.useEffect(() => {
+    var newData = tableData.filter(
+      (data) => !selectedFriends.includes(data.id)
+    );
+    setTableData(newData);
+    setSelectedFriends([]);
+  }, [members, relationships, groupId]);
+
+  const clickEvent = (e) => {
     e.preventDefault();
-    var groupId = props.selectedGroup.group.id;
     try {
       var data = selectedFriends.map((friend) => {
         return { relationship: friend, group: groupId };
       });
-
-      var res = await props.addToGroup(data);
-      console.log("res", res);
-
-      setGroupMembers(flatGroupMembers(selectedGroup.members));
-      setNonMembers(friends.filter((friend) => !groupMembers[friend.id]));
-      setCandidates([
-        ...new Set(
-          nonMembers.map((friend) => {
-            return { ...friend.friend, id: friend.id };
-          })
-        ),
-      ]);
-
-      console.log("dd");
+      //멤버로 등록
+      props.addToGroup(data);
     } catch (err) {
       console.log("addToGroupError", err);
     }
   };
 
+  //친구 내에서 검색
+  const searchFriends = (field, keyword) => {
+    console.log("?", field, keyword);
+    console.log("?", candidates);
+
+    var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
+    var filtered = candidates.filter((candidate) =>
+      candidate[map_field[field]].includes(keyword)
+    );
+    console.log("?", filtered);
+
+    setTableData(filtered);
+  };
+
   return (
     <Wrap>
       <SearchWrap>
-        <SearchBar
-          search={(res) => setCandidates(res)}
-          candidates={nonMembers}
-        />
+        <SearchBar searchFriends={searchFriends} />
       </SearchWrap>
       <ResultWrap>
         <Result
           multiple
-          datas={candidates}
+          datas={tableData}
           width="100%"
           rowNum={5}
           selectHandler={(res) => {
             setSelectedFriends(res);
           }}
-        />
+        >
+          {console.log("tableData", tableData)}
+        </Result>
       </ResultWrap>
+      {console.log("candidates", candidates)}
+      {console.log("nonMembers", nonMembers)}
+      {console.log("memer", members)}
+      {console.log("selectedFriends", selectedFriends)}
 
       <Button onClick={(e) => clickEvent(e)}>Done</Button>
     </Wrap>
@@ -130,8 +140,6 @@ function AddMembers(props) {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  selectedGroup: state.groups.selectedGroup,
-  friends: state.friends.friends,
 });
 
 export default connect(mapStateToProps, { addToGroup })(AddMembers);

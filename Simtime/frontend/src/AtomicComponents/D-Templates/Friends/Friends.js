@@ -15,13 +15,15 @@ import FriendList from "../../C-Organisms/Friends/Lists/FriendList";
 import AddFriend from "../../C-Organisms/Friends/Modals/Friends/AddFriend";
 
 function Friends(props) {
-  const { handleModal, closeModal } = useContext(ModalContext);
+  const { handleContextModal, closeContextModal } = useContext(ModalContext);
   const datas = [];
   return (
     <Table
       title="My Friends"
       addButton={true}
-      handleAddBtnClick={() => handleModal(<AddFriend onClose={closeModal} />)}
+      handleAddBtnClick={() =>
+        handleContextModal(<AddFriend closeModal={closeContextModal} />)
+      }
       width={props.width}
       rowHeight={props.width}
       rowNum={props.rowNum}
