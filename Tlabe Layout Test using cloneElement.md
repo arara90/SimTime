@@ -60,8 +60,6 @@ ResultTable.defaultProps = {
 
 ```
 
-
-
 ```react
 import React, { Fragment, useCallback, useState } from "react";
 import styled, { css } from "styled-components";
@@ -83,7 +81,7 @@ const selectedStyle = {
   backgroundSize: "14px",
   backgroundRepeat: "no-repeat",
   backgroundImage:
-    "url(https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check.png)",
+    "url(https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png)",
   backgroundPosition: "92% center",
 };
 
@@ -129,19 +127,13 @@ SelectTable.defaultProps = {
 
 ![S1-1](https://github.com/arara90/images/blob/master/Simtime/simtime_035.png?raw=true)
 
-클릭시 
+클릭시
 
 ![S1-2](https://github.com/arara90/images/blob/master/Simtime/simtime_036.png?raw=true)
-
-
-
-
 
 - cloneElement 사용시 map을 사용하게되고, 클릭할때마다 모든 데이터에 상응하는 요소들이 re-render된다. 좋은 생각이 아닌 듯. 다시 돌리자..ㅠ.ㅠ..
 
 ---
-
-
 
 [최종]
 
@@ -208,31 +200,31 @@ ResultTable.defaultProps = {
     {
       id: 0,
       profile_image:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/user-basic.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/user-basic.png",
       username: "arara",
     },
     {
       id: 1,
       profile_image:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
       username: "hello",
     },
     {
       id: 2,
       profile_image:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/arrow-down.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/arrow-down.png",
       username: "hey",
     },
     {
       id: 3,
       profile_image:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/user-basic.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/user-basic.png",
       username: "parkh",
     },
     {
       id: 4,
       profile_image:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check-valid.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check-valid.png",
       username: "admin",
     },
   ],
@@ -261,7 +253,7 @@ const selectedStyle = {
   backgroundSize: "14px",
   backgroundRepeat: "no-repeat",
   backgroundImage:
-    "url(https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check.png)",
+    "url(https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png)",
   backgroundPosition: "92% center",
 };
 
@@ -307,6 +299,3 @@ SelectTable.defaultProps = {
 ```
 
 ![S1-3](https://github.com/arara90/images/blob/master/Simtime/simtime_037.png?raw=true)
-
-
-

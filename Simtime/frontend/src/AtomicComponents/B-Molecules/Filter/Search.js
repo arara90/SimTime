@@ -15,7 +15,7 @@ const Wrap = styled.div`
 const Icon = styled.div`
   background-size: 15px;
   background-repeat: no-repeat;
-  background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/search.png");
+  background-image: url("https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/search.png");
   background-position: center center;
   width: ${(props) => props.size};
   height: ${(props) => props.size};

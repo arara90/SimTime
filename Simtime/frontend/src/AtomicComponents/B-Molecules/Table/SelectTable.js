@@ -17,7 +17,7 @@ const selectedStyle = {
   backgroundSize: "14px",
   backgroundRepeat: "no-repeat",
   backgroundImage:
-    "url(https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check.png)",
+    "url(https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png)",
   backgroundPosition: "92% center",
 };
 

@@ -258,8 +258,8 @@ https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 
 > ...
 >
-> {'Bucket': 'simtime-bucket', 'Key': 'img/icons/search.png'}
-> {'Bucket': 'simtime-bucket', 'Key': 'img/icons/search.png', 'Body': <s3transfer.utils.ReadFileChunk object at 0x0000017054DAD788>, 'ACL': 'public-read', 'ContentType': 'image/png'}
+> {'Bucket': 'bucket-simtime', 'Key': 'img/icons/search.png'}
+> {'Bucket': 'bucket-simtime', 'Key': 'img/icons/search.png', 'Body': <s3transfer.utils.ReadFileChunk object at 0x0000017054DAD788>, 'ACL': 'public-read', 'ContentType': 'image/png'}
 >
 > ...
 

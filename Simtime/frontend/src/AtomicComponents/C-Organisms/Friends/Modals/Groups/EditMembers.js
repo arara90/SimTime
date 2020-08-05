@@ -1,6 +1,7 @@
 import React, { useState, Fragment, createRef } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { deleteMemebers } from "../../../../../actions/groups";
 
@@ -63,7 +64,7 @@ function EditMembers(props) {
     {
       content: "Add",
       url:
-        "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png",
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
     },
   ];
 
@@ -93,13 +94,13 @@ function EditMembers(props) {
             height="60px"
             width="60px"
             url={
-              "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
+              "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
             }
           >
             {/* // urk={props.selectedGroup.group.profile_image}> */}
             <AddImage
               src={
-                "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png"
+                "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
               }
             />
           </GroupImage>
@@ -123,3 +124,26 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { deleteMemebers })(EditMembers);
+
+EditMembers.propTypes = {
+  title: PropTypes.string,
+  headers: PropTypes.array,
+  selectedGoup: PropTypes.object,
+  relationships: PropTypes.array,
+  buttons: PropTypes.array,
+};
+
+EditMembers.defaultProps = {
+  title: "Table Title",
+  headers: null,
+  selectedGoup: { group: { id: "", groupname: "unknown" }, members: [] },
+  relationships: [],
+  buttons: [
+    { content: "Members", url: null },
+    {
+      content: "Add",
+      url:
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
+    },
+  ],
+};

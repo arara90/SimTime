@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import ColoredButton from "../../../../A-Atomics/Button/ColoredButton";
 import SelectedItem from "../../../../A-Atomics/Filter/SelectedItem";

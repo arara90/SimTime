@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
-import styled from "styled-components"
+import styled from "styled-components";
 import { ModalContext } from "../../../contexts/modalContext";
 import GlobalStyle from "../../GlobalStyle";
 
@@ -33,33 +33,50 @@ const ContentWrap = styled.div`
   }
 `;
 
-// const ModalPotal = (props) => {
+// const ModalPortal = (props) => {
 //   const el = document.getElementById("app-modal");
-//   return ReactDOM.createPortal(
-//   <Fragment>
-//       <MyModal>
-//         <ContentWrap>
-//             {props.children}
-//         </ContentWrap>
-//       </MyModal>
-//   </Fragment>, el);
+//   let { modalContent, handleModal, modal } = React.useContext(ModalContext);
+//   if (modal) {
+//     return ReactDOM.createPortal(
+//       <Fragment>
+//              <MyModal>
+//                <ContentWrap>
+//                   {modalContent}
+//                </ContentWrap>
+//              </MyModal>
+//          </Fragment>,
+//       el
+//     );
+//   } else return null;
 // };
 
-const ModalPotal = (props) => {
+// export default ModalPortal;
+
+export const ModalContextPortal = (props) => {
   const el = document.getElementById("app-modal");
-  let { modalContent, handleModal, modal } = React.useContext(ModalContext);
+  let { modalContent, modal } = React.useContext(ModalContext);
   if (modal) {
     return ReactDOM.createPortal(
       <Fragment>
-             <MyModal>
-               <ContentWrap>
-                  {modalContent}
-               </ContentWrap>
-             </MyModal>
-         </Fragment>,
+        <MyModal className="modalcontextPotal">
+          <ContentWrap>{modalContent}</ContentWrap>
+        </MyModal>
+      </Fragment>,
       el
     );
   } else return null;
 };
 
-export default ModalPotal;
+export const ModalPortalBasic = (props) => {
+  const el = document.getElementById("app-modal");
+  return ReactDOM.createPortal(
+    <Fragment>
+      <MyModal className="modalcontextPotal">
+        <ContentWrap>{props.children}</ContentWrap>
+      </MyModal>
+    </Fragment>,
+    el
+  );
+};
+
+export default ModalContextPortal;

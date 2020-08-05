@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 //context
 import { ModalContext } from "../../../../contexts/modalContext";
+import { ModalPortalBasic } from "../../../A-Atomics/Modal/ModalPortal";
+import Modal from "../../../A-Atomics/Modal/Modal";
 //redux
 import { connect } from "react-redux";
 //components
@@ -44,7 +46,7 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function GroupList(props) {
-  const { handleModal, closeModal } = useContext(ModalContext);
+  const { modal, setModal, handleModal, closeModal } = useContext(ModalContext);
 
   const clickEvent = (e, cb) => {
     e.preventDefault();
@@ -53,8 +55,8 @@ function GroupList(props) {
 
   const mngMembers = async (id) => {
     const friends = await props.getMemebers(id);
-    console.log("friends", friends);
-    handleModal(<EditMembers datas={friends} onClose={closeModal} />);
+    setModal(!modal);
+    // handleModal(<EditMembers datas={friends} onClose={closeModal} />);
   };
 
   const renderButton = useCallback(
@@ -82,7 +84,7 @@ function GroupList(props) {
             username={group.groupname}
             imageSize="32px"
             // url={group.profile_image}
-            url="https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/group_basic.png"
+            url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
           ></UserCard>
           <Buttons>
             {renderButton("이름변경", () =>
@@ -100,7 +102,22 @@ function GroupList(props) {
     });
   };
 
-  return <Wrap>{renderRows(props.groups)}</Wrap>;
+  return (
+    <Wrap>
+      {renderRows(props.groups)}
+      {modal && (
+        <ModalPortalBasic
+          children={
+            <EditMembers
+              selectedGroup={props.selectedGroup}
+              relationships={props.relationships}
+              onClose={closeModal}
+            />
+          }
+        />
+      )}
+    </Wrap>
+  );
 }
 const mapStateToProps = (state) => ({
   user: state.auth.user,

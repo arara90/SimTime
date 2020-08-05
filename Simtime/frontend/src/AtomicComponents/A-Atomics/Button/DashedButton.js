@@ -65,5 +65,6 @@ DashedButton.defaultProps = {
   height: "46px",
   width: "100%",
   hasIcon: false,
-  src: "/static/assets/img/icons/edit2.png",
+  src:
+    "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/edit2.png",
 };

@@ -1,13 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 import GlobalStyle from "../../GlobalStyle";
-
-import ColoredButton from "../Button/ColoredButton";
 import CloseButton from "../Button/CloseButton";
-import { MAIN_COLOR } from "../../Colors";
 
 const MyModal = styled.div`
   background: rgba(0, 0, 0, 0.25);
@@ -46,7 +42,6 @@ const StyledCloseButton = styled(CloseButton)`
   }
 `;
 
-
 const Modal = (props) => {
   const { onClose, children } = props;
 
@@ -55,7 +50,7 @@ const Modal = (props) => {
       <GlobalStyle />
       <MyModal>
         <ContentWrap closeFn={onClose}>
-          <StyledCloseButton onClick={onClose}/>
+          <StyledCloseButton onClick={onClose} />
           {children}
         </ContentWrap>
       </MyModal>

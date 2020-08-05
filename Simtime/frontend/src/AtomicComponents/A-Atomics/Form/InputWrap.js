@@ -51,7 +51,7 @@ const MyInput = styled.input`
     // border: solid 1px ${ST_GREEN};
     background-size: 18px;
     background-repeat: no-repeat;
-    background-image: url("https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/check-valid.png");
+    background-image: url("https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check-valid.png");
     background-position: 94% center;
   }
 
@@ -74,24 +74,21 @@ function InputWrap(props) {
     cursor,
     innerRef,
     enterHandler,
-
   } = props;
   const [myValue, setMyValue] = useState(value);
 
   const handleChange = useCallback((e) => {
     e.preventDefault();
     setMyValue(e.target.value);
-
   }, []);
 
-  const handleKeyUp = useCallback((e)=>{
+  const handleKeyUp = useCallback((e) => {
     // e.preventDefault();
     e.stopPropagation();
-    if(e.key==="Enter"){
+    if (e.key === "Enter") {
       enterHandler(e.target.value);
     }
-  })
-
+  });
 
   const defaultInput = () => {
     return (
@@ -100,8 +97,8 @@ function InputWrap(props) {
         placeholder={desc}
         readOnly={readOnly}
         value={readOnly ? value : myValue}
-        onChange={(e)=>handleChange(e)}
-        onKeyUp={(e)=>handleKeyUp(e)}
+        onChange={(e) => handleChange(e)}
+        onKeyUp={(e) => handleKeyUp(e)}
         cursor={cursor}
         ref={innerRef}
       ></MyInput>
@@ -120,9 +117,9 @@ function InputWrap(props) {
   );
 }
 
-export default React.forwardRef((props, ref) => (<InputWrap {...props} innerRef={ref}/>));
-;
-
+export default React.forwardRef((props, ref) => (
+  <InputWrap {...props} innerRef={ref} />
+));
 InputWrap.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
@@ -132,7 +129,7 @@ InputWrap.propTypes = {
   value: PropTypes.string,
   readOnly: PropTypes.bool,
   cursor: PropTypes.string,
-  enterHandler: PropTypes.func
+  enterHandler: PropTypes.func,
 };
 
 InputWrap.defaultProps = {
@@ -144,5 +141,5 @@ InputWrap.defaultProps = {
   value: "",
   readOnly: false,
   cursor: null,
-  enterHandler: null
+  enterHandler: null,
 };

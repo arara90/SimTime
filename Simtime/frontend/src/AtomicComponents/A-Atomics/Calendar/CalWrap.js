@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { BG_INACTIVE_LIGHT} from "../../Colors";
+import { BG_INACTIVE_LIGHT } from "../../Colors";
 
 const Wrap = styled.div`
   background-color: ${BG_INACTIVE_LIGHT};
   background-size: 100%;
-  background-image: url("/static/assets/img/months/${props=>props.month}.png");
+  background-image: url("https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/months/${(
+    props
+  ) => props.month}.png");
   background-position: center center;
   background-repeat: no-repeat;
 
@@ -26,7 +28,6 @@ const Wrap = styled.div`
   }
 `;
 
-
 function CalWrap(props) {
   return <Wrap {...props}></Wrap>;
 }
@@ -41,5 +42,5 @@ CalWrap.propTypes = {
 CalWrap.defaultProps = {
   height: "660px",
   width: "620px",
-  month: "4"
+  month: "4",
 };

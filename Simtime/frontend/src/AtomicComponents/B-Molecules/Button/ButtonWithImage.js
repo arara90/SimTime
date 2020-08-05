@@ -127,7 +127,7 @@ ButtonWithImage.defaultProps = {
   button: {
     content: "add",
     url: null,
-    // "https://simtime-bucket.s3.ap-northeast-2.amazonaws.com/static/img/icons/add-yellow.png",
+    // "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
   },
   imgHeight: "13px",
   imgWidth: "13px",
