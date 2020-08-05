@@ -40,6 +40,22 @@ const TextButton = styled(Paragraph)`
 `;
 
 function MemberList(props) {
+  const {members} = props;
+
+  const flatMembers = members.reduce(
+    (acc, item) => [
+      ...acc,
+      {
+        id: item.RGmapId,
+        relationshipId: item.relationship.relationshipid, //relationshipid
+        friendId: item.relationship.friend.id,
+        username: item.relationship.friend.username,
+        profile_image: item.relationship.friend.profile_image,
+      },
+    ],
+    []
+  );
+
   const renderButton = useCallback((fn) => {
     return (
       <ButtonWrap>
@@ -76,7 +92,7 @@ function MemberList(props) {
     });
   };
 
-  return <Fragment>{renderRows(props.datas)}</Fragment>;
+  return <Fragment>{renderRows(flatMembers)}</Fragment>;
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -91,11 +107,11 @@ export default connect(null, mapDispatchToProps)(MemberList);
 MemberList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
-  datas: PropTypes.array,
+  members: PropTypes.array,
 };
 
 MemberList.defaultProps = {
   title: "Table Title",
   headers: null,
-  datas: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
+  members: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
 };

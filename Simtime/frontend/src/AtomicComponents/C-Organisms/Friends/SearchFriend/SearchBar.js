@@ -34,21 +34,16 @@ const Groups = styled(ResultTable)``;
 
 function SearchBar(props) {
   const {
-    search,
-    searchUsers,
     height,
     width,
     newFriends,
-    friends,
-    candidates,
+    relationships,
+    searchUsers,
+    searchFriends,
   } = props;
 
-  const [resData, setResData] = useState(
-    candidates.length == 0 ? friends : candidates
-  );
 
   const [field, setField] = useState("Username");
-
   const selectRef = createRef();
   const searchRef = createRef();
 
@@ -61,22 +56,8 @@ function SearchBar(props) {
     if (newFriends) {
       var res = await searchUsers(field, keyword);
     } else {
-      var map_field = {
-        Username: "username",
-        "E-mail": "email",
-        Phone: "phone",
-      };
-
-      var indexField = map_field[field];
-      var res = candidates.reduce((acc, candidate) => {
-        if (candidate.friend[indexField].includes(keyword)) {
-          acc.push({ ...candidate.friend, id: candidate.id });
-        }
-        return acc;
-      }, []);
-      console.log(res);
+      var res = searchFriends(field, keyword);
     }
-    search(res);
   };
 
   return (
@@ -87,18 +68,14 @@ function SearchBar(props) {
           defaultOption="Username"
           width="102px"
           ref={selectRef}
-          handleOptionChange={(option) => {
-            handleOptionChange(option);
-          }}
+          handleOptionChange={handleOptionChange}
         />
         <StyledSearch
           width="auto"
           desc="Find a friend"
           height="25px"
           ref={searchRef}
-          searchHandler={(keyword) => {
-            searchHandler(keyword);
-          }}
+          searchHandler={searchHandler}
         />
       </SearchWrap>
     </Fragment>

@@ -1,4 +1,4 @@
-import React, { useState, Fragment, createRef } from "react";
+import React, { useState, useEffect, Fragment, createRef } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -12,7 +12,7 @@ import ImageUser from "../../../../A-Atomics/ImageUser";
 import Image from "../../../../A-Atomics/Image";
 import Header from "../../../../A-Atomics/Font/Header";
 import MemberList from "../../Lists/MemberList";
-import AddMembers from "./AddMembers";
+import AddMembers from "./Table/AddMembers";
 
 const Wrap = styled.div`
   width: 100%;
@@ -68,23 +68,16 @@ function EditMembers(props) {
     },
   ];
 
+  const { selectedGroup, relationships } = props;
+  const [group, setGroup] = useState({ groupname: "" });
+  const [members, setMembers] = useState({});
+  const [tab, setTab] = useState("Members");
   const [users, setUsers] = useState([]);
-  const [tab, setTab] = useState(buttons[0].content);
   const [selectedMembers, setselectedMembers] = useState([]);
 
-  const friends = props.selectedGroup.members.reduce(
-    (acc, item) => [
-      ...acc,
-      {
-        id: item.RGmapId,
-        relationshipId: item.relationship.id, //relationshipid
-        friendId: item.relationship.friend.id,
-        username: item.relationship.friend.username,
-        profile_image: item.relationship.friend.profile_image,
-      },
-    ],
-    []
-  );
+  useEffect(() => {
+    setGroup(selectedGroup);
+  }, [selectedGroup]);
 
   return (
     <BasicModal title="Edit Group">
@@ -97,21 +90,23 @@ function EditMembers(props) {
               "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
             }
           >
-            {/* // urk={props.selectedGroup.group.profile_image}> */}
+            {/* // url={selectedGroup.group.profile_image}> */}
             <AddImage
               src={
                 "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png"
               }
             />
           </GroupImage>
-          <GroupName type="h3">{props.selectedGroup.group.groupname}</GroupName>
+          <GroupName type="h3">{group.groupname}</GroupName>
         </Group>
+
         <Table
           button={tab != "Members"}
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {tab == "Members" ? <MemberList datas={friends} /> : <AddMembers />}
+          {console.log("group", group, members)}
+          {/* {tab == "Members" ? <MemberList members={group.members} /> : <AddMembers groupId={selectedGroup.group.id} members={members} />} */}
         </Table>
       </Wrap>
     </BasicModal>

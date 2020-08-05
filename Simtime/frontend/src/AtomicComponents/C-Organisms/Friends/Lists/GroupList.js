@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useEffect, useCallback, useState, useContext } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -90,7 +90,7 @@ function GroupList(props) {
             {renderButton("이름변경", () =>
               handleModal(<EditGroup group={group} onClose={closeModal} />)
             )}
-            {renderButton("멤버관리", () => mngMembers(group.id))}
+            {renderButton("멤버관리", () => editMembers(group.id))}
             {renderButton(
               "삭제",
               () => props.deleteGroup(group.id),
@@ -119,14 +119,8 @@ function GroupList(props) {
     </Wrap>
   );
 }
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  groups: state.groups.groups,
-});
 
-export default connect(mapStateToProps, { deleteGroup, getGroup, getMemebers })(
-  GroupList
-);
+export default connect(null, { deleteGroup, getGroup, getMemebers })(GroupList);
 
 GroupList.propTypes = {
   title: PropTypes.string,
@@ -137,5 +131,5 @@ GroupList.propTypes = {
 GroupList.defaultProps = {
   title: "Table Title",
   headers: null,
-  groups: null,
+  groups: [],
 };

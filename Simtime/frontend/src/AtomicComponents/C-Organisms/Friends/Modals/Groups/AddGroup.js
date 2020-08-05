@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import React, { Fragment, useState, useCallback, createRef } from "react";
+import React, { Fragment, useEffect, useState, useCallback, createRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -30,30 +30,43 @@ const ArrowParagraph = styled(Paragraph)`
 const Result = styled(ResultTable)``;
 
 function AddGroup(props) {
-  const [groupname, setGroupName] = useState(null);
-  const [addMembers, setAddMembers] = useState(false);
-
-  const [friendDatas, setFriendDatas] = useState([
-    ...new Set(
-      props.friends.map((it) => {
-        return { relationshipId: it.id, ...it.friend };
-      })
-    ),
-  ]);
-  const [selectedMembers, setSelectedMembers] = useState([]);
-  const [isValid, setIsValid] = useState(null);
+  const { groups, relationships } = props;
   const inputRef = createRef(null);
 
+  //UI
+  const [groupname, setGroupName] = useState("");
+  const [addMembers, setAddMembers] = useState(false);
+
+  //Data Filtering
+  const [filteredFriendList, setFilteredFriendList] = useState([]);
+  const [selectedFriends, setSelectedFriends] = useState([]);
+  const [isValid, setIsValid] = useState(false);
+
+  function getTableData(relationships){
+   return relationships.map((relationship) => {
+      return { id: relationship.relationshipId, ...relationship.friend };
+    });
+  }
+  
+  //initializing
+  useEffect(()=>{
+    setFilteredFriendList(getTableData(relationships));
+  }, [])
+
+  //funcs 
   const checkValidation = (groupname) => {
     inputRef.current.classList.remove("valid-value", "invalid-value");
+    console.log("checkValidation", groupname, groups)
     if (groupname != "") {
-      let res = !props.groups.some((group) => group.groupname === groupname);
+      let res = !groups.find((group) => group.groupname === groupname);
       //valid state 저장
       setIsValid(res);
       //css 적용
       if (res) inputRef.current.classList.add("valid-value");
       else inputRef.current.classList.add("invalid-value");
       // inputRef.current.style.backgroundColor = "red";
+    }else {
+      inputRef.current.classList.add("invalid-value");
     }
   };
 
@@ -64,70 +77,51 @@ function AddGroup(props) {
   });
 
   const handleSubmit = async () => {
+    console.log("hello")
     if (isValid) {
       try {
-        const group = await props.createGroup({
-          account: props.user.id,
-          groupname: groupname,
-        });
-
-        if (selectedMembers.length > 0) {
-          // var filtered = props.friends.filter((friend) =>
-          //   selectedMembers.some((friendId) => friendId == friend.friend.id)
-          // );
-          let filtered = props.friends.reduce(
-            (acc, friend) => ({ ...acc, [friend.friend.id]: friend }),
-            {}
-          );
-          var mambersTogroup = [
-            ...new Set(
-              selectedMembers.map((id) => {
-                return { relationship: filtered[id].id, group: group.id };
-              })
-            ),
-          ];
+        const group = await props.createGroup(groupname)
+        if(selectedFriends.length > 0) {
+          var mambersTogroup = selectedFriends.map((relationshipId) => {
+                      return { relationship: relationshipId, group: group.id };
+                    });
+          console.log("mambersTogroup", mambersTogroup)
           await props.addToGroup(mambersTogroup);
         }
         props.onClose();
+        
+      
       } catch (err) {
         console.log("relationshipError", err);
       }
     } else {
       inputRef.current.focus();
+      inputRef.current.classList.add("invalid-value");
     }
   };
 
   //친구 내에서 검색
-  const filterFriend = (field, keyword) => {
-    var filtered = props.friends.filter((item) =>
-      item.friend[field].includes(keyword)
+  const searchFriends = (field, keyword) => {
+    var map_field = {Username: "username", "E-mail": "email", Phone: "phone" };
+    var filtered = relationships.filter((relationship) =>
+      relationship.friend[map_field[field]].includes(keyword)
     );
-
-    var res = [
-      ...new Set(
-        filtered.map((item) => {
-          return { relationshipId: item.id, ...item.friend };
-        })
-      ),
-    ];
-
-    setFriendDatas(res);
+    //resultTable Data에 맞게 정제
+     setFilteredFriendList(getTableData(filtered));
   };
 
   const renderAddMember = () => {
     return (
       <Fragment>
-        <StyledSearchBar
-          search={(field, keyword) => filterFriend(field, keyword)}
-        />
+        <StyledSearchBar searchFriends={searchFriends}/>
         <ResultWrap>
           <Result
-            datas={friendDatas}
+            datas={filteredFriendList}
             titleColor="MAIN_COLOR"
             width="100%"
             rowNum={6}
             onSelect={(res) => {
-              setSelectedMembers(res);
+              setSelectedFriends(res);
             }}
             multiple
           ></Result>
@@ -172,24 +166,20 @@ function AddGroup(props) {
     );
   };
 
+
   return (
     <DefaultModal
       title="Add Group"
       children={renderChild()}
       totalPage={0}
-      handleSubmit={() => handleSubmit()}
+      handleSubmit={handleSubmit}
       height="auto"
     ></DefaultModal>
   );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  groups: state.groups.groups,
-  friends: state.friends.friends,
-});
 // export default AddGroup;
-export default connect(mapStateToProps, { createGroup, addToGroup })(AddGroup);
+export default connect(null, { createGroup, addToGroup })(AddGroup);
 
 AddGroup.propTypes = {
   height: PropTypes.string,

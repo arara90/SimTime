@@ -31,7 +31,7 @@ function Friends(props) {
           "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
       }}
     >
-      <FriendList datas={props.friends} />
+      <FriendList relationships={props.relationships} />
     </Table>
   );
 }

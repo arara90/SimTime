@@ -7,8 +7,8 @@ import {
   } from "../actions/types";
   
   const initialState = {
-    friends: [],
-    selectedFriend: {}
+    relationships: [],
+    selectedRelationship: {}
   };
   
   export default function(state = initialState, action) {
@@ -16,28 +16,29 @@ import {
       case GET_FRIENDS:
         return {
           ...state,
-          friends: action.payload
+          relationships: action.payload
         };
       case GET_FRIEND:
         return {
           ...state,
-          selectedFriend: state.friends.filter(friend => friend.id == action.payload)
+          selectedRelationship: state.relationships.filter(relationship => relationship.id == action.payload)
         };
       case ADD_FRIEND:
         return {
           ...state,
-          friends: [...state.friends, action.payload]
+          relationships: [...state.relationships, action.payload]
         };
       case DELETE_FRIEND:
         return {
           ...state,
-          friends: state.friends.filter(friend => friend.id != action.payload)
-        };
+          relationships: state.relationships.filter(relationship => relationship.relationshipId != action.payload)
+        }
       case EDIT_FRIEND:
+        console.log(state.relationships)
         return {
           ...state,
-          friends: state.friends.map(friend =>
-            friend.id == action.payload.id ? action.payload : friend
+          relationships: state.relationships.map(relationship =>
+            relationship.relationshipId == action.payload.relationshipId ? action.payload : relationship
           )
         };
       default:

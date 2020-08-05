@@ -11,7 +11,7 @@ const Wrap = styled.button`
 
   outline: none;
   border: none;
-  background-color: white;
+  background-color: transparent;
 
   display: flex;
   flex-direction: row;

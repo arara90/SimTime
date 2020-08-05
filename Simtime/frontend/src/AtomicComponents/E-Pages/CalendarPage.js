@@ -77,7 +77,7 @@ function CalendarPage() {
       <RightWrap>
         <StyledDashedButton
           hasIcon={true}
-          src="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets//img/icons/edit2.png"
+          src="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/edit2.png"
           onClick={() => handleModal(<EventMaker onClose={closeModal} />)}
         >
           Add a new event

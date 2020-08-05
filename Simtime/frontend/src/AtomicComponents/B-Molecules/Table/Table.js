@@ -31,8 +31,6 @@ const TableContent = styled.div`
 
 function Table(props) {
   const renderButton = (button) => {
-    console.log(button);
-
     return (
       <ButtonWithImage
         height="20px"

@@ -16,7 +16,7 @@ import {
 } from "./types";
 
 export const getGroups = () => (dispatch) => {
-  axiosFormInstance
+  return axiosFormInstance
     .get("/api/groups/")
     .then((res) => {
       console.log("groups", res);
@@ -30,14 +30,34 @@ export const getGroups = () => (dispatch) => {
     );
 };
 
-export const createGroup = (data) => (dispatch) => {
-  console.log("createGroup", data);
+// export const createGroup = (data) => (dispatch) => {
+//   console.log("createGroup", data);
+
+//   return axiosInstance
+//     .post("/api/groups/create/", {
+//       account: data.account,
+//       groupname: data.groupname,
+//     })
+//     .then((res) => {
+//       dispatch({
+//         type: ADD_GROUP,
+//         payload: res.data,
+//       });
+//       dispatch(createMessage({ addGroup: "Group Added" }));
+//       return res.data;
+//     })
+//     .catch((err) => {
+//       dispatch(returnErrors(err.response.data, err.response.status));
+//       return err.response.data;
+//     });
+// };
+
+
+export const createGroup = (groupname) => (dispatch) => {
+  console.log("createGroup", groupname);
 
   return axiosInstance
-    .post("/api/groups/create/", {
-      account: data.account,
-      groupname: data.groupname,
-    })
+    .post("/api/groups/create/", { groupname: groupname} )
     .then((res) => {
       dispatch({
         type: ADD_GROUP,
@@ -113,9 +133,8 @@ export const editGroup = (group) => (dispatch) => {
 // };
 
 export const getMemebers = (id) => (dispatch) => {
-  console.log("getMemebers id", id);
   return axiosInstance
-    .get(`/api/groupmember/${id}`)
+    .get(`/api/groupmember/${id}/`)
     .then((res) => {
       console.log("groupMemebers res", res.data);
       dispatch({

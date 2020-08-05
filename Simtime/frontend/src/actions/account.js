@@ -8,7 +8,7 @@ export const searchUsers = (field, keyword) => (dispatch) =>{
     field = map_field[field]
     
     if(!field || !keyword){
-      dispatch(createMessage({ emptyField : `Filed is required` }));
+      // dispatch(createMessage({ emptyField : `Field is required` }));
       return [];
     }
 

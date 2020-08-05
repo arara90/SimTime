@@ -7,6 +7,7 @@ import { ModalContext } from "../../contexts/modalContext";
 import { getGroups } from "../../actions/groups";
 import { getFriends, deleteFriend } from "../../actions/friends";
 // import { getHosts } from "../../actions/invitations"
+
 //components
 import { ST_WHITE, ST_GRAY } from "../Colors";
 
@@ -43,13 +44,34 @@ const ContentWrap = styled.div`
 `;
 
 function FriendsPage(props) {
-  const { handleModal, closeModal } = useContext(ModalContext);
-  useEffect(() => {
-    props.getGroups();
-    props.getFriends();
-    // props.getHosts();
-  }, []);
 
+  const {handleModal, closeModal } = useContext(ModalContext);
+  const [groupDatas, setGroupDatas] = useState({});
+  const [friendDatas, setFriendDatas] = useState({});
+
+  useEffect( () => {
+
+    async function getDatas(){
+      var friend = await props.getFriends();
+      var group = await props.getGroups();
+    }
+
+    getDatas();
+
+  },[]);
+
+  useEffect(() => {
+    console.log("friendsef" , props.friends)
+    setFriendDatas(props.friends);
+  },[JSON.stringify(props.friends)]);
+
+  useEffect(() => {
+    console.log("groupsef" , props.groups.groups)
+    console.log("groupsef" , props.groups.selectedGroup)
+    setGroupDatas(props.groups);
+    // console.log(JSON.stringify(groups.groups))
+    // console.log(JSON.stringify(groups.selectedGroup))
+  },[JSON.stringify(props.groups)]);
 
   return (
     <Wrap>
@@ -59,8 +81,8 @@ function FriendsPage(props) {
           {/* <StyledSearch width="125px" desc="Find a friend" height="25px" /> */}
         </SectionTitle>
         <ContentWrap>
-          <Friends friends={props.friends} rowNum={6} rowHeight="45px" width="48%" />
-          <Friends friends={props.friends} rowNum={6} rowHeight="45px" width="48%" />
+          <Friends relationships={friendDatas.relationships} rowNum={6} rowHeight="45px" width="48%" />
+          <Friends relationships={friendDatas.relationships} rowNum={6} rowHeight="45px" width="48%" />
         </ContentWrap>
       </Section> 
       
@@ -69,7 +91,7 @@ function FriendsPage(props) {
           Group
         </Header>
         <ContentWrap>
-          <Groups groups={props.groups} rowNum={5} rowHeight="45px" width="100%" />
+          <Groups groups={groupDatas} relationships={friendDatas} rowNum={5} rowHeight="45px" width="100%" />
         </ContentWrap>
       </Section> 
     </Wrap>
@@ -78,8 +100,8 @@ function FriendsPage(props) {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  groups: state.groups.groups,
-  friends: state.friends.friends,
+  groups: state.groups,
+  friends: state.friends,
 });
 
 const mapDispatchToProps = (dispatch) => {

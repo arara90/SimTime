@@ -49,8 +49,9 @@ export const editFriend = (data) => (dispatch) => {
   // dispatch:true
   console.log("editFriend", data);
   return axiosInstance
-    .put(`/api/friend/${data.id}/`, data)
+    .put(`/api/friend/${data.id}`, data)
     .then((res) => {
+      console.log(res.data)
       dispatch({
         type: EDIT_FRIEND,
         payload: res.data,
@@ -65,7 +66,7 @@ export const editFriend = (data) => (dispatch) => {
 
 export const getFriends = () => (dispatch) => {
   console.log("getFriends");
-  axiosInstance
+  return axiosInstance
     .get("/api/friends/")
     .then((res) => {
       console.log("friends", res);

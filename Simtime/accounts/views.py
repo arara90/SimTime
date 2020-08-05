@@ -2,9 +2,10 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from rest_framework_simplejwt.models import TokenUser
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
+
+from django.db.models import Subquery
 
 from .tokenSerializers import MyTokenObtainPairSerializer, MyTokenVerifySerializer
 from .serializers import AccountSerializer, UserSerializer, RelationshipSerializer, GroupSerializer, FriendSerializer, RGMapSerializer, GroupMemberSerializer
@@ -68,8 +69,10 @@ class AccountSearchAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, field, keyword):
-        query = {"%s__contains" % field: keyword}
-        results = Account.objects.filter(**query).order_by('username')
+        friends = self.request.user.friends.all().values('friend_id')
+
+        query = {"%s__contains" % field: keyword} # }username ='a'
+        results = Account.objects.filter(**query).exclude(pk=self.request.user.id).exclude(pk__in=Subquery(friends)).order_by('username')
         data = []
         for item in results:
             serializer = UserSerializer(item)
@@ -183,11 +186,16 @@ class GroupAPI(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        serializer = GroupSerializer(data=request.data)
+        data = request.data.copy()
+        data['account'] = request.user.id
+        serializer = GroupSerializer(data=data)
+
         if(serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
 
     def get(self, request):
         groups = self.request.user.FriendGroups.all()
