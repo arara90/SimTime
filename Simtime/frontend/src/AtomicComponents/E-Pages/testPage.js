@@ -9,13 +9,8 @@ import ModalContextPortal, {
 //redux-actions
 import { getMemebers, getGroups } from "../../actions/groups";
 // import { getHosts } from "../../actions/invitations"
-<<<<<<< HEAD
 import TestModal from "./TestModal"
 import Test from "./Test"
-=======
-import TestModal from "./TestModal";
-
->>>>>>> 91927602b1469a6bd6dbe695541b8a1a8f4a899e
 const Wrap = styled.div`
   overflow: hidden;
 `;
@@ -42,7 +37,6 @@ function TestPage(props) {
 
   var getMem = async (selectedGroup) => {
     var ss = await props.getMemebers(ref.current.value);
-<<<<<<< HEAD
     setModal(true);
     }
     
@@ -66,21 +60,6 @@ console.log(data)
       <Bt onClick={()=>ppp(data)}> hhhhhhhhhhhhhlllllloooooooooo </Bt>
 
       <Test  fn={ppp} testFn={testFn} />
-=======
-    // setModal(true);
-    handleModal(
-      <TestModal
-        selectedGroup={groups.selectedGroup}
-        relationships={props.relationships}
-        onClose={closeModal}
-      />
-    );
-  };
-
-  return (
-    <Wrap>
-      <Bt onClick={() => getMem(groups.selectedGroup)}> click </Bt>
->>>>>>> 91927602b1469a6bd6dbe695541b8a1a8f4a899e
       <input ref={ref}></input>
       {modal && (
         <ModalPortalBasic
