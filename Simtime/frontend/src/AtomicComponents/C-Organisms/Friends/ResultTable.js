@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -15,6 +15,17 @@ const ImageCard = styled(UserCardForList)`
 `;
 
 function ResultTable(props) {
+
+  const {
+    addButton,      
+    titleColor,       
+    rowNum,           
+    datas,            
+    selectHandler,    
+    handleAddBtnClick} = props
+
+  useEffect(()=>{setSelectionFilter(prev=> prev.filter(selection=> selection == datas.id))}, [datas])
+
   //UI용
   const [selectionFilter, setSelectionFilter] = useState([]);
 
@@ -65,14 +76,14 @@ function ResultTable(props) {
       width="100%"
       rowNum={props.rowNum}
       handleAddBtnClick ={props.handleAddBtnClick}
-      addButton={props.addButton}      
+      addButton={props.addButton}
     >
       {props.datas.length == 0 ? renderDefaultRow() : renderRows(props.datas)}
     </Table>
   );
 }
 
-export default React.memo(ResultTable);
+export default ResultTable
 
 ResultTable.propTypes = {
   addButton: PropTypes.bool,
@@ -85,10 +96,10 @@ ResultTable.propTypes = {
 };
 
 ResultTable.defaultProps = {
-  addButton: false,
-  titleColor: "MAIN_COLOR",
-  rowNum: 3,
-  datas: [{ id: 0 }],
-  selectHandler: () => {},
-  handleAddBtnClick: () => {},
+  addButton         : false,
+  titleColor        : "MAIN_COLOR",
+  rowNum            : 3,
+  datas             : [{ id: 0 }],
+  selectHandler     : () => {},
+  handleAddBtnClick : () => {},
 };

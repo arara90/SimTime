@@ -66,9 +66,8 @@ function Search(props) {
         desc={desc}
         height="24px"
         enterHandler={searchHandler}
-        changeHandler={(keyword)=>searchHandler(keyword)}
+        changeHandler={searchHandler}
       ></MyInput>
-
       <Icon size={height} />
     </Wrap>
   );

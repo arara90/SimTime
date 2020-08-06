@@ -2,9 +2,7 @@ import "babel-polyfill";
 import React, { Fragment, useState, createRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-// redux
-import { connect } from "react-redux";
-import { searchUsers } from "../../../../actions/account";
+
 // component
 import { MAIN_COLOR } from "../../../Colors";
 import SelectBoxRef from "../../../A-Atomics/Filter/SelectBoxRef";
@@ -46,22 +44,12 @@ function SearchBar(props) {
   
 
   const searchHandler = (keyword) => {
-    if (newFriends) searchUsers(field, keyword);
-    else {
-      searchFriends(field, keyword)
-    }
+    var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
+    searchFriends(map_field[field], keyword);
   };
 
-
-  // const searchHandler=(field)=>{
-  //   console.log("searchHandler," )
-  //   props.test(field);
-  // }
-
   return (
-
     <Fragment>
-    <button onClick={(field)=>searchHandler(field)}>helllo</button>
       <SearchWrap {...props}>
         <StyledSelectBox
           options={["Username", "E-mail", "Phone"]}
@@ -75,7 +63,7 @@ function SearchBar(props) {
           desc="Find a friend"
           height="25px"
           ref={searchRef}
-          searchHandler={(keyword)=>searchHandler(keyword)}
+          searchHandler={searchHandler}
         />
       </SearchWrap>
     </Fragment>
@@ -83,7 +71,7 @@ function SearchBar(props) {
 }
 
 // // export default SearchBars;
-export default connect(null, { searchUsers })(SearchBar);
+export default SearchBar;
 
 SearchBar.propTypes = {
   height: PropTypes.string,

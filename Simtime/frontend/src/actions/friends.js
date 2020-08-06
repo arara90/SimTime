@@ -7,6 +7,7 @@ import {
   GET_FRIEND,
   EDIT_FRIEND,
   DELETE_FRIEND,
+  ADD_TO_GROUP,
 } from "./types";
 
 export const addfriend = (friend) => (dispatch) => {
@@ -81,18 +82,36 @@ export const getFriends = () => (dispatch) => {
 };
 
 
+// // 친구가 속한 그룹 관리
+// export const addToGroup = (datas) => (dispatch) => {
+//   //{relationship:0, group:0}
+//   console.log("addToGroup", datas);
+//   return axiosInstance
+//     .post("/api/friend/add-to-group/", datas)
+//     .then((res) => {
+//       console.log(res)
+//       dispatch(createMessage({ addToGroup: "Added to Group" }));
+//       return res;
+//     })
+//     .catch((err) => {
+//       dispatch(returnErrors(err.response.data, err.response.status));
+//     });
+// };
+
+
 // 친구가 속한 그룹 관리
 export const addToGroup = (datas) => (dispatch) => {
   //{relationship:0, group:0}
-  console.log("addToGroup", datas);
   return axiosInstance
     .post("/api/friend/add-to-group/", datas)
     .then((res) => {
+      dispatch({ type: ADD_TO_GROUP, payload: res.data });
       dispatch(createMessage({ addToGroup: "Added to Group" }));
-      return res;
+      console.log("addToGroup", res);
+      return res
     })
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      return err;
+      console.log(err);
+      // dispatch(returnErrors(err.response.data, err.response.status));
     });
 };

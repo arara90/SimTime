@@ -10,13 +10,12 @@ import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 import ResultTable from "../../ResultTable";
 
 import { MAIN_COLOR } from "../../../../Colors";
-import { addToGroup } from "../../../../../actions/groups";
+import { addToGroup } from "../../../../../actions/friends";
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: solid 1px red;
 `;
 
 const SearchWrap = styled.div`
@@ -27,7 +26,6 @@ const ResultWrap = styled.div`
   width: 100%;
   margin-bottom: 5px;
 `;
-const Result = styled(ResultTable)``;
 
 const Button = styled(ColoredButton)`
   margin-bottom: 5px;
@@ -37,6 +35,8 @@ const MyItem = styled(SelectedItem)`
   height: 20px;
   white-space: nowrap;
 `;
+
+
 
 //search하기 위해 id를 index로
 const flatGroupMembers = (members) => {
@@ -55,10 +55,10 @@ const getNonMembers = (relationships, groupMembers) => {
 };
 
 //TableData 형태로 만들기
-const getCandidates = (nonMembers) => {
+const transformIntoTableData = (candidates) => {
   return [
     ...new Set(
-      nonMembers.map((friend) => {
+      candidates.map((friend) => {
         return { ...friend.friend, id: friend.relationshipId };
       })
     ),
@@ -68,86 +68,60 @@ const getCandidates = (nonMembers) => {
 function AddMembers(props) {
   const { relationships, members, groupId } = props;
 
-  // var flatMembers = flatGroupMembers(members);
-  // var nonMembers = getNonMembers(relationships, flatMembers);
-  // var candidates = getCandidates(nonMembers);
+
+  var flatMembers = flatGroupMembers(members);
+  var nonMembers = getNonMembers(relationships, flatMembers);
 
   const [selectedFriends, setSelectedFriends] = useState([]);
-  const [tableData, setTableData] = useState(getCandidates(getNonMembers(relationships,  flatGroupMembers(members))))
-  const [searchTaget, setSearchTarget] = useState(getCandidates(getNonMembers(relationships,  flatGroupMembers(members))));
+  const [tableData, setTableData] = useState(transformIntoTableData(nonMembers))
 
-  console.log("searchTargetrrrrrr", searchTaget)
   React.useEffect(() => {
-    var newData = tableData.filter(
+    console.log('useEffect', selectedFriends,tableData )
+    var newData = setTableData(tableData.filter(
       (data) => !selectedFriends.includes(data.id)
-    );
-
-    var newTarget = searchTaget.filter(
-      (data) => !selectedFriends.includes(data.id)
-    );
-    setTableData(newData);
-    setSearchTarget(newTarget);
-    setSelectedFriends([]);
-
-    console.log("useEffect")
+    ));
+      
+    setSelectedFriends([])
   }, [members, relationships, groupId]);
 
-  const clickEvent = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      var data = selectedFriends.map((friend) => {
-        return { relationship: friend, group: groupId };
-      });
-      //멤버로 등록
-      props.addToGroup(data);
-    } catch (err) {
-      console.log("addToGroupError", err);
+    var data = selectedFriends.map((friend) => {
+      return { relationship: friend, group: groupId };
+    });
+
+    //멤버로 등록
+    var res = await props.addToGroup(data);
+    
+    if(res) {
+      console.log('dd');
     }
   };
 
   //친구 내에서 검색
-  // 얘만 실행하면... 되돌아와..
   const searchFriends = (field, keyword) => {
-    console.log("?", field, keyword);
-    console.log("datas?", searchTaget)
-    var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
-    var filtered = searchTaget.filter((candidate) =>
-      candidate[map_field[field]].includes(keyword)
+      var filtered = nonMembers.filter((nonMember) =>
+        nonMember.friend[field].includes(keyword)
     );
-    setTableData(filtered)
+    setTableData(transformIntoTableData(filtered))
   }
 
-  const test = (field) =>{
-    console.log("test", searchTaget, field)
-  }
 
-// datas={getCandidates(getNonMembers(relationships, flatGroupMembers(members)))
-// datas={candidates(nonMembers)} afterSearch={(res)=>setTableData(res)}
-  //const [fn, setFn] = useState( ()=>members=> members.length )
-  
   return (
     <Wrap>
       <SearchWrap>
-        <SearchBar searchFriends={(field, keyword)=>searchFriends(field, keyword)}
-        test ={(field)=>test(fields)} 
-
-        // afterSearch={(res)=>setTableData(res)}
-         />
+        <SearchBar searchFriends={searchFriends} />
       </SearchWrap>
       <ResultWrap>
-        <Result
-          multiple
-          datas={tableData}
-          width="100%"
-          rowNum={5}
-          selectHandler={setSelectedFriends}
-        >
-          {console.log("tableData", tableData)}
-        </Result>
+        <ResultTable
+         multiple
+         datas={tableData}
+         width="100%"
+         rowNum={5}
+         selectHandler={setSelectedFriends} />
       </ResultWrap>
-
-
-      <Button onClick={(e) => clickEvent(e)}>Done</Button>
+      <Button handleSubmit={handleSubmit}>Done</Button>
     </Wrap>
   );
 }

@@ -24,15 +24,14 @@ const StyledCloseButton = styled(CloseButton)`
 `;
 
 function ModalTitle(props) {
-  // const { closeContextModal } = React.useContext(ModalContext);
+  const { closeContextModal } = React.useContext(ModalContext);
   return (
     <Wrap {...props}>
       <Header type="h2" color="ST_WHITE">
         {props.children}
       </Header>
       <StyledCloseButton
-        // onClick={props.closeModal ? props.closeModal : closeContextModal}
-        onClick={props.closeModal}
+        onClick={props.contextModal ? closeContextModal: props.closeModal}
       />
     </Wrap>
   );

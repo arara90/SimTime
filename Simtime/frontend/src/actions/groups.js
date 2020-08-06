@@ -173,18 +173,18 @@ export const deleteMemeber = (id) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-// 친구가 속한 그룹 관리
-export const addToGroup = (datas) => (dispatch) => {
-  //{relationship:0, group:0}
-  return axiosInstance
-    .post("/api/friend/add-to-group/", datas)
-    .then((res) => {
-      console.log(res);
-      dispatch({ type: ADD_TO_GROUP, payload: res.data });
-      dispatch(createMessage({ addToGroup: "Added to Group" }));
-    })
-    .catch((err) => {
-      console.log(err);
-      // dispatch(returnErrors(err.response.data, err.response.status));
-    });
-};
+// // 친구가 속한 그룹 관리
+// export const addToGroup = (datas) => (dispatch) => {
+//   //{relationship:0, group:0}
+//   return axiosInstance
+//     .post("/api/friend/add-to-group/", datas)
+//     .then((res) => {
+//       dispatch({ type: ADD_TO_GROUP, payload: res.data });
+//       dispatch(createMessage({ addToGroup: "Added to Group" }));
+//       return res
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       // dispatch(returnErrors(err.response.data, err.response.status));
+//     });
+// };

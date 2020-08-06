@@ -40,7 +40,7 @@ const Content = styled(Paragraph)`
 function ColoredButton(props) {
   return (
     // <Wrap height={props.height}>
-    <Button {...props}>
+    <Button {...props} onClick={props.handleSubmit}>
       <Content color="ST_WHITE" fontSize="18px">
         {props.children}
       </Content>

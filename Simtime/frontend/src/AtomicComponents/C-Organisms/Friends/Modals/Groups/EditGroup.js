@@ -23,7 +23,7 @@ function EditGroup(props) {
   const handleSubmit = async () => {
     try {
       const res = await props.editGroup({ ...group, groupname: groupname });
-      props.onClose();
+      closeModal();
     } catch (err) {
       console.log("err", err);
     }
@@ -49,7 +49,7 @@ function EditGroup(props) {
       title="Add Group"
       children={renderChild()}
       totalPage={0}
-      handleSubmit={() => handleSubmit()}
+      handleSubmit={handleSubmit}
       height="auto"
       closeModal={closeModal}
     ></DefaultModal>

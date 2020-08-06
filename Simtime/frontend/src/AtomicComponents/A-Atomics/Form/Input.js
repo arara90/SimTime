@@ -49,7 +49,7 @@ function Input(props) {
   );
 }
 
-export default React.memo(Input);
+export default Input;
 
 Input.propTypes = {
   width: PropTypes.string,

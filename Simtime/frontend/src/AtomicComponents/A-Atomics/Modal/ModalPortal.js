@@ -5,7 +5,7 @@ import { ModalContext } from "../../../contexts/modalContext";
 import GlobalStyle from "../../GlobalStyle";
 
 const MyModal = styled.div`
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.20);
   position: fixed;
   left: 0;
   top: 0;
@@ -59,7 +59,7 @@ export const ModalContextPortal = (props) => {
     return ReactDOM.createPortal(
       <Fragment>
         <MyModal className="modalcontextPotal">
-          <ContentWrap>{contextModalContent}</ContentWrap>
+          <ContentWrap contextModal>{contextModalContent}</ContentWrap>
         </MyModal>
       </Fragment>,
       el

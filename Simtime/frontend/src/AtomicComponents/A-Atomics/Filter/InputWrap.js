@@ -62,19 +62,19 @@ function InputWrap(props) {
   } = props;
   const [myValue, setMyValue] = useState(value);
 
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     e.stopPropagation();
     changeHandler(e.target.value);
     setMyValue(e.target.value);
-  }, []);
+  };
 
-  const handleKeyUp = useCallback((e) => {
-    // e.preventDefault();
+  const handleKeyUp = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (e.key === "Enter") {
       enterHandler(e.target.value);
     }
-  });
+  }
 
   const defaultInput = () => {
     return (
@@ -87,7 +87,7 @@ function InputWrap(props) {
         onKeyUp={(e) => handleKeyUp(e)}
         cursor={cursor}
         ref={innerRef}
-      ></MyInput>
+      />
     );
   };
 

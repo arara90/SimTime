@@ -193,8 +193,6 @@ function EventMaker(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // var event_at = new Date('2019/5/16/17:24:30:10');
-    console.log(image);
-
     const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
     const myEvent = {
       host: props.user.id,
@@ -217,7 +215,7 @@ function EventMaker(props) {
       props.addEvent(myEvent, image);
     }
 
-    // props.closeModal();
+    props.closeModal();
   };
 
   const handleChangeFile = (e) => {

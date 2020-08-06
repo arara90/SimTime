@@ -19,6 +19,15 @@ import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
 import ResultTable from "../../ResultTable";
 import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 
+import AddMembers from "./AddMembers"
+
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const StyledInput = styled(InputWrap)`
   padding-bottom: 15px;
 `;
@@ -35,6 +44,19 @@ const ArrowParagraph = styled(Paragraph)`
 
 const Result = styled(ResultTable)``;
 
+
+//TableData 형태로 만들기
+const transformIntoTableData = (candidates) => {
+  return [
+    ...new Set(
+      candidates.map((friend) => {
+        return { ...friend.friend, id: friend.relationshipId };
+      })
+    ),
+  ];
+};
+
+
 function AddGroup(props) {
   const { groups, relationships, closeModal } = props;
   const inputRef = createRef(null);
@@ -44,34 +66,28 @@ function AddGroup(props) {
   const [addMembers, setAddMembers] = useState(false);
 
   //Data Filtering
-  const [filteredFriendList, setFilteredFriendList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
+  const [tableData, setTableData] = useState(transformIntoTableData(relationships));
   const [isValid, setIsValid] = useState(false);
 
-  function getTableData(relationships) {
-    return relationships.map((relationship) => {
-      return { id: relationship.relationshipId, ...relationship.friend };
-    });
-  }
 
-  //initializing
-  useEffect(() => {
-    setFilteredFriendList(getTableData(relationships));
-  }, []);
-
+  //////////////groupname
   //funcs
   const checkValidation = (groupname) => {
     inputRef.current.classList.remove("valid-value", "invalid-value");
-    console.log("checkValidation", groupname, groups);
+
     if (groupname != "") {
       let res = !groups.find((group) => group.groupname === groupname);
+
       //valid state 저장
       setIsValid(res);
+
       //css 적용
       if (res) inputRef.current.classList.add("valid-value");
       else inputRef.current.classList.add("invalid-value");
       // inputRef.current.style.backgroundColor = "red";
-    } else {
+    } 
+    else {
       inputRef.current.classList.add("invalid-value");
     }
   };
@@ -82,8 +98,10 @@ function AddGroup(props) {
     setGroupName(value);
   });
 
+
+  ///////////////////////addMember
+
   const handleSubmit = async () => {
-    console.log("hello");
     if (isValid) {
       try {
         const group = await props.createGroup(groupname);
@@ -91,10 +109,9 @@ function AddGroup(props) {
           var mambersTogroup = selectedFriends.map((relationshipId) => {
             return { relationship: relationshipId, group: group.id };
           });
-          console.log("mambersTogroup", mambersTogroup);
           await props.addToGroup(mambersTogroup);
         }
-        props.onClose();
+        closeModal();
       } catch (err) {
         console.log("relationshipError", err);
       }
@@ -106,31 +123,30 @@ function AddGroup(props) {
 
   //친구 내에서 검색
   const searchFriends = (field, keyword) => {
-    var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
     var filtered = relationships.filter((relationship) =>
-      relationship.friend[map_field[field]].includes(keyword)
+      relationship.friend[field].includes(keyword)
     );
-    //resultTable Data에 맞게 정제
-    setFilteredFriendList(getTableData(filtered));
+
+    setTableData(transformIntoTableData(filtered));
   };
+
+  
 
   const renderAddMember = () => {
     return (
-      <Fragment>
+      <Wrap>
         <StyledSearchBar searchFriends={searchFriends} />
         <ResultWrap>
           <Result
-            datas={filteredFriendList}
+            multiple
+            datas={tableData}
             titleColor="MAIN_COLOR"
             width="100%"
             rowNum={6}
-            onSelect={(res) => {
-              setSelectedFriends(res);
-            }}
-            multiple
-          ></Result>
+            selectHandler={setSelectedFriends}
+          />
         </ResultWrap>
-      </Fragment>
+      </Wrap>
     );
   };
 

@@ -12,6 +12,7 @@ import ResultTable from "../../../../C-Organisms/Friends/ResultTable";
 
 //redux-actions
 import { addfriend, addToGroup } from "../../../../../actions/friends";
+import { searchUsers } from "../../../../../actions/account";
 
 const SearchWrap = styled.div`
   width: 100%;
@@ -25,33 +26,44 @@ const Groups = styled(ResultTable)``;
 
 function AddFriend(props) {
   const { closeModal } = props;
+
+  const [users, setUsers] = useState([]);
   const [friend, setFriend] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [users, setUsers] = useState([]);
+
 
   const handleSubmit = async () => {
     try {
-      const relationship = await props.addfriend({
-        account: props.user.id,
-        friend: friend[0],
-      });
+      //친구 등록
+      var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
+      console.log(relationship)
+      if(groups.length){
+        var groupData = groups.map((group) => {
+          return { relationship: relationship.data.relationshipId, group: group };
+        });
+        await props.addToGroup(groupData);
+      }
 
-      var groupData = groups.map((group) => {
-        return { relationship: relationship.data.relationshipId, group: group };
-      });
-
-      const group = await props.addToGroup(groupData);
-      props.onClose();
+      props.closeModal();
     } catch (err) {
       console.log("relationshipError", err);
     }
   };
 
+
+  const searchFriends = async (field, keyword) => {
+    var res = await props.searchUsers(field, keyword)
+    setUsers(res)
+    console.log("res", res)
+  }
+
+
+
   const renderChild = () => {
     return (
       <Fragment>
         <SearchWrap>
-          <SearchBar newFriends search={(users) => setUsers(users)} />
+          <SearchBar searchFriends={searchFriends} />
         </SearchWrap>
         <ResultWrap>
           <Result
@@ -89,7 +101,7 @@ function AddFriend(props) {
       title="Add Friend"
       children={renderChild()}
       totalPage={0}
-      handleSubmit={() => handleSubmit()}
+      handleSubmit={handleSubmit}
       height="500px"
       closeModal={closeModal}
     ></DefaultModal>
@@ -101,7 +113,7 @@ const mapStateToProps = (state) => ({
   groups: state.groups.groups,
 });
 // export default AddFriend;
-export default connect(mapStateToProps, { addfriend, addToGroup })(AddFriend);
+export default connect(mapStateToProps, { addfriend, addToGroup, searchUsers })(AddFriend);
 
 AddFriend.propTypes = {
   height: PropTypes.string,
