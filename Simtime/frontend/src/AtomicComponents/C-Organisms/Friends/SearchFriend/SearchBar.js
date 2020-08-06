@@ -45,16 +45,23 @@ function SearchBar(props) {
   };
   
 
-  const searchHandler = (keyword, datas) => {
-    if (newFriends) var res = searchUsers(field, keyword);
+  const searchHandler = (keyword) => {
+    if (newFriends) searchUsers(field, keyword);
     else {
-      searchFriends(field, keyword, datas)
+      searchFriends(field, keyword)
     }
   };
 
 
+  // const searchHandler=(field)=>{
+  //   console.log("searchHandler," )
+  //   props.test(field);
+  // }
+
   return (
+
     <Fragment>
+    <button onClick={(field)=>searchHandler(field)}>helllo</button>
       <SearchWrap {...props}>
         <StyledSelectBox
           options={["Username", "E-mail", "Phone"]}
@@ -62,15 +69,13 @@ function SearchBar(props) {
           width="102px"
           ref={selectRef}
           handleOptionChange={handleOptionChange}
-
         />
         <StyledSearch
           width="auto"
           desc="Find a friend"
           height="25px"
           ref={searchRef}
-          searchHandler={searchHandler}
-          datas={props.datas} 
+          searchHandler={(keyword)=>searchHandler(keyword)}
         />
       </SearchWrap>
     </Fragment>

@@ -68,20 +68,28 @@ const getCandidates = (nonMembers) => {
 function AddMembers(props) {
   const { relationships, members, groupId } = props;
 
-  var flatMembers = flatGroupMembers(members);
-  var nonMembers = getNonMembers(relationships, flatMembers);
-  var candidates = getCandidates(nonMembers);
+  // var flatMembers = flatGroupMembers(members);
+  // var nonMembers = getNonMembers(relationships, flatMembers);
+  // var candidates = getCandidates(nonMembers);
 
   const [selectedFriends, setSelectedFriends] = useState([]);
-  const [tableData, setTableData] = useState(candidates);
+  const [tableData, setTableData] = useState(getCandidates(getNonMembers(relationships,  flatGroupMembers(members))))
+  const [searchTaget, setSearchTarget] = useState(getCandidates(getNonMembers(relationships,  flatGroupMembers(members))));
 
-
+  console.log("searchTargetrrrrrr", searchTaget)
   React.useEffect(() => {
     var newData = tableData.filter(
       (data) => !selectedFriends.includes(data.id)
     );
+
+    var newTarget = searchTaget.filter(
+      (data) => !selectedFriends.includes(data.id)
+    );
     setTableData(newData);
+    setSearchTarget(newTarget);
     setSelectedFriends([]);
+
+    console.log("useEffect")
   }, [members, relationships, groupId]);
 
   const clickEvent = (e) => {
@@ -99,14 +107,18 @@ function AddMembers(props) {
 
   //친구 내에서 검색
   // 얘만 실행하면... 되돌아와..
-  const searchFriends = (field, keyword, datas) => {
+  const searchFriends = (field, keyword) => {
     console.log("?", field, keyword);
-    console.log("datas?", datas)
+    console.log("datas?", searchTaget)
     var map_field = { Username: "username", "E-mail": "email", Phone: "phone" };
-    var filtered = candidates.filter((candidate) =>
+    var filtered = searchTaget.filter((candidate) =>
       candidate[map_field[field]].includes(keyword)
     );
     setTableData(filtered)
+  }
+
+  const test = (field) =>{
+    console.log("test", searchTaget, field)
   }
 
 // datas={getCandidates(getNonMembers(relationships, flatGroupMembers(members)))
@@ -116,8 +128,9 @@ function AddMembers(props) {
   return (
     <Wrap>
       <SearchWrap>
-        <SearchBar searchFriends={searchFriends} 
-        datas={candidates} 
+        <SearchBar searchFriends={(field, keyword)=>searchFriends(field, keyword)}
+        test ={(field)=>test(fields)} 
+
         // afterSearch={(res)=>setTableData(res)}
          />
       </SearchWrap>

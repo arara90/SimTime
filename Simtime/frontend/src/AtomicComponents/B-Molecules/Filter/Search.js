@@ -57,19 +57,6 @@ function Search(props) {
   } = props;
   
 
-  const enterHandler = (keyword,datas) => {
-    // const searchHandler = (keyword) => {
-    //   if (newFriends) var res = searchUsers(field, keyword);
-    //   else {
-    //     var res = searchFriends(field,keyword)
-    //     console.log("Res", res)
-    //     props.afterSearch(res)
-    //   }
-    // };
-    console.log("search handler datas?", datas)
-    searchHandler(keyword, datas)
-  }
-
 
   return (
     <Wrap {...props}>
@@ -78,11 +65,10 @@ function Search(props) {
         ref={Inputref}
         desc={desc}
         height="24px"
-        enterHandler={enterHandler}
-        changeHandler={enterHandler}
-        datas={props.datas}
+        enterHandler={searchHandler}
+        changeHandler={(keyword)=>searchHandler(keyword)}
       ></MyInput>
-      {console.log("Search", props.datas)}
+
       <Icon size={height} />
     </Wrap>
   );
