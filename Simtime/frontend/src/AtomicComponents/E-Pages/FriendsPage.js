@@ -17,6 +17,9 @@ import Groups from "../D-Templates/Friends/Groups";
 
 const Wrap = styled.div`
   overflow: hidden;
+
+
+  
 `;
 
 const Section = styled.div`

@@ -21,6 +21,7 @@ const Wrap = styled.div`
   height: 100%;
 
   z-index: 99;
+  overflow: hidden;
 
 
   @media only screen and (max-width: 920px) {
