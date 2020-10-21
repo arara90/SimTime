@@ -84,9 +84,9 @@ export function generate(currDate, num=0) {
 
   }else {
     weekDay = currDate.getDay();
+    offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
     startDate = addDate(currDate, weekDay * -1);
-    offset = ( (7 * num) + 6 - weekDay); // num weeks
-    endDate = addDate(currDate, 35 + 6 - weekDay); 
+    endDate = addDate(currDate, offset); 
   }
 
   var curr = new Date(startDate);

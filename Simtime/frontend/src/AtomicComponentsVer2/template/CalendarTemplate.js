@@ -15,7 +15,7 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 
-const Left = styled.div`
+const Left = styled.section`
   width: 68.5%;
   height: 680px;
   display: flex;
@@ -27,12 +27,9 @@ const Left = styled.div`
   }
 `;
 
-const LeftHeader = styled.div`
+const LeftTop = styled.div`
   margin-bottom: 8px;
 `;
-
-const LeftContent = styled.div`
-`
 
 
 const Right = styled.div`

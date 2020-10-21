@@ -18,7 +18,8 @@ import GlobalStyle from "../AtomicComponents/GlobalStyle";
 import Header from "../AtomicComponents/D-Templates/Header";
 
 //Page
-import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
+// import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
+import CalendarPage from "../AtomicComponentsVer2/page/Calendar";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
 import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
 

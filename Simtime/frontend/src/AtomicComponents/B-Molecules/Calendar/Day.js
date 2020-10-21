@@ -7,7 +7,7 @@ import CalDate from "../../A-Atomics/Calendar/CalDate";
 import { MAIN_COLOR, BG_INACTIVE, BG_WHITE } from "../../Colors";
 
 const Wrap = styled.div`
-  width: 13.5%;
+  width: 14%;
   height: 100%;
   border: solid 1px red;
 
