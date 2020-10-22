@@ -19,7 +19,7 @@ import Header from "../AtomicComponents/D-Templates/Header";
 
 //Page
 // import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
-import CalendarPage from "../AtomicComponentsVer2/page/Calendar";
+import Calendar from "../AtomicComponentsVer2/page/Calendar";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
 import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
 
@@ -79,7 +79,7 @@ class App extends Component {
                     <Header />
                     <Alerts />
                     <Switch>
-                      <PrivateRoute exact path="/" component={CalendarPage} />
+                      <PrivateRoute exact path="/" component={Calendar} />
                       <PrivateRoute
                         exact
                         path="/friends"
