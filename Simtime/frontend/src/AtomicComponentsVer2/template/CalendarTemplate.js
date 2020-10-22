@@ -1,8 +1,8 @@
-import React from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Wrap = styled.div`
+const Wrap = styled.main`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -15,7 +15,15 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 
-const Left = styled.section`
+
+// const Header = styled.header`
+//   width:100%;
+//   height:200px;
+//   border: solid 1px red;
+// `
+
+
+const LeftSection = styled.section`
   width: 68.5%;
   height: 680px;
   display: flex;
@@ -25,14 +33,9 @@ const Left = styled.section`
   @media only screen and (max-width: 920px) {
     width: 100%;
   }
-`;
-
-const LeftTop = styled.div`
-  margin-bottom: 8px;
-`;
-
-
-const Right = styled.div`
+  border: solid 1px yellow;
+`
+const RightSection = styled.section`
   width: 31%;
   height: 680px;
   display: flex;
@@ -42,20 +45,18 @@ const Right = styled.div`
   @media only screen and (max-width: 920px) {
     width: 100%;
   }
-`;
+  border: solid 1px black;
+`
 
+const Footer = styled.footer`
+
+`
 
 const CalendarTemplate = ({ header, children, footer, ...props }) => {
   return (
     <Wrap>
-      <Left>
-          <LeftHeader></LeftHeader>
-          <LeftContent></LeftContent>
-      </Left>
-      <Right>
-          <RightHeader></RightHeader>
-          <RightContent></RightContent>
-      </Right>
+      <LeftSection>{children}</LeftSection>
+      <RightSection></RightSection>
     </Wrap>
   );
 };

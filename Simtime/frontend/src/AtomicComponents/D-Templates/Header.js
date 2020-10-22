@@ -11,7 +11,7 @@ import Logo from "../C-Organisms/Header/Logo"
 import AccountInfo from "../C-Organisms/Header/AccountInfo"
 //import Account from "../B-Molecules/User/Account";
 
-const Wrap = styled.div`
+const Wrap = styled.header`
   display: flex;
   flex-direction: column;
                                       

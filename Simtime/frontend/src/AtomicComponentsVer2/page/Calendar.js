@@ -1,51 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, {useEffect} from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
-const Wrapper = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  border: solid 1px red;
-`;
+import CalendarTemplate from "../template/CalendarTemplate";
 
-const Left = styled.section`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+import Header from "../../AtomicComponents/D-Templates/Header";
+
+const MainContent = styled.div`
+  width:80%;
+  height:150px;
   border: solid 1px blue;
-`;
+`
 
-const Right = styled.section`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  border: solid 1px yellow;
-`;
-
-
-//   max-width: ${size("maxWidth")};
-const Footer = styled.footer`
-`;
-
-const MainTemplate = ({ header, children, ...props }) => {
+function Calendar(props) {
   return (
-    <Wrapper {...props} className="DT">
-      <Header>{header}</Header>
-      <Left>{children}</Left>
-      <Right>{children}</Right>
-    </Wrapper>
-  );
-};
+    <CalendarTemplate> 
+      <MainContent>main</MainContent>
+    </CalendarTemplate>
+  )
+}
 
-MainTemplate.propTypes = {
-  header: PropTypes.node.isRequired,
-  children: PropTypes.any.isRequired,
-};
 
-MainTemplate.defaultProps = {
-  header: "header  ",
-  children: "children",
-};
+// const mapStateToProps = (state) => ({
+//   hasLoaded: state.status.hasLoadedDatas
+// });
 
-export default MainTemplate;
+// export default connect(mapStateToProps, {getDatas})(Main);
+export default Calendar;
+
