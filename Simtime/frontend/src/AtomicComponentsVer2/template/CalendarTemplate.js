@@ -1,7 +1,14 @@
 import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+
+import SolidButton from "../atom/buttons/SolidButton"
+import BorderButton from "../atom/buttons/BorderButton";
 import IconButton from "../atom/buttons/IconButton"
+
+import CheckCircleIcon from "../atom/icons/CheckCircleIcon"
+import  * as Colors from "../Colors"
+
 
 const Wrap = styled.main`
   display: flex;
@@ -38,7 +45,12 @@ const RightSection = styled.section`
 const Filters = styled.div`
   width: 100%;
   height: 80px;
-  background: yellow;
+  border: solid 1px yellow;
+
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 `
 
 const Calandar = styled.article`
@@ -64,7 +76,9 @@ const CalendarTemplate = ({children, ...props }) => {
   return (
     <Wrap>
       <LeftSection>
-        <Filters id="filters"><IconButton /></Filters>
+        <Filters id="filters">
+          <IconButton><CheckCircleIcon color={Colors["CHECK_GREEN"] } size="2x" /></IconButton>
+        </Filters>
         <Calandar></Calandar>
       </LeftSection>
       <RightSection>
@@ -76,11 +90,9 @@ const CalendarTemplate = ({children, ...props }) => {
 };
 
 CalendarTemplate.propTypes = {
-
 };
 
 CalendarTemplate.defaultProps = {
-
 };
 
 export default CalendarTemplate;

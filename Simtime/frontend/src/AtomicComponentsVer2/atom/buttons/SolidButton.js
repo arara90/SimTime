@@ -4,10 +4,11 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
-  background-color: ${(props) => props.color? Colors[props.color] : "transparent"};
+  background-color: ${(props) => Colors[props.color]};
+  color: ${Colors.ST_WHITE};
   border-radius: 6px 6px 6px 6px;
-  ${(props) => "width: " + props.width };
-  height: ${(props) => "height: " + props.height};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 
   &:focus {
     outline: none;
@@ -18,22 +19,22 @@ const Button = styled.button`
     background-color: ${(props) => Colors[props.color+"_DARK"]};
   }
 `
-function IconButton(props) {
+function SolidButton(props) {
     return (
         <Button {...props} className="btn icon-btn">{props.children}</Button>
     )
 }
 
-export default IconButton
+export default SolidButton
 
-IconButton.propTypes = {
+SolidButton.propTypes = {
   color: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
 };
 
-IconButton.defaultProps = {
-  color: null,
-//   width: "2em",
-//   height: "2em",
+SolidButton.defaultProps = {
+  color: "ST_PINK",
+  width: "245px",
+  height: "38px",
 };
