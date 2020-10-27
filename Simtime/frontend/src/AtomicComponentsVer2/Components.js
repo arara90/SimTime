@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {createRef} from 'react'
 import styled from "styled-components";
 
 import BorderButton from "./atom/buttons/BorderButton"
@@ -25,27 +25,47 @@ import SearchIcon               from "./atom/icons/SearchIcon"
 import StarIcon                 from "./atom/icons/StarIcon"
 import UploadIcon               from "./atom/icons/UploadIcon"
 
+import Input, {InputRef} from "./atom/forms/Input"
+import Select from "./atom/forms/Select"
 
 const Level = styled.section`
     margin-top: 30px;
 `
 const Wrap = styled.div`
-    margin-top: 20px;
+    margin-top: 30px;
 `
 
-const Items = styled.div`
-display: flex;
-justify-content: space-around;
+const ItemsRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+
+const ItemsColumn = styled.div`
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 `
 
 function Components() {
+    const inputRef = createRef();
+    const enterHandler=(v)=>{
+        console.log(v)
+        inputRef.current.focus()
+    }
+    const changeHandler=(v)=>{
+        console.log(v)
+    }
+
     return (
         <div>
         <Level>
             <h1>Atomic</h1>
+            <hr />
             <Wrap>
                 <h2> Icons</h2>
-                <Items>
+                <ItemsRow>
                     <AngleIcon />
                     <BellIcon />
                     <CalendarIcon  />
@@ -65,25 +85,30 @@ function Components() {
                     <SearchIcon />
                     <StarIcon />
                     <UploadIcon />
-                </Items>
+                </ItemsRow>
             </Wrap>
             
             <Wrap>
                 <h2> Buttons</h2>
-                <Items>
+                <ItemsRow>
                     <BorderButton>BorderButton</BorderButton>
                     <SolidButton>SolidButton</SolidButton>
                     <IconButton><HeartIcon /></IconButton>
-                </Items>
+                </ItemsRow>
             </Wrap>
 
             <Wrap>
                 <h2> FORMS</h2>
-                <Items>
-                    <BorderButton>BorderButton</BorderButton>
-                    <SolidButton>SolidButton</SolidButton>
-                    <IconButton><HeartIcon /></IconButton>
-                </Items>
+                <ItemsColumn>
+                    <div>
+                    <Input placeholder="Input" enterHandler={enterHandler}/>
+                    <InputRef placeholder="InputRef" ref={inputRef} changeHandler={changeHandler} />
+                    </div>
+                    <br />
+                    <div>
+                    <Select></Select>
+                    </div>
+                </ItemsColumn>
             </Wrap>
         </Level>
 

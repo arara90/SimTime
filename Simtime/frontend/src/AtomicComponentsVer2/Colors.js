@@ -1,7 +1,10 @@
 // MAIN COLORS PALETTE
+// https://color.adobe.com/ko/create/color-wheel
+
 export const ST_YELLOW_LIGHT = "#FFF8E7";
-export const ST_SEMI_YELLOW = "#FBE6A5";
 export const ST_YELLOW = "#F2C94C"; //main (Deep) yellow (242,201,76)
+export const ST_SEMI_YELLOW = "#FBE6A5";
+export const ST_YELLOW_DARK = "#FAD61C"
 
 export const ST_PINK_LIGHT = "#E65A94";
 export const ST_PINK = "#E7156E";
@@ -54,6 +57,8 @@ export const BG_ACTIVE = ST_YELLOW;
 
 //MAIN
 export const MAIN_COLOR = ST_YELLOW;
+export const MAIN_COLOR_LIGHT = ST_YELLOW_LIGHT;
+export const MAIN_COLOR_DARK = ST_YELLOW_DARK;
 
 //ETC
 export const CHECK_GREEN = ST_GREEN_NEON;

@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 import CalendarTemplate from "../template/CalendarTemplate";
-// import Components from "../Components";
+import Components from "../Components";
 
 function Calendar(props) {
   return (
     <Fragment>
-      <CalendarTemplate />
-      {/* <Components /> */}
+      <Components />
+      {/* <CalendarTemplate /> */}
+      
     </Fragment>
   )
 }

@@ -16,6 +16,7 @@ const Button = styled.button`
   }
 
   &:hover {
+    color: ${Colors.ST_WHITE};
     background-color: ${(props) => Colors[props.color+"_DARK"]};
   }
 `
@@ -34,7 +35,7 @@ SolidButton.propTypes = {
 };
 
 SolidButton.defaultProps = {
-  color: "ST_PINK",
+  color: "ST_YELLOW",
   width: "245px",
   height: "38px",
 };

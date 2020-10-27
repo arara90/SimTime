@@ -35,7 +35,7 @@ BorderButton.propTypes = {
 };
 
 BorderButton.defaultProps = {
-    color: "ST_PINK",
+    color: "ST_YELLOW",
     width: "245px",
     height: "38px",
 };
