@@ -32,7 +32,7 @@ const SMNTOption = styled.option`
 `
 
 //DSP - Display(실제 보여줌)
-const SelectedOption = styled.div`
+const StyledSelect = styled.div`
     position: absolute; 
 
     width: ${(props) => props.width};
@@ -52,7 +52,7 @@ const SelectedOption = styled.div`
         width: 0;
         height: 0;
         border: 7px solid transparent;
-        border-color: black transparent transparent transparent;
+        border-color: ${MAIN_COLOR} transparent transparent transparent;
         position: absolute;
         top: 16px;
         right: 10px;
@@ -67,7 +67,7 @@ const SelectedOption = styled.div`
         
         &:after {
             top: 9px;
-            border-color: transparent transparent red transparent;
+            border-color: transparent transparent ${MAIN_COLOR} transparent;
         }
     }
 `;
@@ -103,6 +103,28 @@ const Option = styled.li`
 `
 
 function Select(props) {
+
+    const mySpecialFunction = () => {
+        console.log(this)
+      }
+      
+
+    const clickHandler=()=>{
+        // e.stopPropagation();
+        // e.preventDefault();
+        mySpecialFunction();
+        console.log('this', this)
+
+        
+        // //선택한 아이 말고 다른 아이들이 active되어 있다면 다 비활성화시키자.
+        // $('div.select-styled.active').not(this).each(function(){
+        //     $(this).removeClass('active').next('ul.select-options').hide();
+        // });
+
+        // //선택한 아이의 activ를e toggle하고, options들도 토글
+        // $(this).toggleClass('active').next('ul.select-options').toggle();
+    }
+
     return (
     <Wrap {...props}>
         <SMNTSelect {...props}>
@@ -110,13 +132,18 @@ function Select(props) {
             <SMNTOption>option2</SMNTOption>
             <SMNTOption>option3</SMNTOption>
         </SMNTSelect>
-        <SelectedOption width={props.width} height={props.height}>
-            <Options>
+        
+        <StyledSelect 
+            width={props.width} 
+            height={props.height} 
+            className="select-styled"
+            onClick={clickHandler.bind(this)}>
+            <Options className="select-options">
                 <Option>option1</Option>
                 <Option>option2</Option>
                 <Option>option3</Option>
             </Options>
-        </SelectedOption>
+        </StyledSelect>
     </Wrap>
     );
 }
@@ -144,3 +171,31 @@ Select.defaultProps = {
   arrow: true,
   cursor: "pointer",
 };
+
+
+
+
+
+    
+    // // 옵션 선택시
+    // $listItems.click(function(e) {
+    //     e.stopPropagation();
+        
+    //     //selectBox의 텍스트를 해당 옵션으로 변경하고 비활성화 시키자
+    //     $styledSelect.text($(this).text()).removeClass('active');
+
+    //     //value는 rel 속성값을 갖는다.
+    //     $this.val($(this).attr('rel'));
+
+    //     //optionList는 지운다.
+    //     $list.hide();
+    //     //console.log($this.val());
+    // });
+  
+
+    //빈 곳을 클릭했을 때, 모두 비활성화 시키고, 리스트는 닫는다.
+// document.click(function() {
+//         $styledSelect.removeClass('active');
+//         $list.hide();
+//     });
+
