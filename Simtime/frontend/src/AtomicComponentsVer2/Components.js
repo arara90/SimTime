@@ -26,7 +26,7 @@ import StarIcon                 from "./atom/icons/StarIcon"
 import UploadIcon               from "./atom/icons/UploadIcon"
 
 import Input, {InputRef} from "./atom/forms/Input"
-import FancyInput from "./atom/forms/FancyInput"
+import FancyInput from "./atom/forms/NotInUse/FancyInput"
 import Select, {SelectRef} from "./atom/forms/Select"
 
 const Level = styled.section`
@@ -105,7 +105,7 @@ function Components() {
             </Wrap>
 
             <Wrap>
-                <h2> FORMS</h2>
+                <h2> Forms</h2>
                 <ItemsColumn>
                     <Input placeholder="Input" enterHandler={enterHandler}/>
                     <InputRef placeholder="InputRef" ref={inputRef} changeHandler={changeHandler} />
