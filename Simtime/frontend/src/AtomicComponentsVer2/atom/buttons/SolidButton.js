@@ -22,7 +22,7 @@ const Button = styled.button`
 `
 function SolidButton(props) {
     return (
-        <Button {...props} className="btn icon-btn">{props.children}</Button>
+        <Button {...props} className="btn solid-btn">{props.children}</Button>
     )
 }
 

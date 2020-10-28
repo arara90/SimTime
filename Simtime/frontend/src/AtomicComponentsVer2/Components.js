@@ -1,4 +1,4 @@
-import React, {createRef} from 'react'
+import React, {createRef, useRef} from 'react'
 import styled from "styled-components";
 
 import BorderButton from "./atom/buttons/BorderButton"
@@ -26,7 +26,8 @@ import StarIcon                 from "./atom/icons/StarIcon"
 import UploadIcon               from "./atom/icons/UploadIcon"
 
 import Input, {InputRef} from "./atom/forms/Input"
-import Select from "./atom/forms/Select"
+import FancyInput from "./atom/forms/FancyInput"
+import Select, {SelectRef} from "./atom/forms/Select"
 
 const Level = styled.section`
     margin-top: 30px;
@@ -50,6 +51,12 @@ const ItemsColumn = styled.div`
 
 function Components() {
     const inputRef = createRef();
+    const selectRef = createRef();
+    // const fancyInputRef = useRef();
+    // const focus = () => {
+    //     fancyInputRef.current.focus()
+    //   } 
+
     const enterHandler=(v)=>{
         console.log(v)
         inputRef.current.focus()
@@ -93,21 +100,20 @@ function Components() {
                 <ItemsRow>
                     <BorderButton>BorderButton</BorderButton>
                     <SolidButton>SolidButton</SolidButton>
-                    <IconButton><HeartIcon /></IconButton>
+                    <IconButton><HeartIcon color="MAIN_COLOR" /></IconButton>
                 </ItemsRow>
             </Wrap>
 
             <Wrap>
                 <h2> FORMS</h2>
                 <ItemsColumn>
-                    <div>
                     <Input placeholder="Input" enterHandler={enterHandler}/>
                     <InputRef placeholder="InputRef" ref={inputRef} changeHandler={changeHandler} />
-                    </div>
+                    {/* <FancyInput ref={fancyInputRef} />
+                    <button onClick={focus}>Fancy Click</button> */}
                     <br />
-                    <div>
-                    <Select></Select>
-                    </div>
+                    <Select defaultOption="select1"></Select>
+                    <SelectRef defaultOption="select2" ref={selectRef}></SelectRef>
                 </ItemsColumn>
             </Wrap>
         </Level>

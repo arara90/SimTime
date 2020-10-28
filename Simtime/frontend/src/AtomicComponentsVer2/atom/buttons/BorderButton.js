@@ -13,6 +13,7 @@ const Button = styled.button`
   &:focus {
     outline: none;
     box-shadow: none;
+    
   }
 
   &:hover {
@@ -22,7 +23,7 @@ const Button = styled.button`
 `
 function BorderButton(props) {
     return (
-        <Button {...props} className="btn icon-btn"></Button>
+        <Button {...props} className="btn border-btn"></Button>
     )
 }
 
