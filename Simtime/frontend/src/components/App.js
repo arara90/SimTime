@@ -22,6 +22,7 @@ import Header from "../AtomicComponents/D-Templates/Header";
 import Calendar from "../AtomicComponentsVer2/page/Calendar";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
 import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
+import Components from "../AtomicComponentsVer2/Components";
 
 import { ModalProvider } from "../contexts/modalContext";
 import { MenuProvider } from "../contexts/menuContext";
@@ -79,7 +80,12 @@ class App extends Component {
                     <Header />
                     <Alerts />
                     <Switch>
-                      <PrivateRoute exact path="/" component={Calendar} />
+                      <PrivateRoute exact path="/" component={Components} />
+                      <PrivateRoute
+                        exact
+                        path="/calendar"
+                        component={Calendar}
+                      />
                       <PrivateRoute
                         exact
                         path="/friends"
@@ -89,6 +95,11 @@ class App extends Component {
                         exact
                         path="/mysimtime"
                         component={MySimtimePage}
+                      />
+                      <PrivateRoute
+                        exact
+                        path="/component"
+                        component={Components}
                       />
                       <Route exact path="/register" component={Register} />
                       <Route exact path="/login" component={Login} />

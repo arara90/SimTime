@@ -1,3 +1,6 @@
+// hook> useMemo에서 menu 수정(/-> calendar, comp는 개발 후 메뉴리스트에서 삭제)
+// MenuList width 반응형으로 수정할 것 
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
