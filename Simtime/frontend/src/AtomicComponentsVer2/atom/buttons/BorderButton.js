@@ -23,19 +23,23 @@ const Button = styled.button`
 `
 function BorderButton(props) {
     return (
-        <Button {...props} className="btn border-btn"></Button>
+        <Button {...props} className={['btn', 'border-btn', props.className].join(' ')}>
+            {props.children}
+        </Button>
     )
 }
 
 export default BorderButton
 
 BorderButton.propTypes = {
+    type : PropTypes.string,
     color: PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string
 };
 
 BorderButton.defaultProps = {
+    type : "button",
     color: "ST_YELLOW",
     width: "245px",
     height: "38px",

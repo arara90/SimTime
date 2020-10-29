@@ -6,15 +6,15 @@ import Option from "./Select/Option"
 import Options from "./Select/Options"
 import SelectInput from "./Select/SelectInput"
 
-import {TEXT} from "../../Colors";
+import * as Colors from "../../Colors";
 
+//setState로 해보기 
 
 const Wrap = styled.div`
   width: ${(props) => props.width};
   cursor: pointer;
   display: inline-block;
   position: relative;
-  color:${TEXT};
 `;
 
 //SMNT - Hide(실제로 보여주지 않음) Symentic용
@@ -26,7 +26,8 @@ const SMNTSelect = styled.select`
 const SMNTOption = styled.option``
 
 //DSP - Display(실제 보여줌)
-const StyledSelect = styled(SelectInput)``;
+const StyledSelect = styled(SelectInput)`
+`;
 const StyledOptions = styled(Options)``;
 const StyledOption = styled(Option)``  
 
@@ -42,18 +43,57 @@ function Select(props) {
     //hooks
     useEffect(() => {
         setSelectedValue(props.defaultOption);
-    },[]);
-
-
+      },[]);
+  
     const toggleHandler= useCallback(
         (e) => {
             e.preventDefault();
             e.stopPropagation();
+
+            
             optionBoxRef.current.toggle();
             selectedInputRef.current.toggle();
         },
         [optionBoxRef, selectedInputRef],
       );
+
+      // const toggleHandler= useCallback(
+      //   (e) => {
+      //       e.preventDefault();
+      //       e.stopPropagation();
+
+      //     const selects = document.querySelectorAll(".select-styled")
+      //     const optionBoxes = document.querySelectorAll(".select-options")
+
+      //     selects.forEach(select => {
+      //       select.classList.remove("open")
+      //     });
+      //     optionBoxes.forEach(option => {
+      //       option.classList.add("hide")            
+      //     });
+      //       optionBoxRef.current.show();
+      //       selectedInputRef.current.open();
+      //   },
+      //   [optionBoxRef, selectedInputRef],
+      // );
+
+
+    
+    // const closeHandler = 
+    //   (e) => {
+    //       e.preventDefault();
+    //       e.stopPropagation();
+          
+    //       const selects = document.querySelectorAll(".select-styled")
+    //       const optionBoxes = document.querySelectorAll(".select-options")
+    //       selects.forEach(select => {
+    //         select.classList.remove("open")
+    //       });
+    //       optionBoxes.forEach(option => {
+    //         option.classList.add("hide")            
+    //       });
+
+    //   }
 
 
     //reders
@@ -67,7 +107,7 @@ function Select(props) {
 
 
     return (
-    <Wrap {...props}>
+    <Wrap {...props} className="select-wrap">
         <SMNTSelect value={selectedValue}>
             <SMNTOption>option1</SMNTOption>
             <SMNTOption>option2</SMNTOption>
@@ -75,6 +115,7 @@ function Select(props) {
         </SMNTSelect>
         <StyledSelect 
             {...props}
+            color={props.color} 
             width={props.width} 
             height={props.height} 
             className="select-styled"
@@ -82,7 +123,7 @@ function Select(props) {
             onClick={toggleHandler}
             >
             {selectedValue}
-            <StyledOptions ref={optionBoxRef}>
+            <StyledOptions ref={optionBoxRef} color={props.color} >
                 {renderOptions(props.options)}
             </StyledOptions>
         </StyledSelect>
@@ -97,6 +138,7 @@ export const SelectRef = React.forwardRef((props, ref) => (
 ));
 
 Select.propTypes = {
+  colors: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
   options: PropTypes.array,
@@ -104,6 +146,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
+  colors: null,
   width: "100%",
   height: "40px",
   options: ["option1", "option2","option3"],

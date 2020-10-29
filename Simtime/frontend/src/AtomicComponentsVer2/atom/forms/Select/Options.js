@@ -18,7 +18,8 @@ const OptionsBox = styled.ul`
     right: 0;
     left: 0;
     z-index: 99;
-    margin-top: -3px;
+    margin-top: -6px;
+    padding-top: 6px;
     padding: 0;
     list-style: none;
     background-color: ${ST_WHITE};
@@ -33,6 +34,12 @@ function Options(props, ref) {
     useImperativeHandle(ref, () => ({
       toggle: () => {
         optionsRef.current.classList.toggle('hide')
+      },
+      hide: () => {
+        optionsRef.current.classList.add('hide')
+      },
+      show: () => {
+        optionsRef.current.classList.remove('hide')
       }
     }),[optionsRef]);
 

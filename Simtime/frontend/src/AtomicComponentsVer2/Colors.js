@@ -37,6 +37,7 @@ export const ST_SEMI_GRAY = "#ECEBED";
 export const ST_GRAY = "#D0C9D6";
 export const ST_GRAY_DARK = "#F4F3F1";
 
+
 export const ST_WHITE = "#FFFFFF";
 export const ST_BLACK = "#2B2738";
 
@@ -47,6 +48,7 @@ export const TEXT_WARNING = ST_RED;
 export const TEXT_VISITED = ST_VIOLET;
 export const TEXT_ACTIVE = ST_BLACK;
 export const TEXT_INACTIVE = ST_GRAY;
+export const TEXT_TAG = ST_GRAY;
 
 //BACKGROUND
 export const BG_WHITE = ST_WHITE;

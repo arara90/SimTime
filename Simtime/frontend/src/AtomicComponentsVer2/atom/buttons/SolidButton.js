@@ -22,19 +22,23 @@ const Button = styled.button`
 `
 function SolidButton(props) {
     return (
-        <Button {...props} className="btn solid-btn">{props.children}</Button>
+        <Button {...props} className={['btn', 'solid-btn', props.className].join(' ')}>
+          {props.children}
+        </Button>
     )
 }
 
 export default SolidButton
 
 SolidButton.propTypes = {
+  type : PropTypes.string,
   color: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
 };
 
 SolidButton.defaultProps = {
+  type : "button",
   color: "ST_YELLOW",
   width: "245px",
   height: "38px",

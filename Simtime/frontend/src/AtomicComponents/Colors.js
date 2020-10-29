@@ -27,10 +27,14 @@ export const ST_WHITE = "#FFFFFF";
 export const ST_BLACK = "#2B2738";
 
 // TEXT
+
 export const TEXT = ST_BLACK;
-export const TEXT_LINK = ST_BLUE;
+export const TEXT_LINK = ST_BLACK;
+export const TEXT_VISITED = ST_BLACK;
+// export const TEXT = ST_BLACK;
+// export const TEXT_LINK = ST_BLUE;
+// export const TEXT_VISITED = ST_VIOLET;
 export const TEXT_WARNING = ST_RED;
-export const TEXT_VISITED = ST_VIOLET;
 export const TEXT_ACTIVE = ST_BLACK;
 export const TEXT_INACTIVE = ST_GRAY;
 

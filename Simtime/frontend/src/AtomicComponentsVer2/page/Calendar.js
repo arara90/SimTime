@@ -9,7 +9,6 @@ function Calendar(props) {
   return (
     <Fragment>
       <CalendarTemplate />
-      
     </Fragment>
   )
 }

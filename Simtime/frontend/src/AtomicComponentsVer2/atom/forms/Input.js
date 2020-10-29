@@ -9,11 +9,17 @@ const MyInput = styled.input`
     width: ${(props) => props.width};
     height: ${(props) => props.height};
     padding-left: 5px;
-    border: solid 1px ${(props) => Colors[props.color]};
+    border: solid 1px ${(props) => Colors[props.color] || Colors["ST_SEMI_YELLOW"]};
     border-radius: 6px 6px 6px 6px ;
+
+    &:hover {
+      outline: none;
+      border: solid 1px ${(props) => Colors[props.color + "_DARK"] ||  Colors["MAIN_COLOR"]};
+  }
+
     &:focus {
         outline: none;
-        border: solid 2px ${(props) => Colors[props.color+"_DARK"]};
+        border: solid 1px ${(props) => Colors[props.color + "_DARK"] ||  Colors["MAIN_COLOR"]};
     }
 
     ::placeholder {
@@ -76,7 +82,7 @@ Input.propTypes = {
 Input.defaultProps = {
   width: "100%",
   height: "40px",
-  color: "MAIN_COLOR",
+  color: null,
   cursor: null,
   enterHandler: ()=>{alert("enterHandler")},
   changeHandler: ()=>{console.log("changeHandler")},

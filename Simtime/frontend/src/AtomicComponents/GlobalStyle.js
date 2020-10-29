@@ -1,10 +1,10 @@
 import { createGlobalStyle } from "styled-components";
-import * as Color from "./Colors";
+import * as Colors from "./Colors";
 
 const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: "roboto", "Source Sans";
 }
 
 #app{
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   float: left;
   width: 920px;
   padding: 0 0.5rem 0.5rem 0.5rem;
-  border-top: solid 8px ${Color["MAIN_COLOR"]};
+  border-top: solid 8px ${Colors.MAIN_COLOR};
 
   @media only screen and (max-width: 768px) {
     width: 100%;
@@ -31,24 +31,45 @@ const GlobalStyle = createGlobalStyle`
 }
 
 &::-webkit-scrollbar-thumb {
-  background-color: ${Color["ST_GRAY"]};
+  background-color: ${Colors.ST_GRAY};
   border-radius: 10px;
 
   &:hover {
-    background-color: ${Color["ST_SEMI_YELLOW"]};
+    background-color: ${Colors.ST_SEMI_YELLOW};
   }
 
   
   &:active {
-    background-color: ${Color["ST_SEMI_YELLOW"]};
+    background-color: ${Colors.ST_SEMI_YELLOW};
   }
 }
 
 &::-webkit-scrollbar-track {
-  background-color: ${Color["ST_SEMI_GRAY"]};
+  background-color: ${Colors.ST_SEMI_GRAY};
   border-radius: 5px;
   box-shadow: inset 0px 0px 3x white;
 }
+
+
+a{
+  color: ${Colors.TEXT_LINK};
+  &:link {
+    color: ${Colors.TEXT_LINK};
+  }
+  &:hover {
+    color: ${Colors.TEXT_ACTIVE};
+    text-decoration: none;
+  }
+  &:visited {
+    color: ${Colors.TEXT_VISITED};
+  }
+}
 `;
+
+// strong{}
+// em{}
+// ins{}
+// del{}
+
 
 export default GlobalStyle;

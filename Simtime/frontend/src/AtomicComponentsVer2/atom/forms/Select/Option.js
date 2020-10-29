@@ -3,11 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import Paragraph from "../../../../AtomicComponents/A-Atomics/Font/Paragraph";
 
-import {
-  MAIN_COLOR,
-  ST_WHITE,
-  MAIN_COLOR_DARK
-} from "../../../Colors";
+import * as Colors from "../../../Colors";
 
 
 
@@ -19,11 +15,11 @@ const OptionItem = styled.li`
     @include transition(all 0.15s ease-in);
 
     &:hover {
-        color: ${MAIN_COLOR};
+        color: ${Colors["MAIN_COLOR"]};
     }
 
     &.selected{
-        color: ${MAIN_COLOR};
+        color: ${Colors["MAIN_COLOR"]};
         &:after{
             
         }
