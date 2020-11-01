@@ -96,7 +96,7 @@ class App extends Component {
                         path="/mysimtime"
                         component={MySimtimePage}
                       />
-                      <PrivateRoute
+                      <Route
                         exact
                         path="/component"
                         component={Components}

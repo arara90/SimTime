@@ -1,6 +1,7 @@
 import React, {createRef, useRef, useEffect, useState} from 'react'
 import styled from "styled-components";
 
+import * as Colors from "./Colors"
 import BorderButton from "./atom/buttons/BorderButton"
 import SolidButton from "./atom/buttons/SolidButton"
 import IconButton from "./atom/buttons/IconButton"
@@ -33,10 +34,10 @@ import TextArea, {TextAreaRef} from "./atom/forms/TextArea"
 
 //molecule
 import CalendarHeader from "./molecule/calendar/CalendarHeader"
+import EventListItem from "./molecule/event/EventListItem"
+import CalendarEventLabel from "./molecule/calendar/CalendarEventLabel"
 
-import EventListItem from "./molecule/list/EventListItem"
-
-
+const palette = Colors.Palette;
 
 const Level = styled.section`
     margin-top: 30px;
@@ -112,6 +113,53 @@ function Components() {
 
     return (
         <div>
+<Level>
+            <h1>Molecules</h1>
+            <hr />
+            <Wrap className="molecule-calendar">
+                <h2> Calendar</h2>
+                <ItemsColumn>
+                <ItemsRow>
+                    <CalendarHeader 
+                    current={curr}
+                    type="date" 
+                    prevHandler={setCurr}
+                    nextHandler={setCurr}
+                    />
+                    <ol>
+                        <CalendarEventLabel join type="border" color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        <CalendarEventLabel color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        <CalendarEventLabel join color={palette[Math.floor(Math.random() * palette.length)]}/>
+                    </ol>
+                    </ItemsRow>
+                </ItemsColumn>
+            </Wrap>
+            
+            <Wrap>
+                <h2>Event List</h2>
+                <ItemsRow>
+                    <ItemsColumn>
+                        <EventListItem />
+                    </ItemsColumn>
+
+                </ItemsRow>
+            </Wrap>
+
+            <Wrap>
+                <h2>Etc</h2>
+                <ItemsRow>
+                    <ItemsColumn>
+
+                    </ItemsColumn>
+
+                </ItemsRow>
+            </Wrap>
+
+
+        </Level>
+
+
+
         <Level>
             <h1>Atomic</h1>
             <hr />
@@ -169,49 +217,7 @@ function Components() {
             </Wrap>
         </Level>
 
-        <Level>
-            <h1>Molecules</h1>
-            <hr />
-            <Wrap className="molecule-calendar">
-                <h2> Calendar</h2>
-                <ItemsColumn>
-                <ItemsRow>
-                    <CalendarHeader 
-                    current={curr}
-                    type="date" 
-                    prevHandler={setCurr}
-                    nextHandler={setCurr}
-                    />
-
-
-
-                    </ItemsRow>
-                </ItemsColumn>
-            </Wrap>
-            
-            <Wrap>
-                <h2>Event List</h2>
-                <ItemsRow>
-                    <ItemsColumn>
-                        <EventListItem />
-                    </ItemsColumn>
-
-                </ItemsRow>
-            </Wrap>
-
-            <Wrap>
-                <h2>Etc</h2>
-                <ItemsRow>
-                    <ItemsColumn>
-
-                    </ItemsColumn>
-
-                </ItemsRow>
-            </Wrap>
-
-
-        </Level>
-
+        
 
         </div>
     )

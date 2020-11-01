@@ -4,17 +4,21 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
+  border: none;
+
   background-color: ${(props) => props.backgroundColor? Colors[props.backgroundColor] : "transparent"};
   color: ${(props) => Colors[props.color]};
   ${(props) => "width: " + props.width };
   ${(props) => "height: " + props.height};
 
   &:focus {
+    border: none;
     outline: none;
     box-shadow: none;
   }
 
   &:hover {
+    border: none;
     background-color: ${(props) => Colors[props.backgroundColor+"_DARK"]};
     color: ${(props) => Colors[props.color + "_DARK"]};    
   }

@@ -57,8 +57,10 @@ const Content = styled.a`
 `
 
 const Host = styled(ImageUser)`
-    width: 45px;
-    margin: 5px 10px 0px 0px;
+    margin: auto 10px 1em 0px;
+    max-width: 45px;
+    max-height: 45px;
+
 `
 
 const EventDesc = styled.div`
@@ -83,18 +85,25 @@ const Tags = styled.small`
 `
 
 function EventListItem(props) {
+    const {title, location, time, tags} = props;
+
+    const getTags = tags.map((tag)=>{
+        return '#'+tag+" "
+    }
+
+    )
     return (
         <EventList {...props} className='list-event-item'>
                 <Header>
-                    <a href="#"><Title>Tremblant In Canada</Title></a>
+                    <a href="#"><Title>{title}</Title></a>
                     <Like color="ST_PINK"><HeartIcon size="sm"/></Like>
                 </Header>
                 <Content href="#" className="event-list-content">
                     <Host url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"/>
                     <EventDesc>
-                        <Address>여의나루 4번 출구</Address>
-                        <Time>PM 19:00</Time>
-                        <Tags>#치맥  #한강 #나들이 #봄맞이</Tags>
+                        <Address>{location.name}</Address>
+                        <Time>{time}</Time>
+                        <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags>
                     </EventDesc>
                 </Content>
                 {/* <footer>
@@ -107,9 +116,16 @@ function EventListItem(props) {
 export default EventListItem
 
 EventListItem.propTypes = {
+    title: PropTypes.string,
+    location: PropTypes.object,
+    time: PropTypes.string,
+    tags: PropTypes.array
   };
 
-  EventListItem.defaultProps = {
-
+EventListItem.defaultProps = {
+    title: "Tremblant In Canada",
+    location: {name:"여의나루 4번 출구", lat:"", lng:"", address:""},
+    time: "PM 19:00",
+    tags: ["치맥",  "한강", "나들이", "봄맞이"]
   };
   
