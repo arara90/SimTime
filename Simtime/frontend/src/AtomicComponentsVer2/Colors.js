@@ -4,38 +4,20 @@ import { faPalette } from "@fortawesome/free-solid-svg-icons";
 
 // https://color.adobe.com/ko/create/color-wheel
 export const Palette = [
-    "ST_YELLOW_LIGHT"
-    ,"ST_YELLOW_DARK"  
-    ,"ST_SEMI_YELLOW" 
-    ,"ST_YELLOW_DARK" 
-    ,"ST_PINK_LIGHT"  
+    "ST_YELLOW"
     ,"ST_PINK"        
-    ,"ST_PINK_DARK"   
-    ,"ST_BLUE_LIGHT"  
     ,"ST_BLUE"        
-    ,"ST_BLUE_DARK"   
-    ,"ST_ORANGE_LIGHT"
-    ,"ST_ORANGE"      
-    ,"ST_ORANGE_DARK" 
-    ,"ST_RED_LIGHT"   
+    ,"ST_ORANGE"         
     ,"ST_RED"         
-    ,"ST_RED_DARK"    
-    ,"ST_VIOLET_LIGHT"
     ,"ST_VIOLET"      
-    ,"ST_VIOLET_DARK" 
-    ,"ST_GREEN_LIGHT" 
-    ,"ST_GREEN"       
-    ,"ST_GREEN_DARK"   
-    ,"ST_GRAY_LIGHT"  
-    ,"ST_SEMI_GRAY"   
+    ,"ST_GREEN"         
     ,"ST_GRAY"        
-    ,"ST_GRAY_DARK"   
 ]
 
 export const ST_YELLOW_LIGHT     = "#FFF8E7";
 export const ST_YELLOW           = "#F2C94C"; //main (Deep) yellow (242,201,76)
 export const ST_SEMI_YELLOW      = "#FBE6A5";
-export const ST_YELLOW_DARK      = "#FAD61C"
+export const ST_YELLOW_DARK      = "#FAD61C";
 
 export const ST_PINK_LIGHT      = "#E65A94";
 export const ST_PINK            = "#E7156E";
@@ -71,6 +53,7 @@ export const ST_GRAY_DARK       = "#F4F3F1";
 
 
 export const ST_WHITE           = "#FFFFFF";
+export const ST_WHITE_DARK      = ST_GRAY_LIGHT;
 export const ST_BLACK           = "#2B2738";
 
 // TEXT

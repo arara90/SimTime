@@ -127,9 +127,9 @@ function Components() {
                     nextHandler={setCurr}
                     />
                     <ol>
-                        <CalendarEventLabel join type="border" color={palette[Math.floor(Math.random() * palette.length)]}/>
-                        <CalendarEventLabel color={palette[Math.floor(Math.random() * palette.length)]}/>
-                        <CalendarEventLabel join color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        <CalendarEventLabel join isSolid color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        <CalendarEventLabel  color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        <CalendarEventLabel isSolid join color={palette[Math.floor(Math.random() * palette.length)]}/>
                     </ol>
                     </ItemsRow>
                 </ItemsColumn>

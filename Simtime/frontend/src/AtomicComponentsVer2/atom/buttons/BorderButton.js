@@ -4,11 +4,11 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
-  border: solid 2px ${(props) => Colors[props.color]};
-  color: ${(props) => Colors[props.color]};
+  border: solid 2px ${({color}) => Colors[color]};
+  color: ${({color}) => Colors[color]};
   border-radius: 6px 6px 6px 6px;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${({width}) => width};
+  height: ${({height}) => height};
 
   &:focus {
     outline: none;
@@ -17,13 +17,18 @@ const Button = styled.button`
   }
 
   &:hover {
-    border: solid 2px ${(props) => Colors[props.color + "_DARK"]};
-    color: ${(props) => Colors[props.color + "_DARK"]};    
+    border: solid 2px ${({color}) => Colors[color + "_DARK"]};
+    color: ${({color}) => Colors[color + "_DARK"]};  
 }
 `
 function BorderButton(props) {
+    const {color, width,height} = props;
+    
+    
     return (
-        <Button {...props} className={['btn', 'border-btn', props.className].join(' ')}>
+        <Button {...props} 
+            className={['btn', 'border-btn', props.className].join(' ')}
+        >
             {props.children}
         </Button>
     )
@@ -33,7 +38,7 @@ export default BorderButton
 
 BorderButton.propTypes = {
     type : PropTypes.string,
-    color: PropTypes.string,
+    color:PropTypes.string,
     width: PropTypes.string,
     height: PropTypes.string
 };

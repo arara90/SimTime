@@ -4,11 +4,11 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
-  background-color: ${(props) => Colors[props.color]};
-  color: ${Colors.ST_WHITE};
+  background-color: ${({color}) => Colors[color]};
+  color: ${({fontColor}) => Colors[fontColor]};
   border-radius: 6px 6px 6px 6px;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${({width}) => width};
+  height: ${({height}) => height};
 
   &:focus {
     outline: none;
@@ -16,8 +16,8 @@ const Button = styled.button`
   }
 
   &:hover {
-    color: ${Colors.ST_WHITE};
-    background-color: ${(props) => Colors[props.color+"_DARK"]};
+    background-color: ${({color}) => Colors[color+"_DARK"]};
+    color: ${({fontColor}) => Colors[fontColor+"_DARK"]};
   }
 `
 function SolidButton(props) {
@@ -32,6 +32,7 @@ export default SolidButton
 
 SolidButton.propTypes = {
   type : PropTypes.string,
+  fontColor: PropTypes.string,
   color: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
@@ -39,6 +40,7 @@ SolidButton.propTypes = {
 
 SolidButton.defaultProps = {
   type : "button",
+  fontColor: "ST_WHITE",
   color: "ST_YELLOW",
   width: "245px",
   height: "38px",
