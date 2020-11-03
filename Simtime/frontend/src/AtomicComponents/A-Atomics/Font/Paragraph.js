@@ -40,6 +40,7 @@ const Default = styled.span`
 `;
 
 export const Paragaph = (props) => {
+  console.log('pp',props.color)
   const { type, src } = props;
 
   const renderParagaph = () => {

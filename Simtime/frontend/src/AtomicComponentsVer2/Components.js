@@ -32,33 +32,49 @@ import FancyInput from "./atom/forms/NotInUse/FancyInput"
 import Select, {SelectRef} from "./atom/forms/Select"
 import TextArea, {TextAreaRef} from "./atom/forms/TextArea"
 
+import DetailTextRow from "./atom/DetailTextRow"
+
 //molecule
 import CalendarHeader from "./molecule/calendar/CalendarHeader"
 import EventListItem from "./molecule/event/EventListItem"
 import CalendarEventLabel from "./molecule/calendar/CalendarEventLabel"
+import UserCard from "./molecule/UserCard"
+
+import EventDetailHeader from './molecule/event/EventDetailHeader';
+import EventDetailContent from './molecule/event/EventDetailContent';
+
+//organism
+import EventDetail from "./organism/calendar/EventDetail"
 
 const palette = Colors.Palette;
 
 const Level = styled.section`
     margin-top: 30px;
 `
+
+const H = styled.h1`
+    font-weight: bold;
+`
 const Wrap = styled.div`
     margin-top: 30px;
 `
-
 const ItemsRow = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 `
-
-
 const ItemsColumn = styled.div`
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 `
-
+const LabelWrap = styled.section`
+    width: 115px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+`
 function Components() {
     const inputRef = createRef();
     const selectRef = createRef();
@@ -68,8 +84,6 @@ function Components() {
     //     fancyInputRef.current.focus()
     //   } 
 
-
-  
     useEffect(
         ()=>{
             window.addEventListener("click", closeHandler);
@@ -79,13 +93,7 @@ function Components() {
         }
     )
    
-    const changeDate = (type="month", num=1)=>{
-        var res = new Date(curr)
-        res.setDate(curr.getDate() + num);
-        setCurr(res)
-        return res
-    }
-        
+     
     const closeHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -113,112 +121,140 @@ function Components() {
 
     return (
         <div>
-<Level>
-            <h1>Molecules</h1>
-            <hr />
-            <Wrap className="molecule-calendar">
-                <h2> Calendar</h2>
-                <ItemsColumn>
-                <ItemsRow>
-                    <CalendarHeader 
-                    current={curr}
-                    type="date" 
-                    prevHandler={setCurr}
-                    nextHandler={setCurr}
-                    />
-                    <ol>
-                        <CalendarEventLabel join isSolid color={palette[Math.floor(Math.random() * palette.length)]}/>
-                        <CalendarEventLabel  color={palette[Math.floor(Math.random() * palette.length)]}/>
-                        <CalendarEventLabel isSolid join color={palette[Math.floor(Math.random() * palette.length)]}/>
-                    </ol>
-                    </ItemsRow>
-                </ItemsColumn>
-            </Wrap>
-            
-            <Wrap>
-                <h2>Event List</h2>
-                <ItemsRow>
+            <Level>
+                <H>Molecules</H>
+                <hr />
+                <Wrap className="molecule-calendar">
+                    <h2> Event</h2>
                     <ItemsColumn>
-                        <EventListItem />
+                        <ItemsRow>
+                            <EventDetail />
+                        </ItemsRow>
+                        <ItemsRow>
+                            
+                        </ItemsRow>
                     </ItemsColumn>
-
-                </ItemsRow>
-            </Wrap>
-
-            <Wrap>
-                <h2>Etc</h2>
-                <ItemsRow>
-                    <ItemsColumn>
-
-                    </ItemsColumn>
-
-                </ItemsRow>
-            </Wrap>
-
-
-        </Level>
-
-
-
-        <Level>
-            <h1>Atomic</h1>
-            <hr />
-            <Wrap>
-                <h2> Icons</h2>
-                <ItemsRow>
-                    <AngleIcon />
-                    <BellIcon />
-                    <CalendarIcon  />
-                    <CaretIcon />
-                    <CheckCircleIcon />
-                    <CheckIcon />
-                    <ChevronCircle />
-                    <ChevronIcon />
-                    <CloseIcon />
-                    <ExclamationTriangleIcon />
-                    <FilterIcon />
-                    <HeartIcon />
-                    <ImageIcon />
-                    <MapMarkerIcon />
-                    <PlusIcon />
-                    <PlusCircleIcon />
-                    <SearchIcon />
-                    <StarIcon />
-                    <UploadIcon />
-                </ItemsRow>
-            </Wrap>
-            
-            <Wrap>
-                <h2> Buttons</h2>
-                <ItemsRow>
-                    <BorderButton>BorderButton</BorderButton>
-                    <SolidButton>SolidButton</SolidButton>
-                    <IconButton><HeartIcon color="MAIN_COLOR" /></IconButton>
-                    <StatusButton color="ST_PINK"><HeartIcon /></StatusButton>
-                </ItemsRow>
-            </Wrap>
-
-            <Wrap>
-                <h2> Forms</h2>
-                <ItemsColumn>
-                    <Input placeholder="Input" enterHandler={enterHandler}/>
-                    <br/>
-                    <InputRef placeholder="InputRef" ref={inputRef} changeHandler={changeHandler} />
-                    {/* <FancyInput ref={fancyInputRef} />
-                    <button onClick={focus}>Fancy Click</button> */}
-                    <br />
-                    <Select defaultOption="select1"></Select>
-                    <br/>
-                    <SelectRef defaultOption="select2" ref={selectRef}></SelectRef>
-                    <br/>
-                    <TextArea></TextArea>
-                    
-                </ItemsColumn>
-            </Wrap>
-        </Level>
-
+                </Wrap>
+                
+                <Wrap>
+                    <h2>Etc</h2>
+                    <ItemsRow>
         
+                    </ItemsRow>
+                </Wrap>
+            </Level>
 
+            <Level>
+                <H>Molecules</H>
+                <hr />
+                <Wrap className="molecule-calendar">
+                    <h2> Calendar</h2>
+                    <ItemsColumn>
+                    <ItemsRow>
+                        <CalendarHeader 
+                        current={curr}
+                        type="date" 
+                        prevHandler={setCurr}
+                        nextHandler={setCurr}
+                        />
+                        <LabelWrap>
+                            <CalendarEventLabel join isSolid color={palette[Math.floor(Math.random() * palette.length)]}/>
+                            <CalendarEventLabel  color={palette[Math.floor(Math.random() * palette.length)]}/>
+                            <CalendarEventLabel isSolid join color={palette[Math.floor(Math.random() * palette.length)]}/>
+                        </LabelWrap>
+                    </ItemsRow>
+
+                    </ItemsColumn>
+                </Wrap>
+                
+                <Wrap>
+                    <h2>Event </h2>
+                    <ItemsRow>
+                        <ItemsColumn>
+                            <EventListItem />
+                            <EventListItem />
+                            <EventListItem />
+                        </ItemsColumn>
+                        <ItemsColumn>
+                            <EventDetailHeader />
+                            <EventDetailContent />
+                        </ItemsColumn>
+                    </ItemsRow>
+                </Wrap>
+
+                <Wrap>
+                    <h2>Etc</h2>
+                    <ItemsRow>
+                        <UserCard></UserCard>
+                    </ItemsRow>
+                </Wrap>
+            </Level>
+
+            <Level>
+                <H>Atomic</H>
+                <hr />
+                <Wrap>
+                    <h2> Icons</h2>
+                    <ItemsRow>
+                        <AngleIcon />
+                        <BellIcon />
+                        <CalendarIcon  />
+                        <CaretIcon />
+                        <CheckCircleIcon />
+                        <CheckIcon />
+                        <ChevronCircle />
+                        <ChevronIcon />
+                        <CloseIcon />
+                        <ExclamationTriangleIcon />
+                        <FilterIcon />
+                        <HeartIcon />
+                        <ImageIcon />
+                        <MapMarkerIcon />
+                        <PlusIcon />
+                        <PlusCircleIcon />
+                        <SearchIcon />
+                        <StarIcon />
+                        <UploadIcon />
+                    </ItemsRow>
+                </Wrap>
+                
+                <Wrap>
+                    <h2> Buttons</h2>
+                    <ItemsRow>
+                        <BorderButton width="30%">BorderButton</BorderButton>
+                        <SolidButton width="30%">SolidButton</SolidButton>
+                        <IconButton><HeartIcon color="MAIN_COLOR" /></IconButton>
+                        <StatusButton color="ST_PINK"><HeartIcon /></StatusButton>
+                    </ItemsRow>
+                </Wrap>
+
+
+                <Wrap>
+                    <h2> Forms</h2>
+                    <ItemsColumn>
+                        <Input placeholder="Input" enterHandler={enterHandler}/>
+                        <br/>
+                        <InputRef placeholder="InputRef" ref={inputRef} changeHandler={changeHandler} />
+                        {/* <FancyInput ref={fancyInputRef} />
+                        <button onClick={focus}>Fancy Click</button> */}
+                        <br />
+                        <Select defaultOption="select1"></Select>
+                        <br/>
+                        <SelectRef defaultOption="select2" ref={selectRef}></SelectRef>
+                        <br/>
+                        <TextArea></TextArea>
+                    </ItemsColumn>
+                </Wrap>
+
+
+                <Wrap>
+                    <h2> ETC</h2>
+                    <ItemsColumn>
+                    <DetailTextRow as="address"> DetailTextRow </DetailTextRow>
+                    <DetailTextRow as="time"> DetailTextRow </DetailTextRow>
+                    </ItemsColumn>
+                </Wrap>
+            </Level>
         </div>
     )
 }

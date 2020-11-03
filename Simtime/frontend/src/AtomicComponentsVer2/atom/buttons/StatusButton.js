@@ -8,7 +8,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
 
-  color: ${props=> props.active ? Colors[props.color] : Colors.ST_GRAY};
+  color: ${props=> props.selected ? Colors[props.color] : Colors.ST_GRAY};
   
   &:focus {
     outline: none;
@@ -16,7 +16,7 @@ const Button = styled.button`
   }
 
   &:hover {
-    color: ${props=> props.active ? Colors.ST_GRAY : Colors[props.color]};
+    color: ${props=> props.selected ? Colors.ST_GRAY : Colors[props.color]};
   }
 
 `
@@ -34,11 +34,11 @@ export default StatusButton
 StatusButton.propTypes = {
   type : PropTypes.string,
   color: PropTypes.string,
-  active: PropTypes.bool,
+  selected: PropTypes.bool,
 };
 
 StatusButton.defaultProps = {
   type : "button",
   color: "MAIN_COLOR",
-  active: false,
+  selected: false,
 };

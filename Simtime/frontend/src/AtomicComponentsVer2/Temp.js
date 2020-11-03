@@ -8,11 +8,11 @@ import * as Colors from "../../Colors";
 const Wrap = styled.div`
 `
 
-function Temp() {
+function Temp(props) {
     return (
-        <div>
+        <Wrap>
             
-        </div>
+        </Wrap>
     )
 }
 

@@ -35,7 +35,7 @@ ImageUser.propTypes = {
 };
 
 ImageUser.defaultProps = {
-  url: "",
+  url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png",
   width: "100%",
   height: "100%",
 };

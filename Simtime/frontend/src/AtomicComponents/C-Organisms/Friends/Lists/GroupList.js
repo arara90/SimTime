@@ -73,7 +73,7 @@ function GroupList(props) {
   };
 
   const renderButton = useCallback(
-    (content = "삭제", fn, color = "TEXT_LINK") => {
+    (content = "삭제", fn, color="TEXT_LINK") => {
       return (
         <ButtonWrap>
           <TextButton

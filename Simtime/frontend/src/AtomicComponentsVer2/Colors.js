@@ -49,7 +49,7 @@ export const ST_GREEN_NEON      = "#00C48C";
 export const ST_GRAY_LIGHT      = "#FBFBFB";
 export const ST_SEMI_GRAY       = "#ECEBED";
 export const ST_GRAY            = "#D0C9D6";
-export const ST_GRAY_DARK       = "#F4F3F1";
+export const ST_GRAY_DARK       = "#373a3c";
 
 
 export const ST_WHITE           = "#FFFFFF";

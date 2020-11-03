@@ -7,9 +7,10 @@ import * as Colors from "../../Colors";
 import HeartIcon from "../../atom/icons/HeartIcon"
 import StatusButton from "../../atom/buttons/StatusButton"
 import ImageUser from "../../../AtomicComponents/A-Atomics/ImageUser"
+import Tag from "../../atom/fonts/Tag"
 
 const EventList = styled.li`
-    width: 244px;
+    min-width: 245px;
     height: 100px;
     display: flex;
     flex-direction: column;
@@ -21,6 +22,7 @@ const EventList = styled.li`
     &:hover{
         background-color: ${Colors.MAIN_COLOR_LIGHT}
     }
+    
 `
 
 
@@ -47,26 +49,25 @@ const Like = styled(StatusButton)`
 `
 
 const Content = styled.a`
-    width: 96%; 
     flex: 1;
+    width: 96%;
     padding-left: 10px;
 
     display: flex;
     flex-direction: row;
-
 `
 
 const Host = styled(ImageUser)`
     margin: auto 10px 1em 0px;
     max-width: 45px;
     max-height: 45px;
-
 `
 
 const EventDesc = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 15px;
+    min-width: 0px;
 `
 const Address = styled.address`
     height: 20px;
@@ -78,37 +79,26 @@ const Time = styled.time`
     margin-bottom: 2px;
 `
 
-const Tags = styled.small`
+const Tags = styled(Tag)`
     color: ${Colors.TEXT_TAG};
-    width: 100%;
-    display: block;
 `
 
 function EventListItem(props) {
     const {title, location, time, tags} = props;
-
-    const getTags = tags.map((tag)=>{
-        return '#'+tag+" "
-    }
-
-    )
     return (
         <EventList {...props} className='list-event-item'>
-                <Header>
-                    <a href="#"><Title>{title}</Title></a>
-                    <Like color="ST_PINK"><HeartIcon size="sm"/></Like>
-                </Header>
-                <Content href="#" className="event-list-content">
-                    <Host url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"/>
-                    <EventDesc>
-                        <Address>{location.name}</Address>
-                        <Time>{time}</Time>
-                        <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags>
-                    </EventDesc>
-                </Content>
-                {/* <footer>
-                    <Tags>#치맥  #한강 #나들이 #봄맞이</Tags>
-                </footer> */}
+            <Header>
+                <a href="#"><Title>{title}</Title></a>
+                <Like color="ST_PINK"><HeartIcon /></Like>
+            </Header>
+            <Content href="#" className="event-list-content">
+                <Host url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"/>
+                <EventDesc>
+                    <Address>{location.name}</Address>
+                    <Time>{time}</Time>
+                    <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags>
+                </EventDesc>
+            </Content>
         </EventList>
     )
 }
@@ -123,9 +113,9 @@ EventListItem.propTypes = {
   };
 
 EventListItem.defaultProps = {
-    title: "Tremblant In Canada",
-    location: {name:"여의나루 4번 출구", lat:"", lng:"", address:""},
+    title: "Simtime Test",
+    location: {name:"작업실(우리집)", lat:"", lng:"", address:"경기도 부천시"},
     time: "PM 19:00",
-    tags: ["치맥",  "한강", "나들이", "봄맞이"]
+    tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"]
   };
   

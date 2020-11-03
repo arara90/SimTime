@@ -4,23 +4,27 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
-  background-color: ${({color}) => Colors[color]};
-  color: ${({fontColor}) => Colors[fontColor]};
+  background-color: transparent;
+  color: ${({color}) => Colors[color]};
   border-radius: 6px 6px 6px 6px;
   width: ${({width}) => width};
   height: ${({height}) => height};
+  text-decoration: underline;
+
 
   &:focus {
     outline: none;
     box-shadow: none;
+    text-decoration: underline;
   }
 
   &:hover {
-    background-color: ${({color}) => Colors[color+"_DARK"]};
-    color: ${({fontColor}) => Colors[fontColor]};
+    background-color: transparent;
+    color: ${({color}) => Colors[color+"_DARK"]};
+    text-decoration: underline;
   }
 `
-function SolidButton(props) {
+function TextButton(props) {
     return (
         <Button {...props} className={['btn', 'solid-btn', props.className].join(' ')}>
           {props.children}
@@ -28,20 +32,18 @@ function SolidButton(props) {
     )
 }
 
-export default SolidButton
+export default TextButton
 
-SolidButton.propTypes = {
+TextButton.propTypes = {
   type : PropTypes.string,
-  fontColor: PropTypes.string,
   color: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string
 };
 
-SolidButton.defaultProps = {
+TextButton.defaultProps = {
   type : "button",
-  fontColor: "ST_WHITE",
-  color: "ST_YELLOW",
-  width: "100%",
-  height: "38px",
+  color: "TEXT",
+  width: "auto",
+  height: "auto",
 };

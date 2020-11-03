@@ -7,10 +7,16 @@ const GlobalStyle = createGlobalStyle`
   font-family: "roboto", "Source Sans";
 }
 
+width: 100%;
+
 #app{
     display: flex;
     flex-direction: row;
     justify-content : center;
+}
+
+dl, ol, ul {
+  padding: 0;
 }
 
 .app-contents{
