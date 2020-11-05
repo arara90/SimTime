@@ -5,25 +5,14 @@ import PropTypes from "prop-types";
 import * as Colors from "../../Colors";
 
 import HeartIcon from "../../atom/icons/HeartIcon"
-import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
 import StatusButton from "../../atom/buttons/StatusButton"
 import ImageUser from "../../../AtomicComponents/A-Atomics/ImageUser"
 import Tag from "../../atom/fonts/Tag"
 
 const EventList = styled.li`
-    min-width: 245px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-
-    border-top: solid 1px ${Colors.MAIN_COLOR};
-   
-    &:hover{
-        background-color: ${Colors.MAIN_COLOR_LIGHT}
-    }
+    flex: 1;
 `
+
 
 const Header = styled.header`
     width: 96%; 
@@ -83,15 +72,15 @@ const Tags = styled(Tag)`
 `
 
 function EventListItem(props) {
-    const {id, title, location, time, tags, host, like, join} = props.event;
+    const {title, location, time, tags} = props;
     return (
         <EventList {...props} className='list-event-item'>
             <Header>
-                <a href="#"><Title> {join? <CheckCircleIcon />: null} {title} </Title></a>
-                <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
+                <a href="#"><Title>{title}</Title></a>
+                <Like color="ST_PINK"><HeartIcon /></Like>
             </Header>
             <Content href="#" className="event-list-content">
-                <Host url={host.url}/>
+                <Host url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"/>
                 <EventDesc>
                     <Address>{location.name}</Address>
                     <Time>{time}</Time>
@@ -105,27 +94,16 @@ function EventListItem(props) {
 export default EventListItem
 
 EventListItem.propTypes = {
-    event: PropTypes.object,
-    // id: PropTypes.string,
-    // title: PropTypes.string,
-    // location: PropTypes.object,
-    // time: PropTypes.string,
-    // tags: PropTypes.array,
-    // host: PropTypes.object,
-    // like: PropTypes.bool,
-    // join: PropTypes.bool
+    title: PropTypes.string,
+    location: PropTypes.object,
+    time: PropTypes.string,
+    tags: PropTypes.array
   };
 
 EventListItem.defaultProps = {
-    event: {
-        id: "0",
-        title: "Simtime Test",
-        location: {name:"작업실(우리집)", address:"경기도 부천시"},
-        time: "PM 19:00",
-        tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
-        host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
-        like: null,
-        join: null,
-    }
+    title: "Simtime Test",
+    location: {name:"작업실(우리집)", lat:"", lng:"", address:"경기도 부천시"},
+    time: "PM 19:00",
+    tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"]
   };
   

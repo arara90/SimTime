@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -28,31 +28,18 @@ const NextMonth = styled(Arrow)`
     transform: rotate(90deg);
 `
 
-function getStringDate(date, type='month'){
-    const now = new Date(date)
-    var year = now.getFullYear().toString();
-    var month = (now.getMonth() + 1).toString();
-    var date = now.getDate().toString();
-    var day = now.getDay().toString().substr(0,3);
 
-    var koWeek = ['일', '월', '화', '수', '목', '금', '토'];
-    var engWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-    if(type=='year'){
-        return year
-    } else if(type=='month'){
-        return [year, month].join('.')
-    } else if(type=='date') {
-        return [year, month, date].join('.')
-    } else if(type=='day') {
-        return [year, month, date].join('.') + ` (${koWeek[day]})`
-    } 
-    
-}
 
 
 function CalendarHeader(props) {
-    const {current, type, prevHandler, nextHandler, size} = props;
+    const {current, type, clickHandler, size} = props;
+    const [currString, setCurrString] = useState("");
+
+    useEffect(
+        ()=>{
+            setCurrString(changeDate(0,))
+        }, []
+    )
 
     const changeDate = (num)=>{
         var res = new Date(current)
@@ -63,18 +50,15 @@ function CalendarHeader(props) {
         } else {
             res.setDate(current.getDate() + num);
         } 
+        
+        clickHandler(res);
 
-        if(num==1){
-            nextHandler(res)
-        }else{
-            prevHandler(res)
-        }
     }
     
     return (
         <Wrap {...props} >
             <IconButton><PrevMonth size="1x" onClick={()=>changeDate(-1)}/></IconButton>
-                {getStringDate(current, type)}
+                {props.children}
             <IconButton><NextMonth size="1x" onClick={()=>changeDate(1)}/></IconButton>
         </Wrap>
     )

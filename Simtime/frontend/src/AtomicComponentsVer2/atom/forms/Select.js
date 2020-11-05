@@ -50,7 +50,6 @@ function Select(props) {
             e.preventDefault();
             e.stopPropagation();
 
-            
             optionBoxRef.current.toggle();
             selectedInputRef.current.toggle();
         },

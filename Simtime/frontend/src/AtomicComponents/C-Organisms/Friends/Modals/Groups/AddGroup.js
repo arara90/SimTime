@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
-  createRef,
+  useRef,
 } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -59,7 +59,7 @@ const transformIntoTableData = (candidates) => {
 
 function AddGroup(props) {
   const { groups, relationships, closeModal } = props;
-  const inputRef = createRef(null);
+  const inputRef = useRef(null);
 
   //UI
   const [groupname, setGroupName] = useState("");

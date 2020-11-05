@@ -1,9 +1,6 @@
 import React, {
   useState,
-  useCallback,
-  createRef,
-  forwardRef,
-  useEffect,
+  useRef,
 } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -70,9 +67,9 @@ function InputTime(props) {
   const [meridiem, setMeridiem] = useState("AM");
   const [param, setParam] = useState("");
 
-  const hourRef = createRef();
-  const minRef = createRef();
-  const meridiemRef = createRef(); //meridiem
+  const hourRef = useRef();
+  const minRef = useRef();
+  const meridiemRef = useRef(); //meridiem
 
   var minAsParam = 0; //24시기준
 

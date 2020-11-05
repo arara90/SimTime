@@ -30,7 +30,7 @@ const Content = React.memo((selectedGroup, relationships, closeModal) => {
 function TestPage(props) {
   const { groups, relationships } = props;
   const { modal, setModal, closeModal, handleModal } = useContext(ModalContext);
-  const ref = React.createRef();
+  const ref = React.useRef();
   React.useEffect(() => {
     props.getGroups();
   }, []);

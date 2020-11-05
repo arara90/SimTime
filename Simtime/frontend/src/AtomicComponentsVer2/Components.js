@@ -1,4 +1,4 @@
-import React, {createRef, useRef, useEffect, useState} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import styled from "styled-components";
 
 import * as Colors from "./Colors"
@@ -9,6 +9,7 @@ import StatusButton from "./atom/buttons/StatusButton"
 
 import AngleIcon                from "./atom/icons/AngleIcon"
 import BellIcon                 from "./atom/icons/BellIcon"
+import BinIcon                  from "./atom/icons/BinIcon"
 import CalendarIcon             from "./atom/icons/CalendarIcon"
 import CaretIcon                from "./atom/icons/CaretIcon"
 import CheckCircleIcon          from "./atom/icons/CheckCircleIcon"
@@ -27,12 +28,18 @@ import SearchIcon               from "./atom/icons/SearchIcon"
 import StarIcon                 from "./atom/icons/StarIcon"
 import UploadIcon               from "./atom/icons/UploadIcon"
 
+
+
 import Input, {InputRef} from "./atom/forms/Input"
 import FancyInput from "./atom/forms/NotInUse/FancyInput"
 import Select, {SelectRef} from "./atom/forms/Select"
 import TextArea, {TextAreaRef} from "./atom/forms/TextArea"
 
 import DetailTextRow from "./atom/DetailTextRow"
+import ImageUser from "./atom/ImageUser"
+
+
+import CalendarCell from "./atom/calendar/CalendarCell"
 
 //molecule
 import CalendarHeader from "./molecule/calendar/CalendarHeader"
@@ -47,10 +54,19 @@ import EventDetailContent from './molecule/event/EventDetailContent';
 import EventDetail from "./organism/calendar/event/EventDetail"
 import EventList from "./organism/calendar/event/EventList"
 
+
+//template
+import CalendarTemplate from "./template/CalendarTemplate"
+import LoadingTemplate from "./template/LoadingTemplate"
+
+//js
+import {getStringDate} from "../actions/calendar"
+
 const palette = Colors.Palette;
 
 const Level = styled.section`
     margin-top: 30px;
+    min-height: 50px;
 `
 
 const H = styled.h1`
@@ -66,6 +82,7 @@ const ItemsRow = styled.div`
 `
 const ItemsColumn = styled.div`
     width: 45%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -75,10 +92,12 @@ const LabelWrap = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    
 `
+
 function Components() {
-    const inputRef = createRef();
-    const selectRef = createRef();
+    const inputRef = useRef();
+    const selectRef = useRef();
     const [curr, setCurr] = useState(new Date());
     // const fancyInputRef = useRef();
     // const focus = () => {
@@ -120,6 +139,7 @@ function Components() {
         console.log(v)
     }
 
+
     return (
         <div>
             <Level>
@@ -127,15 +147,15 @@ function Components() {
                 <hr />
                 <Wrap className="molecule-calendar">
                     <h2> Event</h2>
-                    <ItemsColumn>
-                        <ItemsRow>
+                    <ItemsRow>
+                        <ItemsColumn>
                             <EventDetail />
-                            <EventList current={curr} prevHandler={setCurr} nextHandler={setCurr} />
-                        </ItemsRow>
-                        <ItemsRow>
-                            
-                        </ItemsRow>
-                    </ItemsColumn>
+                        </ItemsColumn>
+                        <ItemsColumn>
+                            <EventList current={curr} clickHandler={setCurr} />
+                        </ItemsColumn>
+                    </ItemsRow>
+
                 </Wrap>
                 
                 <Wrap>
@@ -153,12 +173,9 @@ function Components() {
                     <h2> Calendar</h2>
                     <ItemsColumn>
                     <ItemsRow>
-                        <CalendarHeader 
-                        current={curr}
-                        type="date" 
-                        prevHandler={setCurr}
-                        nextHandler={setCurr}
-                        />
+                        <CalendarHeader current={curr} type="month" clickHandler={setCurr}>
+                            {getStringDate(curr, "month")}
+                        </CalendarHeader>
                         <LabelWrap>
                             <CalendarEventLabel join isSolid color={palette[Math.floor(Math.random() * palette.length)]}/>
                             <CalendarEventLabel  color={palette[Math.floor(Math.random() * palette.length)]}/>
@@ -200,6 +217,7 @@ function Components() {
                     <ItemsRow>
                         <AngleIcon />
                         <BellIcon />
+                        <BinIcon />
                         <CalendarIcon  />
                         <CaretIcon />
                         <CheckCircleIcon />
@@ -248,14 +266,40 @@ function Components() {
                     </ItemsColumn>
                 </Wrap>
 
+                <Wrap>
+                    <h2> Calendar</h2>
+                    <ItemsRow>
+                            <CalendarCell /> 
+                            <CalendarCell isActiveMonth/>  
+                            <CalendarCell isActive /> 
+                            <CalendarCell isToday /> 
+                    </ItemsRow>
+                </Wrap>
+
 
                 <Wrap>
                     <h2> ETC</h2>
-                    <ItemsColumn>
-                    <DetailTextRow as="address"> DetailTextRow </DetailTextRow>
-                    <DetailTextRow as="time"> DetailTextRow </DetailTextRow>
-                    </ItemsColumn>
+                    <ItemsRow>
+                        <ItemsColumn>
+                            <DetailTextRow as="address"> DetailTextRow </DetailTextRow>
+                            <DetailTextRow as="time"> DetailTextRow </DetailTextRow>
+                        </ItemsColumn>
+                        <ItemsColumn>
+                            <ImageUser width="30px" height="30px" />
+                        </ItemsColumn>
+                    </ItemsRow>
                 </Wrap>
+            </Level>
+
+
+            <Level>
+                <H>Templates</H>
+                <hr />
+                <h2>Calendar Template</h2>
+                <CalendarTemplate />
+                <br />
+                <h2>Loading Template</h2>
+                <LoadingTemplate header=""> Loading </LoadingTemplate>
             </Level>
         </div>
     )

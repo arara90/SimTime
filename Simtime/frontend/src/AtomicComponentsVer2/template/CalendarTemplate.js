@@ -2,14 +2,6 @@ import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import SolidButton from "../atom/buttons/SolidButton"
-import BorderButton from "../atom/buttons/BorderButton";
-import IconButton from "../atom/buttons/IconButton"
-
-import CheckCircleIcon from "../atom/icons/CheckCircleIcon"
-import  * as Colors from "../Colors"
-
-
 const Wrap = styled.main`
   display: flex;
   flex-direction: row;
@@ -42,57 +34,66 @@ const RightSection = styled.section`
   }
 `
 
-const Filters = styled.div`
+const LeftTop = styled.div`
   width: 100%;
   height: 80px;
-  border: solid 1px yellow;
 
-  display:flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  // display:flex;
+  // flex-direction: row;
+  // justify-content: flex-start;
+  // align-items: center;
+  background: lightcoral;
+
 `
 
-const Calandar = styled.article`
+const LeftBottom = styled.article`
   width: 100%;
   flex: 1;
   background: pink;
 `
 
-const WriteButton = styled.div`
+const RightTop = styled.div`
   height: 80px;
   width: 100%;
-  background: grey;
+  background: gray;
 `
 
-const Details = styled.article`
+const RightBottom = styled.article`
   width: 100%;
   flex: 1;
-  background: pink;
+  font-size: 13px;
 `
 
 
 const CalendarTemplate = ({children, ...props }) => {
+  const {leftTop, leftBottom, rightTop, rightBottom} = props;
   return (
     <Wrap>
       <LeftSection>
-        <Filters id="filters">
-          <IconButton><CheckCircleIcon color={Colors["CHECK_GREEN"] } size="2x" /></IconButton>
-        </Filters>
-        <Calandar></Calandar>
+        <LeftTop>{leftTop}</LeftTop>
+        <LeftBottom>{leftBottom} </LeftBottom>
       </LeftSection>
       <RightSection>
-        <WriteButton></WriteButton>
-        <Details></Details>
+        <RightTop>{rightTop}</RightTop>
+        <RightBottom>{rightBottom}</RightBottom>
       </RightSection>
     </Wrap>
   );
 };
 
 CalendarTemplate.propTypes = {
+  leftTop     : PropTypes.node,
+  leftBottom  : PropTypes.node,
+  rightTop    : PropTypes.node,
+  rightBottom : PropTypes.node,
 };
 
 CalendarTemplate.defaultProps = {
+  leftTop     : "leftTop",
+  leftBottom  :"leftBottom",
+  rightTop    : "rightTop",
+  rightBottom : "rightBottom"
+
 };
 
 export default CalendarTemplate;

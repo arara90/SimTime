@@ -9,6 +9,7 @@ import SolidButton from "../../../atom/buttons/SolidButton"
 import TextButton from "../../../atom/buttons/TextButton"
 
 const Wrap = styled.article`
+  width: 100%;
   min-width: 245px;
   border : solid 1px ${Colors.MAIN_COLOR};
 

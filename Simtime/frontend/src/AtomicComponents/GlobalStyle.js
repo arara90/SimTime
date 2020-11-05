@@ -17,6 +17,7 @@ width: 100%;
 
 dl, ol, ul {
   padding: 0;
+  margin: 0;
 }
 
 .app-contents{

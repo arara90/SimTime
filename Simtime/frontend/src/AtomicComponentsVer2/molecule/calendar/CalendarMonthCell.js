@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import CalContent from "../../A-Atomics/Calendar/CalContent";
-import CalDate from "../../A-Atomics/Calendar/CalDate";
-import { MAIN_COLOR, BG_INACTIVE, BG_WHITE } from "../../Colors";
+import CalendarCell from "../../atom/calendar/CalendarCell"
+import CalendarDateText from "../../atom/calendar/CalendarDateText"
 
 const Wrap = styled.div`
-  width: 14%;
+  width: 100%;
   height: 100%;
   border: solid 1px red;
 
