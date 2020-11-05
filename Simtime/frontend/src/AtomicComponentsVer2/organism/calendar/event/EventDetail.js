@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import * as Colors from "../../Colors";
+import * as Colors from "../../../Colors";
 
-import EventDetailHeader from "../../molecule/event/EventDetailHeader"
-import EventDetailContent from "../../molecule/event/EventDetailContent"
-import SolidButton from "../../atom/buttons/SolidButton"
-import TextButton from "../../atom/buttons/TextButton"
+import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
+import EventDetailContent from "../../../molecule/event/EventDetailContent"
+import SolidButton from "../../../atom/buttons/SolidButton"
+import TextButton from "../../../atom/buttons/TextButton"
 
 const Wrap = styled.article`
   min-width: 245px;
@@ -24,7 +24,6 @@ const Buttons = styled.footer`
   width: 96%;
   padding: 0.5em 1em 1em 1em;
   text-align: center;
-
 `
 
 const JoinButton = styled(SolidButton)`

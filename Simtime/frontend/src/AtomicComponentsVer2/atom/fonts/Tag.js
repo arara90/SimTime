@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import {TEXT_TAG}  from "../../Colors";
+import * as Colors from "../../Colors";
 
 const StyledTag = styled.small`
   width: 100%;
   font-size: 0.8em;
-  color: ${TEXT_TAG};
+  color: ${({color})=>Colors[color]};
 
   ${(props)=>
       props.multiple?`
@@ -35,11 +35,13 @@ export default Tag;
 
 Tag.propTypes = {
   multiple: PropTypes.bool,
-  line:PropTypes.number
+  line:PropTypes.number,
+  color: PropTypes.string
 
 };
 
 Tag.defaultProps = {
   multiple: null,
-  line: 2
+  line: 2,
+  color: "TEXT_TAG"
 };

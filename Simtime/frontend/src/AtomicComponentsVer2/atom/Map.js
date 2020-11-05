@@ -3,9 +3,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 export class Map extends Component {
-  myMap = null;
-  marker = null;
-
   constructor(props) {
     super(props);
   }
@@ -35,6 +32,7 @@ export class Map extends Component {
   }
 
   loadMap() {
+    
     var eventLocation = new kakao.maps.LatLng(
       this.props.location.lat,
       this.props.location.lng
@@ -50,6 +48,7 @@ export class Map extends Component {
     });
 
     this.myMap = new window.kakao.maps.Map(container, options);
+
     this.displayMarker({
       lat: this.props.location.lat,
       lng: this.props.location.lng,

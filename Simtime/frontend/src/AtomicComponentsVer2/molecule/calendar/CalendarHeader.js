@@ -12,6 +12,8 @@ const Wrap = styled.div`
     justify-content: space-between;
     align-items: center;
     cursor: default;
+
+    font-size: ${({size})=>size};
 `
 
 const Arrow = styled(AngleIcon)`
@@ -50,26 +52,30 @@ function getStringDate(date, type='month'){
 
 
 function CalendarHeader(props) {
-    const {current, type, prevHandler, nextHandler} = props;
+    const {current, type, prevHandler, nextHandler, size} = props;
 
-    const changeDate = (curr, type, num, handler)=>{
-        var res = new Date(curr)
+    const changeDate = (num)=>{
+        var res = new Date(current)
         if(type=='year'){
-            res.setYear(curr.getFullYear() + num);
+            res.setYear(current.getFullYear() + num);
         } else if(type=='month') {
-            res.setMonth(curr.getMonth() + num);
+            res.setMonth(current.getMonth() + num);
         } else {
-            res.setDate(curr.getDate() + num);
+            res.setDate(current.getDate() + num);
         } 
-        handler(res)
-    }
 
+        if(num==1){
+            nextHandler(res)
+        }else{
+            prevHandler(res)
+        }
+    }
     
     return (
-        <Wrap {...props} className="calnedar-header">
-            <IconButton><PrevMonth size="xs" onClick={()=>changeDate(current, type, -1, prevHandler)}/></IconButton>
-            {getStringDate(current, type)}
-            <IconButton><NextMonth size="xs" onClick={()=>changeDate(current, type, 1, nextHandler)}/></IconButton>
+        <Wrap {...props} >
+            <IconButton><PrevMonth size="1x" onClick={()=>changeDate(-1)}/></IconButton>
+                {getStringDate(current, type)}
+            <IconButton><NextMonth size="1x" onClick={()=>changeDate(1)}/></IconButton>
         </Wrap>
     )
 }
@@ -79,10 +85,12 @@ export default CalendarHeader
 CalendarHeader.propTypes = {
     current: PropTypes.instanceOf(Date),
     type: PropTypes.oneOf(['year','month', 'date', 'day']),
+    size: PropTypes.string
   };
 
 CalendarHeader.defaultProps = {
     current: new Date(),
-    type: 'month'
+    type: 'month',
+    size: "1em"
   };
   

@@ -44,7 +44,8 @@ import EventDetailHeader from './molecule/event/EventDetailHeader';
 import EventDetailContent from './molecule/event/EventDetailContent';
 
 //organism
-import EventDetail from "./organism/calendar/EventDetail"
+import EventDetail from "./organism/calendar/event/EventDetail"
+import EventList from "./organism/calendar/event/EventList"
 
 const palette = Colors.Palette;
 
@@ -122,13 +123,14 @@ function Components() {
     return (
         <div>
             <Level>
-                <H>Molecules</H>
+                <H>Organisms</H>
                 <hr />
                 <Wrap className="molecule-calendar">
                     <h2> Event</h2>
                     <ItemsColumn>
                         <ItemsRow>
                             <EventDetail />
+                            <EventList current={curr} prevHandler={setCurr} nextHandler={setCurr} />
                         </ItemsRow>
                         <ItemsRow>
                             

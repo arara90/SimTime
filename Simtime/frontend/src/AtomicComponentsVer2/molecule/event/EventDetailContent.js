@@ -100,7 +100,7 @@ function EventDetailContent(props) {
                     </UserList>)
                 })}
             </Users>
-            <Map className="event-detail-map"/>
+            <Map mapId="event-detail-map"/>
             <Message line={6}>{message}</Message>
             <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag>
         </Wrap>
@@ -115,7 +115,7 @@ EventDetailContent.propTypes = {
     participants: PropTypes.array,
     message: PropTypes.string,
     tags: PropTypes.array,
-    like: PropTypes.bool
+    like: PropTypes.bool,
   };
 
 EventDetailContent.defaultProps = {

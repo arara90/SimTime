@@ -25,9 +25,10 @@ const Colored = styled(SolidButton)`
   flex-direction: row;
   justify-content:flex-start;
   align-items: center;
-  line-height: 1em;
 
-  padding: 2px 2px;
+  font-size: 0.9em;
+  line-height: 1.15em;
+  padding: 1px 2px;
 `
 
 const Bordered = styled(BorderButton)`
@@ -37,9 +38,12 @@ const Bordered = styled(BorderButton)`
   flex-direction: row;
   justify-content:flex-start;
   align-items: center;
-  line-height: 1em;
 
-  padding: 2px 2px;
+  font-size: 0.9em;
+  border-width: thin;
+
+  line-height: 1.15em;
+  padding: 0 2px;
 
   &:hover {
     // background-color: ${({color}) => Colors["MAIN_COLOR_LIGHT"]};
@@ -79,13 +83,12 @@ const Title = styled.strong`
 
 const StyledTag = styled(Tag)`
   display: block;
-  font-size: 0.5em;
+  font-size: 0.8em;
 
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   
-  color: ${Colors.TEXT};
 `
 
 function CalendarEventLabel(props) {
@@ -98,7 +101,7 @@ function CalendarEventLabel(props) {
           <Host url={user.imageUrl} />
           <Content>
             <Title>{title}</Title>
-            <StyledTag>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
+            <StyledTag color={isSolid ? fontColor : color+"_DARK"}>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
           </Content>
         </Button>
       </Wrap>
@@ -122,7 +125,7 @@ CalendarEventLabel.defaultProps = {
   color: palette[Math.floor(Math.random() * palette.length)],
   fontColor: "ST_WHITE",
   join: false,
-  title:"Chicken",
+  title:"Chickenkkkkk",
   tags: ["한강", "맥주", "콜라", "치맥"],
   user: {
     imageUrl: "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg",
