@@ -2,69 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+
 import CalendarCell from "../../atom/calendar/CalendarCell"
 import CalendarDateText from "../../atom/calendar/CalendarDateText"
 
-const Wrap = styled.div`
-  width: 100%;
-  height: 100%;
-  border: solid 1px red;
+const Wrap = styled(CalendarCell)`
+  width: ${({width})=>width};
+  height: ${({height})=>height};;
 
-  background-color: ${(props) => (props.isActive ? BG_WHITE : BG_INACTIVE)}95;
-  ${(props) => (props.isToday ? `background-color: ${MAIN_COLOR}95` : "")};
-
-  overflow: hidden;
-
-  @media only screen and (max-width: 920px) {
-    width: 14.8%;
-    margin-right: 2px;
-    margin-bottom: 2px;
-    ${(props) => (props.day == 0 ? "margin-left: 2px;" : "")};
-  }
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
 `;
 
-const DateWrap = styled.div`
-  height: ${(props) => props.contentHeight}px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+const CurrDate = styled(CalendarDateText)`
+  margin-right: 5px;
+  ${({date}) => (date == 1 ? `text-decoration: underline;` : "")};
 `;
 
-const MyCalDate = styled(CalDate)`
-  margin-right: 4px;
-  ${(props) => (props.date == "1" ? `text-decoration: underline;` : "")}
-`;
-
-const Event = styled.div`
-  width: 100%;
-  height: auto;
-  min-height: 16px;
-  background-color: pink;
-  border: solid 1px blue;
-
-`
 
 function CalendarMonthCell(props) {
-  const { year, month, day, date } = props;
-  const contentHeight = (
-    parseInt(props.height.replace(/[^0-9]/g, "")) / 7
-  ).toFixed(2);
-
+  const { year, month, day, date, isHoliday, isActive, isActiveMonth, isToday } = props;
   return (
-    <Wrap {...props}>
-      <DateWrap contentHeight={contentHeight}>
-        <MyCalDate date={date} day={day} contentHeight={contentHeight}>
-          {date == "1" ? `${month}/1` : date}
-        </MyCalDate>
-      </DateWrap>
-      <Event className="here"/>
-      <Event className="here"/>
-      <Event className="here"/>
-      <Event className="here"/>
-      <Event className="here"/>
-      <Event className="here"/>
-
+    <Wrap {...props} >
+      <CurrDate date={date} day={day}>
+        {date == 1 ? `${month}/1` : date}
+      </CurrDate>
+      {props.children}
     </Wrap>
   );
 }
@@ -72,13 +37,25 @@ function CalendarMonthCell(props) {
 export default CalendarMonthCell;
 
 CalendarMonthCell.propTypes = {
+  width: PropTypes.string,
   height: PropTypes.string,
-  date: PropTypes.string.isRequired,
-  numOfDay: PropTypes.number,
+  month: PropTypes.number.isRequired,
+  date: PropTypes.number.isRequired,
+  day: PropTypes.number.isRequired,
+  isHoliday: PropTypes.bool,
   isActive: PropTypes.bool,
+  isActiveMonth: PropTypes.bool,
   isToday: PropTypes.bool,
 };
 
 CalendarMonthCell.defaultProps = {
-  date: "30",
+  width: "100%",
+  height: "100%",
+  month: 10,
+  date: 30,
+  day: 0,
+  isHoliday: null,
+  isActive: null,
+  isActiveMonth: null,
+  isToday: null,
 };

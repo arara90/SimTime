@@ -42,20 +42,20 @@ const LeftTop = styled.div`
   // flex-direction: row;
   // justify-content: flex-start;
   // align-items: center;
-  background: lightcoral;
+  // background: lightcoral;
 
 `
 
 const LeftBottom = styled.article`
   width: 100%;
   flex: 1;
-  background: pink;
+  // background: pink;
 `
 
 const RightTop = styled.div`
   height: 80px;
   width: 100%;
-  background: gray;
+  // background: gray;
 `
 
 const RightBottom = styled.article`

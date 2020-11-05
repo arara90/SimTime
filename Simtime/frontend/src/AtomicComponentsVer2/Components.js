@@ -40,27 +40,31 @@ import ImageUser from "./atom/ImageUser"
 
 
 import CalendarCell from "./atom/calendar/CalendarCell"
+import CalendarDateText from "./atom/calendar/CalendarDateText"
 
 //molecule
 import CalendarHeader from "./molecule/calendar/CalendarHeader"
-import EventListItem from "./molecule/event/EventListItem"
+import CalendarMonthCell from './molecule/calendar/CalendarMonthCell';
 import CalendarEventLabel from "./molecule/calendar/CalendarEventLabel"
-import UserCard from "./molecule/UserCard"
 
+import EventListItem from "./molecule/event/EventListItem"
 import EventDetailHeader from './molecule/event/EventDetailHeader';
 import EventDetailContent from './molecule/event/EventDetailContent';
+
+import UserCard from "./molecule/UserCard"
 
 //organism
 import EventDetail from "./organism/calendar/event/EventDetail"
 import EventList from "./organism/calendar/event/EventList"
 
+import EventCalendar from "./organism/calendar/EventCalendar"
 
 //template
 import CalendarTemplate from "./template/CalendarTemplate"
 import LoadingTemplate from "./template/LoadingTemplate"
 
 //js
-import {getStringDate} from "../actions/calendar"
+import {getStringDate, generate} from "../actions/calendar"
 
 const palette = Colors.Palette;
 
@@ -155,14 +159,21 @@ function Components() {
                             <EventList current={curr} clickHandler={setCurr} />
                         </ItemsColumn>
                     </ItemsRow>
-
                 </Wrap>
                 
+
                 <Wrap>
-                    <h2>Etc</h2>
-                    <ItemsRow>
-        
+                    <h2>Calendar</h2>
+                    <ItemsRow> 
+                       <EventCalendar current={curr} dates={generate(curr,5)} />
                     </ItemsRow>
+                </Wrap>
+
+
+
+                <Wrap>
+                    <h2></h2>
+                    <ItemsRow></ItemsRow>
                 </Wrap>
             </Level>
 
@@ -171,19 +182,28 @@ function Components() {
                 <hr />
                 <Wrap className="molecule-calendar">
                     <h2> Calendar</h2>
-                    <ItemsColumn>
                     <ItemsRow>
+                    <ItemsColumn>
                         <CalendarHeader current={curr} type="month" clickHandler={setCurr}>
                             {getStringDate(curr, "month")}
                         </CalendarHeader>
+                        <br/>
                         <LabelWrap>
                             <CalendarEventLabel join isSolid color={palette[Math.floor(Math.random() * palette.length)]}/>
                             <CalendarEventLabel  color={palette[Math.floor(Math.random() * palette.length)]}/>
                             <CalendarEventLabel isSolid join color={palette[Math.floor(Math.random() * palette.length)]}/>
                         </LabelWrap>
-                    </ItemsRow>
-
                     </ItemsColumn>
+                    <ItemsColumn>
+                        <ItemsRow>
+                        <CalendarMonthCell  date={1} day={1}/>
+                        <CalendarMonthCell isActive  date={2} day={1}/>
+                        <CalendarMonthCell isActive isActiveMonth date={3} day={6}/>
+                        <CalendarMonthCell isActive isToday date={4} day={0}/>
+                        </ItemsRow>
+                        <br/>
+                    </ItemsColumn>
+                    </ItemsRow>
                 </Wrap>
                 
                 <Wrap>
@@ -270,10 +290,23 @@ function Components() {
                     <h2> Calendar</h2>
                     <ItemsRow>
                             <CalendarCell /> 
-                            <CalendarCell isActiveMonth/>  
+                            <CalendarCell isActive isActiveMonth/>  
                             <CalendarCell isActive /> 
                             <CalendarCell isToday /> 
                     </ItemsRow>
+                    <br/>
+                    <ItemsRow>
+                        <CalendarDateText day={0} >0</CalendarDateText> 
+                        <CalendarDateText day={1} >1</CalendarDateText> 
+                        <CalendarDateText day={2} >2</CalendarDateText> 
+                        <CalendarDateText day={3} >3</CalendarDateText> 
+                        <CalendarDateText day={4} >4</CalendarDateText> 
+                        <CalendarDateText day={5} >5</CalendarDateText> 
+                        <CalendarDateText day={6} >6</CalendarDateText> 
+                    </ItemsRow>
+                    
+
+                    
                 </Wrap>
 
 
