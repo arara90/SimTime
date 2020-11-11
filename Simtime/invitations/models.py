@@ -67,6 +67,8 @@ class Event(CustomizedModel):
 
     message = models.TextField(blank=True, null=True)
     photo = models.ImageField(upload_to=user_path, blank=True, null=True)
+    color = models.CharField(max_length=10, default="ST_VIOLET") #violet
+    font_color = models.CharField(max_length=10, default="ST_WHITE")
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -93,6 +95,8 @@ class Invitation(CustomizedModel):
         max_length=25, choices=Attendance.choices, default=Attendance.Unknown)
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함
     is_shown = models.BooleanField(default=True)
+    color = models.CharField(max_length=10, default="ST_VIOLET") #violet
+    font_color = models.CharField(max_length=10, default="ST_WHITE")
 
     class Meta:
         constraints = [models.UniqueConstraint(

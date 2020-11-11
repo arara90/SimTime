@@ -3,8 +3,6 @@ from .models import Invitation,Event
 
 class InvitationSerializer(serializers.ModelSerializer):
     # event_place = serializers.JSONField()
-
-
     class Meta:
         model = Invitation
         fields = '__all__'

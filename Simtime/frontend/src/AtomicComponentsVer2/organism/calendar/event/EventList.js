@@ -29,16 +29,21 @@ const List = styled.ul`
 `
 
 function EventList(props) {
-  const { events, current, clickHandler} = props;
+  const { events, current, itemClickHandler} = props;
+  useEffect(()=>{
+    console.log(events)
+  })
   
     return (
       <Wrap>
-        <Header size="1.2em" type="date" current={current} clickHandler={(res)=>clickHandler(res)}  >
-          {getStringDate(current,"date")}
+        <Header size="1.2em" type="date" current={new Date(current)} clickHandler={()=>{}} >
+          {getStringDate(current,"day")}
         </Header>
         <List isEmpty={events.length==0}>
-          {events.map( (event) => {
-            return <EventListItem key={event.id} {...event}/>})
+          { events.map((event) => {
+            return <EventListItem key={event.id} event={event} onClick={(e)=>{
+              console.log('EventListItemClicl', event)
+              itemClickHandler(e,event)}}  />})
           }
         </List>
       </Wrap>

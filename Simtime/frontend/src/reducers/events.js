@@ -7,16 +7,30 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  events: [],
   selectedEvent: {}
 };
+
+
+function transformEvents(events, data){
+  data.map((d)=>{
+    var date = d.event_time.substr(0, 10)
+    if( events[date]==undefined){
+      events[date] = [d]
+    }else{
+      events[date] = [...events[date], d]
+    }
+  })
+  return events
+}
+
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_EVENTS:
+      var newEvent = action.payload
       return {
         ...state,
-        events: action.payload
+        events: {...state.events, ...newEvent }
       };
     case GET_EVENT:
       return {
@@ -26,7 +40,7 @@ export default function(state = initialState, action) {
     case ADD_EVENT:
       return {
         ...state,
-        events: [...state.events, action.payload]
+        events: transformEvents(state.events, [action.payload])
       };
     case DELETE_EVENT:
       return {

@@ -12,8 +12,11 @@ import tempfile
 class EventAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request):
-        events = self.request.user.events.all()
+
+    def get(self, request, start, end):
+        print('events', start, end)
+        # events = self.request.user.events.all()
+        events = self.request.user.events.filter(event_time__range=[start, end])
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
         # return self.request.user.events.all()  # related_name으로 invitations지정

@@ -13,18 +13,47 @@ import {
   CREATE_MESSAGE,
 } from "./types";
 
-export const getEvents = () => (dispatch) => {
+function transformEvents(data){
+  var transformed = {}
+  data.map((d)=>{
+    var date = d.event_time.substr(0, 10)
+    if( transformed[date]==undefined){
+      transformed[date] = [d]
+    }else{
+      transformed[date] = [...transformed[date], d]
+    }
+  })
+  return transformed
+}
+
+
+
+export const getEvents = (start, end) => (dispatch) => {
+  console.log(start, end)
   axiosFormInstance
-    .get("/api/events/")
-    .then((res) => {
+    .get(`/api/events/${start}/${end}`)
+    .then((res={data:[]}) => {
+      var transformed = {}
+      res.data.map((d)=>{
+        var date = d.event_time.substr(0, 10)
+        if( transformed[date]==undefined){
+          transformed[date] = [d]
+        }else{
+          transformed[date] = [...transformed[date], d]
+        }
+      })
+
       dispatch({
         type: GET_EVENTS,
-        payload: res.data,
+        payload: transformed,
       });
+      // console.log(res)
     })
-    .catch((err) =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
+    .catch((err) =>{
+      // dispatch(returnErrors(err.response.data, err.response.status))
+      console.log(err)
+    });
+    
 };
 
 export const getEvent = (id) => (dispatch) => {
@@ -50,20 +79,23 @@ export const addEvent = (event, img) => (dispatch) => {
   axiosFormInstance
     .post("/api/events/create", data)
     .then((res) => {
+      var transformed = transformEvents([res.data])
       dispatch({
         type: ADD_EVENT,
-        payload: res.data,
+        payload: res,
       });
 
       dispatch(createMessage({ addEvent: "Event Added" }));
     })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+    // .catch((err) => {
+    //   dispatch(returnErrors(err.response.data, err.response.status));
+    // });
   }else{
   axiosInstance
     .post("/api/events/create", event)
     .then((res) => {
+      console.log(res)
+      var transformed = transformEvents([res.data])
       dispatch({
         type: ADD_EVENT,
         payload: res.data,
@@ -71,9 +103,9 @@ export const addEvent = (event, img) => (dispatch) => {
 
       dispatch(createMessage({ addEvent: "Event Added" }));
     })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+    // .catch((err) => {
+    //   dispatch(returnErrors(err.response.data, err.response.status));
+    // });
   }
   
 };

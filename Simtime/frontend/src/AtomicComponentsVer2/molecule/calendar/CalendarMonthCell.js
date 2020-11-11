@@ -8,12 +8,19 @@ import CalendarDateText from "../../atom/calendar/CalendarDateText"
 
 const Wrap = styled(CalendarCell)`
   width: ${({width})=>width};
-  height: ${({height})=>height};;
+  height: ${({height})=>height};
+  overflow: auto;
+  overflow-x: hidden;
 
   display: inline-flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
+
+  
+&::-webkit-scrollbar {
+  width: 0px;
+}
 `;
 
 const CurrDate = styled(CalendarDateText)`

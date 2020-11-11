@@ -14,10 +14,9 @@ const Wrap = styled.div`
   ${(props) => (props.isToday ? `background-color: ${Colors.MAIN_COLOR}95` : "")};
 
   &:hover{
-    ${(props) => (props.isActive ? `   
-     border: solid 1px  ${Colors.MAIN_COLOR_DARK};
-    background: ${Colors.MAIN_COLOR_LIGHT};` : null )
-    }
+    // ${(props) => (props.isActive ? `   
+    //  border: solid 1px  ${Colors.MAIN_COLOR_DARK};
+    // background: ${Colors.MAIN_COLOR_LIGHT};` : null )}
     outline: none;
   }
 `

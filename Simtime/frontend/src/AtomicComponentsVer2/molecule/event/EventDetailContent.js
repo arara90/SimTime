@@ -31,6 +31,10 @@ const Detail = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+
+    strong{
+        font-size: 1.15em;
+    }
 ` 
 const LikeButton = styled(StatusButton)`
   padding-right: 1px;
@@ -40,6 +44,7 @@ const LikeButton = styled(StatusButton)`
 const Users = styled.ul`
     width: 100%;
     margin-top: 0.5em;
+    margin-bottom: 1em;
     padding: 0 1em 2px 1em;
     
     display: flex;
@@ -63,9 +68,6 @@ const UserList = styled.li`
 const StyledImageUser = styled(ImageUser)`
 `
 
-
-
-
 const IconStyle = css`
     color: ${MAIN_COLOR};
     margin-right: 1em;
@@ -82,15 +84,16 @@ const Message = styled(TextBox)`
 const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
-    const {location, time, participants, message, tags, like} = props;
+    const { event_place, event_time, participants, message, tags, like} = props;
+    console.log(props)
     return (
         <Wrap className="event-detail">
             <Detail>
                 <strong>Details</strong>
                 <LikeButton color="ST_PINK" selected={like}><HeartIcon /></LikeButton>
             </Detail>
-            <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{time}</DetailTextRow>
-            <DetailTextRow as="address"><LocationIcon className="fa-fw"/>{location.name}</DetailTextRow>
+            <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{event_time}</DetailTextRow>
+            <DetailTextRow as="address"><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
             <Users className="participants">
                 <ParticipantsIcon className="fa-fw" />
                 {participants.map((p)=>{
@@ -102,7 +105,7 @@ function EventDetailContent(props) {
             </Users>
             <Map mapId="event-detail-map"/>
             <Message line={6}>{message}</Message>
-            <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag>
+            {/* <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> */}
         </Wrap>
     )
 }
@@ -110,17 +113,17 @@ function EventDetailContent(props) {
 export default EventDetailContent
 
 EventDetailContent.propTypes = {
-    location : PropTypes.object,
-    time: PropTypes.string,
+    event_place : PropTypes.object,
+    event_time: PropTypes.string,
     participants: PropTypes.array,
     message: PropTypes.string,
-    tags: PropTypes.array,
+    // tags: PropTypes.array,
     like: PropTypes.bool,
   };
 
 EventDetailContent.defaultProps = {
-    location : {name:"송내역 1호선", address:"부천시 송내대로39번길 14"},
-    time: "2020/04/03 (월) PM 8:00 ",
+    event_place : {name:"송내역 1호선", address:"부천시 송내대로39번길 14"},
+    event_time: "2020/04/03 (월) PM 8:00 ",
     participants: [
         {name:"arara90", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
         {name:"admin", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
@@ -134,12 +137,12 @@ EventDetailContent.defaultProps = {
         // {name:"admi", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
     ],
     message: "이것다.이것은 T니다.이것은 Test Message입니st MeMessage입니다.이것은 Test Message입니다.이것은 Test Message입니다.",
-    tags: ["나이","tg1", "강1", "맥1", "tag", 
-    "한강", "맥주", "나들이","tag1", "한강1", 
-    "맥1주", "나1들이","한강3", "맥2주", 
-    "나3들", "들이","한강3", "맥2주", 
-    "3들이", "나1들이","강3", "주", 
-    ],
+    // tags: ["나이","tg1", "강1", "맥1", "tag", 
+    // "한강", "맥주", "나들이","tag1", "한강1", 
+    // "맥1주", "나1들이","한강3", "맥2주", 
+    // "나3들", "들이","한강3", "맥2주", 
+    // "3들이", "나1들이","강3", "주", 
+    // ],
     like: true
     
   };

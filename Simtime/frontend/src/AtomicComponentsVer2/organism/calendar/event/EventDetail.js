@@ -35,11 +35,12 @@ const JoinButton = styled(SolidButton)`
 
 const DeleteButton = styled(TextButton)``
 
-function EventDetail() {
-    return (
+function EventDetail(props) {
+  const {id, event_name, event_place, event_time, message, tags, host, like, join} = props.event;
+  return (
         <Wrap>
-          <EventDetailHeader />
-          <EventDetailContent />
+          <EventDetailHeader event_name={event_name} tags={tags} backHandler={props.backHandler}/>
+          <EventDetailContent {...props.event}/>
           <Buttons>
             <JoinButton color="ST_BLUE">Join</JoinButton>
             <DeleteButton color="ST_GRAY">delete</DeleteButton>
@@ -51,9 +52,20 @@ function EventDetail() {
 export default EventDetail
 
 EventDetail.propTypes = {
+  event: PropTypes.object,
   };
 
 EventDetail.defaultProps = {
+  event: {
+    id: "0",
+    event_name: "Simtime Test",
+    event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
+    event_time: "PM 19:00",
+    tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
 
+    host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
+    like: null,
+    join: null,
+  }
   };
   

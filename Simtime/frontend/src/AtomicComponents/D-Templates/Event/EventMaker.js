@@ -211,7 +211,6 @@ function EventMaker(props) {
         ...myEvent,
       });
     } else {
-      console.log("check: ", myEvent);
       props.addEvent(myEvent, image);
     }
 
@@ -220,19 +219,15 @@ function EventMaker(props) {
 
   const handleChangeFile = (e) => {
     let reader = new FileReader();
-    console.log("hc");
 
     reader.onloadend = () => {
       // 2. 읽기가 완료되면 아래코드가 실행됩니다.
-      console.log("hc2");
       const base64 = reader.result;
       if (base64) {
-        console.log("hc3");
         setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
       }
     };
     if (e.target.files[0]) {
-      console.log("hc4", e.target.files);
       reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
       setImage(e.target.files[0]); // 파일 상태 업데이트
     }
@@ -274,8 +269,7 @@ function EventMaker(props) {
             readOnly={true}
             cursor="pointer"
             onClick={showDatePicker}
-          ></MyDateInput>
-          {console.log(date)}
+           />
           <MyDatePicker
             isShown={datePicker}
             selectDate={changeDate}
@@ -352,7 +346,6 @@ function EventMaker(props) {
 
   const handleClick = (e, targetPage) => {
     e.preventDefault();
-    console.log("event: ", event);
     const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
     const host = props.user.id;
 
@@ -369,7 +362,6 @@ function EventMaker(props) {
   };
 
   const renderButtons = (page) => {
-    console.log("ggg");
     switch (page) {
       case 0:
         return (

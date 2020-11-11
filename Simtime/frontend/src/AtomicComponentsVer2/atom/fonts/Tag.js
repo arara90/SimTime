@@ -5,7 +5,7 @@ import * as Colors from "../../Colors";
 
 const StyledTag = styled.small`
   width: 100%;
-  font-size: 0.8em;
+  font-size: 0.85em;
   color: ${({color})=>Colors[color]};
 
   ${(props)=>

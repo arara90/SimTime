@@ -146,12 +146,12 @@ const User = styled(ImageUser)`
 `
 
 function EventDetailHeader(props) {
-  const {title, tags } = props;
+  const { event_name, tags, backHandler } = props;
 
     return (
         <Wrap>
-            <BackButton><BackIcon /></BackButton>
-            <TitleText className="event-title">{title}</TitleText>
+            <BackButton onClick={backHandler}><BackIcon /></BackButton>
+            <TitleText className="event-title">{event_name}</TitleText>
             <User width="2.5em" height="2.5em"/>
         </Wrap>
     )
@@ -160,12 +160,12 @@ function EventDetailHeader(props) {
 export default EventDetailHeader
 
 EventDetailHeader.propTypes = {
-  title: PropTypes.string,
+  event_name: PropTypes.string,
   tags: PropTypes.array
 };
 
 EventDetailHeader.defaultProps = {
-  title: "Tremblant In Canada",
+  event_name: "Tremblant In Canada",
   tags: ["tag", "한강", "맥주", "나들이","tag1", "한강1", "맥1주", "나1들이"]
 };
   

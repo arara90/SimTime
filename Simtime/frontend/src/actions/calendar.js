@@ -174,5 +174,5 @@ export function generate(currDate, num=0) {
     }
   }
 
-  return dates;
+  return { start:startDate, end:endDate , weeks:dates};
 }

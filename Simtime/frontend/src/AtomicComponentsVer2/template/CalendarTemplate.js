@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ const Wrap = styled.main`
 
 const LeftSection = styled.section`
   width: 68.5%;
-  height: 680px;
+  // height: 680px;
   display: flex;
   flex-direction: column;
 
@@ -25,7 +25,7 @@ const LeftSection = styled.section`
 `
 const RightSection = styled.section`
   width: 31%;
-  height: 680px;
+  // height: 680px;
   display: flex;
   flex-direction: column;
 
@@ -44,11 +44,15 @@ const LeftTop = styled.div`
   // align-items: center;
   // background: lightcoral;
 
+  @media only screen and (max-width: 920px) {
+    height: 40px;
+  }
+
 `
 
-const LeftBottom = styled.article`
+const LeftBottom = styled.section`
   width: 100%;
-  flex: 1;
+  // flex: 1;
   // background: pink;
 `
 
@@ -56,9 +60,13 @@ const RightTop = styled.div`
   height: 80px;
   width: 100%;
   // background: gray;
+
+  @media only screen and (max-width: 920px) {
+    display: none;
+  }
 `
 
-const RightBottom = styled.article`
+const RightBottom = styled.section`
   width: 100%;
   flex: 1;
   font-size: 13px;

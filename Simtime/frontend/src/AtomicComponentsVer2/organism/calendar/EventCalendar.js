@@ -10,6 +10,8 @@ import CalendarEventLabel from "../../molecule/calendar/CalendarEventLabel"
 const Wrap = styled.div`
   width: 100%;
   background-color:  ${Colors.BG_INACTIVE_LIGHT};
+  height: 40em;
+  overflow: hidden;
 `
 
 const Week = styled.div`
@@ -24,11 +26,28 @@ const Week = styled.div`
 function EventCalendar(props) {
   const { dates, events, datas } = props;
 
-  const renderCalendarCells = () => {
-    return dates.map((week, index) => {
+  console.log('EventCalendar, events', events)
+
+  const renderEventLabel = (date)=>{
+    if( events && date in events){
+      return events[date].map((event)=>{ 
+        return (
+          <CalendarEventLabel 
+            join 
+            key={event.id} 
+            title={event.event_name} 
+            color={event.color}
+            />
+          )}
+        );
+      }
+    }
+
+  const renderCalendarCells = (weeks, events={}) => {
+    return Object.keys(weeks).map((week, index) => {
       return(
-      <Week key={week.id}>
-        { week.weekDates.map((date, index) => {
+      <Week key={week}>
+        { weeks[week].weekDates.map((date, index) => {
             return (
               <CalendarMonthCell
                 key={date.id}
@@ -39,18 +58,20 @@ function EventCalendar(props) {
                 isActive={date.isActive}
                 isToday={date.id == "0D"}
                 isActiveMonth={true}
-
-              />
+              >
+                {renderEventLabel(date.strDate)}
+              </CalendarMonthCell>
             );
           })
         }
       </Week>)
     });
+    // return <div>ddd{console.log('myweeks', weeks)}</div>
   };
   
     return (
-      <Wrap {...props}>
-        {renderCalendarCells()}
+      <Wrap {...props} onScroll={props.scrollHandler}>
+        {renderCalendarCells(dates)}
       </Wrap>
     )
 }

@@ -165,7 +165,7 @@ function Components() {
                 <Wrap>
                     <h2>Calendar</h2>
                     <ItemsRow> 
-                       <EventCalendar current={curr} dates={generate(curr,5)} />
+                       {/* <EventCalendar current={curr} dates={generate(curr,5).weeks} /> */}
                     </ItemsRow>
                 </Wrap>
 

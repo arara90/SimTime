@@ -92,16 +92,16 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {isSolid, join, fontColor, color, title, tags, user} = props;
-  const Button = isSolid ? Colored: Bordered ; 
+  const {solid, join, fontColor, color, title, tags, user} = props;
+  const Button = solid ? Colored: Bordered ; 
   return (
       <Wrap {...props}>
-        <Checked size="lg" join={join ? 1 : 0}/>
-        <Button fontColor={isSolid? fontColor: color} color={color}> 
+        {/* <Checked size="lg" join={join ? 1 : 0}/> */}
+        <Button fontColor={solid? fontColor: color} color={color}> 
           <Host url={user.imageUrl} />
           <Content>
             <Title>{title}</Title>
-            <StyledTag color={isSolid ? fontColor : color+"_DARK"}>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
+            <StyledTag color={solid ? fontColor : color+"_DARK"}>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
           </Content>
         </Button>
       </Wrap>
@@ -111,7 +111,7 @@ function CalendarEventLabel(props) {
 export default CalendarEventLabel
 
 CalendarEventLabel.propTypes = {
-  isSolid: PropTypes.bool,
+  solid: PropTypes.bool,
   color: PropTypes.string,
   fontColor: PropTypes.string,
   join: PropTypes.bool,
@@ -121,7 +121,7 @@ CalendarEventLabel.propTypes = {
   };
   
 CalendarEventLabel.defaultProps = {
-  isSolid: null,
+  solid: null,
   color: palette[Math.floor(Math.random() * palette.length)],
   fontColor: "ST_WHITE",
   join: false,

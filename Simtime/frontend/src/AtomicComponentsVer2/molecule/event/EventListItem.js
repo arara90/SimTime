@@ -83,19 +83,20 @@ const Tags = styled(Tag)`
 `
 
 function EventListItem(props) {
-    const {id, title, location, time, tags, host, like, join} = props.event;
+    const {id, event_name, event_place, event_time, tags, host, like, join} = props.event;
     return (
         <EventList {...props} className='list-event-item'>
             <Header>
-                <a href="#"><Title> {join? <CheckCircleIcon />: null} {title} </Title></a>
+                <a href="#"><Title> {join? <CheckCircleIcon />: null} {event_name} </Title></a>
                 <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
             </Header>
             <Content href="#" className="event-list-content">
                 <Host url={host.url}/>
                 <EventDesc>
-                    <Address>{location.name}</Address>
-                    <Time>{time}</Time>
-                    <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags>
+                    <Address>{event_place? event_place.name : null}</Address>
+                    <Time>{event_time}</Time>
+                    {/* <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags> */}
+                    {/* <Tags>{tags}</Tags> */}
                 </EventDesc>
             </Content>
         </EventList>
@@ -106,23 +107,16 @@ export default EventListItem
 
 EventListItem.propTypes = {
     event: PropTypes.object,
-    // id: PropTypes.string,
-    // title: PropTypes.string,
-    // location: PropTypes.object,
-    // time: PropTypes.string,
-    // tags: PropTypes.array,
-    // host: PropTypes.object,
-    // like: PropTypes.bool,
-    // join: PropTypes.bool
   };
 
 EventListItem.defaultProps = {
     event: {
         id: "0",
-        title: "Simtime Test",
-        location: {name:"작업실(우리집)", address:"경기도 부천시"},
-        time: "PM 19:00",
+        event_name: "Simtime Test",
+        event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
+        event_time: "PM 19:00",
         tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
+
         host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
         like: null,
         join: null,
