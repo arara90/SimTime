@@ -9,19 +9,26 @@ import CalendarDateText from "../../atom/calendar/CalendarDateText"
 const Wrap = styled(CalendarCell)`
   width: ${({width})=>width};
   height: ${({height})=>height};
-  overflow: auto;
-  overflow-x: hidden;
 
   display: inline-flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
 
+  cursor: pointer;
   
-&::-webkit-scrollbar {
-  width: 0px;
-}
 `;
+
+const ContentWrap = styled.div`
+  width: 100%;
+  flex: 1;
+  overflow: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`
 
 const CurrDate = styled(CalendarDateText)`
   margin-right: 5px;
@@ -36,7 +43,9 @@ function CalendarMonthCell(props) {
       <CurrDate date={date} day={day}>
         {date == 1 ? `${month}/1` : date}
       </CurrDate>
+      <ContentWrap>
       {props.children}
+      </ContentWrap>
     </Wrap>
   );
 }
@@ -53,6 +62,7 @@ CalendarMonthCell.propTypes = {
   isActive: PropTypes.bool,
   isActiveMonth: PropTypes.bool,
   isToday: PropTypes.bool,
+  isSelected: PropTypes.bool,
 };
 
 CalendarMonthCell.defaultProps = {
@@ -65,4 +75,5 @@ CalendarMonthCell.defaultProps = {
   isActive: null,
   isActiveMonth: null,
   isToday: null,
+  isSelected: null
 };

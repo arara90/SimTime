@@ -7,6 +7,7 @@ export default () => {
   );
 
   let handleContextModal = (content = false) => {
+    console.log('handleContextModal')
     setContextModal(!contextModal);
     if (content) {
       setContextModalContent(content);
@@ -14,6 +15,7 @@ export default () => {
   };
 
   let closeContextModal = (content = false) => {
+    console.log('closeContext')
     setContextModal(false);
     setContextModalContent(content);
   };

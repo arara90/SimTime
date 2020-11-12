@@ -16,7 +16,7 @@ import {
 function transformEvents(data){
   var transformed = {}
   data.map((d)=>{
-    var date = d.event_time.substr(0, 10)
+    var date = d.event_date.substr(0, 10)
     if( transformed[date]==undefined){
       transformed[date] = [d]
     }else{
@@ -35,7 +35,7 @@ export const getEvents = (start, end) => (dispatch) => {
     .then((res={data:[]}) => {
       var transformed = {}
       res.data.map((d)=>{
-        var date = d.event_time.substr(0, 10)
+        var date = d.event_date
         if( transformed[date]==undefined){
           transformed[date] = [d]
         }else{
@@ -117,7 +117,7 @@ export const deleteEvent = (id) => (dispatch) => {
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
       dispatch({
         type: DELETE_EVENT,
-        payload: id,
+        payload: res.data,
       });
     })
     .catch((err) => console.log(err));

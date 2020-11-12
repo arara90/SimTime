@@ -112,7 +112,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { logout })(Account);
 
 Account.propTypes = {
-  url: PropTypes.string,
   username: PropTypes.string,
   imageSize: PropTypes.string,
 };

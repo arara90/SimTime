@@ -146,13 +146,13 @@ const User = styled(ImageUser)`
 `
 
 function EventDetailHeader(props) {
-  const { event_name, tags, backHandler } = props;
+  const { event_name, host, tags, backHandler } = props;
 
     return (
         <Wrap>
             <BackButton onClick={backHandler}><BackIcon /></BackButton>
             <TitleText className="event-title">{event_name}</TitleText>
-            <User width="2.5em" height="2.5em"/>
+            <User url={host ? host.profile_image : null } width="2.5em" height="2.5em"/>
         </Wrap>
     )
 }
@@ -161,11 +161,11 @@ export default EventDetailHeader
 
 EventDetailHeader.propTypes = {
   event_name: PropTypes.string,
-  tags: PropTypes.array
+  tags: PropTypes.string
 };
 
 EventDetailHeader.defaultProps = {
   event_name: "Tremblant In Canada",
-  tags: ["tag", "한강", "맥주", "나들이","tag1", "한강1", "맥1주", "나1들이"]
+  tags: "tag, 한강, 맥주, 나들이,tag1, 한강1, 맥1주, 나1들이"
 };
   

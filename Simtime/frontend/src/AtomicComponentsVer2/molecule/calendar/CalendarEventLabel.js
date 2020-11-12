@@ -92,13 +92,13 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, join, fontColor, color, title, tags, user} = props;
+  const {solid, join, fontColor, color, title, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
   return (
       <Wrap {...props}>
         {/* <Checked size="lg" join={join ? 1 : 0}/> */}
         <Button fontColor={solid? fontColor: color} color={color}> 
-          <Host url={user.imageUrl} />
+          <Host url={host.profile_image} />
           <Content>
             <Title>{title}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
@@ -117,7 +117,7 @@ CalendarEventLabel.propTypes = {
   join: PropTypes.bool,
   title: PropTypes.string,
   tags: PropTypes.array,
-  user: PropTypes.object
+  host: PropTypes.object
   };
   
 CalendarEventLabel.defaultProps = {
@@ -127,8 +127,8 @@ CalendarEventLabel.defaultProps = {
   join: false,
   title:"Chickenkkkkk",
   tags: ["한강", "맥주", "콜라", "치맥"],
-  user: {
-    imageUrl: "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg",
+  host: {
+    profile_image: "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg",
     id: "arara90"
   }
 };

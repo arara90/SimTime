@@ -6,12 +6,11 @@ import * as Colors from "../../Colors";
 const Button = styled.button`
   background-color: transparent;
   color: ${({color}) => Colors[color]};
-  border-radius: 6px 6px 6px 6px;
+
   width: ${({width}) => width};
   height: ${({height}) => height};
   text-decoration: underline;
-
-
+  
   &:focus {
     outline: none;
     box-shadow: none;

@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import * as Colors from "../../../Colors";
+
+import { connect } from "react-redux";
+import { deleteEvent } from "../../../../actions/events"
 
 import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
 import EventDetailContent from "../../../molecule/event/EventDetailContent"
 import SolidButton from "../../../atom/buttons/SolidButton"
 import TextButton from "../../../atom/buttons/TextButton"
+
+import * as Colors from "../../../Colors";
+
 
 const Wrap = styled.article`
   width: 100%;
@@ -35,21 +40,35 @@ const JoinButton = styled(SolidButton)`
 
 const DeleteButton = styled(TextButton)``
 
+
+
 function EventDetail(props) {
   const {id, event_name, event_place, event_time, message, tags, host, like, join} = props.event;
+  const deleteHandler=(id)=>{
+    props.deleteEvent(id);
+    props.backHandler();
+  }
   return (
         <Wrap>
-          <EventDetailHeader event_name={event_name} tags={tags} backHandler={props.backHandler}/>
+          <EventDetailHeader  host={host} event_name={event_name} tags={tags} backHandler={props.backHandler}/>
           <EventDetailContent {...props.event}/>
           <Buttons>
             <JoinButton color="ST_BLUE">Join</JoinButton>
-            <DeleteButton color="ST_GRAY">delete</DeleteButton>
+            <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(id)}>delete</DeleteButton>
           </Buttons>
         </Wrap>
     )
 }
 
-export default EventDetail
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteEvent: (id) => dispatch(deleteEvent(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(EventDetail);
+
 
 EventDetail.propTypes = {
   event: PropTypes.object,

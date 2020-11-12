@@ -17,6 +17,8 @@ import ImageUser from "../../atom/ImageUser"
 import Map from "../../atom/Map"
 import Tag from "../../atom/fonts/Tag"
 
+import {getStringDate} from "../../../actions/calendar"
+
 const Wrap = styled.div`
     width: 100%;
     min-width: 245px;
@@ -84,15 +86,15 @@ const Message = styled(TextBox)`
 const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
-    const { event_place, event_time, participants, message, tags, like} = props;
+    const { event_place, event_date, event_time, participants, message, tags, like} = props;
     console.log(props)
     return (
         <Wrap className="event-detail">
             <Detail>
                 <strong>Details</strong>
                 <LikeButton color="ST_PINK" selected={like}><HeartIcon /></LikeButton>
-            </Detail>
-            <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{event_time}</DetailTextRow>
+            </Detail> 
+            <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{getStringDate(event_date, 'day')+"  "+event_time}</DetailTextRow>
             <DetailTextRow as="address"><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
             <Users className="participants">
                 <ParticipantsIcon className="fa-fw" />
@@ -103,7 +105,7 @@ function EventDetailContent(props) {
                     </UserList>)
                 })}
             </Users>
-            <Map mapId="event-detail-map"/>
+            <Map mapId="event-detail-map" location={event_place} />
             <Message line={6}>{message}</Message>
             {/* <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> */}
         </Wrap>
@@ -114,7 +116,7 @@ export default EventDetailContent
 
 EventDetailContent.propTypes = {
     event_place : PropTypes.object,
-    event_time: PropTypes.string,
+    event_date: PropTypes.string,
     participants: PropTypes.array,
     message: PropTypes.string,
     // tags: PropTypes.array,
@@ -123,7 +125,7 @@ EventDetailContent.propTypes = {
 
 EventDetailContent.defaultProps = {
     event_place : {name:"송내역 1호선", address:"부천시 송내대로39번길 14"},
-    event_time: "2020/04/03 (월) PM 8:00 ",
+    event_date: "2020/04/03 (월) PM 8:00 ",
     participants: [
         {name:"arara90", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
         {name:"admin", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},

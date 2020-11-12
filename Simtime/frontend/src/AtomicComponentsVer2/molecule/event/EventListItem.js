@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -6,11 +6,18 @@ import * as Colors from "../../Colors";
 
 import HeartIcon from "../../atom/icons/HeartIcon"
 import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
+import ExclamationTriangleIcon from "../../atom/icons/ExclamationTriangleIcon"
+import PlusCircleIcon from "../../atom/icons/PlusCircleIcon"
+
 import StatusButton from "../../atom/buttons/StatusButton"
 import ImageUser from "../../../AtomicComponents/A-Atomics/ImageUser"
 import Tag from "../../atom/fonts/Tag"
 
+import {getStringDate} from "../../../actions/calendar"
+
+
 const EventList = styled.li`
+    list-style: none;
     min-width: 245px;
     height: 100px;
     display: flex;
@@ -18,7 +25,7 @@ const EventList = styled.li`
     justify-content: flex-start;
     align-items: center;
 
-    border-top: solid 1px ${Colors.MAIN_COLOR};
+    border-bottom: solid 1px ${Colors.MAIN_COLOR};
    
     &:hover{
         background-color: ${Colors.MAIN_COLOR_LIGHT}
@@ -31,7 +38,9 @@ const Header = styled.header`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;    
+    align-items: center;
+    
+    padding-left: 1em;
 `
 
 const Title = styled.strong`
@@ -82,25 +91,42 @@ const Tags = styled(Tag)`
     color: ${Colors.TEXT_TAG};
 `
 
+const Empty = styled.li`
+    list-style: none;
+    width: 100%;
+    flex: 1;
+    font-size: 10em;
+    color: ${Colors.ST_SEMI_GRAY}95;
+    text-align: center;
+
+    strong{
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 2em;
+    }
+
+`
+
 function EventListItem(props) {
-    const {id, event_name, event_place, event_time, tags, host, like, join} = props.event;
-    return (
-        <EventList {...props} className='list-event-item'>
-            <Header>
+    const {id, event_name, event_place, event_date, event_time, tags, host, like, join} = props.event;
+    if(id){
+        return(
+            <EventList {...props} className='list-event-item'>
+                <Header>
                 <a href="#"><Title> {join? <CheckCircleIcon />: null} {event_name} </Title></a>
                 <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
-            </Header>
-            <Content href="#" className="event-list-content">
-                <Host url={host.url}/>
-                <EventDesc>
-                    <Address>{event_place? event_place.name : null}</Address>
-                    <Time>{event_time}</Time>
-                    {/* <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags> */}
-                    {/* <Tags>{tags}</Tags> */}
-                </EventDesc>
-            </Content>
-        </EventList>
-    )
+                </Header>
+                <Content href="#" className="event-list-content">
+                    <Host url={host.profile_image}/>
+                    <EventDesc>
+                        <Address>{event_place? event_place.name : null}</Address>
+                        <Time>{getStringDate(event_date, 'day')+"  "+event_time}</Time>
+                        {/* <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags> */}
+                        {/* <Tags>{tags}</Tags> */}
+                    </EventDesc>
+                </Content>
+            </EventList>)
+    }else return <Empty > <ExclamationTriangleIcon /> <strong> No results :( </strong> </Empty>
 }
 
 export default EventListItem
@@ -111,13 +137,13 @@ EventListItem.propTypes = {
 
 EventListItem.defaultProps = {
     event: {
-        id: "0",
+        id: null,
         event_name: "Simtime Test",
-        event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
-        event_time: "PM 19:00",
-        tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
-
-        host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
+        event_place: {name:null, address:null, lat:"", lng:""},
+        event_date: null,
+        event_time: null,
+        tags: null,
+        host: {name:"test", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
         like: null,
         join: null,
     }

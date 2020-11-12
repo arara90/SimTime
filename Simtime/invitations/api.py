@@ -1,12 +1,15 @@
 from .models import Invitation, Event
 from rest_framework import viewsets, permissions, authentication, status
 from rest_framework.response import Response
-from .serializers import InvitationSerializer, EventSerializer
+from .serializers import InvitationSerializer, EventSerializer, EventGetSerializer, EventDelSerializer
 from rest_framework.views import APIView
 from django.conf import settings
 import io
 import boto3
 import tempfile
+
+from datetime import datetime
+from django.utils import timezone
 
 
 class EventAPI(APIView):
@@ -14,12 +17,16 @@ class EventAPI(APIView):
 
 
     def get(self, request, start, end):
-        print('events', start, end)
         # events = self.request.user.events.all()
-        events = self.request.user.events.filter(event_time__range=[start, end])
-        serializer = EventSerializer(events, many=True)
+        start_datetime = datetime.strptime(start, '%Y-%m-%d')
+        end_datetime = datetime.strptime( f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+
+        start_datetime_aware = timezone.make_aware(start_datetime)
+        end_datetime_aware = timezone.make_aware(end_datetime)
+
+        events = self.request.user.events.filter(event_time__range=[start_datetime_aware, end_datetime_aware])
+        serializer = EventGetSerializer(events, many=True)
         return Response(serializer.data)
-        # return self.request.user.events.all()  # related_name으로 invitations지정
 
     def post(self, request):
         print("gre", request.data)
@@ -43,8 +50,9 @@ class EventDetailAPI(APIView):
 
     def delete(self, request, pk):
         event = self.get_object(pk)
+        serializer = EventDelSerializer(event)
         event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     def put(self, request, pk):
         event = self.get_object(pk)

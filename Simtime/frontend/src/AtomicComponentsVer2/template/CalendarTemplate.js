@@ -15,7 +15,7 @@ const Wrap = styled.main`
 
 const LeftSection = styled.section`
   width: 68.5%;
-  // height: 680px;
+  height: 680px;
   display: flex;
   flex-direction: column;
 
@@ -25,9 +25,10 @@ const LeftSection = styled.section`
 `
 const RightSection = styled.section`
   width: 31%;
-  // height: 680px;
+  height: 680px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 5px;
 
   @media only screen and (max-width: 920px) {
     width: 100%;
@@ -36,7 +37,8 @@ const RightSection = styled.section`
 
 const LeftTop = styled.div`
   width: 100%;
-  height: 80px;
+  height: 45px;
+  margin-bottom: 5px;
 
   // display:flex;
   // flex-direction: row;
@@ -52,12 +54,12 @@ const LeftTop = styled.div`
 
 const LeftBottom = styled.section`
   width: 100%;
-  // flex: 1;
+  flex: 1;
   // background: pink;
 `
 
 const RightTop = styled.div`
-  height: 80px;
+  height: 45px;
   width: 100%;
   // background: gray;
 
@@ -69,7 +71,7 @@ const RightTop = styled.div`
 const RightBottom = styled.section`
   width: 100%;
   flex: 1;
-  font-size: 13px;
+  // font-size: 13px;
 `
 
 

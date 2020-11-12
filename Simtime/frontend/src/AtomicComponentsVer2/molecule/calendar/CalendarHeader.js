@@ -6,6 +6,8 @@ import * as Colors from "../../Colors";
 import AngleIcon from "../../atom/icons/AngleIcon"
 import IconButton from "../../atom/buttons/IconButton"
 
+import {getStrFullDate} from "../../../actions/calendar"
+
 const Wrap = styled.div`
     display: flex;
     flex-direction: row;
@@ -33,25 +35,20 @@ const NextMonth = styled(Arrow)`
 
 function CalendarHeader(props) {
     const {current, type, clickHandler, size} = props;
-    const [currString, setCurrString] = useState("");
-
-    useEffect(
-        ()=>{
-            setCurrString(changeDate(0,))
-        }, []
-    )
 
     const changeDate = (num)=>{
+        var curr = new Date(current)
         var res = new Date(current)
+
         if(type=='year'){
-            res.setYear(current.getFullYear() + num);
+            res.setYear(curr.getFullYear() + num);
         } else if(type=='month') {
-            res.setMonth(current.getMonth() + num);
+            res.setMonth(curr.getMonth() + num);
         } else {
-            res.setDate(current.getDate() + num);
+            res.setDate(curr.getDate() + num);
         } 
-        
-        clickHandler(res);
+
+        clickHandler(getStrFullDate(res, 'date'))
 
     }
     
@@ -67,13 +64,13 @@ function CalendarHeader(props) {
 export default CalendarHeader
 
 CalendarHeader.propTypes = {
-    current: PropTypes.instanceOf(Date),
+    current: PropTypes.string,
     type: PropTypes.oneOf(['year','month', 'date', 'day']),
     size: PropTypes.string
   };
 
 CalendarHeader.defaultProps = {
-    current: new Date(),
+    current: getStrFullDate(new Date(), 'date'),
     type: 'month',
     size: "1em"
   };

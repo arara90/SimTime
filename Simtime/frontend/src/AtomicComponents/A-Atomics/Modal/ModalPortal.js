@@ -57,11 +57,9 @@ export const ModalContextPortal = (props) => {
   let { contextModalContent, contextModal } = React.useContext(ModalContext);
   if (contextModal) {
     return ReactDOM.createPortal(
-      <Fragment>
         <MyModal className="modalcontextPotal">
           <ContentWrap contextModal>{contextModalContent}</ContentWrap>
-        </MyModal>
-      </Fragment>,
+        </MyModal>,
       el
     );
   } else return null;
@@ -70,11 +68,9 @@ export const ModalContextPortal = (props) => {
 export const ModalPortalBasic = (props) => {
   const el = document.getElementById("app-modal");
   return ReactDOM.createPortal(
-    <Fragment>
       <MyModal className="modalcontextPotal">
         <ContentWrap>{props.children}</ContentWrap>
-      </MyModal>
-    </Fragment>,
+      </MyModal>,
     el
   );
 };

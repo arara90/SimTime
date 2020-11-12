@@ -161,6 +161,8 @@ const Button = styled(DashedButton)`
 `;
 
 function EventMaker(props) {
+  const {closeModal, user, editEvent, addEvent, } = props;
+
   const today = new Date();
   const timeRef = useRef();
   const [datePicker, setDatePicker] = useState(false);
@@ -195,7 +197,7 @@ function EventMaker(props) {
     // var event_at = new Date('2019/5/16/17:24:30:10');
     const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
     const myEvent = {
-      host: props.user.id,
+      host: user.id,
       event_name: name,
       //"2020-06-19T20:00"
       event_time: date + "T" + time.split(" ")[0],
@@ -206,15 +208,15 @@ function EventMaker(props) {
     };
 
     if (props.event) {
-      props.editEvent({
+      editEvent({
         id: eId,
         ...myEvent,
       });
     } else {
-      props.addEvent(myEvent, image);
+      addEvent(myEvent, image);
     }
 
-    props.closeModal();
+    closeModal();
   };
 
   const handleChangeFile = (e) => {
@@ -347,7 +349,7 @@ function EventMaker(props) {
   const handleClick = (e, targetPage) => {
     e.preventDefault();
     const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
-    const host = props.user.id;
+    const host = user.id;
 
     setEvent({
       ...event,
@@ -401,7 +403,7 @@ function EventMaker(props) {
       <Wrap {...props}>
         <HeaderWrap>
           <BarWrap>{/* <ProgressBar /> */}</BarWrap>
-          <ModalTitle>EVENT</ModalTitle>
+          <ModalTitle closeModal={()=>{closeModal()}}>EVENT</ModalTitle>
         </HeaderWrap>
 
         <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">

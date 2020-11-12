@@ -24,19 +24,19 @@ const Week = styled.div`
 `
 
 function EventCalendar(props) {
-  const { dates, events, datas } = props;
-
-  console.log('EventCalendar, events', events)
+  const { dateClickHandler, eventClickHandler, dates, events } = props;
 
   const renderEventLabel = (date)=>{
     if( events && date in events){
       return events[date].map((event)=>{ 
         return (
-          <CalendarEventLabel 
+          <CalendarEventLabel
             join 
             key={event.id} 
+            host = {event.host}
             title={event.event_name} 
             color={event.color}
+            onClick={(e) => eventClickHandler(e, event)}
             />
           )}
         );
@@ -58,6 +58,7 @@ function EventCalendar(props) {
                 isActive={date.isActive}
                 isToday={date.id == "0D"}
                 isActiveMonth={true}
+                onClick={(e) =>dateClickHandler(e, date.strDate)}
               >
                 {renderEventLabel(date.strDate)}
               </CalendarMonthCell>
