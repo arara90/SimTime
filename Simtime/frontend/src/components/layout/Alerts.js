@@ -30,6 +30,11 @@ export class Alerts extends Component {
       //auth
       if (message.logout) alert.success(message.logout);
 
+      //event
+      if (message.deleteEvent) alert.success(message.deleteEvent);
+      if (message.addEvent) alert.success(message.addEvent);
+      if (message.editEvent) alert.success(message.editEvent);
+
       //invitation
       if (message.deleteInvitation) alert.success(message.deleteInvitation);
       if (message.addInvitation) alert.success(message.addInvitation);

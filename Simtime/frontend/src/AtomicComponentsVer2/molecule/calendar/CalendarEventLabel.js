@@ -94,15 +94,6 @@ const StyledTag = styled(Tag)`
 function CalendarEventLabel(props) {
   const {solid, join, fontColor, color, title, time, location, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
-  // console.log(time)
-  const myTime = time.split(" ");
-  const hour = parseInt(myTime[0].split(":")[0])
-  const min = myTime[0].split(":")[1]
-  // const meridiem = myTime[1]
-  // console.log(meridiem.toLowerCase())
-  const displayTime = hour.toString() + ":" + min 
-
-
 
   return (
       <Wrap {...props}>
@@ -112,7 +103,7 @@ function CalendarEventLabel(props) {
           <Content>
             <Title>{title}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>
-              {tags? tags.map((tag)=> {return '#'+tag+" "}) : displayTime + " " + location}
+              {tags? tags.map((tag)=> {return '#'+tag+" "}) : time + " " + location}
             </StyledTag>
             {/* <StyledTag color={solid ? fontColor : color+"_DARK"}>{time} {location}</StyledTag> */}
           </Content>

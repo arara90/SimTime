@@ -45,12 +45,19 @@ export default function(state = initialState, action) {
       };
     case DELETE_EVENT:
       const {id, event_date} = action.payload
-      console.log(event_date)
       const newEvents = state.events[event_date].filter(event => event.id != id)
-      return {
-        ...state,
-        events: { ...state.events, ...newEvents }
+
+      if(newEvents.length){
+        return {
+          ...state,
+          events: { ...state.events, [event_date]: newEvents  }
+        }
+      }else{
+        var nextEvents = {...state.events};
+        delete nextEvents[event_date]
+        return {...state, events: nextEvents }
       };
+      
     case EDIT_EVENT:
       return {
         ...state,

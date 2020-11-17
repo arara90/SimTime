@@ -1,7 +1,6 @@
 import { createMessage, returnErrors } from "./messages";
 import { axiosInstance, axiosFormInstance } from "./axiosApi";
-import axios from "axios";
-import { getCookie } from "./cookie";
+import {getStrFullDate , getFullTime} from "./calendar"
 
 import {
   GET_EVENTS,
@@ -13,17 +12,11 @@ import {
   CREATE_MESSAGE,
 } from "./types";
 
-function transformEvents(data){
-  var transformed = {}
-  data.map((d)=>{
-    var date = d.event_date.substr(0, 10)
-    if( transformed[date]==undefined){
-      transformed[date] = [d]
-    }else{
-      transformed[date] = [...transformed[date], d]
-    }
-  })
-  return transformed
+function separateEventTime(data){
+  var event_at = new Date(Date.parse(data.event_time))
+  data['event_date'] = getStrFullDate(event_at, "yyyy-mm-dd")
+  data['event_time'] = getFullTime(event_at)
+  return data
 }
 
 export const getEvents = (start, end) => (dispatch) => {
@@ -33,7 +26,8 @@ export const getEvents = (start, end) => (dispatch) => {
     .then((res={data:[]}) => {
       var transformed = {}
       res.data.map((d)=>{
-        var date = d.event_date
+        var separated = separateEventTime(d)
+        var date = separated.event_date
         if( transformed[date]==undefined){
           transformed[date] = [d]
         }else{
@@ -77,6 +71,7 @@ export const addEvent = (event, img) => (dispatch) => {
   axiosFormInstance
     .post("/api/events/create", data)
     .then((res) => {
+      separateEventTime(res.data)
       dispatch({
         type: ADD_EVENT,
         payload: res,
@@ -91,6 +86,7 @@ export const addEvent = (event, img) => (dispatch) => {
   axiosInstance
     .post("/api/events/create", event)
     .then((res) => {
+      separateEventTime(res.data)
       dispatch({
         type: ADD_EVENT,
         payload: res.data,
@@ -105,15 +101,15 @@ export const addEvent = (event, img) => (dispatch) => {
   
 };
 
-export const deleteEvent = (id) => (dispatch) => {
+export const deleteEvent = (id, event_date) => (dispatch) => {
+  console.log(event_date)
   axiosInstance
     .delete(`/api/events/${id}`)
-    .then((res) => {
-      console.log('res', res)
+    .then(() => {
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
       dispatch({
         type: DELETE_EVENT,
-        payload: res.data,
+        payload: { id:id, event_date:event_date},
       });
     })
     .catch((err) => console.log(err));

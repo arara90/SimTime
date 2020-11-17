@@ -43,9 +43,9 @@ const DeleteButton = styled(TextButton)``
 
 
 function EventDetail(props) {
-  const {id, event_name, event_place, event_time, message, tags, host, like, join} = props.event;
-  const deleteHandler=(id)=>{
-    props.deleteEvent(id);
+  const {id, event_name, event_date, tags, host, like, join} = props.event;
+  const deleteHandler=(id, date)=>{
+    props.deleteEvent(id, date);
     props.backHandler();
   }
   return (
@@ -54,7 +54,7 @@ function EventDetail(props) {
           <EventDetailContent {...props.event}/>
           <Buttons>
             <JoinButton color="ST_BLUE">Join</JoinButton>
-            <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(id)}>delete</DeleteButton>
+            <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(id,event_date)}>delete</DeleteButton>
           </Buttons>
         </Wrap>
     )
@@ -63,7 +63,7 @@ function EventDetail(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteEvent: (id) => dispatch(deleteEvent(id)),
+    deleteEvent: (id,date) => dispatch(deleteEvent(id,date)),
   };
 };
 

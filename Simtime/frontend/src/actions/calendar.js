@@ -1,3 +1,5 @@
+import { func } from "prop-types";
+
 export function getStringDate(date, type='month'){
   const now = new Date(date)
   var year = now.getFullYear().toString();
@@ -39,6 +41,10 @@ export function getStrDate(date, type = "dd") {
   } else {
     return date.getDate().toString();
   }
+}
+
+export function getFullTime(date){
+  return ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2)
 }
 
 export function getStrFullDate(date, type = "yyyymmdd") {

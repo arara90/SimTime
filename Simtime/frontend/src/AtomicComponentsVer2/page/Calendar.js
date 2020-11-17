@@ -12,7 +12,8 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 import EventDetail from "../organism/calendar/event/EventDetail"
 import EventList from "../organism/calendar/event/EventList"
 import EventCalendar from "../organism/calendar/EventCalendar"
-import GetEventButton from "./GetEventButton"
+import Filters from "../organism/calendar/Filters"
+// import GetEventButton from "./GetEventButton"
 
 import {generate, getStrFullDate, addDate} from "../../actions/calendar"
 import {getEvent, getEvents} from "../../actions/events"
@@ -61,6 +62,10 @@ function Calendar(props) {
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
   }, [])
 
+  useEffect(()=>{ 
+    console.log(current)  
+  }, [current])
+
 
   // event Click
   const eventClickHandler = (e, event) =>{
@@ -108,7 +113,7 @@ function Calendar(props) {
 
   return (
       <CalendarTemplate 
-        leftTop={<GetEventButton clickHandler={clickNextHandler} current={current}/>}  
+        leftTop={<Filters current={selectedDate} dateHandler={setCurrent}/>}  
         leftBottom={<EventCalendar dateClickHandler={dateCellClickHandler} eventClickHandler={eventClickHandler} selectedEvent={selectedEvent} selectedDate={selectedDate} current={current} dates={weekDates} events={events} />} 
         rightTop={<NewButton color={"MAIN_COLOR"}  onClick={()=>handleContextModal(<EventMaker closeModal={closeContextModal}/>)}> <Pencil />New Event</NewButton>} 
         rightBottom={ showDetail ? 

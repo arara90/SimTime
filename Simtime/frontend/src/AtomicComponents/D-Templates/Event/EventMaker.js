@@ -171,7 +171,7 @@ function EventMaker(props) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [place, setPlace] = useState({});
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(null);
   const [message, setMessage] = useState("");
 
   const [imgBase64, setImgBase64] = useState(""); // 파일 base64
@@ -194,13 +194,14 @@ function EventMaker(props) {
   };
 
   const handleSubmit = (e) => {
+    const e_time = new Date(date + " " + time.split(" ")[0])
     e.preventDefault();
     // var event_at = new Date('2019/5/16/17:24:30:10');
     const { eId, eStatus } = event;
     const myEvent = {
       host: user.id,
       event_name: name,
-      event_time: date + " " + time.split(" ")[0] ,
+      event_time: e_time.toISOString(),
       // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
       status: eStatus,
       event_place: place,

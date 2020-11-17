@@ -1,7 +1,7 @@
 from .models import Invitation, Event
 from rest_framework import viewsets, permissions, authentication, status
 from rest_framework.response import Response
-from .serializers import InvitationSerializer, EventSerializer, EventGetSerializer, EventDelSerializer
+from .serializers import InvitationSerializer, EventSerializer
 from rest_framework.views import APIView
 from django.conf import settings
 import io
@@ -15,17 +15,20 @@ from django.utils import timezone
 class EventAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-
     def get(self, request, start, end):
         # events = self.request.user.events.all()
         start_datetime = datetime.strptime(start, '%Y-%m-%d')
-        end_datetime = datetime.strptime( f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+        end_datetime = datetime.strptime(
+            f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
 
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        events = self.request.user.events.filter(event_time__range=[start_datetime_aware, end_datetime_aware])
-        serializer = EventGetSerializer(events, many=True)
+        print(start_datetime, start_datetime_aware)
+
+        events = self.request.user.events.filter(
+            event_time__range=[start_datetime_aware, end_datetime_aware])
+        serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -50,9 +53,9 @@ class EventDetailAPI(APIView):
 
     def delete(self, request, pk):
         event = self.get_object(pk)
-        serializer = EventDelSerializer(event)
+        serializer = EventSerializer(event)
         event.delete()
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def put(self, request, pk):
         event = self.get_object(pk)
