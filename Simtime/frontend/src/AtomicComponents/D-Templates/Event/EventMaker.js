@@ -170,8 +170,8 @@ function EventMaker(props) {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [place, setPlace] = useState("");
-  const [tags, setTags] = useState("");
+  const [place, setPlace] = useState({});
+  const [tags, setTags] = useState([]);
   const [message, setMessage] = useState("");
 
   const [imgBase64, setImgBase64] = useState(""); // 파일 base64
@@ -181,11 +181,12 @@ function EventMaker(props) {
     eId: null,
     eName: "",
     eDate: getStrFullDate(today, "yyyy-mm-dd"),
-
     ePlace: { lat: 0, lng: 0, name: "unknown" },
+    eTags: [],
     eMessage: "",
     eStatus: "CLOSED",
     eHost_id: "unknown",
+    
   });
 
   const showDatePicker = () => {
@@ -195,15 +196,16 @@ function EventMaker(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // var event_at = new Date('2019/5/16/17:24:30:10');
-    const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
+    const { eId, eStatus } = event;
     const myEvent = {
       host: user.id,
       event_name: name,
-      //"2020-06-19T20:00"
-      event_time: date + "T" + time.split(" ")[0],
+      event_time: date + " " + time.split(" ")[0] ,
+      // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
       status: eStatus,
       event_place: place,
       message: message,
+      tags: tags
       // photo: image,
     };
 
@@ -250,6 +252,13 @@ function EventMaker(props) {
 
   const changeTime = useCallback((time) => {
     setTime(time);
+    console.log(time)
+
+  });
+
+  const changeTags = useCallback((tags) => {
+    // setEvent({ ...event, ePlace: location });
+    setTags(tags);
   });
 
   const firstPage = () => {
@@ -305,7 +314,7 @@ function EventMaker(props) {
           height="200px"
           maxLength={1000}
         />
-        <InputTag label="Tag" name="eTag" desc="Tag 입력"></InputTag>
+        <InputTag changeTags={changeTags} label="Tag" name="eTag" desc="Tag 입력"></InputTag>
       </PageWrap>
     );
   };

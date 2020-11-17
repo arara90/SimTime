@@ -14,6 +14,12 @@ const style = css`
   line-height: 2em;
   
   color: ${Colors.TEXT};
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  cursor: default;
 `
 
 const Paragraph = styled.p`
@@ -33,7 +39,7 @@ function DetailTextRow(props) {
   const {as, color} = props;
 
   if (as=="address"){
-    return <Address>{props.children}</Address>
+    return <Address title={props.title}>{props.children}</Address>
   } else if (as=="time"){
     return <Time>{props.children}</Time>
   }else{

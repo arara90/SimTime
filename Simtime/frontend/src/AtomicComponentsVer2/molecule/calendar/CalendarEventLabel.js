@@ -92,8 +92,18 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, join, fontColor, color, title, tags, host} = props;
+  const {solid, join, fontColor, color, title, time, location, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
+  // console.log(time)
+  const myTime = time.split(" ");
+  const hour = parseInt(myTime[0].split(":")[0])
+  const min = myTime[0].split(":")[1]
+  // const meridiem = myTime[1]
+  // console.log(meridiem.toLowerCase())
+  const displayTime = hour.toString() + ":" + min 
+
+
+
   return (
       <Wrap {...props}>
         {/* <Checked size="lg" join={join ? 1 : 0}/> */}
@@ -101,7 +111,10 @@ function CalendarEventLabel(props) {
           <Host url={host.profile_image} />
           <Content>
             <Title>{title}</Title>
-            <StyledTag color={solid ? fontColor : color+"_DARK"}>{tags.map((tag)=> {return '#'+tag+" "})}</StyledTag>
+            <StyledTag color={solid ? fontColor : color+"_DARK"}>
+              {tags? tags.map((tag)=> {return '#'+tag+" "}) : displayTime + " " + location}
+            </StyledTag>
+            {/* <StyledTag color={solid ? fontColor : color+"_DARK"}>{time} {location}</StyledTag> */}
           </Content>
         </Button>
       </Wrap>
@@ -117,6 +130,8 @@ CalendarEventLabel.propTypes = {
   join: PropTypes.bool,
   title: PropTypes.string,
   tags: PropTypes.array,
+  time: PropTypes.string,
+  location: PropTypes.string,
   host: PropTypes.object
   };
   
@@ -125,8 +140,10 @@ CalendarEventLabel.defaultProps = {
   color: palette[Math.floor(Math.random() * palette.length)],
   fontColor: "ST_WHITE",
   join: false,
-  title:"Chickenkkkkk",
-  tags: ["한강", "맥주", "콜라", "치맥"],
+  title: "Chickenkkkkk",
+  time: "00:00 AM",
+  location: "",
+  tags: [],
   host: {
     profile_image: "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg",
     id: "arara90"

@@ -102,10 +102,8 @@ function Calendar(props) {
   }
 
   useEffect(()=>{
-    console.log(events[selectedDate]) 
-    console.log(selectedDate)
-    
-
+    // console.log(events[selectedDate]) 
+    // console.log(selectedDate)
   },[selectedDate])
 
   return (

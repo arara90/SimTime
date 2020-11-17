@@ -109,22 +109,14 @@ function InputTime(props) {
       else if (res < 12 && selectedMerdiem == "PM") res = res + 12;
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
       else if (res > 12 && selectedMerdiem == "AM") setMeridiem("PM");
-      changeTime(
-        res.toString().padStart(2, "0") +
-          ":" +
-          min.toString().padStart(2, "0") +
-          " " +
-          selectedMerdiem
-      );
+
+      var resTime =  res.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
+      changeTime(resTime);
+
     } else {
       setMin(res);
-      changeTime(
-        hour.toString().padStart(2, "0") +
-          ":" +
-          res.toString().padStart(2, "0") +
-          " " +
-          selectedMerdiem
-      );
+      var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
+      changeTime(resTime);
     }
   };
 

@@ -100,9 +100,10 @@ const LabelWrap = styled.section`
 `
 
 function Components() {
+    const today = new Date();
     const inputRef = useRef();
     const selectRef = useRef();
-    const [curr, setCurr] = useState(new Date());
+    const [curr, setCurr] = useState(today.toString());
     // const fancyInputRef = useRef();
     // const focus = () => {
     //     fancyInputRef.current.focus()

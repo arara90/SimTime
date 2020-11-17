@@ -34,7 +34,10 @@ function EventCalendar(props) {
             join 
             key={event.id} 
             host = {event.host}
-            title={event.event_name} 
+            title={event.event_name}
+            time={event.event_time}
+            location={event.event_place.name}
+            tags = {event.tags}
             color={event.color}
             onClick={(e) => eventClickHandler(e, event)}
             />

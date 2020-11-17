@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Invitation,Event
 from accounts.serializers import UserSerializer
-
 from datetime import datetime
 
 
@@ -11,10 +10,24 @@ class InvitationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
+class EventSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        return {
+            'id':obj.id,
+            'event_name':obj.event_name,
+            'event_time':obj.event_time,
+            'status':obj.status,
+            'message':obj.message,
+            'host':obj.host,
+            'event_place':obj.event_place,
+            'tags':obj.tags,
+            'color':obj.color,
+            'font_color':obj.font_color
+        }
+
+    # class Meta:
+    #     model = Event
+    #     fields = '__all__'
 
 
 class EventGetSerializer(serializers.ModelSerializer):
@@ -29,13 +42,11 @@ class EventGetSerializer(serializers.ModelSerializer):
         # fields = '__all__'
 
 class EventDelSerializer(serializers.ModelSerializer):
-    # event_date=serializers.DateField(source='event_time')
-    event_time=serializers.DateTimeField(format="%Y-%m-%d")
-    host = UserSerializer()
-
+    id = serializers.ReadOnlyField()
+    event_date=serializers.DateTimeField(format="%Y-%m-%d", source='event_time')
     class Meta:
         model = Event
-        fields = ('id','event_name','event_time','status','message','photo','created_at','host','event_place','tags','color','font_color')
+        fields = ('id','event_date')
         # fields = '__all__'
 
 

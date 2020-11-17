@@ -66,7 +66,7 @@ CalendarMonthCell.propTypes = {
 };
 
 CalendarMonthCell.defaultProps = {
-  width: "100%",
+  width: "98%",
   height: "100%",
   month: 10,
   date: 30,

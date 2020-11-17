@@ -80,11 +80,19 @@ const EventDesc = styled.div`
 const Address = styled.address`
     height: 20px;
     margin-bottom: 2px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 `
 
 const Time = styled.time`
     height: 20px;
     margin-bottom: 2px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 `
 
 const Tags = styled(Tag)`

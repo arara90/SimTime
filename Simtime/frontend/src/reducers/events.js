@@ -12,8 +12,9 @@ const initialState = {
 
 
 function transformEvents(events, data){
+  console.log(events, data)
   data.map((d)=>{
-    var date = d.event_date.substr(0, 10)
+    var date = d.event_date
     if( events[date]==undefined){
       events[date] = [d]
     }else{
@@ -44,6 +45,7 @@ export default function(state = initialState, action) {
       };
     case DELETE_EVENT:
       const {id, event_date} = action.payload
+      console.log(event_date)
       const newEvents = state.events[event_date].filter(event => event.id != id)
       return {
         ...state,

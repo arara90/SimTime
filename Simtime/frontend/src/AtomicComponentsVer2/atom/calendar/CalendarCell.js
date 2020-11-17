@@ -8,15 +8,14 @@ import * as Colors from "../../Colors";
 const Wrap = styled.div`
   min-height: 2em;
   overflow: hidden;
-  border: solid 1px  ${Colors.ST_WHITE};
+  border: solid 1px  ${Colors.BG_INACTIVE_LIGHT};
 
-  background-color: ${(props) => (props.isActive ? ( props.isActiveMonth ? Colors.BG_WHITE : Colors.BG_INACTIVE_LIGHT) : Colors.BG_INACTIVE)}95;
+  background-color: ${(props) => (props.isActive ? ( props.isActiveMonth ? Colors.BG_WHITE : Colors.BG_INACTIVE_LIGHT) : Colors.BG_INACTIVE)};
   ${(props) => (props.isToday ? `background-color: ${Colors.MAIN_COLOR}95` : "")};
 
   &:hover{
-    // ${(props) => (props.isActive ? `   
-    //  border: solid 1px  ${Colors.MAIN_COLOR_DARK};
-    // background: ${Colors.MAIN_COLOR_LIGHT};` : null )}
+    //${(props) => (props.isActive ? `border: solid 1px  ${Colors.MAIN_COLOR};
+    background: ${Colors.MAIN_COLOR_LIGHT};80` : null )}
     outline: none;
   }
 `

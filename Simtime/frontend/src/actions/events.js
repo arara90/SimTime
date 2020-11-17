@@ -26,8 +26,6 @@ function transformEvents(data){
   return transformed
 }
 
-
-
 export const getEvents = (start, end) => (dispatch) => {
   console.log(start, end)
   axiosFormInstance
@@ -65,9 +63,9 @@ export const getEvent = (id) => (dispatch) => {
 
 export const addEvent = (event, img) => (dispatch) => {
 
+  console.log(event)
   if(img) {
   const data = new FormData();
-
   data.append("photo", img);
   data.append("host", event.host);
   data.append("event_name", event.event_name);
@@ -79,7 +77,6 @@ export const addEvent = (event, img) => (dispatch) => {
   axiosFormInstance
     .post("/api/events/create", data)
     .then((res) => {
-      var transformed = transformEvents([res.data])
       dispatch({
         type: ADD_EVENT,
         payload: res,
@@ -94,8 +91,6 @@ export const addEvent = (event, img) => (dispatch) => {
   axiosInstance
     .post("/api/events/create", event)
     .then((res) => {
-      console.log(res)
-      var transformed = transformEvents([res.data])
       dispatch({
         type: ADD_EVENT,
         payload: res.data,
@@ -114,6 +109,7 @@ export const deleteEvent = (id) => (dispatch) => {
   axiosInstance
     .delete(`/api/events/${id}`)
     .then((res) => {
+      console.log('res', res)
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
       dispatch({
         type: DELETE_EVENT,

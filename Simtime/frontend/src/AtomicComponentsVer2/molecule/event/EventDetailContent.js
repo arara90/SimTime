@@ -87,7 +87,6 @@ const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
     const { event_place, event_date, event_time, participants, message, tags, like} = props;
-    console.log(props)
     return (
         <Wrap className="event-detail">
             <Detail>
@@ -95,7 +94,7 @@ function EventDetailContent(props) {
                 <LikeButton color="ST_PINK" selected={like}><HeartIcon /></LikeButton>
             </Detail> 
             <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{getStringDate(event_date, 'day')+"  "+event_time}</DetailTextRow>
-            <DetailTextRow as="address"><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
+            <DetailTextRow as="address" title={event_place.address}><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
             <Users className="participants">
                 <ParticipantsIcon className="fa-fw" />
                 {participants.map((p)=>{
@@ -107,7 +106,7 @@ function EventDetailContent(props) {
             </Users>
             <Map mapId="event-detail-map" location={event_place} />
             <Message line={6}>{message}</Message>
-            {/* <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> */}
+            {tags ? <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> : null}
         </Wrap>
     )
 }
@@ -119,7 +118,7 @@ EventDetailContent.propTypes = {
     event_date: PropTypes.string,
     participants: PropTypes.array,
     message: PropTypes.string,
-    // tags: PropTypes.array,
+    tags: PropTypes.array,
     like: PropTypes.bool,
   };
 
@@ -129,22 +128,8 @@ EventDetailContent.defaultProps = {
     participants: [
         {name:"arara90", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
         {name:"admin", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
-        // {name:"arara901", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
-        // {name:"admin1", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
-        // {name:"arara902", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
-        // {name:"admin3", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
-        // {name:"arara903", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
-        // {name:"admin4", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
-        // {name:"arara3", url:"https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg"}, 
-        // {name:"admi", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"},
-    ],
+       ],
     message: "이것다.이것은 T니다.이것은 Test Message입니st MeMessage입니다.이것은 Test Message입니다.이것은 Test Message입니다.",
-    // tags: ["나이","tg1", "강1", "맥1", "tag", 
-    // "한강", "맥주", "나들이","tag1", "한강1", 
-    // "맥1주", "나1들이","한강3", "맥2주", 
-    // "나3들", "들이","한강3", "맥2주", 
-    // "3들이", "나1들이","강3", "주", 
-    // ],
+    tags: [],
     like: true
-    
   };

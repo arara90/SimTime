@@ -49,9 +49,9 @@ class Attendance(models.TextChoices):
     Yes = 'Y'  # 1
     Unknown = "Waiting for a response"  # 2
 
-
+def default_place_dict():
+    return {'name': '', 'address':'', 'lat':'', 'lng':''}
 class Event(CustomizedModel):
-
     # 추후에 EvnetType 테이블 정의, ForeignKey
     objects = models.Manager()
     # related_name: User가 가지고 있는 invitations들을 조회, user.event.all()이 가능해짐
@@ -59,8 +59,8 @@ class Event(CustomizedModel):
                              on_delete=models.CASCADE, related_name='events')
     event_name = models.CharField(max_length=200, blank=False)
     event_time = models.DateTimeField(blank=False, null=False)
-    event_place = JSONField(default=dict)
-    tags = JSONField(default=dict) # 미구현
+    event_place = JSONField(default=default_place_dict)
+    tags = ArrayField(models.CharField(max_length=200), null=True, blank=True, default=list) # 미구현
     status = models.CharField(max_length=10,
                               choices=EventStatus.choices,
                               default=EventStatus.OPEN)

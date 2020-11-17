@@ -161,11 +161,11 @@ export default EventDetailHeader
 
 EventDetailHeader.propTypes = {
   event_name: PropTypes.string,
-  tags: PropTypes.string
+  tags: PropTypes.array
 };
 
 EventDetailHeader.defaultProps = {
   event_name: "Tremblant In Canada",
-  tags: "tag, 한강, 맥주, 나들이,tag1, 한강1, 맥1주, 나1들이"
+  tags: ["tag", "한강", "맥주", "나들이", "tag1", "한강1", "맥1주", "나1들이"]
 };
   

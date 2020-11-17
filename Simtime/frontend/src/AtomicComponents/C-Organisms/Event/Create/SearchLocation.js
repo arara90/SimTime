@@ -24,7 +24,7 @@ const StyledMap = styled(Map)``;
 
 function SearchLocation(props) {
   const { width, height, mapId } = props;
-  const [location, setLocation] = useState({ lat: 0, lng: 0, name: "현위치" });
+  const [location, setLocation] = useState({ lat: 0, lng: 0, name: "현위치", address:"" });
 
   //현재 위치 얻어오기
   useEffect(() => {
@@ -36,7 +36,6 @@ function SearchLocation(props) {
       };
 
       setLocation(curr);
-      console.log(curr);
     }
 
     if (!navigator.geolocation) {
@@ -49,17 +48,16 @@ function SearchLocation(props) {
   }, []);
 
   const saveLocation = (option) => {
-    setLocation({
+    console.log('op', option)
+    const data = {
       lat: parseFloat(option.lat),
       lng: parseFloat(option.lan),
       name: option.name,
-    });
+      address: option.address
+    }
 
-    props.onChange({
-      lat: parseFloat(option.lat),
-      lng: parseFloat(option.lan),
-      name: option.name,
-    });
+    setLocation(data);
+    props.onChange(data);
   };
 
   return (

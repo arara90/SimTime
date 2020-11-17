@@ -60,6 +60,11 @@ const EventDesc = styled.div`
 const Address = styled.address`
     height: 20px;
     margin-bottom: 2px;
+
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden
 `
 
 const Time = styled.time`
