@@ -29,10 +29,11 @@ export default () => {
 
   return {
     contextModal,
+    contextModalContent,
     setContextModal,
+    setContextModalContent,
     handleContextModal,
     openContextModal,
     closeContextModal,
-    contextModalContent,
   };
 };

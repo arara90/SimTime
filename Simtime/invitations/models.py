@@ -44,13 +44,17 @@ class EventStatus(models.TextChoices):
     PENDING = 'PENDING'  # 2
 
 
-class Attendance(models.TextChoices):
-    No = 'N'  # 0
-    Yes = 'Y'  # 1
-    Unknown = "Waiting for a response"  # 2
+# class Attendance(models.TextChoices):
+#     No = 'N'  # 0
+#     Yes = 'Y'  # 1
+#     Unknown = "Waiting for a response"  # 2
+
+# attendance = models.CharField(max_length=25, choices=Attendance.choices, default=Attendance.Unknown)
 
 def default_place_dict():
-    return {'name': '', 'address':'', 'lat':'', 'lng':''}
+    return {'name': '', 'address': '', 'lat': '', 'lng': ''}
+
+
 class Event(CustomizedModel):
     # 추후에 EvnetType 테이블 정의, ForeignKey
     objects = models.Manager()
@@ -60,14 +64,15 @@ class Event(CustomizedModel):
     event_name = models.CharField(max_length=200, blank=False)
     event_time = models.DateTimeField(blank=False, null=False)
     event_place = JSONField(default=default_place_dict)
-    tags = ArrayField(models.CharField(max_length=200), null=True, blank=True, default=list) # 미구현
+    tags = ArrayField(models.CharField(max_length=200),
+                      null=True, blank=True, default=list)  # 미구현
     status = models.CharField(max_length=10,
                               choices=EventStatus.choices,
                               default=EventStatus.OPEN)
 
     message = models.TextField(blank=True, null=True)
     photo = models.ImageField(upload_to=user_path, blank=True, null=True)
-    color = models.CharField(max_length=10, default="ST_VIOLET") #violet
+    color = models.CharField(max_length=10, default="ST_VIOLET")  # violet
     font_color = models.CharField(max_length=10, default="ST_WHITE")
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -91,12 +96,10 @@ class Invitation(CustomizedModel):
         Event, on_delete=models.CASCADE, related_name='sendTo')
     relationship = models.ForeignKey(
         settings.AUTH_USER_RELATIONSHIP_MODEL, on_delete=models.CASCADE, related_name='invitations')
-    attendance = models.CharField(
-        max_length=25, choices=Attendance.choices, default=Attendance.Unknown)
+    attendance = models.BooleanField(default=False)
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함
     is_shown = models.BooleanField(default=True)
-    color = models.CharField(max_length=10, default="ST_VIOLET") #violet
-    font_color = models.CharField(max_length=10, default="ST_WHITE")
+    like = models.BooleanField(default=False)
 
     class Meta:
         constraints = [models.UniqueConstraint(

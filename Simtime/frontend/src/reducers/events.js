@@ -40,7 +40,7 @@ export default function(state = initialState, action) {
       };
     case ADD_EVENT:
       return {
-        ...state,
+        selectedEvent: action.payload.id,
         events: transformEvents(state.events, [action.payload])
       };
     case DELETE_EVENT:

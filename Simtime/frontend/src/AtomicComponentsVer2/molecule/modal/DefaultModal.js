@@ -2,9 +2,8 @@ import React, { useState, useCallback, Fragment, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-
-import ModalTitle from "../../A-Atomics/Modal/ModalTitle";
-import DashedButton from "../../A-Atomics/Button/DashedButton";
+import ModalTitle from "../../atom/modal/ModalTitle"
+import SolidButton from "../../atom/buttons/SolidButton";
 
 const Wrap = styled.div`
   background-color: white;
@@ -69,7 +68,7 @@ const ButtonWrap = styled.div`
   cursor: pointer;
 `;
 
-const Button = styled(DashedButton)`
+const Button = styled(SolidButton)`
   border-radius: 6px;
 `;
 

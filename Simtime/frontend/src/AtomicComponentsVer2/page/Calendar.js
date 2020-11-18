@@ -13,7 +13,9 @@ import EventDetail from "../organism/calendar/event/EventDetail"
 import EventList from "../organism/calendar/event/EventList"
 import EventCalendar from "../organism/calendar/EventCalendar"
 import Filters from "../organism/calendar/Filters"
-// import GetEventButton from "./GetEventButton"
+
+import YNDialogModal from "../molecule/modal/YNDialogModal"
+import InviteFriends from "../organism/calendar/modals/InviteFriends"
 
 import {generate, getStrFullDate, addDate} from "../../actions/calendar"
 import {getEvent, getEvents} from "../../actions/events"
@@ -33,26 +35,44 @@ const Pencil = styled(PencilIcon)`
   font-size: 1rem;
 `
 
+
+// const InviteFriends = styled.div`
+// width: 200px;
+// height: 200px;
+// background: blue;
+// `
+
+const Error = styled.div`
+width: 200px;
+height: 200px;
+background: red;
+`
+
 function Calendar(props) {
   //props
   const {getEvents, events} = props;
 
   //context
-  const { handleContextModal, closeContextModal } = React.useContext(ModalContext);
+  const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
 
-  //calendar 관련 states
+  //hooks
+
+  ///// states calendar 관련 states
   const [current, setCurrent] = useState(new Date()); 
   const [weekDates, setWeekDates] = useState([]); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
   const [selectedEvent, setSelectedEvent] = useState({})
-  
-  // const [dates, setDates] = useState( { str:null, end:null , weeks:[] }); 
 
-  //event-detail or list
+  ///// states - calendar 관련 statesevent-detail or list
   const [showDetail, setShowDetail] = useState(false);
   
+  ///// states - modal 관련 
+  const [modalContent, setModalContent] = useState(null);
+  //EventMaker, Dialog, Invite, null 
+
+  ///// useEffect
   useEffect(()=>{ 
     var {start, end, weeks} = generate(current, 5);
     setStartDate(start)
@@ -63,8 +83,9 @@ function Calendar(props) {
   }, [])
 
   useEffect(()=>{ 
-    console.log(current)  
-  }, [current])
+    if(modalContent) setContextModalContent(renderModalContext(modalContent))
+    else closeContextModal()
+  }, [modalContent])
 
 
   // event Click
@@ -81,41 +102,33 @@ function Calendar(props) {
     setShowDetail(false);
   }
 
-
-  //calendar 이동
-  const clickNextHandler=(type="next")=>{
-    if(type=="prev"){
-      var {start, end, weeks} = generate(addDate(startDate,-1), -5 )
-      setCurrent(start)
-      setWeekDates(weeks)
-
-      if( start<startDate){
-        setStartDate(start)
-        getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
-      }
+  //renders
+  const renderModalContext= (content) =>{
+    console.log('renderModalContext', content)
+    if(content=="EventMaker"){
+      return <EventMaker closeModal={closeContextModal} submitHandler={()=>setContextModalContent(renderModalContext("Dialog"))} />
+    }else if(content=="Dialog"){
+      return (
+        <YNDialogModal 
+          leftBtnClickHandler={()=>setContextModalContent(renderModalContext("InviteFriends"))} 
+          rightBtnClickHandler={closeContextModal} 
+          closeModal={closeContextModal} >
+        지금 친구들을 초대하시겠습니까?
+        </YNDialogModal>
+        )
+    }else if(content=="InviteFriends"){
+      return <InviteFriends onClick={closeContextModal} closeModal={closeContextModal}/>
     }else{
-      var {start, end, weeks} = generate(addDate(endDate,1), 5);
-      
-      setCurrent(start)
-      setWeekDates(weeks)
-      
-      if(end>endDate){
-        setEndDate(end)
-        getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
-      }
+    return <div>ggg</div>
     }
   }
 
-  useEffect(()=>{
-    // console.log(events[selectedDate]) 
-    // console.log(selectedDate)
-  },[selectedDate])
 
   return (
       <CalendarTemplate 
         leftTop={<Filters current={selectedDate} dateHandler={setCurrent}/>}  
         leftBottom={<EventCalendar dateClickHandler={dateCellClickHandler} eventClickHandler={eventClickHandler} selectedEvent={selectedEvent} selectedDate={selectedDate} current={current} dates={weekDates} events={events} />} 
-        rightTop={<NewButton color={"MAIN_COLOR"}  onClick={()=>handleContextModal(<EventMaker closeModal={closeContextModal}/>)}> <Pencil />New Event</NewButton>} 
+        rightTop={<NewButton color={"MAIN_COLOR"}  onClick={()=>handleContextModal(renderModalContext("Dialog"))}> <Pencil />New Event</NewButton>} 
         rightBottom={ showDetail ? 
           <EventDetail event={selectedEvent} backHandler={()=>{setShowDetail(false)}} /> : 
           <EventList
@@ -135,6 +148,7 @@ function Calendar(props) {
 
 const mapStateToProps = (state) => ({
   events: {...state.events.events},
+  selectedEvent: state.events.selectedEvent
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -159,3 +173,29 @@ export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
   //     events: [eventId, eventId, eventId, eventId]
   //   }
   // ]
+
+
+  
+  // //calendar 이동
+  // const clickNextHandler=(type="next")=>{
+  //   if(type=="prev"){
+  //     var {start, end, weeks} = generate(addDate(startDate,-1), -5 )
+  //     setCurrent(start)
+  //     setWeekDates(weeks)
+
+  //     if( start<startDate){
+  //       setStartDate(start)
+  //       getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
+  //     }
+  //   }else{
+  //     var {start, end, weeks} = generate(addDate(endDate,1), 5);
+      
+  //     setCurrent(start)
+  //     setWeekDates(weeks)
+      
+  //     if(end>endDate){
+  //       setEndDate(end)
+  //       getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
+  //     }
+  //   }
+  // }

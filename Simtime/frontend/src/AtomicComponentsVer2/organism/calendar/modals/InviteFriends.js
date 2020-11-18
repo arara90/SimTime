@@ -5,14 +5,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 //Components
-import { MAIN_COLOR } from "../../../../Colors";
-import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
-import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
-import ResultTable from "../../../../C-Organisms/Friends/ResultTable";
+import { MAIN_COLOR } from "../../../Colors";
+import DefaultModal from "../../../molecule/modal/DefaultModal";
+
+import SearchBar from "../../../../AtomicComponents/C-Organisms/Friends/SearchFriend/SearchBar";
+import ResultTable from "../../../../AtomicComponents/C-Organisms/Friends/ResultTable";
 
 //redux-actions
-import { addfriend, addToGroup } from "../../../../../actions/friends";
-import { searchUsers } from "../../../../../actions/account";
+import { addfriend, addToGroup } from "../../../../actions/friends";
+import { searchUsers } from "../../../../actions/account";
 
 const SearchWrap = styled.div`
   width: 100%;
@@ -24,7 +25,7 @@ const ResultWrap = styled.div`
 const Result = styled(ResultTable)``;
 const Groups = styled(ResultTable)``;
 
-function AddFriend(props) {
+function InviteFriends(props) {
   const { closeModal } = props;
 
   const [users, setUsers] = useState([]);
@@ -56,6 +57,8 @@ function AddFriend(props) {
     setUsers(res)
     console.log("res", res)
   }
+
+
 
   const renderChild = () => {
     return (
@@ -97,8 +100,8 @@ function AddFriend(props) {
   return (
     <DefaultModal
       title="Add Friend"
-      pages={[renderChild()]}
-      totalPage={1}
+      children={renderChild()}
+      totalPage={0}
       handleSubmit={handleSubmit}
       height="500px"
       closeModal={closeModal}
@@ -111,15 +114,15 @@ const mapStateToProps = (state) => ({
   groups: state.groups.groups,
 });
 // export default AddFriend;
-export default connect(mapStateToProps, { addfriend, addToGroup, searchUsers })(AddFriend);
+export default connect(mapStateToProps, { addfriend, addToGroup, searchUsers })(InviteFriends);
 
-AddFriend.propTypes = {
+InviteFriends.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   closeModal: PropTypes.func,
 };
 
-AddFriend.defaultProps = {
+InviteFriends.defaultProps = {
   height: "520px",
   width: "320px",
   closeModal: () => {

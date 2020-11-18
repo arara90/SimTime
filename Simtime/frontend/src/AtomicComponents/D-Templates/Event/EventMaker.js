@@ -24,6 +24,7 @@ import Map from "../../A-Atomics/Map/Map";
 import DashedButton from "../../A-Atomics/Button/DashedButton";
 import { getStrFullDate } from "../Calendar/Generator";
 
+// 11.18
 import ContextStore from "../../../contexts/contextStore";
 
 const Wrap = styled.div`
@@ -219,7 +220,8 @@ function EventMaker(props) {
       addEvent(myEvent, image);
     }
 
-    closeModal();
+    // closeModal();
+    props.submitHandler();
   };
 
   const handleChangeFile = (e) => {
@@ -409,7 +411,6 @@ function EventMaker(props) {
   };
 
   return (
-    <ContextStore.Provider value={date}>
       <Wrap {...props}>
         <HeaderWrap>
           <BarWrap>{/* <ProgressBar /> */}</BarWrap>
@@ -423,7 +424,7 @@ function EventMaker(props) {
           <Buttons>{renderButtons(page)}</Buttons>
         </ContentWrap>
       </Wrap>
-    </ContextStore.Provider>
+    
   );
 }
 

@@ -2,20 +2,24 @@ import React, { useState, useCallback, Fragment, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import { connect } from "react-redux";
+import ContextStore from "../../../contexts/contextStore";
+
+import { MAIN_COLOR, ST_GTAY } from "../../Colors";
 
 import ModalTitle from "../../A-Atomics/Modal/ModalTitle";
+import ProgressBar from "../../A-Atomics/Deco/ProgressBar";
 import DashedButton from "../../A-Atomics/Button/DashedButton";
 
 const Wrap = styled.div`
+  border: solid 1px ${MAIN_COLOR};
   background-color: white;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  position: relative;
 
   @media only screen and (max-width: 320px) {
     width: 100%;
@@ -24,17 +28,21 @@ const Wrap = styled.div`
 
 const HeaderWrap = styled.div`
   width: 100%;
-  height: 50px;
+  // height: 18%;
+  height: 73px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
   overflow: hidden;
 `;
 
-const ContentWrap = styled.div`
+const ContentWrap = styled.form`
+  position: relative;
   width: 90%;
-  height: 100%;
+  // height: 82%;
+  height: 150px;
 
   display: flex;
   flex-direction: column;
@@ -43,8 +51,8 @@ const ContentWrap = styled.div`
 `;
 
 const PageWrap = styled.div`
+  // border: solid 1px red;
   width: 100%;
-  padding-bottom: 5px;
   ${(props) =>
     props.isActivePage
       ? `display: flex;
@@ -54,55 +62,68 @@ const PageWrap = styled.div`
       : `display:none;`}
 `;
 
-const ButtonWrap = styled.div`
-  position: absolute;
-  bottom: 0px;
-  width: 90%;
-  height: auto;
+const FormWrap = styled.div`
+  width: 100%;
+  height: 85%;
+  // border: solid 1px blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
 
-  padding-bottom: 15px;
+const ButtonWrap = styled.div`
+  cursor: pointer;
+  width: ${(props) => props.width};
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+`;
+
+const Buttons = styled.div`
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 15%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Button = styled(DashedButton)`
   border-radius: 6px;
 `;
 
-const ButtonSpace = styled.div`
-  height: 60px;
-`;
-
-function DefaultModal(props) {
+function InputModal(props) {
   const [page, setPage] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("hadleSubmit");
     props.handleSubmit();
   };
 
   const handleClick = (e, newPage) => {
+    console.log("handleClick");
     setPage(newPage);
   };
 
-  const renderPages = (page) => {
-    console.log('renderPages', page)
-    console.log('renderPages, children', props.pages)
+  const renderPages = () => {
     return (
       <PageWrap {...props} isActivePage={page == 0}>
-        {props.pages[page]}
-        <ButtonSpace></ButtonSpace>
+        {props.children}
       </PageWrap>
     );
   };
 
   const renderButtons = (page) => {
-    if (page == props.totalPage-1) {
-      if (props.totalPage == 1) {
+    if (page == props.totalPage) {
+      if (props.totalPage == 0) {
         return (
           <ButtonWrap width="100%">
             <Button type="submit" onClick={(e) => handleSubmit(e)}>
@@ -147,37 +168,34 @@ function DefaultModal(props) {
 
   return (
     <Wrap {...props}>
-      <HeaderWrap className="HeaderWrap">
+      <HeaderWrap>
         {props.title && (
           <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
         )}
-        {/* <BarWrap><ProgressBar /></BarWrap> */}
       </HeaderWrap>
 
-      <ContentWrap>
-        {renderPages(page)}
-        {renderButtons(page)}
+      <ContentWrap encType="multipart/form-data">
+        {renderPages()}
+        <Buttons>{renderButtons(page)}</Buttons>
       </ContentWrap>
     </Wrap>
   );
 }
 
-export default DefaultModal;
+export default InputModal;
 
-DefaultModal.propTypes = {
+InputModal.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   totalPage: PropTypes.number,
-  pages: PropTypes.array,
   title: PropTypes.string,
   closeModal: PropTypes.func,
 };
 
-DefaultModal.defaultProps = {
-  height: "548px",
+InputModal.defaultProps = {
+  height: "300px",
   width: "320px",
-  pages: [<div>page1</div>, <div>page2</div>],
-  totalPage: 2,
+  totalPage: 1,
   title: null,
   closeModal: () => {},
 };
