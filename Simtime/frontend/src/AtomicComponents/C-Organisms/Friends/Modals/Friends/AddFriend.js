@@ -57,7 +57,7 @@ function AddFriend(props) {
     console.log("res", res)
   }
 
-  const renderChild = () => {
+  const renderPage = () => {
     return (
       <Fragment>
         <SearchWrap>
@@ -97,7 +97,7 @@ function AddFriend(props) {
   return (
     <DefaultModal
       title="Add Friend"
-      pages={[renderChild()]}
+      pages={[renderPage()]}
       totalPage={1}
       handleSubmit={handleSubmit}
       height="500px"

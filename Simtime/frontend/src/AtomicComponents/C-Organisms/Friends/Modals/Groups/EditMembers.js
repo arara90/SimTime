@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { deleteMemebers } from "../../../../../actions/groups";
+import { deleteMembers } from "../../../../../actions/groups";
 
 import { MAIN_COLOR } from "../../../../Colors";
 import BasicModal from "../../../../B-Molecules/Modal/BasicModal";
@@ -103,7 +103,7 @@ function EditMembers(props) {
   );
 }
 
-export default connect(null, { deleteMemebers })(EditMembers);
+export default connect(null, { deleteMembers })(EditMembers);
 
 EditMembers.propTypes = {
   title: PropTypes.string,

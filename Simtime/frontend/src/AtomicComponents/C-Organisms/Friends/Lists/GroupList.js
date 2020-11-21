@@ -9,7 +9,7 @@ import Modal from "../../../A-Atomics/Modal/Modal";
 //redux
 import { connect } from "react-redux";
 //components
-import { deleteGroup, getGroup, getMemebers } from "../../../../actions/groups";
+import { deleteGroup, getGroup, getMembers } from "../../../../actions/groups";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
@@ -58,7 +58,7 @@ function GroupList(props) {
   };
 
   const editMembers = async (id) => {
-    const friends = await props.getMemebers(id);
+    const friends = await props.getMembers(id);
     setModal(!modal);
   };
 
@@ -129,7 +129,7 @@ function GroupList(props) {
   );
 }
 
-export default connect(null, { deleteGroup, getGroup, getMemebers })(GroupList);
+export default connect(null, { deleteGroup, getGroup, getMembers })(GroupList);
 
 GroupList.propTypes = {
   title: PropTypes.string,

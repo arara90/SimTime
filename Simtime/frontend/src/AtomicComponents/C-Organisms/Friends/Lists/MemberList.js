@@ -7,7 +7,7 @@ import Table from "../../../B-Molecules/Table/Table";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
-import { deleteMemeber } from "../../../../actions/groups";
+import { deleteMember } from "../../../../actions/groups";
 import { addToGroup } from "../../../../actions/friends"
 
 const buttonMargin = 10;
@@ -86,7 +86,7 @@ function MemberList(props) {
           ></UserCard>
           <Buttons>
             {renderButton(() => {
-              props.deleteMemeber(data.id);
+              props.deleteMember(data.id);
             })}
           </Buttons>
         </TableRow>
@@ -99,7 +99,7 @@ function MemberList(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteMemeber: (id) => dispatch(deleteMemeber(id)),
+    deleteMember: (id) => dispatch(deleteMember(id)),
     addToGroup: (data) => dispatch(addToGroup(data)),
   };
 };

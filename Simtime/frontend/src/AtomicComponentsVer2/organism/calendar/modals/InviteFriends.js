@@ -1,74 +1,91 @@
-import "babel-polyfill";
-import React, { Fragment, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
-//Components
-import { MAIN_COLOR } from "../../../Colors";
-import DefaultModal from "../../../molecule/modal/DefaultModal";
+import DefaultModal from "../../../molecule/modal/DefaultModal"
 
-import SearchBar from "../../../../AtomicComponents/C-Organisms/Friends/SearchFriend/SearchBar";
-import ResultTable from "../../../../AtomicComponents/C-Organisms/Friends/ResultTable";
+import { getGroups, getMembers } from "../../../../actions/groups";
+import { getFriends } from "../../../../actions/friends";
+import { addInvitation } from "../../../../actions/invitations";
 
-//redux-actions
-import { addfriend, addToGroup } from "../../../../actions/friends";
-import { searchUsers } from "../../../../actions/account";
 
-const SearchWrap = styled.div`
-  width: 100%;
-  padding-bottom: 15px;
-`;
-const ResultWrap = styled.div`
-  width: 100%;
-`;
-const Result = styled(ResultTable)``;
-const Groups = styled(ResultTable)``;
 
 function InviteFriends(props) {
-  const { closeModal } = props;
-  const [friends, setFriend] = useState([]);
+  //hooks
+  ////state
+  const {getGroups, getFriends, selectedGroup, groups, relationships} = props;
+  const [currGroup, setCurrGroup] = useState("All")
+  const [displayFriends, setDisplayFriends] = useState(null);
+  const [selectedFriends, setSelectedFriends] = useState(null);
 
+  ////useEffect
+  useEffect(
+    ()=>{
+      getGroups()
+      getFriends()
+    }, []
+  )
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     //친구 등록
-  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
-  //     console.log(relationship)
-  //     if(groups.length){
-  //       var groupData = groups.map((group) => {
-  //         return { relationship: relationship.data.relationshipId, group: group };
-  //       });
-  //       await props.addToGroup(groupData);
-  //     }
-
-  //     props.closeModal();
-  //   } catch (err) {
-  //     console.log("relationshipError", err);
-  //   }
-  // };
+  //funcs
+  const renderPage = () => {
+    
+  }
 
 
   return (
-    <DefaultModal title={"Invite Friends"}> test</DefaultModal>
-  );
+    <DefaultModal
+      title="Invite Friends"
+      pages={[<div>hello</div>]}
+      totalPage={1}
+      handleSubmit={handleSubmit}
+      height="auto"
+    ></DefaultModal>
+  )
 }
 
+
+
+
 const mapStateToProps = (state) => ({
+  groups: state.groups.groups,
+  selectedGroup: state.groups.selectedGroup,
+  relationships: state.friends.relationships,
 });
-// export default AddFriend;
-export default connect(mapStateToProps, {  })(InviteFriends);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getGroups: () => dispatch(getGroups()),
+    getFriends: () => dispatch(getFriends()),
+    getMembers: () => dispatch(getHost())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InviteFriends);
 
 InviteFriends.propTypes = {
-  height: PropTypes.string,
-  width: PropTypes.string,
-  closeModal: PropTypes.func,
+  title: PropTypes.string,
+  headers: PropTypes.array,
+  selectedGoup: PropTypes.object,
+  relationships: PropTypes.array,
+  buttons: PropTypes.array,
+  // closeModal: PropTypes.func,
 };
 
 InviteFriends.defaultProps = {
-  height: "520px",
-  width: "320px",
-  closeModal: () => {
-    console.log("Warning clsModal");
-  },
+  title: "Table Title",
+  headers: null,
+  selectedGoup: { group: { id: "", groupname: "unknown" }, members: [] },
+  relationships: [],
+  buttons: [
+    { content: "Members", url: null },
+    {
+      content: "Add",
+      url:
+        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
+    },
+  ],
+  // closeModal: () => {
+  //   console.log("Waring clsModal");
+  // },
 };

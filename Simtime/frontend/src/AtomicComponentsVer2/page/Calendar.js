@@ -117,6 +117,9 @@ function Calendar(props) {
         </YNDialogModal>
         )
     }else if(content=="InviteFriends"){
+      async () => {
+
+      }
       return <InviteFriends onClick={closeContextModal} closeModal={closeContextModal}/>
     }else{
     return <div>ggg</div>
@@ -158,6 +161,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     getEvents: (start, end) => dispatch(getEvents(start, end)),
+    
   };
 };
 

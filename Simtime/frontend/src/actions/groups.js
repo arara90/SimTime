@@ -132,7 +132,7 @@ export const editGroup = (group) => (dispatch) => {
 //     });
 // };
 
-export const getMemebers = (id) => (dispatch) => {
+export const getMembers = (id) => (dispatch) => {
   return axiosInstance
     .get(`/api/groupmember/${id}/`)
     .then((res) => {
@@ -151,7 +151,7 @@ export const getMemebers = (id) => (dispatch) => {
     });
 };
 
-export const deleteMemebers = (data) => (dispatch) => {
+export const deleteMembers = (data) => (dispatch) => {
   var ids = data.join(" ");
   return axiosInstance
     .delete(`/api/groupmember/${ids}`)
@@ -163,7 +163,7 @@ export const deleteMemebers = (data) => (dispatch) => {
     });
 };
 
-export const deleteMemeber = (id) => (dispatch) => {
+export const deleteMember = (id) => (dispatch) => {
   return axiosInstance
     .delete(`/api/groupmember/${id}`)
     .then((res) => {

@@ -7,7 +7,7 @@ import ModalContextPortal, {
   ModalPortalBasic,
 } from "../A-Atomics/Modal/ModalPortal";
 //redux-actions
-import { getMemebers, getGroups } from "../../actions/groups";
+import { getMembers, getGroups } from "../../actions/groups";
 // import { getHosts } from "../../actions/invitations"
 import TestModal from "./TestModal"
 import Test from "./Test"

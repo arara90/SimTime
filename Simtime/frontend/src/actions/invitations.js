@@ -10,47 +10,44 @@ import {
   CREATE_MESSAGE
 } from "./types";
 
-export const getInvitations = () => (dispatch, getState) => {
-  axios
-    .get("/api/invitations/", tokenConfig(getState))
-    .then(res => {
-      dispatch({
-        type: GET_INVITATIONS,
-        payload: res.data
-      });
-    })
-    .catch(err =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
-};
 
-export const addInvitation = invitation => (dispatch, getState) => {
-  axios
-    .post("/api/invitations/", invitation, tokenConfig(getState))
-    .then(res => {
-      dispatch({
-        type: ADD_INVITATION,
-        payload: res.data
-      });
+// export const addInvitations = (invitations) => (dispatch) => {
+//   console.log("addfriend", invitations);
 
-      dispatch(createMessage({ addInvitation: "Invitation Added" }));
-    })
-    // .catch(err => console.log(err));
-    // .catch(err => console.log(err.response.data));
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
-};
+//   // return axiosInstance
+//   //   .post("/api/friend/create/", {
+//   //     account: friend.account,
+//   //     friend: friend.friend,
+//   //   })
+//   //   .then((res) => {
+//   //     dispatch(createMessage({ addFriend: "Friend Added" }));
+//   //     console.log("friends", res);
+//   //     dispatch({ type: ADD_FRIEND, payload: res.data });
+//   //     return res;
+//   //   })
+//   //   .catch((err) => {
+//   //     dispatch(returnErrors(err.response, err.response.status));
+//   //     return err;
+//   //   });
+// };
 
-export const deleteInvitation = id => (dispatch, getState) => {
-  axios
-    .delete(`/api/invitations/${id}`, tokenConfig(getState))
-    .then(res => {
-      dispatch(createMessage({ deleteInvitation: "Invitation Deleted" }));
-      dispatch({
-        type: DELETE_INVITATION,
-        payload: id
-      });
-    })
-    .catch(err => console.log(err));
+
+export const addInvitations = (invitations) => (dispatch) => {
+  console.log("addInvitations", invitations);
+
+  // return axiosInstance
+  //   .post("/api/friend/create/", {
+  //     account: friend.account,
+  //     friend: friend.friend,
+  //   })
+  //   .then((res) => {
+  //     dispatch(createMessage({ addFriend: "Friend Added" }));
+  //     console.log("friends", res);
+  //     dispatch({ type: ADD_FRIEND, payload: res.data });
+  //     return res;
+  //   })
+  //   .catch((err) => {
+  //     dispatch(returnErrors(err.response, err.response.status));
+  //     return err;
+  //   });
 };
