@@ -57,6 +57,7 @@ const Like = styled(StatusButton)`
 `
 
 const Content = styled.a`
+    color: ${Colors.TEXT};
     flex: 1;
     width: 96%;
     padding-left: 10px;

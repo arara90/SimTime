@@ -27,94 +27,37 @@ const Groups = styled(ResultTable)``;
 
 function InviteFriends(props) {
   const { closeModal } = props;
-
-  const [users, setUsers] = useState([]);
-  const [friend, setFriend] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [friends, setFriend] = useState([]);
 
 
-  const handleSubmit = async () => {
-    try {
-      //친구 등록
-      var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
-      console.log(relationship)
-      if(groups.length){
-        var groupData = groups.map((group) => {
-          return { relationship: relationship.data.relationshipId, group: group };
-        });
-        await props.addToGroup(groupData);
-      }
+  // const handleSubmit = async () => {
+  //   try {
+  //     //친구 등록
+  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
+  //     console.log(relationship)
+  //     if(groups.length){
+  //       var groupData = groups.map((group) => {
+  //         return { relationship: relationship.data.relationshipId, group: group };
+  //       });
+  //       await props.addToGroup(groupData);
+  //     }
 
-      props.closeModal();
-    } catch (err) {
-      console.log("relationshipError", err);
-    }
-  };
+  //     props.closeModal();
+  //   } catch (err) {
+  //     console.log("relationshipError", err);
+  //   }
+  // };
 
-
-  const searchFriends = async (field, keyword) => {
-    var res = await props.searchUsers(field, keyword)
-    setUsers(res)
-    console.log("res", res)
-  }
-
-
-
-  const renderChild = () => {
-    return (
-      <Fragment>
-        <SearchWrap>
-          <SearchBar searchFriends={searchFriends} />
-        </SearchWrap>
-        <ResultWrap>
-          <Result
-            datas={users}
-            title="Result"
-            titleColor="MAIN_COLOR"
-            width="100%"
-            rowNum={3}
-            selectHandler={(res) => {
-              setFriend(res);
-            }}
-          />
-        </ResultWrap>
-        <ResultWrap>
-          {friend.length > 0 && (
-            <Groups
-              datas={props.groups}
-              title="Group"
-              titleColor="MAIN_COLOR"
-              width="100%"
-              rowNum={3}
-              selectHandler={(res) => {
-                setGroups(res);
-              }}
-              multiple
-            />
-          )}
-        </ResultWrap>
-      </Fragment>
-    );
-  };
 
   return (
-    <DefaultModal
-      title="Add Friend"
-      children={renderChild()}
-      totalPage={0}
-      handleSubmit={handleSubmit}
-      height="500px"
-      closeModal={closeModal}
-    ></DefaultModal>
+    <DefaultModal title={"Invite Friends"}> test</DefaultModal>
   );
 }
 
 const mapStateToProps = (state) => ({
-  user: state.auth.user,
-  groups: state.groups.groups,
 });
 // export default AddFriend;
-export default connect(mapStateToProps, { addfriend, addToGroup, searchUsers })(InviteFriends);
+export default connect(mapStateToProps, {  })(InviteFriends);
 
 InviteFriends.propTypes = {
   height: PropTypes.string,

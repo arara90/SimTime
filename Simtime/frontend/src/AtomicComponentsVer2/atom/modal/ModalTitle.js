@@ -23,7 +23,7 @@ const StyledCloseButton = styled(CloseButton)`
   border-color: blue;
 `;
 
-const Header = styled.title`
+const Header = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
   color: ${Colors.ST_WHITE};
@@ -31,11 +31,17 @@ const Header = styled.title`
 
 function ModalTitle(props) {
   const { closeContextModal } = React.useContext(ModalContext);
+  const {closeHandler} = props;
+  const onCloseModal= ()=>{
+    closeHandler()
+    closeContextModal()
+  }
+  
   return (
     <Wrap {...props}>
       <Header>{props.children}</Header>
       <StyledCloseButton
-        onClick={props.contextModal ? closeContextModal: props.closeModal}
+        onClick={props.closeModal ? closeContextModal : props.closeModal}
       />
     </Wrap>
   );
@@ -54,7 +60,5 @@ ModalTitle.defaultProps = {
   height: "36px",
   width: "100%",
   color: "MAIN_COLOR",
-  closeModal: () => {
-    console.log("Warning clsModal");
-  },
+  closeModal:null
 };

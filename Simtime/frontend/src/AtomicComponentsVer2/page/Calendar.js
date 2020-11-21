@@ -80,6 +80,7 @@ function Calendar(props) {
     setWeekDates(weeks)
     // event 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
+
   }, [])
 
   useEffect(()=>{ 
@@ -104,7 +105,6 @@ function Calendar(props) {
 
   //renders
   const renderModalContext= (content) =>{
-    console.log('renderModalContext', content)
     if(content=="EventMaker"){
       return <EventMaker closeModal={closeContextModal} submitHandler={()=>setContextModalContent(renderModalContext("Dialog"))} />
     }else if(content=="Dialog"){
@@ -123,26 +123,30 @@ function Calendar(props) {
     }
   }
 
-
   return (
       <CalendarTemplate 
-        leftTop={<Filters current={selectedDate} dateHandler={setCurrent}/>}  
-        leftBottom={<EventCalendar dateClickHandler={dateCellClickHandler} eventClickHandler={eventClickHandler} selectedEvent={selectedEvent} selectedDate={selectedDate} current={current} dates={weekDates} events={events} />} 
-        rightTop={<NewButton color={"MAIN_COLOR"}  onClick={()=>handleContextModal(renderModalContext("Dialog"))}> <Pencil />New Event</NewButton>} 
-        rightBottom={ showDetail ? 
-          <EventDetail event={selectedEvent} backHandler={()=>{setShowDetail(false)}} /> : 
-          <EventList
-            events={events ? events[selectedDate] : [] } 
-            current={selectedDate}
-            dateHandler={setSelectedDate}
-            itemClickHandler={(e, event)=>{
-              e.preventDefault();
-              setShowDetail(true);
-              setSelectedEvent(event)
-            }}
-            />}
+        leftTop =     {<Filters current={selectedDate} dateHandler={setCurrent}/>}  
+        leftBottom =  {<EventCalendar 
+                        dateClickHandler={dateCellClickHandler} 
+                        eventClickHandler={eventClickHandler} 
+                        selectedEvent={selectedEvent} 
+                        selectedDate={selectedDate} 
+                        current={current} 
+                        dates={weekDates} 
+                        events={events} />} 
+        rightTop =    {<NewButton color={"MAIN_COLOR"} onClick={()=>handleContextModal(renderModalContext("InviteFriends"))}>
+                          <Pencil />New Event
+                        </NewButton>}
+        rightBottom = {showDetail ? 
+                       <EventDetail event={selectedEvent} backHandler={()=>{setShowDetail(false)}} /> : 
+                       <EventList events={events ? events[selectedDate] : [] } current={selectedDate}
+                          dateHandler={setSelectedDate}
+                          itemClickHandler={(e, event)=>{
+                            e.preventDefault();
+                            setShowDetail(true);
+                            setSelectedEvent(event)} } /> 
+                      }
       />
-
   )
 }
 
@@ -159,9 +163,6 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
 
-
-  
-
   // datas = [
   //   {
   //     strDate: "2020-11-01", year: 2020, month: 11, date: "1", day: 0, id: "-5D", 
@@ -174,8 +175,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
   //   }
   // ]
 
-
-  
   // //calendar 이동
   // const clickNextHandler=(type="next")=>{
   //   if(type=="prev"){

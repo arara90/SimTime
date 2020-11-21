@@ -194,34 +194,61 @@ function EventMaker(props) {
     setDatePicker(!datePicker);
   };
 
-  const handleSubmit = (e) => {
-    const e_time = new Date(date + " " + time.split(" ")[0])
-    e.preventDefault();
-    // var event_at = new Date('2019/5/16/17:24:30:10');
-    const { eId, eStatus } = event;
-    const myEvent = {
-      host: user.id,
-      event_name: name,
-      event_time: e_time.toISOString(),
-      // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
-      status: eStatus,
-      event_place: place,
-      message: message,
-      tags: tags
-      // photo: image,
-    };
 
-    if (props.event) {
-      editEvent({
-        id: eId,
-        ...myEvent,
-      });
-    } else {
-      addEvent(myEvent, image);
-    }
+  
+  // const handleSubmit = async () => {
+  //   try {
+  //     //친구 등록
+  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
+  //     console.log(relationship)
+  //     if(groups.length){
+  //       var groupData = groups.map((group) => {
+  //         return { relationship: relationship.data.relationshipId, group: group };
+  //       });
+  //       await props.addToGroup(groupData);
+  //     }
 
-    // closeModal();
-    props.submitHandler();
+  //     props.closeModal();
+  //   } catch (err) {
+  //     console.log("relationshipError", err);
+  //   }
+  // };
+
+
+
+  const handleSubmit = async (e) => {
+    try{
+      const e_time = new Date(date + " " + time.split(" ")[0])
+      e.preventDefault();
+      // var event_at = new Date('2019/5/16/17:24:30:10');
+      const { eId, eStatus } = event;
+      const myEvent = {
+        host: user.id,
+        event_name: name,
+        event_time: e_time.toISOString(),
+        // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
+        status: eStatus,
+        event_place: place,
+        message: message,
+        tags: tags
+        // photo: image,
+      };
+
+      if (props.event) {
+        editEvent({
+          id: eId,
+          ...myEvent,
+        });
+      } else {
+        addEvent(myEvent, image);
+      }
+
+      // closeModal();
+      props.submitHandler();
+
+      }catch (err) {
+        console.log("relationshipError", err);
+      }
   };
 
   const handleChangeFile = (e) => {
