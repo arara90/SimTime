@@ -3,14 +3,19 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import * as Colors from "../../../Colors"
 import DefaultModal from "../../../molecule/modal/DefaultModal"
+import TableRow from "../../../atom/table/TableRow"
+
 
 import { getGroups, getMembers } from "../../../../actions/groups";
 import { getFriends } from "../../../../actions/friends";
 import { addInvitation } from "../../../../actions/invitations";
 
 
-
+const Row = styled(TableRow)`
+  border: solid 1px ${Colors.MAIN_COLOR};
+`
 function InviteFriends(props) {
   //hooks
   ////state
@@ -33,10 +38,18 @@ function InviteFriends(props) {
   }
 
 
+  const handleSubmit = () => {
+    
+  }
   return (
     <DefaultModal
       title="Invite Friends"
-      pages={[<div>hello</div>]}
+      pages={[
+        <ul>
+        <Row height="auto" rowNum={1} >hello</Row>
+        <Row height="auto" rowNum={2}>hello</Row>
+        </ul>
+    ]}
       totalPage={1}
       handleSubmit={handleSubmit}
       height="auto"

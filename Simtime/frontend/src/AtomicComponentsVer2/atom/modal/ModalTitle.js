@@ -7,13 +7,14 @@ import { ModalContext } from "../../../contexts/modalContext";
 import CloseButton from "../buttons/CloseButton";
 import * as Colors from "../../Colors";
 
-const Wrap = styled.div`
+const Wrap = styled.header`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   background-color: ${(props) => Colors[props.color]};
 
   position: relative;
   padding-left: 10px;
+  margin-bottom: 1rem;
 `;
 
 const StyledCloseButton = styled(CloseButton)`

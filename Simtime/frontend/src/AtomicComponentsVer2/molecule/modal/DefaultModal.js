@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import ModalTitle from "../../atom/modal/ModalTitle"
 import SolidButton from "../../atom/buttons/SolidButton";
 
-const Wrap = styled.div`
+const Wrap = styled.section`
   background-color: white;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -14,31 +14,33 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  position: relative;
+
 
   @media only screen and (max-width: 320px) {
     width: 100%;
   }
 `;
 
-const HeaderWrap = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  overflow: hidden;
-`;
+// const HeaderWrap = styled.div`
+//   width: 100%;
+//   height: 50px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: center;
+//   overflow: hidden;
+// `;
 
 const ContentWrap = styled.div`
   width: 90%;
-  height: 100%;
+
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  margin-bottom: 1rem;
 `;
 
 const PageWrap = styled.div`
@@ -46,16 +48,15 @@ const PageWrap = styled.div`
   padding-bottom: 5px;
   ${(props) =>
     props.isActivePage
-      ? `display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;`
-      : `display:none;`}
+    ? `display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;`
+    : `display:none;`
+  }
 `;
 
-const ButtonWrap = styled.div`
-  position: absolute;
-  bottom: 0px;
+const ButtonWrap = styled.footer`
   width: 90%;
   height: auto;
 
@@ -94,7 +95,6 @@ function DefaultModal(props) {
     return (
       <PageWrap {...props} isActivePage={page == 0}>
         {props.pages[page]}
-        <ButtonSpace></ButtonSpace>
       </PageWrap>
     );
   };
@@ -146,17 +146,15 @@ function DefaultModal(props) {
 
   return (
     <Wrap {...props}>
-      <HeaderWrap className="HeaderWrap">
+      {/* <HeaderWrap className="HeaderWrap"> */}
         {props.title && (
           <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
         )}
         {/* <BarWrap><ProgressBar /></BarWrap> */}
-      </HeaderWrap>
+      {/* </HeaderWrap> */}
+      {renderPages(page)}
+      {renderButtons(page)}
 
-      <ContentWrap>
-        {renderPages(page)}
-        {renderButtons(page)}
-      </ContentWrap>
     </Wrap>
   );
 }

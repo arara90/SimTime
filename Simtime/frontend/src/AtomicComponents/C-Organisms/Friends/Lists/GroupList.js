@@ -47,7 +47,7 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 
 function GroupList(props) {
   const { groups, selectedGroup, relationships } = props;
-  let { handleContextModal, closeContextModal } = React.useContext(
+  let { handleContextModal, closeContextModal, contextModalContent, setContextModalContent } = React.useContext(
     ModalContext
   );
   const [modal, setModal] = useState(false);
@@ -120,14 +120,14 @@ function GroupList(props) {
   return (
     <Wrap>
       {renderRows(props.groups)}
-      {modal && (
-        <ModalPortalBasic
-          children={<Modal>{renderModal(selectedGroup, relationships)}</Modal>}
-        />
-      )}
+      {modal && (() => handleContextModal(renderModal(selectedGroup, relationships)) )}
     </Wrap>
   );
 }
+        // <ModalPortalBasic
+        //   children={<Modal>{renderModal(selectedGroup, relationships)}</Modal>}
+         // />
+      // )}
 
 export default connect(null, { deleteGroup, getGroup, getMembers })(GroupList);
 
