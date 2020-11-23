@@ -8,7 +8,7 @@ import { MAIN_COLOR } from "../../../AtomicComponents/Colors";
 // import Header from "../../A-Atomics/Font/Header";
 // import ButtonWithImage from "../../B-Molecules/Button/ButtonWithImage";
 
-const TableWrap = styled.div`
+const TableWrap = styled.table`
   height: auto;
   width: ${(props) => props.width};
   display: inline-block;

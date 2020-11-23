@@ -33,7 +33,7 @@ const Wrap = styled.section`
 
 const ContentWrap = styled.div`
   width: 90%;
-
+  
 
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@ const ContentWrap = styled.div`
 `;
 
 const PageWrap = styled.div`
-  width: 100%;
+  width: 90%;
   padding-bottom: 5px;
   ${(props) =>
     props.isActivePage

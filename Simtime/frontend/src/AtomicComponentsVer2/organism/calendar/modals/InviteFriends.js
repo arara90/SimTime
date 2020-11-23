@@ -1,22 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import * as Colors from "../../../Colors"
 import DefaultModal from "../../../molecule/modal/DefaultModal"
+
+// import TableTitle from "../../../atom/table/TableTitle"
 import TableRow from "../../../atom/table/TableRow"
+import SearchIcon from "../../../atom/icons/SearchIcon"
 
 
 import { getGroups, getMembers } from "../../../../actions/groups";
 import { getFriends } from "../../../../actions/friends";
 import { addInvitation } from "../../../../actions/invitations";
 
+const Wrap = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const Section = styled.section`
+`
+
+const GroupTable = styled.ul`
+border: solid 1px ${Colors.MAIN_COLOR};
+padding: 3px;
+width: 120px;
+`
+
+const FriendsTable = styled.ul`
+  border: solid 1px ${Colors.MAIN_COLOR};
+  padding: 3px;
+  width: 160px;
+`
 
 const Row = styled(TableRow)`
-  border: solid 1px ${Colors.MAIN_COLOR};
+  cursor: pointer;
 `
+const TableHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const TableTitle = styled.h3`
+  height: ${(props) => props.height};
+  color: ${Colors.MAIN_COLOR};
+  font-weight: bold;
+  font-size: 1em;
+  cursor: default;
+  
+`;
+
+const Search = styled(SearchIcon)`
+  color: ${Colors.MAIN_COLOR};
+  cursor: pointer;
+
+  margin-right: 2px;
+
+`
+
+
 function InviteFriends(props) {
+  const rowHeight = "2.5em"
+
   //hooks
   ////state
   const {getGroups, getFriends, selectedGroup, groups, relationships} = props;
@@ -45,10 +95,27 @@ function InviteFriends(props) {
     <DefaultModal
       title="Invite Friends"
       pages={[
-        <ul>
-        <Row height="auto" rowNum={1} >hello</Row>
-        <Row height="auto" rowNum={2}>hello</Row>
-        </ul>
+        <Wrap>
+          <section>
+            <TableHeader>
+              <TableTitle>Groups</TableTitle>
+            </TableHeader>
+            
+            <GroupTable> 
+                {groups.map((group, index)=>{ return <Row height={rowHeight} key={index} rowNum={index}>{group.groupname}</Row>})}
+            </GroupTable>
+          </section>
+
+          <section>
+            <TableHeader>
+              <TableTitle>Friends</TableTitle>
+              <Search />
+            </TableHeader>
+            <FriendsTable> 
+                {relationships.map((relationship, index)=>{return <Row height={rowHeight} key={index} rowNum={index}>{relationship.friend.username}</Row>})}
+            </FriendsTable>
+          </section>
+        </Wrap>
     ]}
       totalPage={1}
       handleSubmit={handleSubmit}

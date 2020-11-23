@@ -20,6 +20,7 @@ const Content = styled.li`
         ? ST_GRAY_LIGHT
         : ST_WHITE};
     height: ${(props) => props.height};
+    
     ${(props) =>
       props.isSelected && props.selectIcon
         ? `background-size :14px;
@@ -27,6 +28,8 @@ const Content = styled.li`
         background-image: url("https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png");
         background-position: 92% center;`
         : ""};
+
+
 `;
 
 function TableRow(props){
