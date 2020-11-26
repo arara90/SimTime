@@ -6,12 +6,12 @@ import { ST_YELLOW_LIGHT, ST_WHITE, ST_GRAY_LIGHT } from "../../Colors";
 const Content = styled.li`
     height: 100%;
     display: flex;
-    flex-direction; row;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 
     background-color: ${(props) =>
       props.isSelected

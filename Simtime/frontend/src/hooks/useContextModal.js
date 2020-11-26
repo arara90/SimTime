@@ -7,17 +7,17 @@ export default () => {
   );
 
   let handleContextModal = (content = false) => {
-    console.log('handleContextModal')
+    console.log('handleContextModal', contextModal)
     setContextModal(!contextModal);
     if (content) {
       setContextModalContent(content);
     }
   };
 
-  let closeContextModal = (content = false) => {
+  let closeContextModal = () => {
     console.log('closeContext')
     setContextModal(false);
-    setContextModalContent(content);
+    setContextModalContent(null);
   };
 
   let openContextModal = (content = false) => {

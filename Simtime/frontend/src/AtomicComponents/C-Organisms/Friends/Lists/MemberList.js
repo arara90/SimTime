@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, Fragment } from "react";
+import React, { useCallback, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -41,17 +41,17 @@ const TextButton = styled(Paragraph)`
 `;
 
 function MemberList(props) {
-  const { members } = props;
+  const { selectedGroupMembers } = props;
 
-  const flatMembers = members.reduce(
+  const flatMembers = selectedGroupMembers.reduce(
     (acc, item) => [
       ...acc,
       {
         id: item.RGmapId,
-        relationshipId: item.relationship.relationshipid, //relationshipid
-        friendId: item.relationship.friend.id,
-        username: item.relationship.friend.username,
-        profile_image: item.relationship.friend.profile_image,
+        relationshipId: item.relationshipid, //relationshipid
+        friendId: item.friend.id,
+        username: item.friend.username,
+        profile_image: item.friend.profile_image,
       },
     ],
     []
@@ -109,11 +109,11 @@ export default connect(null, mapDispatchToProps)(MemberList);
 MemberList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
-  members: PropTypes.array,
+  selectedGroupMembers: PropTypes.array,
 };
 
 MemberList.defaultProps = {
   title: "Table Title",
   headers: null,
-  members: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
+  selectedGroupMembers: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
 };

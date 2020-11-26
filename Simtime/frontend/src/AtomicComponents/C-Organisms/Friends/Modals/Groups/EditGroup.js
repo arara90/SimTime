@@ -7,11 +7,11 @@ import { MAIN_COLOR } from "../../../../Colors";
 import { editGroup } from "../../../../../actions/groups";
 
 import InputWrap from "../../../../A-Atomics/Form/InputWrap";
-import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
+import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal";
 
-const StyledInput = styled(InputWrap)`
-  padding-bottom: 15px;
-`;
+
+const StyledInput = styled(InputWrap)``;
+
 function EditGroup(props) {
   const { group, closeModal } = props;
   const [groupname, setGroupName] = useState(group.groupname);
@@ -30,28 +30,25 @@ function EditGroup(props) {
   };
 
   const renderChild = () => {
-    return (
-      <Fragment>
-        <StyledInput
-          height="55px"
-          label="Name"
-          name="GroupName"
-          desc="Group Name"
-          value={groupname}
-          onChange={handleChange}
-        />
-      </Fragment>
-    );
+    return <StyledInput label="Name" name="GroupName" desc="Group Name" value={groupname} enterHandler={handleSubmit} onChange={handleChange}/>
+
   };
 
   return (
     <DefaultModal
       title="Add Group"
-      children={renderChild()}
-      totalPage={0}
+      pages={[renderChild()]}
+      totalPage={1}
       handleSubmit={handleSubmit}
+    
       height="auto"
-      closeModal={closeModal}
+      // closeModal={closeModal}
+
+      // title="Add Group"
+      // pages={[renderChild()]}
+      // totalPage={1}
+      // handleSubmit={handleSubmit}
+      // height="auto"
     ></DefaultModal>
   );
 }

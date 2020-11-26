@@ -19,43 +19,20 @@ export const getGroups = () => (dispatch) => {
   return axiosFormInstance
     .get("/api/groups/")
     .then((res) => {
-      console.log("groups", res);
       dispatch({
         type: GET_GROUPS,
         payload: res.data,
       });
+      return res.data
     })
     .catch((err) =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
 
-// export const createGroup = (data) => (dispatch) => {
-//   console.log("createGroup", data);
-
-//   return axiosInstance
-//     .post("/api/groups/create/", {
-//       account: data.account,
-//       groupname: data.groupname,
-//     })
-//     .then((res) => {
-//       dispatch({
-//         type: ADD_GROUP,
-//         payload: res.data,
-//       });
-//       dispatch(createMessage({ addGroup: "Group Added" }));
-//       return res.data;
-//     })
-//     .catch((err) => {
-//       dispatch(returnErrors(err.response.data, err.response.status));
-//       return err.response.data;
-//     });
-// };
 
 
 export const createGroup = (groupname) => (dispatch) => {
-  console.log("createGroup", groupname);
-
   return axiosInstance
     .post("/api/groups/create/", { groupname: groupname} )
     .then((res) => {
@@ -76,7 +53,6 @@ export const deleteGroup = (id) => (dispatch) => {
   axiosInstance
     .delete(`/api/group/${id}`)
     .then((res) => {
-      console.log(res);
       dispatch(createMessage({ deleteGroup: "Group Deleted" }));
       dispatch({
         type: DELETE_GROUP,
@@ -112,35 +88,17 @@ export const editGroup = (group) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-// export const getMemebers = (id) => (dispatch) => {
-//   console.log("getMemebers id", id);
-//   return axiosInstance
-//     .get(`/api/groupmember/${id}`)
-//     .then((res) => {
-//       console.log("groupMemebers res", res.data);
-//       dispatch({
-//         type: GET_GROUPMEMBERS,
-//         payload: { id: id, members: res.data },
-//       });
-//     })
-//     .catch((err) => {
-//       dispatch({
-//         type: GET_GROUPMEMBERS,
-//         payload: { id: id, members: [] },
-//       });
-//       dispatch(returnErrors(err.response.data, err.response.status));
-//     });
-// };
 
 export const getMembers = (id) => (dispatch) => {
   return axiosInstance
     .get(`/api/groupmember/${id}/`)
     .then((res) => {
-      console.log("groupMemebers res", res.data);
       dispatch({
         type: GET_GROUPMEMBERS,
         payload: { id: id, members: res.data },
       });
+
+      return res
     })
     .catch((err) => {
       dispatch({
@@ -173,18 +131,3 @@ export const deleteMember = (id) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-// // 친구가 속한 그룹 관리
-// export const addToGroup = (datas) => (dispatch) => {
-//   //{relationship:0, group:0}
-//   return axiosInstance
-//     .post("/api/friend/add-to-group/", datas)
-//     .then((res) => {
-//       dispatch({ type: ADD_TO_GROUP, payload: res.data });
-//       dispatch(createMessage({ addToGroup: "Added to Group" }));
-//       return res
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       // dispatch(returnErrors(err.response.data, err.response.status));
-//     });
-// };

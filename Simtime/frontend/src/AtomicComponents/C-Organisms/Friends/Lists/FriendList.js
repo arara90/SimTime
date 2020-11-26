@@ -43,8 +43,6 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function FriendList(props) {
-  console.log(props.relationships)
-
   const renderButton = useCallback(
     (fn, status, content = "차단", color = "TEXT_LINK") => {
       if (status) {

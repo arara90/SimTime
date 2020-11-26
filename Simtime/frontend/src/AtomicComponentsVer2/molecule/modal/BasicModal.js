@@ -7,11 +7,10 @@ import ContextStore from "../../../contexts/contextStore";
 
 import { MAIN_COLOR, ST_GTAY } from "../../Colors";
 
-import ModalTitle from "../../A-Atomics/Modal/ModalTitle";
-import ProgressBar from "../../A-Atomics/Deco/ProgressBar";
-import DashedButton from "../../A-Atomics/Button/DashedButton";
+import ModalTitle from "../../atom/modal/ModalTitle"
 
-const Wrap = styled.div`
+
+const Wrap = styled.section`
   background-color: white;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
@@ -27,16 +26,6 @@ const Wrap = styled.div`
   }
 `;
 
-const HeaderWrap = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  overflow: hidden;
-`;
-
 const ContentWrap = styled.div`
   width: 90%;
   height: 100%;
@@ -48,14 +37,13 @@ const ContentWrap = styled.div`
 `;
 
 function BasicModal(props) {
+  const {title, closeModal, width, height, totalPage} = props;
   return (
     <Wrap {...props}>
-      <HeaderWrap className="HeaderWrap">
-        {props.title && (
-          <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
-        )}
-      </HeaderWrap>
-      <ContentWrap>{props.children}</ContentWrap>
+      {title && <ModalTitle closeModal={closeModal}>{props.title}</ModalTitle>}
+      <ContentWrap>
+        {props.children}
+      </ContentWrap>
     </Wrap>
   );
 }
@@ -75,5 +63,5 @@ BasicModal.defaultProps = {
   width: "320px",
   totalPage: 1,
   title: null,
-  closeModal: () => {},
+  closeModal: null,
 };

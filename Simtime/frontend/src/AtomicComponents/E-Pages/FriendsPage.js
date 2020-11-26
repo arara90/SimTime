@@ -46,7 +46,7 @@ const ContentWrap = styled.div`
 `;
 
 function FriendsPage(props) {
-  const { groups, selectedGroup, relationships } = props;
+  const { groups, selectedGroup,selectedGroupMembers, relationships } = props;
 
   useEffect(() => {
     async function getDatas() {
@@ -90,6 +90,7 @@ function FriendsPage(props) {
             groups={groups}
             selectedGroup={selectedGroup}
             relationships={relationships}
+            selectedGroupMembers = {selectedGroupMembers}
             rowNum={5}
             rowHeight="45px"
             width="100%"
@@ -104,6 +105,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
+  selectedGroupMembers : state.groups.selectedGroup.members,
   relationships: state.friends.relationships,
 });
 

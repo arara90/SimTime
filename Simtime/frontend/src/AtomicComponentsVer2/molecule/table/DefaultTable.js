@@ -2,70 +2,61 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import TableHeader from "../../atom/table/TableHeader";
+import * as Colors from "../../Colors"
+import TableHeaderRow from "../../atom/table/TableHeaderRow";
 import TableTitle from "../../atom/table/TableTitle";
+import IconButton from "../../atom/buttons/IconButton";
+import PlusCircleIcon from "../../atom/icons/PlusCircleIcon"
 import { MAIN_COLOR } from "../../../AtomicComponents/Colors";
 // import Header from "../../A-Atomics/Font/Header";
-// import ButtonWithImage from "../../B-Molecules/Button/ButtonWithImage";
 
-const TableWrap = styled.table`
+
+const TableWrap = styled.div`
   height: auto;
   width: ${(props) => props.width};
   display: inline-block;
 `;
 
-const StyledTableTitle = styled(TableTitle)`
+
+//title
+const TitleWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 4px;
+  align-items: center;
+  height: 1.3em;
+  padding: 0 3px;
 `;
 
-const TableContent = styled.div`
-  // border: solid 1px grey;
-  height: ${(props) => props.height}px;
+const Header = styled(TableTitle)`
+`
+
+
+//table
+
+const TableContent = styled.ul`
+  max-height: ${(props) => props.height};
+  border: solid 1px ${Colors.MAIN_COLOR};
+  border-radius: 6px;
+  padding: 3px;
   overflow-y: auto;
 `;
 
-const Header = styled.h2`
-  color: ${MAIN_COLOR};
-  font-weight : bold;
-`
 
 
 function Table(props) {
   const renderButton = (button) => {
-    return (
-      <ButtonWithImage
-        height="20px"
-        width="auto"
-        button={button}
-        onClick={() => props.handleAddBtnClick()}
-      />
-    );
+  return button ? button : <IconButton onClick={props.handleAddBtnClick}><PlusCircleIcon /></IconButton>
   };
 
   return (
     <TableWrap {...props}>
-      {props.title || props.addButton ? (
-        <StyledTableTitle>
-          {props.title ? (
-            <Header type="h4" color={props.titleColor}>
-              {props.title}
-            </Header>
-          ) : null}
-          {props.addButton ? renderButton(props.button) : null}
-        </StyledTableTitle>
-      ) : null}
-
-      {props.headers ? <TableHeader>hello?</TableHeader> : null}
-
-      <TableContent
-        height={parseInt(props.rowHeight.replace(/[^0-9]/g, "")) * props.rowNum}
-      >
+      <TitleWrap>
+        {props.title ? <Header type="h4" color={props.titleColor}>{props.title}</Header>: null}
+        {props.button || props.addButton ? renderButton(props.button) : null}
+      </TitleWrap>
+      {props.headers ? <TableHeader>{props.headers}</TableHeader> : null}
+      <TableContent height={parseFloat(props.rowHeight.replace(/[^-\.0-9]/g, "")) * props.rowNum + (props.rowHeight.replace(/[^a-z]/i,""))}>
         {props.children}
       </TableContent>
     </TableWrap>
@@ -79,7 +70,7 @@ Table.propTypes = {
   titleColor: PropTypes.string,
   addButton: PropTypes.bool,
   handleAddBtnClick: PropTypes.func,
-  button: PropTypes.object,
+  button: PropTypes.node,
   width: PropTypes.string,
   rowNum: PropTypes.number,
   rowHeight: PropTypes.string,
@@ -90,14 +81,8 @@ Table.propTypes = {
 Table.defaultProps = {
   titleColor: "TEXT",
   addButton: false,
-  handleAddBtnClick: () => {
-    alert("click");
-  },
-  button: {
-    content: "Add",
-    url:
-      "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
-  },
+  handleAddBtnClick: () => {alert("click");},
+  button: null,
   width: "48%",
   rowNum: 5,
   rowHeight: "45px",

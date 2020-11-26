@@ -72,15 +72,26 @@ class GroupSerializer(serializers.ModelSerializer):
 
 # Relationship-Group
 class RGMapSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        res = {'RGmapId': instance.id}
+        relationship = FriendSerializer(instance.relationship).data
+        res.update(relationship) 
+        return res
+
     class Meta:
-        model = Relationship_FriendGroup_MAP
-        fields = '__all__'
+            model = Relationship_FriendGroup_MAP
+            fields = '__all__'
 
 
 class GroupMemberSerializer(serializers.ModelSerializer):
-    RGmapId = serializers.IntegerField(source='id')
-    relationship = FriendSerializer()
+    # RGmapId = serializers.IntegerField(source='id')
+    # relationship = FriendSerializer()
+    def to_representation(self, instance):
+        res = {'RGmapId': instance.id}
+        relationship = FriendSerializer(instance.relationship).data
+        res.update(relationship) 
+        return res
 
     class Meta:
         model = Relationship_FriendGroup_MAP
-        fields = ('RGmapId', 'relationship')
+        fields = '__all__'

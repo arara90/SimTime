@@ -15,7 +15,7 @@ import GroupList from "../../C-Organisms/Friends/Lists/GroupList";
 import AddGroup from "../../C-Organisms/Friends/Modals/Groups/AddGroup";
 
 function Groups(props) {
-  const { groups, selectedGroup, relationships } = props;
+  const { groups, selectedGroup, selectedGroupMembers, relationships } = props;
   const { handleContextModal, closeContextModal } = useContext(ModalContext);
 
   return (
@@ -35,10 +35,10 @@ function Groups(props) {
       rowHeight={props.width}
       rowNum={props.rowNum}
     >
-      {console.log("Groups selectedGroup", selectedGroup)}
       <GroupList
         groups={groups}
         selectedGroup={selectedGroup}
+        selectedGroupMembers={selectedGroupMembers}
         relationships={relationships}
       />
     </Table>

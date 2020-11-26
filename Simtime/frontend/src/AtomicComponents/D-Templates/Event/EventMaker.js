@@ -4,120 +4,39 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { addEvent, getEvent, editEvent } from "../../../actions/events";
-import { MAIN_COLOR, ST_GTAY } from "../../Colors";
+import DefaultModal from "../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
 
-import ModalTitle from "../../A-Atomics/Modal/ModalTitle";
-import ProgressBar from "../../A-Atomics/Deco/ProgressBar";
-import InputWrap from "../../A-Atomics/Form/InputWrap";
 import Input from "../../B-Molecules/Form/Input";
 import TextArea from "../../B-Molecules/Form/TextArea";
-
 import InputTag from "../../B-Molecules/Form/InputTag";
 import InputTime from "../../B-Molecules/Form/InputTime";
 import DatePicker from "../../D-Templates/Calendar/DatePicker";
-import TimePicker from "../../D-Templates/Calendar/TimePicker";
-import SearchBar from "../../B-Molecules/Form/SearchBar";
 import SearchLocation from "../../C-Organisms/Event/Create/SearchLocation";
-import Map from "../../A-Atomics/Map/Map";
 
 import DashedButton from "../../A-Atomics/Button/DashedButton";
 import { getStrFullDate } from "../Calendar/Generator";
+import { addEvent, getEvent, editEvent } from "../../../actions/events";
 
-// 11.18
-import ContextStore from "../../../contexts/contextStore";
-
-const Wrap = styled.div`
-  border: solid 1px ${MAIN_COLOR};
-  background-color: white;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media only screen and (max-width: 320px) {
-    width: 100%;
-  }
-`;
-
-const HeaderWrap = styled.div`
-  width: 100%;
-  // height: 18%;
-  height: 14%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  overflow: hidden;
-`;
-
-const BarWrap = styled.div`
-  width: 92%;
-  height: 10%;
-  // min-height: 50px;
-  min-height: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ContentWrap = styled.form`
-  width: 90%;
-  // height: 82%;
-  height: 84%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const FormWrap = styled.div`
-  width: 100%;
-  height: 85%;
-  // border: solid 1px blue;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
+const ContentWrap = styled.form``
 
 const PageWrap = styled.div`
-  // border: solid 1px red;
+  height: 26em;
   width: 100%;
-  ${(props) =>
-    props.isActivePage
-      ? `display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;`
-      : `display:none;`}
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
-const MyInput = styled(Input)`
-  margin-bottom: 15px;
-`;
+const MyInput = styled(Input)`margin-bottom: 15px;`;
 
-const MyTextArea = styled(TextArea)`
-  margin-bottom: 15px;
-`;
-const MyInputTime = styled(InputTime)`
-  margin-bottom: 15px;
-`;
-
-const MyDateInput = styled(Input)`
-  margin-bottom: 15px;
-`;
-
+const MyTextArea = styled(TextArea)` margin-bottom: 15px;`;
+const MyInputTime = styled(InputTime)`margin-bottom: 15px;`;
+const MyDateInput = styled(Input)`margin-bottom: 15px;`;
 const PositionWrap = styled.div`
   width: 100%;
   position: relative;
 `;
-
 const MyDatePicker = styled(DatePicker)`
   ${(props) =>
     props.isShown
@@ -130,36 +49,17 @@ const MyDatePicker = styled(DatePicker)`
       : "display: none;"}
 `;
 
-const MySearchBar = styled(SearchBar)`
-  margin-bottom: 15px;
-`;
-
-const Buttons = styled.div`
-  width: 100%;
-  height: 15%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const ButtonWrap = styled.div`
   cursor: pointer;
   width: ${(props) => props.width};
   height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const StyledMap = styled(Map)``;
-
-const Button = styled(DashedButton)`
-  border-radius: 6px;
-`;
+const Button = styled(DashedButton)`border-radius: 6px;`;
 
 function EventMaker(props) {
   const {closeModal, user, editEvent, addEvent, } = props;
@@ -190,110 +90,68 @@ function EventMaker(props) {
     
   });
 
-  const showDatePicker = () => {
-    setDatePicker(!datePicker);
-  };
-
-
-  
-  // const handleSubmit = async () => {
-  //   try {
-  //     //친구 등록
-  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
-  //     console.log(relationship)
-  //     if(groups.length){
-  //       var groupData = groups.map((group) => {
-  //         return { relationship: relationship.data.relationshipId, group: group };
-  //       });
-  //       await props.addToGroup(groupData);
-  //     }
-
-  //     props.closeModal();
-  //   } catch (err) {
-  //     console.log("relationshipError", err);
-  //   }
-  // };
-
-
+  const showDatePicker = () => setDatePicker(!datePicker);
 
   const handleSubmit = async (e) => {
+
     try{
-      const e_time = new Date(date + " " + time.split(" ")[0])
-      e.preventDefault();
-      // var event_at = new Date('2019/5/16/17:24:30:10');
-      const { eId, eStatus } = event;
-      const myEvent = {
-        host: user.id,
-        event_name: name,
-        event_time: e_time.toISOString(),
-        // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
-        status: eStatus,
-        event_place: place,
-        message: message,
-        tags: tags
-        // photo: image,
-      };
+        const e_time = new Date(date + " " + time.split(" ")[0])
+        e.preventDefault();
+        // var event_at = new Date('2019/5/16/17:24:30:10');
+        const { eId, eStatus } = event;
+        const myEvent = {
+          host: user.id,
+          event_name: name,
+          event_time: e_time.toISOString(),
+          // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
+          status: eStatus,
+          event_place: place,
+          message: message,
+          tags: tags
+          // photo: image,
+        };
 
-      if (props.event) {
-        editEvent({
-          id: eId,
-          ...myEvent,
-        });
-      } else {
-        addEvent(myEvent, image);
-      }
+        if (props.event)  editEvent({id: eId,...myEvent,});
+        else  addEvent(myEvent, image);
 
-      // closeModal();
-      props.submitHandler();
+        // closeModal();
+        props.submitHandler();
 
-      }catch (err) {
-        console.log("relationshipError", err);
-      }
+    }
+    catch (err) { console.log("relationshipError", err); }
   };
 
   const handleChangeFile = (e) => {
     let reader = new FileReader();
 
+    // 2. 읽기가 완료되면 아래코드가 실행됩니다.
     reader.onloadend = () => {
-      // 2. 읽기가 완료되면 아래코드가 실행됩니다.
       const base64 = reader.result;
-      if (base64) {
-        setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
-      }
+      if (base64) setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
     };
+
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
       setImage(e.target.files[0]); // 파일 상태 업데이트
     }
   };
 
-  const nameChange = useCallback((e) => {
-    setName(e.target.value);
-  });
 
-  const placeChange = useCallback((place) => {
-    // setEvent({ ...event, ePlace: location });
-    setPlace(place);
-  });
-
-  const changeDate = useCallback((strDate) => {
-    setDate(strDate);
-  });
-
+  //changeHandlers
+  const nameChange = useCallback((e) => setName(e.target.value));
+  const placeChange = useCallback((place) => setPlace(place));
+  const changeDate = useCallback((strDate) => setDate(strDate));
+  const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => {
     setTime(time);
     console.log(time)
-
   });
 
-  const changeTags = useCallback((tags) => {
-    // setEvent({ ...event, ePlace: location });
-    setTags(tags);
-  });
 
+  //pages
   const firstPage = () => {
     return (
-      <PageWrap {...props} isActivePage={page == 0}>
+      <PageWrap {...props} >
         <MyInput
           label="Event"
           name="eName"
@@ -334,7 +192,7 @@ function EventMaker(props) {
 
   const secondPage = () => {
     return (
-      <PageWrap {...props} isActivePage={page == 1}>
+      <PageWrap {...props} >
         <MyTextArea
           label="Message"
           name="eMessage"
@@ -385,8 +243,8 @@ function EventMaker(props) {
     );
   };
 
-  const handleClick = (e, targetPage) => {
-    e.preventDefault();
+  const handleClick = () => {
+    // e.preventDefault();
     const { eId, eName, eDate, eStatus, eMessage, ePlace } = event;
     const host = user.id;
 
@@ -399,7 +257,7 @@ function EventMaker(props) {
       eImage: image,
     });
 
-    setPage(targetPage);
+    // setPage(targetPage);
   };
 
   const renderButtons = (page) => {
@@ -437,22 +295,20 @@ function EventMaker(props) {
     }
   };
 
-  return (
-      <Wrap {...props}>
-        <HeaderWrap>
-          <BarWrap>{/* <ProgressBar /> */}</BarWrap>
-          <ModalTitle closeModal={()=>{closeModal()}}>EVENT</ModalTitle>
-        </HeaderWrap>
+  return(
+    <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">
+      <DefaultModal
+        title="New Event"
+        pages={[firstPage(),secondPage(), thirdPage() ]}
+        totalPage={3}
+        handleSubmit={handleSubmit}
+        pageChangeHandler={handleClick}
+        height="auto"
+        closeModal={closeModal}
+      />
+    </ContentWrap>
+  )
 
-        <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">
-          {firstPage()}
-          {secondPage()}
-          {thirdPage()}
-          <Buttons>{renderButtons(page)}</Buttons>
-        </ContentWrap>
-      </Wrap>
-    
-  );
 }
 
 const mapStateToProps = (state) => ({
@@ -480,3 +336,45 @@ EventMaker.defaultProps = {
   width: "320px",
   selectedDate: null,
 };
+
+
+
+
+
+///////////////////Legacy//////////////////
+  // return (
+  //     <Wrap {...props}>
+  //       <HeaderWrap>
+  //         <BarWrap>{/* <ProgressBar /> */}</BarWrap>
+  //         <ModalTitle >EVENT</ModalTitle>
+  //       </HeaderWrap>
+
+  //       <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">
+  //         {firstPage()}
+  //         {secondPage()}
+  //         {thirdPage()}
+  //         <Buttons>{renderButtons(page)}</Buttons>
+  //       </ContentWrap>
+  //     </Wrap>
+    
+  // );
+  
+  // const handleSubmit = async () => {
+  //   try {
+  //     //친구 등록
+  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
+  //     console.log(relationship)
+  //     if(groups.length){
+  //       var groupData = groups.map((group) => {
+  //         return { relationship: relationship.data.relationshipId, group: group };
+  //       });
+  //       await props.addToGroup(groupData);
+  //     }
+
+  //     props.closeModal();
+  //   } catch (err) {
+  //     console.log("relationshipError", err);
+  //   }
+  // };
+
+

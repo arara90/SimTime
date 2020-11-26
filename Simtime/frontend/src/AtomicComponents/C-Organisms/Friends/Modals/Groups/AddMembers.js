@@ -40,10 +40,11 @@ const MyItem = styled(SelectedItem)`
 
 //search하기 위해 id를 index로
 const flatGroupMembers = (members) => {
+  console.log('flatGroupMembers members', members)
   return members.reduce(
     (acc, member) => ({
       ...acc,
-      [member.relationship.relationshipId]: member.relationship.relationshipId,
+      [member.relationshipId]: member.relationshipId,
     }),
     {}
   );
@@ -66,24 +67,27 @@ const transformIntoTableData = (candidates) => {
 };
 
 function AddMembers(props) {
-  const { relationships, members, groupId } = props;
+  const { relationships, selectedGroupMembers, groupId } = props;
 
 
-  var flatMembers = flatGroupMembers(members);
+  var flatMembers = flatGroupMembers(selectedGroupMembers);
+  console.log('flatMembers', flatMembers)
   var nonMembers = getNonMembers(relationships, flatMembers);
 
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [tableData, setTableData] = useState(transformIntoTableData(nonMembers))
 
   React.useEffect(() => {
-    console.log('useEffect', selectedFriends,tableData )
+    console.log('AddMembers useEffect', selectedFriends,tableData )
     var newData = setTableData(tableData.filter(
       (data) => !selectedFriends.includes(data.id)
     ));
       
     setSelectedFriends([])
-  }, [members, relationships, groupId]);
+  }, [selectedGroupMembers, relationships, groupId]);
 
+
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -13,9 +13,10 @@ import { MAIN_COLOR, ST_GREEN, ST_RED } from "../../../../Colors";
 import { createGroup } from "../../../../../actions/groups";
 import { addToGroup } from "../../../../../actions/friends";
 
+import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
+
 import InputWrap from "../../../../A-Atomics/Form/InputWrap";
 import Paragraph from "../../../../A-Atomics/Font/Paragraph";
-import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
 import ResultTable from "../../ResultTable";
 import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 
@@ -100,7 +101,6 @@ function AddGroup(props) {
 
 
   ///////////////////////addMember
-
   const handleSubmit = async () => {
     if (isValid) {
       try {
@@ -131,7 +131,6 @@ function AddGroup(props) {
   };
 
   
-
   const renderAddMember = () => {
     return (
       <Wrap>
@@ -189,8 +188,8 @@ function AddGroup(props) {
   return (
     <DefaultModal
       title="Add Group"
-      children={renderChild()}
-      totalPage={0}
+      pages={[renderChild()]}
+      totalPage={1}
       handleSubmit={handleSubmit}
       height="auto"
       closeModal={closeModal}

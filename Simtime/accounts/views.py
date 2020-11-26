@@ -108,8 +108,6 @@ class TokenVerify(TokenVerifyView):
         return Response(serializer.data)
 
 # Relationship
-
-
 class RelationshipAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -155,25 +153,6 @@ class RelationshipDetailAPI(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# Relationship-Group
-class RGMapAPI(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    # add-to-group
-    def post(self, request):
-        serializer = RGMapSerializer(data=request.data,  many=True)
-        if(serializer.is_valid()):
-            res = serializer.save()
-            output = GroupMemberSerializer(res, many=True)
-            return Response(output.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, ids):
-        #ids = "1 2 3"
-        Relationship_FriendGroup_MAP.filter()
-
-        group.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class GroupAPI(APIView):
@@ -231,6 +210,31 @@ class GroupDetailAPI(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Relationship-Group
+class RGMapAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    # add-to-group
+    def post(self, request):
+        print('request', request.data)
+        serializer = RGMapSerializer(data=request.data,  many=True)
+        print('serializer',serializer)
+        if(serializer.is_valid()):
+            print('valid')
+            res = serializer.save()
+            print(res)
+            output = RGMapSerializer(res, many=True)
+            return Response(output.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, ids):
+        #ids = "1 2 3"
+        Relationship_FriendGroup_MAP.filter()
+
+        group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class GroupMemberAPI(APIView):

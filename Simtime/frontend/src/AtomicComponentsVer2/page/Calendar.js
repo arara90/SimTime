@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
@@ -21,6 +21,9 @@ import {generate, getStrFullDate, addDate} from "../../actions/calendar"
 import {getEvent, getEvents} from "../../actions/events"
 import { MAIN_COLOR } from "../../AtomicComponents/Colors";
 
+import { getGroup, getGroups } from "../../actions/groups";
+import { getFriends } from "../../actions/friends";
+
 const NewButton = styled(TextButton)`
   width: 100%;
   border-radius: 0;
@@ -35,13 +38,6 @@ const Pencil = styled(PencilIcon)`
   font-size: 1rem;
 `
 
-
-// const InviteFriends = styled.div`
-// width: 200px;
-// height: 200px;
-// background: blue;
-// `
-
 const Error = styled.div`
 width: 200px;
 height: 200px;
@@ -50,44 +46,42 @@ background: red;
 
 function Calendar(props) {
   //props
-  const {getEvents, events} = props;
+  const {getEvents, getFriends, getGroups, groups, relationships, events} = props;
 
   //context
-  const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
+  const { handleContextModal, closeContextModal, contextModalContent, setContextModalContent } = React.useContext(ModalContext);
 
-  //hooks
-
-  ///// states calendar 관련 states
+  //calenedar 관련 states
   const [current, setCurrent] = useState(new Date()); 
   const [weekDates, setWeekDates] = useState([]); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
-  const [selectedEvent, setSelectedEvent] = useState({})
 
-  ///// states - calendar 관련 statesevent-detail or list
-  const [showDetail, setShowDetail] = useState(false);
-  
-  ///// states - modal 관련 
-  const [modalContent, setModalContent] = useState(null);
-  //EventMaker, Dialog, Invite, null 
+  const [selectedEvent, setSelectedEvent] = useState({}) 
+  const [showDetail, setShowDetail] = useState(false); // event-detail or list
+  const [modalContent, setModalContent] = useState(""); //modal (EventMaker, Dialog, InviteFriends, null )
 
-  ///// useEffect
+  // hooks - useEffect
   useEffect(()=>{ 
     var {start, end, weeks} = generate(current, 5);
     setStartDate(start)
     setEndDate(end)
     setWeekDates(weeks)
+
     // event 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
-
   }, [])
 
-  useEffect(()=>{ 
-    if(modalContent) setContextModalContent(renderModalContext(modalContent))
-    else closeContextModal()
-  }, [modalContent])
+  useEffect(()=>{
+    if(modalContent=="InviteFriends"){
+      setContextModalContent(<InviteFriends groups={groups} relationships={relationships}  onClick={handleContextModal} closeModal={handleContextModal} />)
+    } 
+  }, [groups, relationships])
 
+  useEffect(()=>{
+    if(!contextModalContent) setModalContent(null)
+  }, [contextModalContent])
 
   // event Click
   const eventClickHandler = (e, event) =>{
@@ -97,34 +91,46 @@ function Calendar(props) {
     setShowDetail(true);
   }
 
+  const eventSubmitHandler = () =>{
+    closeContextModal()
+    setModalContent("Dialog")
+  }
+
   const dateCellClickHandler = (e, date) =>{
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
   }
 
-  //renders
-  const renderModalContext= (content) =>{
-    if(content=="EventMaker"){
-      return <EventMaker closeModal={closeContextModal} submitHandler={()=>setContextModalContent(renderModalContext("Dialog"))} />
-    }else if(content=="Dialog"){
-      return (
-        <YNDialogModal 
-          leftBtnClickHandler={()=>setContextModalContent(renderModalContext("InviteFriends"))} 
-          rightBtnClickHandler={closeContextModal} 
-          closeModal={closeContextModal} >
-        지금 친구들을 초대하시겠습니까?
-        </YNDialogModal>
-        )
-    }else if(content=="InviteFriends"){
-      async () => {
-
-      }
-      return <InviteFriends onClick={closeContextModal} closeModal={closeContextModal}/>
-    }else{
-    return <div>ggg</div>
-    }
+  const openInviteFriendsModal = () => {
+    closeContextModal()
+    getGroups()
+    getFriends()
+    setModalContent("InviteFriends")
   }
+
+  const closeModal = () =>{
+    setModalContent(null)
+  }
+
+
+  useEffect(()=>{
+    function renderContext(){
+      if(modalContent=="EventMaker"){
+        return <EventMaker submitHandler={eventSubmitHandler} />
+      }else if(modalContent=="Dialog"){
+        return <YNDialogModal leftBtnClickHandler={openInviteFriendsModal} rightBtnClickHandler={handleContextModal} closeModal={handleContextModal}> 지금 친구들을 초대하시겠습니까? </YNDialogModal>
+      }else if(modalContent=="InviteFriends"){
+        return <InviteFriends groups={groups} relationships={relationships}  onClick={handleContextModal} closeModal={closeModal} />
+      }else return <div>ggg</div>
+    }
+
+    if(modalContent){
+      handleContextModal(renderContext())
+    } 
+
+  }, [modalContent])
+
 
   return (
       <CalendarTemplate 
@@ -137,9 +143,9 @@ function Calendar(props) {
                         current={current} 
                         dates={weekDates} 
                         events={events} />} 
-        rightTop =    {<NewButton color={"MAIN_COLOR"} onClick={()=>handleContextModal(renderModalContext("InviteFriends"))}>
+        rightTop =    { <NewButton color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
                           <Pencil />New Event
-                        </NewButton>}
+                        </NewButton> }
         rightBottom = {showDetail ? 
                        <EventDetail event={selectedEvent} backHandler={()=>{setShowDetail(false)}} /> : 
                        <EventList events={events ? events[selectedDate] : [] } current={selectedDate}
@@ -155,50 +161,20 @@ function Calendar(props) {
 
 const mapStateToProps = (state) => ({
   events: {...state.events.events},
-  selectedEvent: state.events.selectedEvent
+  selectedEvent: state.events.selectedEvent,
+  groups: state.groups.groups,
+  selectedGroup: state.groups.selectedGroup,
+  relationships: state.friends.relationships,
+  
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getEvents: (start, end) => dispatch(getEvents(start, end)),
+    getGroups: () => dispatch(getGroups()),
+    getFriends: () => dispatch(getFriends()),
     
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
-
-  // datas = [
-  //   {
-  //     strDate: "2020-11-01", year: 2020, month: 11, date: "1", day: 0, id: "-5D", 
-  //     isActive: false, isActiveMonth: true, 
-  //     events: [eventId, eventId, eventId, eventId]
-  //   }, {
-  //     strDate: "2020-11-02", year: 2020, month: 11, date: "2", day: 0, id: "-4D", 
-  //     isActive: false, isActiveMonth: true, 
-  //     events: [eventId, eventId, eventId, eventId]
-  //   }
-  // ]
-
-  // //calendar 이동
-  // const clickNextHandler=(type="next")=>{
-  //   if(type=="prev"){
-  //     var {start, end, weeks} = generate(addDate(startDate,-1), -5 )
-  //     setCurrent(start)
-  //     setWeekDates(weeks)
-
-  //     if( start<startDate){
-  //       setStartDate(start)
-  //       getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
-  //     }
-  //   }else{
-  //     var {start, end, weeks} = generate(addDate(endDate,1), 5);
-      
-  //     setCurrent(start)
-  //     setWeekDates(weeks)
-      
-  //     if(end>endDate){
-  //       setEndDate(end)
-  //       getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
-  //     }
-  //   }
-  // }

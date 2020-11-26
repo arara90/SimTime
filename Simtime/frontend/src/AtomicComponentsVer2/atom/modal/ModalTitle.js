@@ -14,7 +14,7 @@ const Wrap = styled.header`
 
   position: relative;
   padding-left: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 `;
 
 const StyledCloseButton = styled(CloseButton)`
@@ -32,9 +32,10 @@ const Header = styled.span`
 
 function ModalTitle(props) {
   const { closeContextModal } = React.useContext(ModalContext);
-  const {closeHandler} = props;
+  const {closeHandler, closeModal} = props;
+
   const onCloseModal= ()=>{
-    closeHandler()
+    closeModal()
     closeContextModal()
   }
   
@@ -42,7 +43,7 @@ function ModalTitle(props) {
     <Wrap {...props}>
       <Header>{props.children}</Header>
       <StyledCloseButton
-        onClick={props.closeModal ? closeContextModal : props.closeModal}
+        onClick={closeModal ? onCloseModal : closeContextModal }
       />
     </Wrap>
   );

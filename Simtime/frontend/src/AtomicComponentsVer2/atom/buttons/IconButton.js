@@ -5,6 +5,8 @@ import * as Colors from "../../Colors";
 
 const Button = styled.button`
   border: none;
+  padding: 0;
+  margin: 0;
 
   background-color: ${(props) => props.backgroundColor? Colors[props.backgroundColor] : "transparent"};
   color: ${(props) => Colors[props.color]};

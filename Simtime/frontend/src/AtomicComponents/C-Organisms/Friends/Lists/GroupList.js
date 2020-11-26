@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 
 //context
 import { ModalContext } from "../../../../contexts/modalContext";
-import { ModalPortalBasic } from "../../../A-Atomics/Modal/ModalPortal";
-import Modal from "../../../A-Atomics/Modal/Modal";
+
 //redux
 import { connect } from "react-redux";
 //components
@@ -46,11 +45,19 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function GroupList(props) {
-  const { groups, selectedGroup, relationships } = props;
-  let { handleContextModal, closeContextModal, contextModalContent, setContextModalContent } = React.useContext(
-    ModalContext
-  );
+  const { groups, selectedGroup, selectedGroupMembers, relationships } = props;
+  let { handleContextModal, closeContextModal, setContextModalContent, contextModalContent } = React.useContext(ModalContext);
   const [modal, setModal] = useState(false);
+
+
+  useEffect(()=>{
+    if(modal){ handleContextModal(renderModal())}
+  }, [modal])
+
+  useEffect(()=>{
+    if(modal){setContextModalContent(renderModal())}
+  }, [selectedGroupMembers])
+
 
   const clickEvent = (e, cb) => {
     e.preventDefault();
@@ -59,16 +66,18 @@ function GroupList(props) {
 
   const editMembers = async (id) => {
     const friends = await props.getMembers(id);
-    setModal(!modal);
+    setModal(true);
   };
 
-  const renderModal = (selectedGroup, relationships) => {
+  const renderModal = () => {
     return (
       <EditMembers
         selectedGroup={selectedGroup}
+        selectedGroupMembers = {selectedGroupMembers}
         relationships={relationships}
-        closeModal={() => setModal(false)}
+        closeModal={setModal}
       />
+
     );
   };
 
@@ -100,11 +109,7 @@ function GroupList(props) {
             url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
           ></UserCard>
           <Buttons>
-            {renderButton("이름변경", () =>
-              handleContextModal(
-                <EditGroup group={group} closeModal={closeContextModal} />
-              )
-            )}
+            {renderButton("이름변경", () => handleContextModal(<EditGroup group={group} closeModal={closeContextModal} />))}
             {renderButton("멤버관리", () => editMembers(group.id))}
             {renderButton(
               "삭제",
@@ -120,14 +125,9 @@ function GroupList(props) {
   return (
     <Wrap>
       {renderRows(props.groups)}
-      {modal && (() => handleContextModal(renderModal(selectedGroup, relationships)) )}
     </Wrap>
   );
 }
-        // <ModalPortalBasic
-        //   children={<Modal>{renderModal(selectedGroup, relationships)}</Modal>}
-         // />
-      // )}
 
 export default connect(null, { deleteGroup, getGroup, getMembers })(GroupList);
 

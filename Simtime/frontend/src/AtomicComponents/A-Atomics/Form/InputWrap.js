@@ -134,7 +134,7 @@ InputWrap.propTypes = {
 
 InputWrap.defaultProps = {
   width: "100%",
-  height: "40px",
+  height: "3em",
   label: null,
   name: null,
   desc: null,
