@@ -67,8 +67,7 @@ export const getFriends = () => (dispatch) => {
         type: GET_FRIENDS,
         payload: res.data,
       });
-
-      return res.data
+      return res.status
     })
     .catch((err) =>
       dispatch(returnErrors(err.response.data, err.response.status))

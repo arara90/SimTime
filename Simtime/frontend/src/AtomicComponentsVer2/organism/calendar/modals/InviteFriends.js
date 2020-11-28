@@ -63,7 +63,64 @@ function InviteFriends(props) {
   const [currGroup, setCurrGroup] = useState("0ALL")
   const [displayGroups, setDisplayGroups] = useState([{id:0, groupname:"ALL"}]);
   const [displayFriends, setDisplayFriends] = useState([{relationshipId:0, friend:{username:"ALL"}}]);
-  const [selectedFriends, setSelectedFriends] = useState(null);
+  // const [selectedFriends, setSelectedFriends] = useState([]);
+
+
+  //UI용
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    var res = [];
+    
+    function isAllChecked(){
+      
+      var displayFriendsWOAll=displayFriends.slice(1,displayFriends.length).reduce( 
+        (acc, friend) => ({...acc,[friend.relationshipId]: friend.relationshipId,})
+        , {}
+      );
+    
+      console.log(selectedItems, displayFriendsWOAll) 
+      // 선택되지 않은 아이가 있다면 마저 선택해서 모두 선택   
+      var res = selectedItems.some((friend)=> {
+          console.log(displayFriendsWOAll[friend])
+         return displayFriendsWOAll[friend]
+        })
+
+      return res
+    }
+
+    if(id==0) {
+      console.log(isAllChecked())
+    }else{
+      if (selectedItems.indexOf(id) > -1) res = selectedItems.filter((selection) => selection != id);
+      else res = [...selectedItems, id];
+      setSelectedItems(res);
+
+    }
+
+      // selectedFriends.forEach(
+      //   (item)=>{
+      //     if( !tmp[item.relationshipId])  {
+      //       //모두 선택된 상태가 아니라면모두 선택
+      //       res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
+      //       break
+      //     }else{
+      //       // 모두 
+      //       res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
+      //     }
+      //   }
+      // )
+
+      // res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
+    // } else{
+    //   if (selectedItems.indexOf(id) > -1) res = selectedItems.filter((selection) => selection != id);
+    //   else res = [...selectedItems, id];
+    // }
+    // setSelectedItems(res);
+  };
+
+
 
   ////useEffect
   useEffect(()=>setDisplayGroups([{id:0, groupname:"ALL"}].concat(groups)), [groups] )
@@ -74,14 +131,9 @@ function InviteFriends(props) {
     }else{
       setDisplayFriends([{relationshipId:0, friend:{username:"ALL"}}].concat(selectedGroup.members))
     }
-    
-    
   }, [currGroup, relationships] 
   )
 
-  // useEffect(()=> setDisplayFriends([{relationshipId:0, friend:{username:"ALL"}}].concat(selectedGroup.members))
-  // , [selectedGroup] 
-  // )
 
   const groupClickHandler = async (group) =>{
     if(group.id!=0){
@@ -89,6 +141,9 @@ function InviteFriends(props) {
     }
     setCurrGroup(group.id.toString()+group.groupname)
   }
+
+
+  
   
   const handleSubmit = () => {
   }
@@ -100,10 +155,7 @@ function InviteFriends(props) {
         <Wrap>
           <section>
             <GroupTable title="Groups" rowNum={10} rowHeight={rowHeight}> 
-            {console.log('displayGroups', displayGroups)}
-            {console.log('displayFriends', displayFriends)}
-                { 
-                displayGroups.map((group, index)=>{ 
+                {displayGroups.map((group, index)=>{ 
                   return (
                   <Row key={index}
                   selected={currGroup==group.id.toString()+group.groupname } 
@@ -122,7 +174,12 @@ function InviteFriends(props) {
           <section>
             <FriendsTable title="Friends" button={<IconButton><SearchIcon /></IconButton>} rowNum={10} rowHeight={rowHeight}> 
               {displayFriends.map((relationship, index)=>{
-                return <Row height={rowHeight} key={index} rowNum={index}>{relationship.friend.username}</Row> 
+                return <Row 
+                  height={rowHeight} 
+                  key={index} 
+                  rowNum={index} 
+                  isSelected={selectedItems.includes(relationship.relationshipId)}
+                  onClick={(e)=>handleClick(e, relationship.relationshipId)} >{relationship.friend.username}</Row> 
                 })
               }
             </FriendsTable>

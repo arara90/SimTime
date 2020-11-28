@@ -23,7 +23,8 @@ export const getGroups = () => (dispatch) => {
         type: GET_GROUPS,
         payload: res.data,
       });
-      return res.data
+
+      return res.status
     })
     .catch((err) =>
       dispatch(returnErrors(err.response.data, err.response.status))

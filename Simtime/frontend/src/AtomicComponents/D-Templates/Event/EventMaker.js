@@ -211,14 +211,7 @@ function EventMaker(props) {
     let profile_preview = null;
     if (imgBase64 !== "") {
       profile_preview = (
-        <img
-          className="profile_preview"
-          src={imgBase64}
-          style={{
-            width: "150px",
-            height: "150px",
-          }}
-        ></img>
+        <img className="profile_preview" src={imgBase64} style={{width: "150px", height: "150px",}} />
       );
     }
     return (

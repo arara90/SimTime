@@ -83,6 +83,26 @@ function Calendar(props) {
     if(!contextModalContent) setModalContent(null)
   }, [contextModalContent])
 
+  
+  useEffect(()=>{
+    function renderContext(){
+      if(modalContent=="EventMaker"){
+        return <EventMaker submitHandler={eventSubmitHandler} />
+      }else if(modalContent=="Dialog"){
+        return <YNDialogModal leftBtnClickHandler={dialogSubmitHandler} rightBtnClickHandler={handleContextModal} closeModal={handleContextModal}> 지금 친구들을 초대하시겠습니까? </YNDialogModal>
+      }else if(modalContent=="InviteFriends"){
+        return <InviteFriends groups={groups} relationships={relationships} onClick={handleContextModal} closeModal={closeModal} />
+      }else return null
+    }
+
+    if(modalContent){
+      handleContextModal(renderContext())
+    } 
+
+  }, [modalContent])
+
+
+
   // event Click
   const eventClickHandler = (e, event) =>{
     e.stopPropagation();
@@ -96,40 +116,34 @@ function Calendar(props) {
     setModalContent("Dialog")
   }
 
+  
+  const dialogSubmitHandler = () => {
+    // closeContextModal()
+    var promise = new Promise(function(resolve, reject) {
+
+      var gStatus =  getGroups()
+      var fStatus = getFriends()
+
+      resolve( gStatus && fStatus)
+      reject(new Error("Request is failed"))
+    });
+
+    promise.then((res)=>{ 
+      if(res==200)  setModalContent("InviteFriends")
+      }).catch((err)=>{console.log(err)})
+
+  }
+
   const dateCellClickHandler = (e, date) =>{
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
   }
 
-  const openInviteFriendsModal = () => {
-    closeContextModal()
-    getGroups()
-    getFriends()
-    setModalContent("InviteFriends")
-  }
 
   const closeModal = () =>{
     setModalContent(null)
   }
-
-
-  useEffect(()=>{
-    function renderContext(){
-      if(modalContent=="EventMaker"){
-        return <EventMaker submitHandler={eventSubmitHandler} />
-      }else if(modalContent=="Dialog"){
-        return <YNDialogModal leftBtnClickHandler={openInviteFriendsModal} rightBtnClickHandler={handleContextModal} closeModal={handleContextModal}> 지금 친구들을 초대하시겠습니까? </YNDialogModal>
-      }else if(modalContent=="InviteFriends"){
-        return <InviteFriends groups={groups} relationships={relationships}  onClick={handleContextModal} closeModal={closeModal} />
-      }else return <div>ggg</div>
-    }
-
-    if(modalContent){
-      handleContextModal(renderContext())
-    } 
-
-  }, [modalContent])
 
 
   return (
@@ -143,7 +157,7 @@ function Calendar(props) {
                         current={current} 
                         dates={weekDates} 
                         events={events} />} 
-        rightTop =    { <NewButton color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
+        rightTop =    { <NewButton color={"MAIN_COLOR"} onClick={dialogSubmitHandler}>
                           <Pencil />New Event
                         </NewButton> }
         rightBottom = {showDetail ? 
