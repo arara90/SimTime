@@ -187,7 +187,6 @@ const mapDispatchToProps = (dispatch) => {
     getEvents: (start, end) => dispatch(getEvents(start, end)),
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),
-    
   };
 };
 

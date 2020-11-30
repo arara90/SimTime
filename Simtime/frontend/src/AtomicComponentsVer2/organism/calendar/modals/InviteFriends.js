@@ -1,13 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import * as Colors from "../../../Colors"
 import DefaultModal from "../../../molecule/modal/DefaultModal"
-
-// import TableTitle from "../../../atom/table/TableTitle
-
 
 import IconButton from "../../../atom/buttons/IconButton";
 import SearchIcon from "../../../atom/icons/SearchIcon"
@@ -16,15 +13,9 @@ import TableRow from "../../../atom/table/TableRow"
 import CaretIcon from "../../../atom/icons/CaretIcon"
 import DefaultTable from "../../../molecule/table/DefaultTable"
 
+import { getMembers } from "../../../../actions/groups";
 
-import { getGroups, getMembers } from "../../../../actions/groups";
-import { getFriends } from "../../../../actions/friends";
-
-import { addInvitation } from "../../../../actions/invitations";
-
-const MyModal = styled(DefaultModal)`
-
-`
+const MyModal = styled(DefaultModal)``
 
 const Wrap = styled.div`
   width: 100%;
@@ -43,106 +34,99 @@ const FriendsTable = styled(DefaultTable)`
 `
 
 const Row = styled(TableRow)`
-  ${({selected}) => selected ? `font-weight: bold;`: null}
+  ${({isSelected}) => isSelected ? `font-weight: bold;`: null}
   cursor: pointer;
 `
 
 const Selected = styled(CaretIcon)`
   color: ${Colors.MAIN_COLOR};
   transform: rotate(90deg);
-
 `
 
-
 function InviteFriends(props) {
-  const rowHeight = "2.5em"
-
-  //hooks
-  ////state
   const {getMembers, selectedGroup, groups, relationships} = props;
-  const [currGroup, setCurrGroup] = useState("0ALL")
-  const [displayGroups, setDisplayGroups] = useState([{id:0, groupname:"ALL"}]);
-  const [displayFriends, setDisplayFriends] = useState([{relationshipId:0, friend:{username:"ALL"}}]);
-  // const [selectedFriends, setSelectedFriends] = useState([]);
 
+  ////variables
+  const rowHeight = "2.5em"
+  const allGroup = {id:0, groupname:"All"}
 
-  //UI용
+  ////hooks
+  //hook1-useState
+  const [currGroup, setCurrGroup] = useState(allGroup.id+allGroup.groupname)
+  const [displayGroups, setDisplayGroups] = useState(groups);
+  const [displayFriends, setDisplayFriends] = useState(relationships);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
+  
+  //hook2-useEffect
+  useEffect(
+    ()=>setDisplayGroups(groups)
+    , [groups] 
+  )
 
-  const handleClick = (e, id) => {
-    e.preventDefault();
-    var res = [];
-    
-    function isAllChecked(){
-      
-      var displayFriendsWOAll=displayFriends.slice(1,displayFriends.length).reduce( 
-        (acc, friend) => ({...acc,[friend.relationshipId]: friend.relationshipId,})
-        , {}
-      );
-    
-      console.log(selectedItems, displayFriendsWOAll) 
-      // 선택되지 않은 아이가 있다면 마저 선택해서 모두 선택   
-      var res = selectedItems.some((friend)=> {
-          console.log(displayFriendsWOAll[friend])
-         return displayFriendsWOAll[friend]
-        })
+  useEffect(
+    ()=> {
+      //새로운 그룹 선택-> 해당 그룹 멤버들이 이미 모두 추가된 상태인지 검사 후 전체 선택/해제
+      var targetArray = (currGroup==allGroup.id+allGroup.groupname ? relationships : selectedGroup.members)
+      var isAll = isAllChecked(selectedItems, targetArray)
+      setAllChecked(isAll)
+      setDisplayFriends(targetArray)
+    }, [currGroup, relationships] 
+  )
 
-      return res
-    }
-
-    if(id==0) {
-      console.log(isAllChecked())
-    }else{
-      if (selectedItems.indexOf(id) > -1) res = selectedItems.filter((selection) => selection != id);
-      else res = [...selectedItems, id];
-      setSelectedItems(res);
-
-    }
-
-      // selectedFriends.forEach(
-      //   (item)=>{
-      //     if( !tmp[item.relationshipId])  {
-      //       //모두 선택된 상태가 아니라면모두 선택
-      //       res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
-      //       break
-      //     }else{
-      //       // 모두 
-      //       res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
-      //     }
-      //   }
-      // )
-
-      // res = displayFriends.filter((friend)=>friend.relationshipId!=0).map((friend)=> {return friend.relationshipId} );
-    // } else{
-    //   if (selectedItems.indexOf(id) > -1) res = selectedItems.filter((selection) => selection != id);
-    //   else res = [...selectedItems, id];
-    // }
-    // setSelectedItems(res);
-  };
-
-
-
-  ////useEffect
-  useEffect(()=>setDisplayGroups([{id:0, groupname:"ALL"}].concat(groups)), [groups] )
-  useEffect(()=> {
-    console.log("currGroup", currGroup)
-    if(currGroup=="0ALL"){
-      setDisplayFriends([{relationshipId:0, friend:{username:"ALL"}}].concat(relationships))
-    }else{
-      setDisplayFriends([{relationshipId:0, friend:{username:"ALL"}}].concat(selectedGroup.members))
-    }
-  }, [currGroup, relationships] 
+  useEffect(
+    ()=>{
+      // 새로운 친구 선택/해제 -> 전체선택/해제 
+      var isAll = isAllChecked(selectedItems, displayFriends)
+      setAllChecked(isAll)
+    }, [selectedItems]
   )
 
 
-  const groupClickHandler = async (group) =>{
-    if(group.id!=0){
-      await getMembers(group.id)
+  ////funcs
+  //funcs1
+  const isAllChecked = useCallback(
+    (sourceArr, allArray) => {
+      //sourceArr-선택된 items / allArray - '전체(All)' 정보
+      //sourceArr가 allArray에 있는 모든 아이템을 갖는지 검사한다.
+      var allDict = (transformRelationshipArrTodict(allArray))
+      var resArr = sourceArr.filter(item=>allDict[item]) //O(N) -selectedItem
+      return resArr.length==allArray.length
     }
-    setCurrGroup(group.id.toString()+group.groupname)
-  }
+  )
 
+  const transformRelationshipArrTodict = useCallback((arr) => {
+    return arr.reduce((acc, relationship)=>({...acc,[relationship.relationshipId]:relationship.relationshipId}),{});
+    }
+  )
 
+  //funcs2 - handlers
+  const groupClickHandler = useCallback(
+    async (group) =>{
+      if(group.id>0) await getMembers(group.id)
+      setCurrGroup(group.id.toString()+group.groupname)
+    }
+  )
+
+  const friendClickHandler = useCallback(
+    (e, id) => {
+      e.preventDefault();
+      var next = [];
+
+      if(id>0){
+        //친구선택
+        if (selectedItems.indexOf(id)>-1) next = selectedItems.filter((item)=>item != id); //선택해제
+        else next = [...selectedItems, id];
+      }else{ 
+        //전체선택(ALL)
+        var dictForSearch = transformRelationshipArrTodict(displayFriends)
+        var isAll = isAllChecked(selectedItems, displayFriends)
+        if(isAll) next = selectedItems.filter(item=>!dictForSearch[item]) //전부빼기(전체선택 해제) 
+        else next = displayFriends.reduce((acc, relationship)=>([...acc,relationship.relationshipId]), []); //전부넣기(전체선택)
+      }
+      setSelectedItems(next)
+    }, [selectedItems, displayFriends]
+  )
   
   
   const handleSubmit = () => {
@@ -155,33 +139,30 @@ function InviteFriends(props) {
         <Wrap>
           <section>
             <GroupTable title="Groups" rowNum={10} rowHeight={rowHeight}> 
-                {displayGroups.map((group, index)=>{ 
-                  return (
-                  <Row key={index}
-                  selected={currGroup==group.id.toString()+group.groupname } 
-                  height={rowHeight} rowNum={index}
+              <Row key={0} height={rowHeight} rowNum={0} isSelected={currGroup==allGroup.id+allGroup.groupname} onClick={(e)=>groupClickHandler(allGroup)}>
+                All{currGroup==allGroup.id+allGroup.groupname? <Selected  size="lg"/>:null}
+              </Row> 
+              {displayGroups.map((group, index)=>{ 
+                return ( 
+                <Row key={group.id} height={rowHeight} rowNum={index+1}
+                  isSelected={currGroup==group.id.toString()+group.groupname} 
                   onClick={()=>groupClickHandler(group)}
-                  >
-                    {group.groupname}
-                    {currGroup == group.id.toString() + group.groupname ? <Selected  size="lg"/>: null }
-                  </Row>
-                  )})
-                }
-                
+                > {group.groupname}{currGroup == group.id.toString() + group.groupname ? <Selected  size="lg"/>: null } </Row>
+                )
+              })}
             </GroupTable>
           </section>
 
           <section>
             <FriendsTable title="Friends" button={<IconButton><SearchIcon /></IconButton>} rowNum={10} rowHeight={rowHeight}> 
-              {displayFriends.map((relationship, index)=>{
-                return <Row 
-                  height={rowHeight} 
-                  key={index} 
-                  rowNum={index} 
-                  isSelected={selectedItems.includes(relationship.relationshipId)}
-                  onClick={(e)=>handleClick(e, relationship.relationshipId)} >{relationship.friend.username}</Row> 
-                })
-              }
+              <Row key={0} height={rowHeight} rowNum={0} isSelected={allChecked} onClick={(e)=>friendClickHandler(e, 0)}>All</Row> 
+              {displayFriends ? displayFriends.map((relationship, index)=>{
+                return ( 
+                  <Row key={relationship.relationshipId} height={rowHeight} rowNum={index+1} 
+                      isSelected={selectedItems.includes(relationship.relationshipId)}
+                      onClick={(e)=>friendClickHandler(e, relationship.relationshipId)}
+                  >{relationship.friend.username}</Row>)
+                }): null}
             </FriendsTable>
           </section>
         </Wrap>
@@ -193,47 +174,14 @@ function InviteFriends(props) {
   )
 }
 
-
-
-
 const mapStateToProps = (state) => ({
   selectedGroup: state.groups.selectedGroup,
 });
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     getGroups: () => dispatch(getGroups()),
-//     getFriends: () => dispatch(getFriends()),
-//     getMembers: (id) =>getMembers(id)
-//   }
-// };
-
 export default connect(mapStateToProps, {getMembers})(InviteFriends);
 
 InviteFriends.propTypes = {
-  title: PropTypes.string,
-  headers: PropTypes.array,
-  selectedGoup: PropTypes.object,
-  relationships: PropTypes.array,
-  buttons: PropTypes.array,
-  // closeModal: PropTypes.func,
 };
 
 InviteFriends.defaultProps = {
-  title: "Table Title",
-  headers: null,
-  selectedGoup: { group: { id: "", groupname: "unknown" }, members: [] },
-  groups: [],
-  relationships: [],
-  buttons: [
-    { content: "Members", url: null },
-    {
-      content: "Add",
-      url:
-        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
-    },
-  ],
-  // closeModal: () => {
-  //   console.log("Waring clsModal");
-  // },
 };
