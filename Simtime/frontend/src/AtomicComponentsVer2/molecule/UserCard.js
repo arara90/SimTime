@@ -28,15 +28,15 @@ function UserCard(props) {
     if(reverse){
         return (
             <Wrap {...props}>
-                {user.id}
+                {user.username}
                 <StyledImageUser reverse size={size}></StyledImageUser>
             </Wrap>
         )
     }else{
         return (
             <Wrap {...props}>
-                <StyledImageUser url={user.imageUrl} size={size}></StyledImageUser>
-                {user.id}
+                <StyledImageUser url={user.profile_image} size={size}></StyledImageUser>
+                {user.username}
             </Wrap>
         )
     }
@@ -56,6 +56,6 @@ UserCard.defaultProps = {
     color: "TEXT",
     size: "2em",
     reverse: null,
-    user: {id:"admin", imageUrl:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/wink2.png"}
+    user: {username:"admin", profile_image:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/wink2.png"}
   };
   

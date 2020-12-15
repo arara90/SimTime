@@ -7,7 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  selectedEvent: {}
+  selectedEvent: {},
 };
 
 
@@ -41,7 +41,7 @@ export default function(state = initialState, action) {
     case ADD_EVENT:
       return {
         selectedEvent: action.payload.id,
-        events: transformEvents(state.events, [action.payload])
+        events: transformEvents(state.events, [action.payload]),
       };
     case DELETE_EVENT:
       const {id, event_date} = action.payload

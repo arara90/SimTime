@@ -1,4 +1,4 @@
-import React, { useState, useCallback, Fragment, useRef } from "react";
+import React, { useEffect} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -77,6 +77,12 @@ const Button = styled(SolidButton)`
 
 function YNDialogModal(props) {
   const { rightBtnClickHandler, leftBtnClickHandler, closeModal, title, leftButtonText, rightButtonText } = props;
+
+  useEffect(
+    ()=>console.log('open invite')
+    , [] 
+  )
+
 
   return (
     <Wrap {...props}>

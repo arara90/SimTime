@@ -11,6 +11,8 @@ import SearchIcon from "../../../atom/icons/SearchIcon"
 
 import TableRow from "../../../atom/table/TableRow"
 import CaretIcon from "../../../atom/icons/CaretIcon"
+
+import UserCard from "../../../molecule/UserCard"
 import DefaultTable from "../../../molecule/table/DefaultTable"
 
 import { getMembers } from "../../../../actions/groups";
@@ -44,10 +46,10 @@ const Selected = styled(CaretIcon)`
 `
 
 function InviteFriends(props) {
-  const {getMembers, selectedGroup, groups, relationships} = props;
+  const {getMembers, selectedGroup, groups, relationships, inviteSubmitHandler} = props;
 
   ////variables
-  const rowHeight = "2.5em"
+  const rowHeight = "3em"
   const allGroup = {id:0, groupname:"All"}
 
   ////hooks
@@ -129,7 +131,8 @@ function InviteFriends(props) {
   )
   
   
-  const handleSubmit = () => {
+  const submitHandler = () => {
+    inviteSubmitHandler(selectedItems)
   }
 
   return (
@@ -138,7 +141,7 @@ function InviteFriends(props) {
       pages={[
         <Wrap>
           <section>
-            <GroupTable title="Groups" rowNum={10} rowHeight={rowHeight}> 
+            <GroupTable title="Groups" rowNum={8} rowHeight={rowHeight}> 
               <Row key={0} height={rowHeight} rowNum={0} isSelected={currGroup==allGroup.id+allGroup.groupname} onClick={(e)=>groupClickHandler(allGroup)}>
                 All{currGroup==allGroup.id+allGroup.groupname? <Selected  size="lg"/>:null}
               </Row> 
@@ -154,21 +157,23 @@ function InviteFriends(props) {
           </section>
 
           <section>
-            <FriendsTable title="Friends" button={<IconButton><SearchIcon /></IconButton>} rowNum={10} rowHeight={rowHeight}> 
+          {/* button={<IconButton><SearchIcon /></IconButton>}  */}
+            <FriendsTable title="Friends" rowNum={8} rowHeight={rowHeight}> 
               <Row key={0} height={rowHeight} rowNum={0} isSelected={allChecked} onClick={(e)=>friendClickHandler(e, 0)}>All</Row> 
               {displayFriends ? displayFriends.map((relationship, index)=>{
                 return ( 
                   <Row key={relationship.relationshipId} height={rowHeight} rowNum={index+1} 
                       isSelected={selectedItems.includes(relationship.relationshipId)}
+                      selectIcon
                       onClick={(e)=>friendClickHandler(e, relationship.relationshipId)}
-                  >{relationship.friend.username}</Row>)
+                  ><UserCard user={relationship.friend} /></Row>)
                 }): null}
             </FriendsTable>
           </section>
         </Wrap>
     ]}
       totalPage={1}
-      handleSubmit={handleSubmit}
+      submitHandler={submitHandler}
       height="auto"
     ></MyModal>
   )

@@ -7,6 +7,7 @@ import friends from "./friends";
 import groups from "./groups";
 import invitations from "./invitations";
 import events from "./events";
+import loading from "./loading"
 
 // import { reducer as modal } from "react-redux-modal-flex";
 
@@ -19,4 +20,5 @@ export default combineReducers({
   groups,
   events,
   invitations,
+  loading
 });

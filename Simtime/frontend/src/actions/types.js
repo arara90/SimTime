@@ -40,9 +40,14 @@ export const GET_GROUPMEMBERS = "GET_GROUPMEMBERS";
 export const DELETE_GROUPMEMBERS = "DELETE_GROUPMEMBERS";
 export const DELETE_GROUPMEMBER = "DELETE_GROUPMEMBER";
 export const ADD_TO_GROUP = "ADD_TO_GROUP";
+
 //Friend(relationship)
 export const GET_FRIENDS = "GET_FRIENDS";
 export const GET_FRIEND = "GET_FRIEND";
 export const ADD_FRIEND = "ADD_FRIEND";
 export const DELETE_FRIEND = "DELETE_FRIEND";
 export const EDIT_FRIEND = "EDIT_FRIEND";
+
+//loading
+export const START_LOADING = 'loading/START_LOADING'
+export const FINISH_LOADING = 'loading/FINISH_LOADING'

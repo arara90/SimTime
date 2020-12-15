@@ -15,7 +15,7 @@ import {
   ADD_TO_GROUP,
 } from "./types";
 
-export const getGroups = () => (dispatch) => {
+export const getGroups = () => async (dispatch) => {
   return axiosFormInstance
     .get("/api/groups/")
     .then((res) => {
@@ -26,8 +26,10 @@ export const getGroups = () => (dispatch) => {
 
       return res.status
     })
-    .catch((err) =>
+    .catch((err) =>{
       dispatch(returnErrors(err.response.data, err.response.status))
+      return err.response.data
+    }
     );
 };
 

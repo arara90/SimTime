@@ -49,20 +49,8 @@ const MyDatePicker = styled(DatePicker)`
       : "display: none;"}
 `;
 
-const ButtonWrap = styled.div`
-  cursor: pointer;
-  width: ${(props) => props.width};
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Button = styled(DashedButton)`border-radius: 6px;`;
-
 function EventMaker(props) {
-  const {closeModal, user, editEvent, addEvent, } = props;
+  const {closeModal, user, editEvent, addEvent, eventSubmitHandler } = props;
 
   const today = new Date();
   const timeRef = useRef();
@@ -92,33 +80,33 @@ function EventMaker(props) {
 
   const showDatePicker = () => setDatePicker(!datePicker);
 
-  const handleSubmit = async (e) => {
+  const submitHandler = () => {
+    const e_time = new Date(date + " " + time.split(" ")[0])
+    const { eId, eStatus } = event;
+    const myEvent = {
+      host: user.id,
+      event_name: name,
+      event_time: e_time.toISOString(),
+      status: eStatus,
+      event_place: place,
+      message: message,
+      tags: tags
+      // photo: image,
+    };
 
-    try{
-        const e_time = new Date(date + " " + time.split(" ")[0])
-        e.preventDefault();
-        // var event_at = new Date('2019/5/16/17:24:30:10');
-        const { eId, eStatus } = event;
-        const myEvent = {
-          host: user.id,
-          event_name: name,
-          event_time: e_time.toISOString(),
-          // event_time: new Date(date + " " + time.split(" ")[0]).getTime(),
-          status: eStatus,
-          event_place: place,
-          message: message,
-          tags: tags
-          // photo: image,
-        };
+    eventSubmitHandler(myEvent, image)
+    // const fn = async (event) => {
+    //   try{
+    //     if (event)  await editEvent({id: eId,...myEvent,});
+    //     else  await addEvent(myEvent, image); 
+    //     eventSubmitHandler()
+    //   }catch(e){
+    //     console.log("relationshipError", err); 
+    //   }
 
-        if (props.event)  editEvent({id: eId,...myEvent,});
-        else  addEvent(myEvent, image);
+    // }
 
-        // closeModal();
-        props.submitHandler();
-
-    }
-    catch (err) { console.log("relationshipError", err); }
+    // fn(props.event)
   };
 
   const handleChangeFile = (e) => {
@@ -250,51 +238,14 @@ function EventMaker(props) {
       eImage: image,
     });
 
-    // setPage(targetPage);
-  };
-
-  const renderButtons = (page) => {
-    switch (page) {
-      case 0:
-        return (
-          <ButtonWrap width="100%">
-            <Button onClick={(e) => handleClick(e, page + 1)}>Next</Button>
-          </ButtonWrap>
-        );
-
-      case 2:
-        return (
-          <Fragment>
-            <ButtonWrap width="48%">
-              <Button onClick={(e) => handleClick(e, page - 1)}>Prev</Button>
-            </ButtonWrap>
-            <ButtonWrap width="48%">
-              <Button type="submit">Done</Button>
-            </ButtonWrap>
-          </Fragment>
-        );
-
-      default:
-        return (
-          <Fragment>
-            <ButtonWrap width="48%">
-              <Button onClick={(e) => handleClick(e, page - 1)}>Prev</Button>
-            </ButtonWrap>
-            <ButtonWrap width="48%">
-              <Button onClick={(e) => handleClick(e, page + 1)}>Next</Button>
-            </ButtonWrap>
-          </Fragment>
-        );
-    }
   };
 
   return(
-    <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">
+    <ContentWrap onSubmit={submitHandler} encType="multipart/form-data">
       <DefaultModal
         title="New Event"
-        pages={[firstPage(),secondPage(), thirdPage() ]}
-        totalPage={3}
-        handleSubmit={handleSubmit}
+        pages={[firstPage(), secondPage(), thirdPage()]}
+        submitHandler={submitHandler}
         pageChangeHandler={handleClick}
         height="auto"
         closeModal={closeModal}
@@ -307,13 +258,18 @@ function EventMaker(props) {
 const mapStateToProps = (state) => ({
   event: state.events.selectedEvent[0],
   user: state.auth.user,
+  
 });
 
-export default connect(mapStateToProps, {
-  addEvent,
-  getEvent,
-  editEvent,
-})(EventMaker);
+const mapDispatchToProps = (dispatch)=> {
+ return {
+  addEvent: (myEvent, image)=>dispatch(addEvent(myEvent, image)),
+  getEvent: getEvent(),
+  editEvent: editEvent()
+}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventMaker);
 
 // export default EventMaker;
 
@@ -331,43 +287,5 @@ EventMaker.defaultProps = {
 };
 
 
-
-
-
-///////////////////Legacy//////////////////
-  // return (
-  //     <Wrap {...props}>
-  //       <HeaderWrap>
-  //         <BarWrap>{/* <ProgressBar /> */}</BarWrap>
-  //         <ModalTitle >EVENT</ModalTitle>
-  //       </HeaderWrap>
-
-  //       <ContentWrap onSubmit={handleSubmit} encType="multipart/form-data">
-  //         {firstPage()}
-  //         {secondPage()}
-  //         {thirdPage()}
-  //         <Buttons>{renderButtons(page)}</Buttons>
-  //       </ContentWrap>
-  //     </Wrap>
-    
-  // );
-  
-  // const handleSubmit = async () => {
-  //   try {
-  //     //친구 등록
-  //     var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
-  //     console.log(relationship)
-  //     if(groups.length){
-  //       var groupData = groups.map((group) => {
-  //         return { relationship: relationship.data.relationshipId, group: group };
-  //       });
-  //       await props.addToGroup(groupData);
-  //     }
-
-  //     props.closeModal();
-  //   } catch (err) {
-  //     console.log("relationshipError", err);
-  //   }
-  // };
 
 

@@ -47,44 +47,52 @@ const Button = styled(SolidButton)`
 
 
 function DefaultModal(props) {
+  const { 
+    height,
+    width,
+    pages,
+    pageChangeHandler,
+    title,
+    closeModal} = props
   const [page, setPage] = useState(0);
 
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    props.handleSubmit();
+    props.submitHandler();
   };
 
-  const handleClick = (e, newPage) => {
-    props.pageChangeHandler();
+  const clickHandler = (e, newPage) => {
+    e.preventDefault();
+    pageChangeHandler();
     setPage(newPage);
   }
 
   const renderPages = (page) => {
     return (
       <PageWrap {...props} >
-        {props.pages[page]}
+        {pages[page]}
       </PageWrap>
     );
   };
 
   const renderButtons = (page) => {
-    if (page == props.totalPage-1) { //마지막 페이지
-      if (props.totalPage == 1) return <Button type="submit" onClick={(e) => handleSubmit(e)}>Done</Button> // 단일 페이지( Done )
+    if (page == pages.length-1) { //마지막 페이지
+      if (pages.length == 1) return <Button type="submit" onClick={(e) => submitHandler(e)}>Done</Button> // 단일 페이지( Done )
       else { // 여러 페이지 중 마지막 페이지 (Prev, Done)
         return (
           <Fragment>
-              <Button width="48%" onClick={(e) => handleClick(e, page - 1)}>Prev</Button>
-              <Button width="48%" type="submit" onSubmit={(e) => handleSubmit(e)}>Done</Button>
+              <Button width="48%" type="button" onClick={(e) => clickHandler(e, page - 1)}>Prev</Button>
+              <Button width="48%" type="submit" onSubmit={(e) => submitHandler(e)}>Done</Button>
           </Fragment>
         );
       }
     } else {
-        if (page == 0) return <Button onClick={(e) => handleClick(e, page + 1)}>Next</Button> // 여러 페이지 중 첫 페이지 (Next)
+        if (page == 0) return <Button type="button" onClick={(e) => clickHandler(e, page + 1)}>Next</Button> // 여러 페이지 중 첫 페이지 (Next)
         else {  // 중간 페이지 (Prev, Next)
           return ( 
             <Fragment>
-              <Button width="48%" onClick={(e) => handleClick(e, page - 1)}>Prev</Button>
-              <Button width="48%" onClick={(e) => handleClick(e, page + 1)}>Next</Button>
+              <Button width="48%" type="button" onClick={(e) => clickHandler(e, page - 1)}>Prev</Button>
+              <Button width="48%" type="button" onClick={(e) => clickHandler(e, page + 1)}>Next</Button>
             </Fragment> 
             );
         }
@@ -93,7 +101,7 @@ function DefaultModal(props) {
 
   return (
     <Wrap {...props} className="default-modal">
-      {props.title && <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>}
+      {title && <ModalTitle closeModal={closeModal}>{title}</ModalTitle>}
       {renderPages(page)}
       <ButtonWrap>{renderButtons(page)}</ButtonWrap>
     </Wrap>
@@ -105,7 +113,6 @@ export default DefaultModal;
 DefaultModal.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
-  totalPage: PropTypes.number,
   pages: PropTypes.array,
   pageChangeHandler: PropTypes.func,
   handleSubmit: PropTypes.func, 
@@ -117,7 +124,6 @@ DefaultModal.defaultProps = {
   height: "500px",
   width: "320px",
   pages: [<div>page1</div>, <div>page2</div>],
-  totalPage: 2,
   pageChangeHandler: null,
   handleSubmit:  null,
   title: null,
