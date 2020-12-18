@@ -90,20 +90,14 @@ class Event(CustomizedModel):
 
 
 # Create your models here.
-class Invitation(CustomizedModel):
+class Invitation(models.Model):
     objects = models.Manager()
-    event = models.ForeignKey(
-        Event, on_delete=models.CASCADE, related_name='sendTo')
-    relationship = models.ForeignKey(
-        settings.AUTH_USER_RELATIONSHIP_MODEL, on_delete=models.CASCADE, related_name='invitations')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='sendTo')
+    relationship = models.ForeignKey(settings.AUTH_USER_RELATIONSHIP_MODEL, on_delete=models.CASCADE, related_name='invitations')
     attendance = models.BooleanField(default=False)
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함
-    is_shown = models.BooleanField(default=True)
+    show = models.BooleanField(default=True)
     like = models.BooleanField(default=False)
 
     class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['event', 'relationship'], name='er_compositeKey')]
-
-
-#UniqueConstraint(fields=['room', 'date'], name='unique_booking')
+        constraints = [models.UniqueConstraint(fields=['event', 'relationship'], name='er_compositeKey')]

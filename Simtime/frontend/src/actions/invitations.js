@@ -1,53 +1,66 @@
-import axios from "axios";
+import { axiosInstance } from "./axiosApi";
 import { createMessage, returnErrors } from "./messages";
-import { tokenConfig } from "./auth";
 
 import {
   GET_INVITATIONS,
-  ADD_INVITATION,
+  ADD_INVITATIONS,
   DELETE_INVITATION,
   GET_ERRORS,
   CREATE_MESSAGE
 } from "./types";
 
 
-// export const addInvitations = (invitations) => (dispatch) => {
-//   console.log("addfriend", invitations);
+function separateTime(data){
+  var res = {...data}
+  var event_at = new Date(Date.parse(res.event_time))
+  res['event_date'] = getStrFullDate(event_at, "yyyy-mm-dd")
+  res['event_time'] = getFullTime(event_at)
+  return res
+}
 
-//   // return axiosInstance
-//   //   .post("/api/friend/create/", {
-//   //     account: friend.account,
-//   //     friend: friend.friend,
-//   //   })
-//   //   .then((res) => {
-//   //     dispatch(createMessage({ addFriend: "Friend Added" }));
-//   //     console.log("friends", res);
-//   //     dispatch({ type: ADD_FRIEND, payload: res.data });
-//   //     return res;
-//   //   })
-//   //   .catch((err) => {
-//   //     dispatch(returnErrors(err.response, err.response.status));
-//   //     return err;
-//   //   });
-// };
+export const addInvitations = (event, relationshipIds) => async (dispatch) => {
+  var invitations = new Array(relationshipIds.length)
+
+  relationshipIds.forEach( (relationshipId, index) => {
+    invitations[index] = {event: event, relationship:relationshipId  }
+  });
+
+  console.log("addInvitations action", invitations);
+  
+  return axiosInstance
+  .post("/api/invitations/create", invitations)
+  .then((response) => {
+    console.log(response)
+    // return invitations.id
+  })
+  .catch((err) => {
+    dispatch(returnErrors(err, err.response.status));
+    console.log(err)
+  });
+
+};
 
 
-export const addInvitations = (invitations) => (dispatch) => {
-  console.log("addInvitations", invitations);
-
-  // return axiosInstance
-  //   .post("/api/friend/create/", {
-  //     account: friend.account,
-  //     friend: friend.friend,
-  //   })
-  //   .then((res) => {
-  //     dispatch(createMessage({ addFriend: "Friend Added" }));
-  //     console.log("friends", res);
-  //     dispatch({ type: ADD_FRIEND, payload: res.data });
-  //     return res;
-  //   })
-  //   .catch((err) => {
-  //     dispatch(returnErrors(err.response, err.response.status));
-  //     return err;
-  //   });
+export const getInvitations = (start, end) => (dispatch) => {
+  console.log(start, end)
+  axiosInstance
+    .get(`/api/invitations/${start}/${end}`)
+    .then((res={data:[]}) => {
+      console.log('getInv Success', res)
+      //var transformed = {}
+      // res.data.map((d)=>{
+      //   var separated = separateTime(d)
+      //   var date = separated.event_date
+      //   if( transformed[date]==undefined){
+      //     transformed[date] = [separated]
+      //   }else{
+      //     transformed[date] = [...transformed[date], separated]
+      //   }
+      // })
+      // dispatch({type: GET_INVITATIONS, payload: transformed,});
+    })
+    .catch((err) =>{
+      dispatch(returnErrors(err.response.data, err.response.status))
+      console.log(err)
+    });
 };

@@ -16,7 +16,6 @@ import {
 } from "./types";
 
 
-
 function separateEventTime(data){
   var res = {...data}
   var event_at = new Date(Date.parse(res.event_time))
@@ -40,63 +39,17 @@ export const getEvents = (start, end) => (dispatch) => {
           transformed[date] = [...transformed[date], separated]
         }
       })
-
-      dispatch({
-        type: GET_EVENTS,
-        payload: transformed,
-      });
-      // console.log(res)
+      dispatch({type: GET_EVENTS,payload: transformed,});
     })
     .catch((err) =>{
-      // dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(returnErrors(err.response.data, err.response.status))
       console.log(err)
     });
-    
 };
 
 export const getEvent = (id) => (dispatch) => {
-  dispatch({
-    type: GET_EVENT,
-    payload: id,
-  });
+  dispatch({type: GET_EVENT,payload: id});
 };
-
-// export const axiosAddEvent=(event, img)=>{
-  
-//   if(img) {
-//     const data = new FormData();
-//     data.append("photo", img);
-//     data.append("host", event.host);
-//     data.append("event_name", event.event_name);
-//     data.append("event_time", event.event_time);
-//     data.append("status", event.status);
-//     data.append("event_place", JSON.stringify(event.event_place) );
-//     data.append("message", event.message);
-
-//     axiosFormInstance
-//       .post("/api/events/create", data)
-//       .then((response) => {
-//         separateEventTime(response.data)
-//         return {type: ADD_EVENT, payload: response}
-//       })
-//       .catch((err) => {
-//         dispatch(returnErrors(err.response.data, err.response.status));
-//       });
-//   }else{
-//     axiosInstance
-//       .post("/api/events/create", event)
-//       .then((response) => {
-//         separateEventTime(response.data)
-//         return {type: ADD_EVENT, payload: response}
-//       })
-//       .catch((err) => {
-//         dispatch(returnErrors(err.response.data, err.response.status));
-//       });
-//   }
-
-// }
-
-
 
 export const addEvent =  (event, img) => async (dispatch) =>{
   const SUCCEESS = 'ADD_EVENT_SUCCESS'
@@ -116,10 +69,7 @@ export const addEvent =  (event, img) => async (dispatch) =>{
       return axiosFormInstance
         .post("/api/events/create", formData)
         .then((response) => {
-          const data = separateEventTime(response.data)
-          // const add=(data)=>{return {type:ADD_EVENT, payload: data } }
-          // dispatch(finishLoading('ADD_EVENT'))
-          return data.id
+          return separateEventTime(response.data).id
         })
         .catch((err) => {
           console.log(err)
@@ -128,23 +78,15 @@ export const addEvent =  (event, img) => async (dispatch) =>{
       return axiosInstance
         .post("/api/events/create", event)
         .then((response) => {
-          const data = separateEventTime(response.data)
-          // const add=(data)=>{return {type:ADD_EVENT, payload: data } }
-          // dispatch({type:ADD_EVENT, payload: data })
-          // dispatch(finishLoading('ADD_EVENT'))
-          return data.id
+          return separateEventTime(response.data).id
         })
         .catch((err) => {
-          // dispatch(returnErrors(err, err.response.status));
+          dispatch(returnErrors(err, err.response.status));
           console.log(err)
         });
     }
   }catch(e){
-    dispatch({
-      type:FAILURE,
-      payload: e,
-      error: true
-  });
+    dispatch({type:FAILURE,payload: e,error: true});
   }
 }
 
@@ -153,22 +95,22 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     .delete(`/api/events/${id}`)
     .then(() => {
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
-      dispatch({
-        type: DELETE_EVENT,
-        payload: { id:id, event_date:event_date},
-      });
+      dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      // dispatch(returnErrors(err, err.response.status));
+      console.log(err)
+    });
 };
 
 export const editEvent = (event) => (dispatch) => {
   axiosFormInstance
     .put(`/api/events/${event.id}`, event)
     .then((res) => {
-      dispatch({
-        type: EDIT_EVENT,
-        payload: res.data,
-      });
+      dispatch({type: EDIT_EVENT, payload: res.data});
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      dispatch(returnErrors(err, err.response.status));
+      console.log(err)
+    });
 };

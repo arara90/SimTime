@@ -115,7 +115,7 @@ DefaultModal.propTypes = {
   width: PropTypes.string,
   pages: PropTypes.array,
   pageChangeHandler: PropTypes.func,
-  handleSubmit: PropTypes.func, 
+  submitHandler: PropTypes.func, 
   title: PropTypes.string,
   closeModal: PropTypes.func,
 };
@@ -125,7 +125,7 @@ DefaultModal.defaultProps = {
   width: "320px",
   pages: [<div>page1</div>, <div>page2</div>],
   pageChangeHandler: null,
-  handleSubmit:  null,
+  submitHandler: null,
   title: null,
   closeModal: () => {},
 };

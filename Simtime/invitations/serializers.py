@@ -1,15 +1,23 @@
 from rest_framework import serializers
 from .models import Invitation, Event
+# from .models import  Event
 from accounts.serializers import UserSerializer
 from datetime import datetime
 
 
 class InvitationSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res.update(
+            {'events': EventSerializer(instance.event).data}
+        )
+        return res
+
     class Meta:
         model = Invitation
         fields = '__all__'
 
-
+ 
 class EventSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         res = super().to_representation(instance)

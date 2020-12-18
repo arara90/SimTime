@@ -190,7 +190,7 @@ function AddGroup(props) {
       title="Add Group"
       pages={[renderChild()]}
       totalPage={1}
-      handleSubmit={handleSubmit}
+      submitHandler={handleSubmit}
       height="auto"
       closeModal={closeModal}
     ></DefaultModal>

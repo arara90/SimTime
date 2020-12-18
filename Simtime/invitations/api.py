@@ -1,7 +1,9 @@
 from .models import Invitation, Event
+from .serializers import InvitationSerializer, EventSerializer
+# from .models import  Event
+# from .serializers import EventSerializer
 from rest_framework import viewsets, permissions, authentication, status
 from rest_framework.response import Response
-from .serializers import InvitationSerializer, EventSerializer
 from rest_framework.views import APIView
 from django.conf import settings
 import io
@@ -74,30 +76,29 @@ class EventDetailAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class EventsViewSet(viewsets.ModelViewSet):
-#     queryset = Event.objects.all()
-#     permission_classes = (permissions.IsAuthenticated,)
-#     serializer_class = EventSerializer
 
-#     def get_queryset(self):
-#         return self.request.user.events.all()  # related_name으로 invitations지정
+class InvitationAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
 
-#     def perform_create(self, serializer):
-#         serializer.save(host=self.request.user)
+    def post(self, request):
+        print("gre", request.data)
+        serializer = InvitationSerializer(data=request.data, many=True)
+        if(serializer.is_valid()):
+            print('valid')
+            serializer.save()
+            print('done', serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    
+    def get(self, request, start, end):
+        # events = self.request.user.events.all()
+        start_datetime = datetime.strptime(start, '%Y-%m-%d')
+        end_datetime = datetime.strptime(
+            f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+        start_datetime_aware = timezone.make_aware(start_datetime)
+        end_datetime_aware = timezone.make_aware(end_datetime)
 
-# class InvitationsViewSet(viewsets.ModelViewSet):
-#     queryset = Invitation.objects.all()
-#     permission_classes = [
-#         permissions.IsAuthenticated
-#     ]
-
-#     serializer_class = InvitationSerializer
-
-#     def get_queryset(self):
-#         # 해당 유저의 invitations만 return
-#         return self.request.user.invitations.all()  # related_name으로 invitations지정
-
-#     def perform_create(self, serializer):
-#         # invitation을 만들 떄 host를 저장하도록 한다.
-#         serializer.save(host=self.request.user)
+        invitations = self.request.user.events.filter(event_time__range=[start_datetime_aware, end_datetime_aware])
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)

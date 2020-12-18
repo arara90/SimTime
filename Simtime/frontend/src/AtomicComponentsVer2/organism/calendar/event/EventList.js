@@ -17,12 +17,12 @@ const Wrap = styled.div`
   margin-top: 0;
 `
 
-
 const Header = styled(CalendarHeader)`
   width: 100%;
   font-weight: bold;
   height: 4rem;
   border-bottom: solid 1px ${Colors.MAIN_COLOR};
+  padding: 0.5em;
 `
 const List = styled.ul`
   width: 100%;
