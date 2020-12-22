@@ -152,7 +152,7 @@ function EventDetailHeader(props) {
         <Wrap>
             <BackButton onClick={backHandler}><BackIcon /></BackButton>
             <TitleText className="event-title">{event_name}</TitleText>
-            <User url={host ? host.profile_image : null } width="2.5em" height="2.5em"/>
+            {host?host.username:null}<User url={host ? host.profile_image : null } width="2.5em" height="2.5em"/>
         </Wrap>
     )
 }

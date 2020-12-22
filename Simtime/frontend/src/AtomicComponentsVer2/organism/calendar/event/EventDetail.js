@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { deleteEvent } from "../../../../actions/events"
+// import {deleteInvitation} from "../../../../actions/invitations"
 
 import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
 import EventDetailContent from "../../../molecule/event/EventDetailContent"
@@ -43,7 +44,9 @@ const DeleteButton = styled(TextButton)``
 
 
 function EventDetail(props) {
-  const {id, event_name, event_date, tags, host, like, join} = props.event;
+  const {id, attendance, show, like, event} = props.invitation;
+  const {event_name, event_date, tags, host} = event;
+
   const deleteHandler=(id, date)=>{
     props.deleteEvent(id, date);
     props.backHandler();
@@ -51,10 +54,10 @@ function EventDetail(props) {
   return (
         <Wrap>
           <EventDetailHeader  host={host} event_name={event_name} tags={tags} backHandler={props.backHandler}/>
-          <EventDetailContent {...props.event}/>
+          <EventDetailContent {...event} like={like}/>
           <Buttons>
             <JoinButton color="ST_BLUE">Join</JoinButton>
-            <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(id,event_date)}>delete</DeleteButton>
+            <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(id, event_date)}>delete</DeleteButton>
           </Buttons>
         </Wrap>
     )
@@ -71,20 +74,27 @@ export default connect(null, mapDispatchToProps)(EventDetail);
 
 
 EventDetail.propTypes = {
-  event: PropTypes.object,
+  invitation: PropTypes.object,
   };
 
 EventDetail.defaultProps = {
-  event: {
-    id: "0",
-    event_name: "Simtime Test",
-    event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
-    event_time: "PM 19:00",
-    tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
+  invitation: {
+    id:null, 
+    attendance: false, 
+    show:true, 
+    like:false,
+    event: {
+      id: "0",
+      event_name: "Simtime Test",
+      event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
+      event_time: "PM 19:00",
+      tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
+  
+      host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
+    }
 
-    host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
-    like: null,
-    join: null,
-  }
+
+  },
+ 
   };
   

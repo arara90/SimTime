@@ -36,16 +36,17 @@ const List = styled.ul`
 
 
 function EventList(props) {
-  const { events, current, itemClickHandler} = props;
+  const { invitations, current, itemClickHandler, dateHandler} = props;
+  const { event } = invitations
 
     return (
       <Wrap>
         <Header size="1.2em" type="date" current={current} clickHandler={props.dateHandler} >
           {getStringDate(current,"day")}
         </Header>
-        <List isEmpty={events.length==0}>
-          { events.map((event) => {
-            return <EventListItem key={event.id} event={event} onClick={(e)=>{itemClickHandler(e,event)}}  />})
+        <List isEmpty={invitations.length==0}>
+          { invitations.map((invitation) => {
+            return <EventListItem key={invitation.id} event={invitation.event} onClick={(e)=>{itemClickHandler(e,invitation)}}  />})
           }
         </List>
       </Wrap>
@@ -55,11 +56,13 @@ function EventList(props) {
 export default EventList
 
 EventList.propTypes = {
-  events: PropTypes.array
+  invitations: PropTypes.array
   };
 
 EventList.defaultProps = {
-  events: [{
+  invitations: [{
+      id:null,
+      event:{
         id: null,
         event_name: "Simtime Test",
         event_place: {name:null, address:null, lat:"", lng:""},
@@ -69,6 +72,7 @@ EventList.defaultProps = {
         host: {name:"test", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
         like: null,
         join: null,
-    }]
+    }}
+  ]
   };
   

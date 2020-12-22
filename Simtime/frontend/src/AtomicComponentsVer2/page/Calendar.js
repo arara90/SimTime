@@ -47,10 +47,11 @@ background: red;
 
 function Calendar(props) {
   //1.props
-  const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, relationships, events, loading} = props;
+  // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, relationships ,invitations, loading} = props;
+  const {getFriends, getGroups, getInvitations, addInvitations, addEvent, groups, relationships ,invitations, loading} = props;
 
   //2.context
-  const { handleContextModal, closeContextModal, contextModalContent, setContextModalContent } = React.useContext(ModalContext);
+  const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
 
   //3.state
   ////calenedar 관련 
@@ -60,12 +61,12 @@ function Calendar(props) {
   const [endDate, setEndDate] = useState("");
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
   ////data
-  const [selectedEvent, setSelectedEvent] = useState({}) 
+  const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
   //// modal
   const [modalContent, setModalContent] = useState(""); //modal (EventMaker, Dialog, InviteFriends, null )
   ////ui
-  const [showDetail, setShowDetail] = useState(false); // event-detail or list
+  const [showDetail, setShowDetail] = useState(false); // invitation-detail or list
 
   //4.hooks - useEffect
   //// initialization
@@ -110,14 +111,15 @@ function Calendar(props) {
   //// click date cell
   const dateCellClickHandler = (e, date) =>{
     e.stopPropagation();
+    console.log(date)
     setSelectedDate(date)
     setShowDetail(false);
   }
-  //// click event
-  const eventClickHandler = (e, event) =>{
+  //// click invitation
+  const invitationClickHandler = (e, invitation) =>{
     e.stopPropagation();
-    setSelectedEvent(event);
-    setSelectedDate(event.event_date)
+    setSelectedInvitation(invitation);
+    setSelectedDate(invitation.event.event_date)
     setShowDetail(true);
   }
   //// submit new event
@@ -157,25 +159,25 @@ function Calendar(props) {
         leftTop     = {<Filters current={selectedDate} dateHandler={setCurrent}/>}  
         leftBottom  = {<EventCalendar 
                         dateClickHandler={dateCellClickHandler} 
-                        eventClickHandler={eventClickHandler} 
-                        selectedEvent={selectedEvent} 
+                        invitationClickHandler={invitationClickHandler} 
+                        selectedInvitation={selectedInvitation} 
                         selectedDate={selectedDate} 
                         current={current} 
                         dates={weekDates} 
-                        events={events} />
+                        invitations={invitations} />
                       } 
         rightTop    = { <NewButton color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
                           <Pencil />New Event
                         </NewButton> 
                       }
         rightBottom = {showDetail ? 
-                       <EventDetail event={selectedEvent} backHandler={()=>{setShowDetail(false)}} /> : 
-                       <EventList events={events ? events[selectedDate] : [] } current={selectedDate}
+                       <EventDetail invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
+                       <EventList invitations={invitations ? invitations[selectedDate] : [] } current={selectedDate}
                           dateHandler={setSelectedDate}
-                          itemClickHandler={(e, event)=>{
+                          itemClickHandler={(e, invitation)=>{
                             e.preventDefault();
                             setShowDetail(true);
-                            setSelectedEvent(event)} } /> 
+                            setSelectedInvitation(invitation)} } /> 
                       }
       />
       </Fragment>
@@ -183,18 +185,19 @@ function Calendar(props) {
 }
 
 const mapStateToProps = (state) => ({
-  events: state.events.events,
+  // events: state.events.events,
+  invitations: state.invitations.datas,
   addedEvent: state.events.selectedEvent,
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
   relationships: state.friends.relationships,
-  // loading: state.ui.loading
+  loading: state.loading
 
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getEvents: (start, end) => dispatch(getEvents(start, end)),
+    // getEvents: (start, end) => dispatch(getEvents(start, end)),
     // editEvent: () => dispatch(editEvent()),
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),

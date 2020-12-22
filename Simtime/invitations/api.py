@@ -20,14 +20,10 @@ class EventAPI(APIView):
     def get(self, request, start, end):
         # events = self.request.user.events.all()
         start_datetime = datetime.strptime(start, '%Y-%m-%d')
-        end_datetime = datetime.strptime(
-            f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+        end_datetime = datetime.strptime(f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
 
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
-
-        print(start_datetime, start_datetime_aware)
-
         events = self.request.user.events.filter(
             event_time__range=[start_datetime_aware, end_datetime_aware])
         serializer = EventSerializer(events, many=True)
@@ -92,13 +88,15 @@ class InvitationAPI(APIView):
 
     
     def get(self, request, start, end):
-        # events = self.request.user.events.all()
         start_datetime = datetime.strptime(start, '%Y-%m-%d')
-        end_datetime = datetime.strptime(
-            f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+        end_datetime = datetime.strptime(f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        invitations = self.request.user.events.filter(event_time__range=[start_datetime_aware, end_datetime_aware])
-        serializer = EventSerializer(events, many=True)
-        return Response(serializer.data)
+        invitations = Invitation.objects\
+            .select_related('relationship').filter(relationship__friend=request.user, relationship__subscribe=True)\
+                .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
+
+        print(str(invitations.query))
+        serializer = InvitationSerializer(invitations, many=True)
+        return Response(serializer.data)  

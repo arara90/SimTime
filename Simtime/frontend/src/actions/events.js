@@ -29,6 +29,7 @@ export const getEvents = (start, end) => (dispatch) => {
   axiosFormInstance
     .get(`/api/events/${start}/${end}`)
     .then((res={data:[]}) => {
+      console.log('getEve Success', res)
       var transformed = {}
       res.data.map((d)=>{
         var separated = separateEventTime(d)
@@ -39,6 +40,7 @@ export const getEvents = (start, end) => (dispatch) => {
           transformed[date] = [...transformed[date], separated]
         }
       })
+      console.log('ev transformed', transformed)
       dispatch({type: GET_EVENTS,payload: transformed,});
     })
     .catch((err) =>{

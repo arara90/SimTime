@@ -24,22 +24,22 @@ const Week = styled.div`
 `
 
 function EventCalendar(props) {
-  const { dateClickHandler, eventClickHandler, dates, events } = props;
+  const { dateClickHandler, invitationClickHandler, dates, invitations } = props;
 
   const renderEventLabel = (date)=>{
-    if( events && date in events){
-      return events[date].map((event)=>{ 
+    if( invitations && date in invitations){
+      return invitations[date].map((invitation)=>{ 
         return (
           <CalendarEventLabel
             join 
-            key={event.id} 
-            host = {event.host}
-            title={event.event_name}
-            time={event.event_time}
-            location={event.event_place.name}
-            tags = {event.tags}
-            color={event.color}
-            onClick={(e) => eventClickHandler(e, event)}
+            key={invitation.id} 
+            host = {invitation.event.host}
+            title={invitation.event.event_name}
+            time={invitation.event.event_time}
+            location={invitation.event.event_place.name}
+            tags = {invitation.event.tags}
+            color={invitation.event.color}
+            onClick={(e) => invitationClickHandler(e, invitation)}
             />
           )}
         );

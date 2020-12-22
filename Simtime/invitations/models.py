@@ -92,7 +92,7 @@ class Event(CustomizedModel):
 # Create your models here.
 class Invitation(models.Model):
     objects = models.Manager()
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='sendTo')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='invitations')
     relationship = models.ForeignKey(settings.AUTH_USER_RELATIONSHIP_MODEL, on_delete=models.CASCADE, related_name='invitations')
     attendance = models.BooleanField(default=False)
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함

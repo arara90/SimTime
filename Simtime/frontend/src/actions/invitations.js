@@ -1,12 +1,14 @@
 import { axiosInstance } from "./axiosApi";
 import { createMessage, returnErrors } from "./messages";
+import {getStrFullDate , getFullTime} from "./calendar"
 
 import {
   GET_INVITATIONS,
   ADD_INVITATIONS,
   DELETE_INVITATION,
   GET_ERRORS,
-  CREATE_MESSAGE
+  CREATE_MESSAGE,
+  GET_EVENTS,
 } from "./types";
 
 
@@ -46,21 +48,22 @@ export const getInvitations = (start, end) => (dispatch) => {
   axiosInstance
     .get(`/api/invitations/${start}/${end}`)
     .then((res={data:[]}) => {
-      console.log('getInv Success', res)
-      //var transformed = {}
-      // res.data.map((d)=>{
-      //   var separated = separateTime(d)
-      //   var date = separated.event_date
-      //   if( transformed[date]==undefined){
-      //     transformed[date] = [separated]
-      //   }else{
-      //     transformed[date] = [...transformed[date], separated]
-      //   }
-      // })
-      // dispatch({type: GET_INVITATIONS, payload: transformed,});
+      console.log('getInv Success', res.data)
+      var transformed = {}
+      res.data.map((item)=>{
+        var separated = separateTime(item.event)
+        var date = separated.event_date
+        if( transformed[date]==undefined){
+          transformed[date] = [{...item, 'event': separated}]
+        }else{
+          transformed[date] = [...transformed[date], {...item, 'event': separated}]
+        }
+      })
+      console.log('inv transformed',transformed)
+      dispatch({type: GET_INVITATIONS, payload: transformed,});
     })
     .catch((err) =>{
-      dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(returnErrors(err.response, err.response.status))
       console.log(err)
     });
 };
