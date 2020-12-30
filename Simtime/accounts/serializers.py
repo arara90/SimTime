@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import Account, Relationship, FriendGroup, Relationship_FriendGroup_MAP
+from .models import Account, Relationship, FriendGroup, Relationship_FriendGroup_MAP, Friendship
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -51,12 +51,27 @@ class RelationshipSerializer(serializers.ModelSerializer):
 
 
 class FriendSerializer(serializers.ModelSerializer):
-    friend = UserSerializer()
-    relationshipId = serializers.IntegerField(source='id')
+    # friend = UserSerializer()
+    # relationshipId = serializers.IntegerField(source='id')
+    
+    def to_representation(self, instance):
+        res = {'RGmapId': instance.id}
+        relationship = FriendSerializer(instance.relationship).data
+        res.update(relationship) 
+        return res
 
     class Meta:
         model = Relationship
         fields = ('relationshipId', 'friend', 'subscribe', 'dispatch')
+
+class TempFriendSerializer(serializers.ModelSerializer):
+    # friend = UserSerializer()
+    # relationshipId = serializers.IntegerField(source='id')
+    class Meta:
+        model = Friendship
+        fields = '__all__'
+
+
 
 
 # Group

@@ -5,11 +5,11 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.models import TokenUser
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 
-from django.db.models import Subquery
+from django.db.models import Subquery, Q
 
 from .tokenSerializers import MyTokenObtainPairSerializer, MyTokenVerifySerializer
-from .serializers import AccountSerializer, UserSerializer, RelationshipSerializer, GroupSerializer, FriendSerializer, RGMapSerializer, GroupMemberSerializer
-from .models import Account, Relationship, FriendGroup, Relationship_FriendGroup_MAP
+from .serializers import AccountSerializer, UserSerializer, RelationshipSerializer, GroupSerializer, FriendSerializer, RGMapSerializer, GroupMemberSerializer, TempFriendSerializer
+from .models import Account, Relationship, FriendGroup, Relationship_FriendGroup_MAP, Friendship
 
 
 # tokens
@@ -122,10 +122,40 @@ class RelationshipAPI(APIView):
                 return Response(res_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Relationship
+class RelationshipAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        serializer = RelationshipSerializer(data=request.data)
+        if serializer.is_valid():
+            relationship = serializer.save(account=self.request.user)
+            if relationship:
+                # res = self.request.user.friends.get(
+                #     pk=relationship.id).select_related('friend')fsel
+                res_serializer = FriendSerializer(relationship)
+                return Response(res_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # # def get(self, request):
+    # #     res = self.request.user.friends.select_related('friend')
+    # #     serializer = FriendSerializer(res, many=True)
+    # #     return Response(serializer.data)
     def get(self, request):
+        
+        friends = Friendship.objects.filter(Q(account_A=self.request.user.pk)|Q(account_B=self.request.user.pk))
+        a = friends[0]
+        s_friends = TempFriendSerializer(a)
+        
+        print(friends)
+        print(s_friends.data)
+        print(friends.query)
+
         res = self.request.user.friends.select_related('friend')
-        serializer = FriendSerializer(res, many=True)
+        serializer = RelationshipSerializer(res, many=True)
         return Response(serializer.data)
+
+
 
 
 class RelationshipDetailAPI(APIView):

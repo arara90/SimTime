@@ -34,7 +34,7 @@ class EventAPI(APIView):
         serializer = EventSerializer(data=request.data)
         if(serializer.is_valid()):
             serializer.save(host=self.request.user)
-            print('done', serializer.data)
+            # print('done', serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -52,7 +52,7 @@ class EventDetailAPI(APIView):
 
     def delete(self, request, pk):
         event = self.get_object(pk)
-        serializer = EventSerializer(event)
+        # serializer = EventSerializer(event)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -80,9 +80,9 @@ class InvitationAPI(APIView):
         print("gre", request.data)
         serializer = InvitationSerializer(data=request.data, many=True)
         if(serializer.is_valid()):
-            print('valid')
+            # print('valid')
             serializer.save()
-            print('done', serializer.data)
+            # print('done', serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -93,10 +93,15 @@ class InvitationAPI(APIView):
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        invitations = Invitation.objects\
-            .select_related('relationship').filter(relationship__friend=request.user, relationship__subscribe=True)\
-                .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
+        # invitations = Invitation.objects\
+        #     .select_related('relationship').filter(relationship__friend=request.user, relationship__subscribe=True)\
+        #         .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
 
-        print(str(invitations.query))
+        invitations = Invitation.objects\
+            .select_related('guest').filter(guest=request.user.pk)\
+            .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
+
+
+        # print(str(invitations.query))
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)  

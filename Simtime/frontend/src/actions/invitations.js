@@ -20,11 +20,11 @@ function separateTime(data){
   return res
 }
 
-export const addInvitations = (event, relationshipIds) => async (dispatch) => {
-  var invitations = new Array(relationshipIds.length)
+export const addInvitations = (event, friendIds) => async (dispatch) => {
+  var invitations = new Array(friendIds.length)
 
-  relationshipIds.forEach( (relationshipId, index) => {
-    invitations[index] = {event: event, relationship:relationshipId  }
+  relationshipIds.forEach( (friendId, index) => {
+    invitations[index] = {event: event, friend:friendId  }
   });
 
   console.log("addInvitations action", invitations);
