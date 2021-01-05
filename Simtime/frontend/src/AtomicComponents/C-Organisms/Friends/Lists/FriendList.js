@@ -116,7 +116,7 @@ function FriendList(props) {
             )}
             {renderButton(
               () => {
-                props.deleteFriend(relationship.relationshipId);
+                props.deleteFriend(relationship.friend.id);
               },
               1,
               "삭제",

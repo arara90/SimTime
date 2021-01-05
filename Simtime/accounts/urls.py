@@ -1,6 +1,8 @@
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
-from .views import ObtainTokenPair, TokenVerify, AccountDetailAPI, AccountSearchAPI, AccountCreateAPI, AccountLoadAPI, RelationshipAPI, RelationshipDetailAPI, GroupAPI, GroupDetailAPI, RGMapAPI, GroupMemberAPI
+from .views import ObtainTokenPair, TokenVerify, AccountDetailAPI, \
+AccountSearchAPI, AccountCreateAPI, AccountLoadAPI, RelationshipAPI,\
+RelationshipDetailAPI, GroupAPI, GroupDetailAPI, RGMapAPI, GroupMemberAPI
 
 # data = {'token': token}
 # valid_data = VerifyJSONWebTokenSerializer().validate(data)

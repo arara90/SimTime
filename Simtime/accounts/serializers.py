@@ -49,28 +49,48 @@ class RelationshipSerializer(serializers.ModelSerializer):
         model = Relationship
         fields = '__all__'
 
-
 class FriendSerializer(serializers.ModelSerializer):
     # friend = UserSerializer()
     # relationshipId = serializers.IntegerField(source='id')
     
-    def to_representation(self, instance):
-        res = {'RGmapId': instance.id}
-        relationship = FriendSerializer(instance.relationship).data
-        res.update(relationship) 
-        return res
+    # def to_representation(self, instance):
+    #     res = {'RGmapId': instance.id}
+    #     relationship = FriendSerializer(instance.relationship).data
+    #     res.update(relationship) 
+    #     return res
 
+    
     class Meta:
         model = Relationship
-        fields = ('relationshipId', 'friend', 'subscribe', 'dispatch')
+        fields = ('id', 'friend', 'subscribe', 'dispatch')
 
-class TempFriendSerializer(serializers.ModelSerializer):
-    # friend = UserSerializer()
-    # relationshipId = serializers.IntegerField(source='id')
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'username']
+
+class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
         fields = '__all__'
 
+class TempFriendSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        friend = UserSerializer(Account.objects.get(pk=instance.friend)).data
+        res = { 'id': instance.id
+                , 'status': instance.status
+                , 'subscribe': instance.subscribe
+                , 'dispatch': instance.dispatch
+                , 'block': instance.block
+        }
+        res.update({'friend':friend})
+        return res
+
+    class Meta:
+        model = Friendship
+        fields = ('id', 'friend', 'status','subscribe','dispatch', 'block')
 
 
 
@@ -110,3 +130,15 @@ class GroupMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Relationship_FriendGroup_MAP
         fields = '__all__'
+
+
+
+
+
+        # res.update({'friend': UserSerializer(instance.account_B).data
+    # #     #     # 'account' : serializers.IntegerField(source='account'),
+    # #     #     # 'friend' : UserSerializer(source='friend').data,
+    # #     #     # 'subscribe' : serializers.BooleanField(source='subscribe'),
+    # #     #     # 'dispatch' : serializers.BooleanField(source='dispatch'),
+    # #     #     'block' : serializers.BooleanField(instance.block),
+            # })
