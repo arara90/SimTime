@@ -64,7 +64,7 @@ import CalendarTemplate from "./template/CalendarTemplate"
 import LoadingTemplate from "./template/LoadingTemplate"
 
 //js
-import {getStringDate, generate} from "../actions/calendar"
+import {getStringDate, generate} from "../redux/actions/calendar"
 
 const palette = Colors.Palette;
 

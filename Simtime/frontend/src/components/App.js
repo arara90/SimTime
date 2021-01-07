@@ -11,7 +11,7 @@ import PrivateRoute from "./common/privateRoute";
 //redux
 import { Provider } from "react-redux";
 import store from "../store";
-import { loadUser } from "../actions/auth";
+import { loadUser } from "../redux/actions/auth";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import GlobalStyle from "../AtomicComponents/GlobalStyle";

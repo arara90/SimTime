@@ -11,7 +11,7 @@
 // import UserCard from "../../../molecule/UserCard"
 // import DefaultTable from "../../../molecule/table/DefaultTable"
 
-// import { getMembers } from "../../../../actions/groups";
+// import { getMembers } from "../../../../redux/actions/groups";
 
 // const MyModal = styled(DefaultModal)``
 
@@ -200,7 +200,7 @@ import CaretIcon from "../../../atom/icons/CaretIcon"
 import UserCard from "../../../molecule/UserCard"
 import DefaultTable from "../../../molecule/table/DefaultTable"
 
-import { getMembers } from "../../../../actions/groups";
+import { getMembers } from "../../../../redux/actions/groups";
 
 const MyModal = styled(DefaultModal)``
 

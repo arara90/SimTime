@@ -32,8 +32,8 @@ export const deleteFriend = (id) => (dispatch) => {
   return axiosInstance
     .delete(`/api/friend/${id}`)
     .then((res) => {
-      dispatch(createMessage({ deleteFriend: "Friend Deleted" }));
       dispatch({ type: DELETE_FRIEND, payload: id });
+      dispatch(createMessage({ deleteFriend: "Friend Deleted" }));
     })
     .catch((err) => {
       dispatch(returnErrors(err.response, err.response.status));

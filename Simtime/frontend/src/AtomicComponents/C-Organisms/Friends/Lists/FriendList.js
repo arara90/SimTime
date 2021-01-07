@@ -8,8 +8,8 @@ import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
 import ButtonWithImage from "../../../B-Molecules/Button/ButtonWithImage";
 
-// import { deleteFriend } from "../../../../actions/friends";
-import { deleteFriend, editFriend } from "../../../../actions/friends";
+// import { deleteFriend } from "../../../../redux/actions/friends";
+import { deleteFriend, editFriend } from "../../../../redux/actions/friends";
 
 const buttonMargin = 10;
 const buttonsWidth = 160 + 8; //"삭제"-26px, "수신차단" or 차단-52 , bittonMargin * 버튼수 => 26 +104 + 30
@@ -83,40 +83,41 @@ function FriendList(props) {
     []
   );
 
-  const renderRows = (relationships = []) => {
-    return relationships.map((relationship, index) => {
+  const renderRows = (friendships = []) => {
+    console.log(friendships)
+    return friendships.map((friendship, index) => {
       return (
-        <TableRow rowNum={index} key={relationship.friend.username}>
+        <TableRow rowNum={index} key={friendship.friend.username}>
           <UserCard
-            username={relationship.friend.username}
+            username={friendship.friend.username}
             imageSize="32px"
-            url={relationship.friend.profile_image}
+            url={friendship.friend.profile_image}
           ></UserCard>
           <Buttons>
             {renderButton(
               () => {
                 props.editFriend({
-                  id: relationship.relationshipId,
-                  subscribe: !relationship.subscribe,
+                  id: friendship.id,
+                  subscribe: !friendship.subscribe,
                 });
               },
-              relationship.subscribe,
+              friendship.subscribe,
               "수신차단"
             )}
             {renderButton(
               () => {
                 props.editFriend({
-                  id: relationship.relationshipId,
-                  dispatch: !relationship.dispatch,
+                  id: friendship.id,
+                  dispatch: !friendship.dispatch,
                 });
               },
-              relationship.dispatch,
+              friendship.dispatch,
 
               "발신차단"
             )}
             {renderButton(
               () => {
-                props.deleteFriend(relationship.friend.id);
+                props.deleteFriend(friendship.id);
               },
               1,
               "삭제",
@@ -128,7 +129,7 @@ function FriendList(props) {
     });
   };
 
-  return <Fragment>{renderRows(props.relationships)}</Fragment>;
+  return <Fragment>{renderRows(props.friendships)}</Fragment>;
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -143,11 +144,11 @@ export default connect(null, mapDispatchToProps)(FriendList);
 FriendList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
-  relationships: PropTypes.array
+  friendships: PropTypes.array
 };
 
 FriendList.defaultProps = {
   title: "Table Title",
   headers: null,
-  relationships: []
+  friendships: []
 };

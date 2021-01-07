@@ -2,7 +2,7 @@
 import React, { useState, useCallback, Fragment, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { searchPlaces } from "../../../../actions/mapApi";
+import { searchPlaces } from "../../../../redux/actions/mapApi";
 import SearchBar from "../../../B-Molecules/Form/SearchBar";
 import Map from "../../../A-Atomics/Map/Map";
 import ContextStore from "../../../../contexts/contextStore";

@@ -15,7 +15,7 @@ import SearchLocation from "../../C-Organisms/Event/Create/SearchLocation";
 
 import DashedButton from "../../A-Atomics/Button/DashedButton";
 import { getStrFullDate } from "../Calendar/Generator";
-import { addEvent, getEvent, editEvent } from "../../../actions/events";
+import { addEvent, getEvent, editEvent } from "../../../redux/actions/events";
 
 const ContentWrap = styled.form``
 

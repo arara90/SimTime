@@ -7,8 +7,8 @@ import Table from "../../../B-Molecules/Table/Table";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
-import { deleteMember } from "../../../../actions/groups";
-import { addToGroup } from "../../../../actions/friends"
+import { deleteMember } from "../../../../redux/actions/groups";
+import { addToGroup } from "../../../../redux/actions/friends"
 
 const buttonMargin = 10;
 const buttonsWidth = 160 + 8; //"삭제"-26px, "수신차단" or 차단-52 , bittonMargin * 버튼수 => 26 +104 + 30

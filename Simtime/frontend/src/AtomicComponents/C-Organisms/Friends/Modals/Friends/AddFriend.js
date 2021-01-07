@@ -5,14 +5,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 //Components
-import { MAIN_COLOR } from "../../../../Colors";
 import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
 import ResultTable from "../../../../C-Organisms/Friends/ResultTable";
 
 //redux-actions
-import { addfriend, addToGroup } from "../../../../../actions/friends";
-import { searchUsers } from "../../../../../actions/account";
+import { addfriend, addToGroup } from "../../../../../redux/actions/friends";
+import { searchUsers } from "../../../../../redux/actions/account";
 
 const SearchWrap = styled.div`
   width: 100%;
@@ -35,18 +34,18 @@ function AddFriend(props) {
   const handleSubmit = async () => {
     try {
       //친구 등록
-      var relationship = await props.addfriend( {account: props.user.id, friend: friend[0],});
-      console.log(relationship)
+      var friendship = await props.addfriend( {account: props.user.id, friend: friend[0],});
+      console.log(friendship)
       if(groups.length){
         var groupData = groups.map((group) => {
-          return { relationship: relationship.data.relationshipId, group: group };
+          return { friendship: friendship.data.friendshipId, group: group };
         });
         await props.addToGroup(groupData);
       }
 
       props.closeModal();
     } catch (err) {
-      console.log("relationshipError", err);
+      console.log("friendshipError", err);
     }
   };
 

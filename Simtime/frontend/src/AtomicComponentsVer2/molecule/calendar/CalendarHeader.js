@@ -6,7 +6,7 @@ import * as Colors from "../../Colors";
 import AngleIcon from "../../atom/icons/AngleIcon"
 import IconButton from "../../atom/buttons/IconButton"
 
-import {getStrFullDate} from "../../../actions/calendar"
+import {getStrFullDate} from "../../../redux/actions/calendar"
 
 const Wrap = styled.div`
     display: flex;

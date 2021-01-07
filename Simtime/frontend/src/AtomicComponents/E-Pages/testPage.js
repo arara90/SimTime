@@ -7,8 +7,8 @@ import ModalContextPortal, {
   ModalPortalBasic,
 } from "../A-Atomics/Modal/ModalPortal";
 //redux-actions
-import { getMembers, getGroups } from "../../actions/groups";
-// import { getHosts } from "../../actions/invitations"
+import { getMembers, getGroups } from "../../redux/actions/groups";
+// import { getHosts } from "../../redux/actions/invitations"
 import TestModal from "./TestModal"
 import Test from "./Test"
 const Wrap = styled.div`
@@ -91,8 +91,8 @@ export default connect(mapStateToProps, { getMemebers, getGroups })(TestPage);
 // //context
 // import { ModalContext } from "../../contexts/modalContext";
 // //redux-actions
-// import { getMemebers, getGroups } from "../../actions/groups";
-// // import { getHosts } from "../../actions/invitations"
+// import { getMemebers, getGroups } from "../../redux/actions/groups";
+// // import { getHosts } from "../../redux/actions/invitations"
 // import TestModal from "./TestModal"
 // import { ModalPortalBasic } from "../A-Atomics/Modal/ModalPortal"
 // import  Modal  from "../A-Atomics/Modal/Modal"

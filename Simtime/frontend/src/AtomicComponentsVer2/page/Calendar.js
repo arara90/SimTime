@@ -19,11 +19,11 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
-import {generate, getStrFullDate, addDate} from "../../actions/calendar"
-import {getEvents, editEvent, addEvent} from "../../actions/events"
-import {getInvitations, addInvitations} from "../../actions/invitations"
-import {getGroups} from "../../actions/groups"
-import {getFriends} from "../../actions/friends"
+import {generate, getStrFullDate, addDate} from "../../redux/actions/calendar"
+import {getEvents, editEvent, addEvent} from "../../redux/actions/events"
+import {getInvitations, addInvitations} from "../../redux/actions/invitations"
+import {getGroups} from "../../redux/actions/groups"
+import {getFriends} from "../../redux/actions/friends"
 
 const NewButton = styled(TextButton)`
   width: 100%;

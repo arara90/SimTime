@@ -3,8 +3,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { deleteEvent } from "../../../../actions/events"
-// import {deleteInvitation} from "../../../../actions/invitations"
+import { deleteEvent } from "../../../../redux/actions/events"
+// import {deleteInvitation} from "../../../../redux/actions/invitations"
 
 import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
 import EventDetailContent from "../../../molecule/event/EventDetailContent"

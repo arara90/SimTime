@@ -8,7 +8,7 @@ import { ModalContext } from "../../../../contexts/modalContext";
 //redux
 import { connect } from "react-redux";
 //components
-import { deleteGroup, getGroup, getMembers } from "../../../../actions/groups";
+import { deleteGroup, getGroup, getMembers } from "../../../../redux/actions/groups";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";

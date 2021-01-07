@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import "babel-polyfill";
 import { connect } from "react-redux";
 import { MAIN_COLOR } from "../../../../Colors";
-import { editGroup } from "../../../../../actions/groups";
+import { editGroup } from "../../../../../redux/actions/groups";
 
 import InputWrap from "../../../../A-Atomics/Form/InputWrap";
 import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal";

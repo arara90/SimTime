@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import * as Colors from "../../Colors";
-import {getStringDate} from "../../../actions/calendar"
+import {getStringDate} from "../../../redux/actions/calendar"
 import CalendarHeader from "../../molecule/calendar/CalendarHeader"
 
 

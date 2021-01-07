@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { deleteMembers } from "../../../../../actions/groups";
+import { deleteMembers } from "../../../../../redux/actions/groups";
 
 import { MAIN_COLOR } from "../../../../Colors";
 import BasicModal from "../../../../../AtomicComponentsVer2/molecule/modal/BasicModal";

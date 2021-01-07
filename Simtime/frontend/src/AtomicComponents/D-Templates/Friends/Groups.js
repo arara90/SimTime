@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 //context
 import { ModalContext } from "../../../contexts/modalContext";
-// import { getHosts } from "../../actions/invitations"
+// import { getHosts } from "../../redux/actions/invitations"
 
 //components
 import { ST_WHITE, ST_GRAY } from "../../Colors";

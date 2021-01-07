@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
 //redux-actions
-import { getGroups } from "../../actions/groups";
-import { getFriends, deleteFriend } from "../../actions/friends";
-// import { getHosts } from "../../actions/invitations"
+import { getGroups } from "../../redux/actions/groups";
+import { getFriends, deleteFriend } from "../../redux/actions/friends";
+// import { getHosts } from "../../redux/actions/invitations"
 
 //components
 import { ST_WHITE, ST_GRAY } from "../Colors";
@@ -46,7 +46,7 @@ const ContentWrap = styled.div`
 `;
 
 function FriendsPage(props) {
-  const { groups, selectedGroup,selectedGroupMembers, relationships } = props;
+  const { groups, selectedGroup,selectedGroupMembers, friendships } = props;
 
   useEffect(() => {
     async function getDatas() {
@@ -67,13 +67,13 @@ function FriendsPage(props) {
         </SectionTitle>
         <ContentWrap>
           <Friends
-            relationships={relationships}
+            friendships={friendships}
             rowNum={6}
             rowHeight="45px"
             width="48%"
           />
           <Friends
-            relationships={relationships}
+            friendships={friendships}
             rowNum={6}
             rowHeight="45px"
             width="48%"
@@ -89,7 +89,7 @@ function FriendsPage(props) {
           <Groups
             groups={groups}
             selectedGroup={selectedGroup}
-            relationships={relationships}
+            friendships={friendships}
             selectedGroupMembers = {selectedGroupMembers}
             rowNum={5}
             rowHeight="45px"
@@ -106,7 +106,7 @@ const mapStateToProps = (state) => ({
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
   selectedGroupMembers : state.groups.selectedGroup.members,
-  relationships: state.friends.relationships,
+  friendships: state.friends.friendships,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -13,7 +13,7 @@ import StatusButton from "../../atom/buttons/StatusButton"
 import ImageUser from "../../../AtomicComponents/A-Atomics/ImageUser"
 import Tag from "../../atom/fonts/Tag"
 
-import {getStringDate} from "../../../actions/calendar"
+import {getStringDate} from "../../../redux/actions/calendar"
 
 
 const EventList = styled.li`

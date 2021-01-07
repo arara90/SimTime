@@ -1,22 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import { connect } from "react-redux";
 
 //context
 import { ModalContext } from "../../../contexts/modalContext";
 
 //components
-import { ST_WHITE, ST_GRAY } from "../../Colors";
-import Header from "../../A-Atomics/Font/Header";
 import Table from "../../B-Molecules/Table/Table";
-import Search from "../../B-Molecules/Filter/Search";
 import FriendList from "../../C-Organisms/Friends/Lists/FriendList";
 import AddFriend from "../../C-Organisms/Friends/Modals/Friends/AddFriend";
 
 function Friends(props) {
   const { handleContextModal, closeContextModal } = useContext(ModalContext);
-  const datas = [];
   return (
     <Table
       title="My Friends"
@@ -33,7 +27,7 @@ function Friends(props) {
           "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
       }}
     >
-      <FriendList relationships={props.relationships} />
+      <FriendList friendships={props.friendships} />
     </Table>
   );
 }

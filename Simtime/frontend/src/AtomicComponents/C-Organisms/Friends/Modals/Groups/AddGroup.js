@@ -10,8 +10,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { MAIN_COLOR, ST_GREEN, ST_RED } from "../../../../Colors";
-import { createGroup } from "../../../../../actions/groups";
-import { addToGroup } from "../../../../../actions/friends";
+import { createGroup } from "../../../../../redux/actions/groups";
+import { addToGroup } from "../../../../../redux/actions/friends";
 
 import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
 

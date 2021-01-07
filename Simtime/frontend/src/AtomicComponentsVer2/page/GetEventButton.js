@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { getEvents } from "../../actions/events"
-// import {} from "../../actions/calendar/"
+import { getEvents } from "../../redux/actions/events"
+// import {} from "../../redux/actions/calendar/"
 
 
 const Wrap = styled.button`
