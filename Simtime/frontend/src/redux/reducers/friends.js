@@ -34,11 +34,10 @@ import {
           friendships: state.friendships.filter(friendship => friendship.id != action.payload)
         }
       case EDIT_FRIEND:
-        console.log(state.friendships)
         return {
           ...state,
           friendships: state.friendships.map(friendship =>
-            friendship.friendshipId == action.payload.friendshipId ? action.payload : friendship
+            friendship.id == action.payload.id ? action.payload : friendship
           )
         };
       default:

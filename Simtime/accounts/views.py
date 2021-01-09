@@ -121,23 +121,8 @@ class TokenVerify(TokenVerifyView):
         print(serializer.data)
         return Response(serializer.data)
 
-# # Relationship
-# class RelationshipAPI(APIView):
-#     permission_classes = (permissions.IsAuthenticated,)
 
-#     def post(self, request):
-#         serializer = RelationshipSerializer(data=request.data)
-#         if serializer.is_valid():
-#             relationship = serializer.save(account=self.request.user)
-#             if relationship:
-#                 # res = self.request.user.friends.get(
-#                 #     pk=relationship.id).select_related('friend')
-#                 res_serializer = FriendSerializer(relationship)
-#                 return Response(res_serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# Relationship
-class RelationshipAPI(APIView):
+class FriendshipAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
@@ -146,39 +131,34 @@ class RelationshipAPI(APIView):
         except Friendship.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+    def get_object_to_representation(self, pk, account, friend):
+        try:
+            res = Friendship.objects.filter(pk=pk)\
+                .annotate(friend=F(f'account_{friend}'), subscribe=F(f'{account}_subscribe_{friend}'), dispatch=F(f'{account}_dispatch_{friend}'), block=F(f'{account}_block_{friend}'))            
+            return res[0]
+        except Friendship.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
     def get_ab(self, request):
+        # 더 작은 id가 account_A
         user = request.user.id
         friend = request.data['friend']
-        return (user, friend) if user < friend else (user, friend) #(a,b)
+        return (user, friend) if user < friend else (friend, user) #(a,b)
+    
 
     def post(self, request):
         a,b = self.get_ab(request)
-        friendship = Friendship.objects.filter(account_A=a, account_B=b)
+        print(a,b)
+        account = 'A' if request.user.id==a else 'B'
+        friend = 'B' if request.user.id==a else 'A'
 
-        if(friendship):
-            #이미 존재한다면
-            data = FriendSerializer(friendship)
-            print('friendship',data)
+        if(Friendship.objects.filter(account_A=a, account_B=b).exists()):
+            #이미 존재한다면 status UPDATE
+            print('exists')
+            friendship = Friendship.objects.get(account_A=a, account_B=b)
             if(friendship.status == 1 or friendship.status == 2):
-                print('friendship.update')
-                friendship.update(status=0)
+                friendship.status = 0
                 friendship.save()
-                print('save')
-
-                query_A = request.user.friendship_A\
-                    .annotate( friend=F('account_B'), subscribe=F('A_subscribe_to_B'), dispatch=F('A_dispatch_to_B'), block=F('A_block_B'))\
-
-                query_B = request.user.friendship_B\
-                    .annotate( friend=F('account_A'), subscribe=F('B_subscribe_to_A'), dispatch=F('B_dispatch_to_A'), block=F('B_block_A'))\
-                
-                print('query')
-                try:
-                    print('try')
-                    res_serializer = FriendSerializer(query_A if request.user.id==a else query_B)
-                    return Response(res_serializer.data, status=status.HTTP_201_CREATED)
-                except:
-                    return Response(res_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
             #errors
             elif(friendship.status == 0):
                 print('already mutual')
@@ -187,46 +167,79 @@ class RelationshipAPI(APIView):
                 print('incorrect status')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    
-        # else:
-        #     data['status'] = 1 if request.user.id==a else 2 # 1=A_ONLY / 2=B_ONLY
-        #     serializer = TempFriendSerializer(data=data)
-        
-        # if serializer.is_valid():
-        #     res = serializer.save()
-        #     if res:
-        #         res_serializer = FriendSerializer(friendship)
-        #         return Response(data, status=status.HTTP_201_CREATED)
-        #     else:
-        #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            #없다면 Create
+            print('no')
+            data = {'account_A': a, 'account_B':b}
+            data['status'] = 1 if request.user.id==a else 2 # 1=A_ONLY / 2=B_ONLY
+            print(data)
+            serializer = FriendshipSerializer(data=data)
+            print(serializer)
+            if serializer.is_valid():
+                friendship = serializer.save()
+
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            res = self.get_object_to_representation(friendship.id, account, friend)
+            res_serializer = TempFriendSerializer(res)
+            return Response(res_serializer.data, status=status.HTTP_201_CREATED)
+
+        except Friendship.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
     def get(self, request):
         # # account_A가 request.user인 경우 B가 친구
         query_A = request.user.friendship_A\
-            .annotate( friend=F('account_B'), subscribe=F('A_subscribe_to_B'), dispatch=F('A_dispatch_to_B'), block=F('A_block_B'))\
+            .annotate( friend=F('account_B'), subscribe=F('A_subscribe_B'), dispatch=F('A_dispatch_B'), block=F('A_block_B'))\
             .filter(Q(status__lt=2))
 
         # # account_B가 request.user인 경우 A가 친구
         query_B = request.user.friendship_B\
-            .annotate( friend=F('account_A'), subscribe=F('B_subscribe_to_A'), dispatch=F('B_dispatch_to_A'), block=F('B_block_A'))\
+            .annotate( friend=F('account_A'), subscribe=F('B_subscribe_A'), dispatch=F('B_dispatch_A'), block=F('B_block_A'))\
             .filter(Q(Q(status=0) | Q(status=2)) )
         
         query = query_A.union(query_B, all=True) # all=True => union all : 중복허용
         serializer = TempFriendSerializer(query, many=True)
-    
         return Response(serializer.data)
 
+    
+        
 class FriendshipDetailAPI(APIView):
     def get_object(self, pk):
         try:
             return Friendship.objects.get(pk=pk)
         except Friendship.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get_object_to_representation(self, pk, account, friend):
+        try:
+            res = Friendship.objects.filter(pk=pk)\
+                .annotate(friend=F(f'account_{friend}'), subscribe=F(f'{account}_subscribe_{friend}'), dispatch=F(f'{account}_dispatch_{friend}'), block=F(f'{account}_block_{friend}'))            
+            return res[0]
+        except Friendship.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, pk):
+        friendship = self.get_object(pk)
+        account = 'A' if request.user.id==friendship.account_A.id else 'B'
+        friend = 'B' if request.user.id==friendship.account_A.id else 'A'
+        k, v=request.data['key'], request.data['value']
         
-    #delete
+        data = {f'{account}_{k}_{friend}' : v}
+        serializer = FriendshipSerializer(friendship, data=data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            res = self.get_object_to_representation(pk, account, friend)
+            
+            print('res', res)
+            res_serializer = TempFriendSerializer(res)
+            return Response(res_serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def delete(self, request, pk):
         friendship = self.get_object(pk)
         user = 'a' if friendship.account_A == self.request.user else 'b'
@@ -267,30 +280,6 @@ class FriendshipDetailAPI(APIView):
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-class RelationshipDetailAPI(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_object(self, pk):
-        try:
-            return Relationship.objects.get(pk=pk)
-        except Relationship.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-    def put(self, request, pk):
-        relationship = self.get_object(pk)
-        serializer = FriendSerializer(relationship, data=request.data, partial=True)
-        # {"dispatch": false}
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        relationship = self.get_object(pk)
-        relationship.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
 
 class GroupAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -392,3 +381,45 @@ class GroupMemberAPI(APIView):
         mapObj = self.get_object(pk)
         mapObj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+# # Relationship
+# class RelationshipAPI(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def post(self, request):
+#         serializer = RelationshipSerializer(data=request.data)
+#         if serializer.is_valid():
+#             relationship = serializer.save(account=self.request.user)
+#             if relationship:
+#                 # res = self.request.user.friends.get(
+#                 #     pk=relationship.id).select_related('friend')
+#                 res_serializer = FriendSerializer(relationship)
+#                 return Response(res_serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class RelationshipDetailAPI(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get_object(self, pk):
+#         try:
+#             return Relationship.objects.get(pk=pk)
+#         except Relationship.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     def put(self, request, pk):
+#         relationship = self.get_object(pk)
+#         serializer = FriendSerializer(relationship, data=request.data, partial=True)
+#         # {"dispatch": false}
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def delete(self, request, pk):
+#         relationship = self.get_object(pk)
+#         relationship.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+    

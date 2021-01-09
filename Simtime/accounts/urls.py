@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 from .views import ObtainTokenPair, TokenVerify\
      , AccountDetailAPI, AccountSearchAPI, AccountCreateAPI, AccountLoadAPI\
-     ,RelationshipAPI,FriendshipDetailAPI, RelationshipDetailAPI, GroupAPI, GroupDetailAPI, RGMapAPI, GroupMemberAPI
+     ,FriendshipAPI, FriendshipDetailAPI, GroupAPI, GroupDetailAPI, RGMapAPI, GroupMemberAPI
 
 # data = {'token': token}
 # valid_data = VerifyJSONWebTokenSerializer().validate(data)
@@ -31,10 +31,10 @@ urlpatterns = [
     # path('api/auth/<int:pk>/', AccountDetailAPI.as_view(), name="account_detail"),
 
     # friend(=relationship)
-    path('api/friend/create/', RelationshipAPI.as_view(), name='friend_create'),
-    path('api/friend/add-to-group/', RGMapAPI.as_view(), name='group_add_to'),
-    path('api/friends/', RelationshipAPI.as_view(), name='friends'),
+    path('api/friend/create/', FriendshipAPI.as_view(), name='friend_create'),
+    path('api/friends/', FriendshipAPI.as_view(), name='friends'),
     path('api/friend/<int:pk>', FriendshipDetailAPI.as_view(), name="friend_detail"),
+    path('api/friend/add-to-group/', RGMapAPI.as_view(), name='group_add_to'),
 
     # groups
     path('api/groups/', GroupAPI.as_view(), name='groups'),

@@ -98,7 +98,8 @@ function FriendList(props) {
               () => {
                 props.editFriend({
                   id: friendship.id,
-                  subscribe: !friendship.subscribe,
+                  key: 'subscribe',
+                  value: !friendship.subscribe,
                 });
               },
               friendship.subscribe,
@@ -108,7 +109,8 @@ function FriendList(props) {
               () => {
                 props.editFriend({
                   id: friendship.id,
-                  dispatch: !friendship.dispatch,
+                  key: 'dispatch',
+                  value: !friendship.dispatch,
                 });
               },
               friendship.dispatch,

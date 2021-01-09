@@ -119,13 +119,13 @@ class Friendship(models.Model):
     status = models.IntegerField(default=999, null=False)
 
     # A-side(수신/발신/Block)
-    A_subscribe_to_B = models.BooleanField(null=True, default=True)   # A는 B의 초대장을 수신 or not.
-    A_dispatch_to_B = models.BooleanField(null=True, default=True)    # A가 B에게 초대장을 발신 or not. (false면 보내지않음)
+    A_subscribe_B = models.BooleanField(null=True, default=True)   # A는 B의 초대장을 수신 or not.
+    A_dispatch_B = models.BooleanField(null=True, default=True)    # A가 B에게 초대장을 발신 or not. (false면 보내지않음)
     A_block_B = models.BooleanField(null=True, default=False)         # A가 B를 Block or not.
    
     # B-side(수신/발신/Block)
-    B_subscribe_to_A = models.BooleanField(null=True, default=True)   # B는 A를 수신 or not.
-    B_dispatch_to_A = models.BooleanField(null=True, default=True)    # B가 A에게 발신 or not (false면 보내지않음)
+    B_subscribe_A = models.BooleanField(null=True, default=True)   # B는 A를 수신 or not.
+    B_dispatch_A = models.BooleanField(null=True, default=True)    # B가 A에게 발신 or not (false면 보내지않음)
     B_block_A = models.BooleanField(null=True, default=False)         # B가 A를 Block or not
     
     created_at = models.DateTimeField(auto_now_add=True)

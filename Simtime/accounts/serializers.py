@@ -86,6 +86,7 @@ class TempFriendSerializer(serializers.ModelSerializer):
                 , 'block': instance.block
         }
         res.update({'friend':friend})
+
         return res
 
     class Meta:
