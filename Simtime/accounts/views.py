@@ -8,8 +8,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 from django.db.models import OuterRef, Subquery, Q, F, Case, When, Value, IntegerField
 
 from .tokenSerializers import MyTokenObtainPairSerializer, MyTokenVerifySerializer
-from .serializers import AccountSerializer, UserSerializer, RelationshipSerializer, GroupSerializer, FriendSerializer, RGMapSerializer, GroupMemberSerializer, TempFriendSerializer, FriendshipSerializer
-from .models import Account, Relationship, FriendGroup, Relationship_FriendGroup_MAP, Friendship
+from .serializers import AccountSerializer, UserSerializer\
+    , FriendshipSerializer, ResFriendSerializer\
+    , GroupSerializer, FriendGroupMapSerializer, GroupMemberSerializer
+    # , FriendSerializer, RGMapSerializer
+
+from .models import Account, Friendship, FriendGroup, FriendshipGroupMap
 
 
 # tokens
@@ -183,7 +187,7 @@ class FriendshipAPI(APIView):
 
         try:
             res = self.get_object_to_representation(friendship.id, account, friend)
-            res_serializer = TempFriendSerializer(res)
+            res_serializer = ResFriendSerializer(res)
             return Response(res_serializer.data, status=status.HTTP_201_CREATED)
 
         except Friendship.DoesNotExist:
@@ -202,7 +206,7 @@ class FriendshipAPI(APIView):
             .filter(Q(Q(status=0) | Q(status=2)) )
         
         query = query_A.union(query_B, all=True) # all=True => union all : 중복허용
-        serializer = TempFriendSerializer(query, many=True)
+        serializer = ResFriendSerializer(query, many=True)
         return Response(serializer.data)
 
     
@@ -236,7 +240,7 @@ class FriendshipDetailAPI(APIView):
             res = self.get_object_to_representation(pk, account, friend)
             
             print('res', res)
-            res_serializer = TempFriendSerializer(res)
+            res_serializer = ResFriendSerializer(res)
             return Response(res_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -301,7 +305,6 @@ class GroupAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         
-
     def get(self, request):
         groups = self.request.user.FriendGroups.all()
         serializer = GroupSerializer(groups, many=True)
@@ -338,23 +341,25 @@ class GroupDetailAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Relationship-Group
-class RGMapAPI(APIView):
+# Friendship-Group
+class FGMapAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     # add-to-group
     def post(self, request):
-        serializer = RGMapSerializer(data=request.data,  many=True)
+        print(request.data)
+        serializer = FriendGroupMapSerializer(data=request.data,  many=True)
+        # data = {{friend: 3, group: 34}}
         if(serializer.is_valid()):
+            print('is_valid')
             res = serializer.save()
-            print(res)
-            output = RGMapSerializer(res, many=True)
+            output = FriendGroupMapSerializer(res, many=True)
             return Response(output.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, ids):
         #ids = "1 2 3"
-        Relationship_FriendGroup_MAP.filter()
+        FriendshipGroupMap.filter()
         group.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -364,12 +369,12 @@ class GroupMemberAPI(APIView):
 
     def get_object(self, pk):
         try:
-            return Relationship_FriendGroup_MAP.objects.get(pk=pk)
-        except Relationship_FriendGroup_MAP.DoesNotExist:
+            return FriendshipGroupMap.objects.get(pk=pk)
+        except FriendshipGroupMap.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk):
-        mapObjects = Relationship_FriendGroup_MAP.objects.filter(group=pk)
+        mapObjects = FriendshipGroupMap.objects.filter(group=pk)
         if mapObjects:
             serializer = GroupMemberSerializer(mapObjects, many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -383,6 +388,52 @@ class GroupMemberAPI(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# # Relationship-Group
+# class RGMapAPI(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     # add-to-group
+#     def post(self, request):
+#         print(request.data)
+#         serializer = RGMapSerializer(data=request.data,  many=True)
+#         if(serializer.is_valid()):
+#             res = serializer.save()
+#             print(res)
+#             output = RGMapSerializer(res, many=True)
+#             return Response(output.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def delete(self, request, ids):
+#         #ids = "1 2 3"
+#         Relationship_FriendGroup_MAP.filter()
+#         group.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# class GroupMemberAPI(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get_object(self, pk):
+#         try:
+#             return Relationship_FriendGroup_MAP.objects.get(pk=pk)
+#         except Relationship_FriendGroup_MAP.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+
+#     def get(self, request, pk):
+#         mapObjects = Relationship_FriendGroup_MAP.objects.filter(group=pk)
+#         if mapObjects:
+#             serializer = GroupMemberSerializer(mapObjects, many=True)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             print("nodata")
+#         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+#     def delete(self, request, pk):
+#         mapObj = self.get_object(pk)
+#         mapObj.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 # # Relationship
@@ -390,7 +441,7 @@ class GroupMemberAPI(APIView):
 #     permission_classes = (permissions.IsAuthenticated,)
 
 #     def post(self, request):
-#         serializer = RelationshipSerializer(data=request.data)
+#         serializer = friendshipserializer(data=request.data)
 #         if serializer.is_valid():
 #             relationship = serializer.save(account=self.request.user)
 #             if relationship:

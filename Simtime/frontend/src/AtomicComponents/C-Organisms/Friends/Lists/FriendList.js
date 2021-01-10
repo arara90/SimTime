@@ -84,7 +84,6 @@ function FriendList(props) {
   );
 
   const renderRows = (friendships = []) => {
-    console.log(friendships)
     return friendships.map((friendship, index) => {
       return (
         <TableRow rowNum={index} key={friendship.friend.username}>

@@ -17,18 +17,18 @@ const Wrap = styled.div`
 
 const Bt = styled.button``;
 
-const Content = React.memo((selectedGroup, relationships, closeModal) => {
+const Content = React.memo((selectedGroup, friendships, closeModal) => {
   return (
     <TestModal
       selectedGroup={selectedGroup}
-      relationships={relationships}
+      friendships={friendships}
       onClose={closeModal}
     />
   );
 });
 
 function TestPage(props) {
-  const { groups, relationships } = props;
+  const { groups, friendships } = props;
   const { modal, setModal, closeModal, handleModal } = useContext(ModalContext);
   const ref = React.useRef();
   React.useEffect(() => {
@@ -67,7 +67,7 @@ console.log(data)
           children={
             <TestModal
               selectedGroup={groups.selectedGroup}
-              relationships={props.relationships}
+              friendships={props.friendships}
               onClose={closeModal}
             />
           }
@@ -80,7 +80,7 @@ console.log(data)
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   groups: state.groups,
-  relationships: state.friends,
+  friendships: state.friends,
 });
 
 export default connect(mapStateToProps, { getMemebers, getGroups })(TestPage);
@@ -105,7 +105,7 @@ export default connect(mapStateToProps, { getMemebers, getGroups })(TestPage);
 // `;
 
 // function TestPage(props) {
-//   const {groups, relationships} = props;
+//   const {groups, friendships} = props;
 //   // const {modal, handleModal, closeModal, openModal } = useContext(ModalContext);
 //   // const [myModal, setMyModal] = useState(0);
 
@@ -161,7 +161,7 @@ export default connect(mapStateToProps, { getMemebers, getGroups })(TestPage);
 // const mapStateToProps = (state) => ({
 //   user: state.auth.user,
 //   groups: state.groups,
-//   relationships: state.friends,
+//   friendships: state.friends,
 // });
 
 // // const mapDispatchToProps = (dispatch) => {

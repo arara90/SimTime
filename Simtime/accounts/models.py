@@ -32,7 +32,6 @@ class Gender(models.TextChoices):
     Unknwon = "unknwon"
 
 
-
 # Create your models here.
 class Account(AbstractUser):
     gender = models.CharField(max_length=7, choices=Gender.choices, default=Gender.Unknwon)
@@ -51,55 +50,6 @@ class Account(AbstractUser):
     )  		# 저장 옵션
 
 
-class FriendGroup(models.Model):
-    account = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='FriendGroups')
-    groupname = models.CharField(max_length=16, null=False, blank=False)
-    is_default = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    profile_image = models.ImageField(
-        upload_to=user_group_path, default='group-basic.png')
-    thumbnail_image = ImageSpecField(  # CACHE에 저장된다. (object_create시가 아니라 필요할 때)
-        source='profile_image',
-        processors=[Thumbnail(100, 100)],  # 처리할 작업 목룍
-        format='JPEG',					# 최종 저장 포맷
-        options={'quality': 60}
-    )  		# 저장 옵션
-
-    class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['account', 'groupname'], name='group_name_unique')]
-
-
-class Relationship(models.Model):
-    account = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friends')
-    friend = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendOf')
-    # friends can block the user. (=수신동의)
-    subscribe = models.BooleanField(null=False, default=True)   # 수신여부
-    dispatch = models.BooleanField(
-        null=False, default=True)    # 발신여부 (false면 보내지않음)
-    is_friend = models.BooleanField(null=False, default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    # Status = 0;본인 1;request 2.confirm 3; A blocks B 4;B blocks A 5; block each others.
-
-
-# 한 명의 친구는 여러 그룹을 가질 수 있음
-class Relationship_FriendGroup_MAP(models.Model):  # Which Group
-    group = models.ForeignKey(
-        FriendGroup, on_delete=models.CASCADE, related_name='relationships')
-    relationship = models.ForeignKey(
-        Relationship, on_delete=models.CASCADE, related_name='groups')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['group', 'relationship'], name='gr_compositeKey')]
-
-
-
-# # #########
 # class FriendshipStatus(models.IntegerChoices):
 #     # Status = 0;본인 1;request 2.confirm 3; A blocks B 4;B blocks A 5; block each others.
 #     MUTUAL     =  0, _('MUTUAL')
@@ -112,7 +62,6 @@ class Relationship_FriendGroup_MAP(models.Model):  # Which Group
     
         
 class Friendship(models.Model):
-
     #account_A가 account_B보다 항상 작은 ID를 갖는다.
     account_A = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendship_A')
     account_B = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendship_B')
@@ -135,3 +84,58 @@ class Friendship(models.Model):
             fields=['account_A', 'account_B'], name='friendship_compositeKey')]
 
 
+class FriendGroup(models.Model):
+    account = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='FriendGroups')
+    groupname = models.CharField(max_length=16, null=False, blank=False)
+    is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    profile_image = models.ImageField(
+        upload_to=user_group_path, default='group-basic.png')
+    thumbnail_image = ImageSpecField(  # CACHE에 저장된다. (object_create시가 아니라 필요할 때)
+        source='profile_image',
+        processors=[Thumbnail(100, 100)],  # 처리할 작업 목룍
+        format='JPEG',					# 최종 저장 포맷
+        options={'quality': 60}
+    )  		# 저장 옵션
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['account', 'groupname'], name='group_name_unique')]
+            
+# 한 명의 친구는 여러 그룹을 가질 수 있음
+class FriendshipGroupMap(models.Model):  # Which Group
+    group = models.ForeignKey(FriendGroup, on_delete=models.CASCADE, related_name='friendships')
+    friend = models.ForeignKey(Account, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['group', 'friend'], name='gf_compositeKey')]
+
+
+class Relationship(models.Model):
+    account = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friends')
+    friend = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendOf')
+    # friends can block the user. (=수신동의)
+    subscribe = models.BooleanField(null=False, default=True)   # 수신여부
+    dispatch = models.BooleanField(
+        null=False, default=True)    # 발신여부 (false면 보내지않음)
+    is_friend = models.BooleanField(null=False, default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # Status = 0;본인 1;request 2.confirm 3; A blocks B 4;B blocks A 5; block each others.
+
+
+# 한 명의 친구는 여러 그룹을 가질 수 있음
+# class Relationship_FriendGroup_MAP(models.Model):  # Which Group
+#     group = models.ForeignKey(
+#         FriendGroup, on_delete=models.CASCADE, related_name='friendships')
+#     relationship = models.ForeignKey(
+#         Relationship, on_delete=models.CASCADE, related_name='groups')
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     class Meta:
+#         constraints = [models.UniqueConstraint(
+#             fields=['group', 'relationship'], name='gr_compositeKey')]

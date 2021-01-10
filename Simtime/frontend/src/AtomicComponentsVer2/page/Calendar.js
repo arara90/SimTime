@@ -47,8 +47,9 @@ background: red;
 
 function Calendar(props) {
   //1.props
-  // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, relationships ,invitations, loading} = props;
-  const {getFriends, getGroups, getInvitations, addInvitations, addEvent, groups, relationships ,invitations, loading} = props;
+  // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, friendships ,invitations, loading} = props;
+  const {getFriends, getGroups, getInvitations, addInvitations, addEvent, loading, user, groups, friendships, invitations} = props;
+
 
   //2.context
   const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
@@ -83,9 +84,9 @@ function Calendar(props) {
   //// update friends information
   useEffect(()=>{
     if(modalContent=="InviteFriends"){
-      setContextModalContent(<InviteFriends groups={groups} relationships={relationships} onClick={handleContextModal} closeModal={handleContextModal} />)
+      setContextModalContent(<InviteFriends groups={groups} friendships={friendships} onClick={handleContextModal} closeModal={handleContextModal} />)
     } 
-  }, [groups, relationships])
+  }, [groups, friendships])
   
   //// change modals
   useEffect(()=>{
@@ -95,7 +96,7 @@ function Calendar(props) {
       }else if(modalContent=="Dialog"){
         return <YNDialogModal leftBtnClickHandler={dialogSubmitHandler} rightBtnClickHandler={closeContextModal} closeModal={closeContextModal}> 지금 친구들을 초대하시겠습니까? </YNDialogModal>
       }else if(modalContent=="InviteFriends"){
-        return <InviteFriends groups={groups} relationships={relationships} inviteSubmitHandler={inviteSubmitHandler} closeModal={closeModal} />
+        return <InviteFriends groups={groups} friendships={friendships} inviteSubmitHandler={inviteSubmitHandler} closeModal={closeModal} />
       }else return null
     }
 
@@ -111,7 +112,6 @@ function Calendar(props) {
   //// click date cell
   const dateCellClickHandler = (e, date) =>{
     e.stopPropagation();
-    console.log(date)
     setSelectedDate(date)
     setShowDetail(false);
   }
@@ -128,11 +128,12 @@ function Calendar(props) {
       //event 추가
       var res =  await addEvent(event, image); 
       setNewEvent(res)
+      // await addInvitations(res, [user.id])
       //modal 변경
       await closeContextModal()
       setModalContent("Dialog")
     }catch(e){
-      console.log("relationshipError", e); 
+      console.log("Error", e); 
     }
   }
   //// submit yn dialog
@@ -147,9 +148,9 @@ function Calendar(props) {
     }
   }
   //// submit invitation
-  const inviteSubmitHandler = async (relationshipIds) =>{ 
-    console.log(relationshipIds)
-    var res = await addInvitations(newEvent, relationshipIds)
+  const inviteSubmitHandler = async (friendIds) =>{ 
+    await addInvitations(newEvent, friendIds)
+    closeContextModal()
   }
 
   return (
@@ -171,7 +172,7 @@ function Calendar(props) {
                         </NewButton> 
                       }
         rightBottom = {showDetail ? 
-                       <EventDetail invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
+                       <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
                        <EventList invitations={invitations ? invitations[selectedDate] : [] } current={selectedDate}
                           dateHandler={setSelectedDate}
                           itemClickHandler={(e, invitation)=>{
@@ -185,25 +186,22 @@ function Calendar(props) {
 }
 
 const mapStateToProps = (state) => ({
-  // events: state.events.events,
+  user: state.auth.user,
   invitations: state.invitations.datas,
   addedEvent: state.events.selectedEvent,
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
-  relationships: state.friends.relationships,
+  friendships: state.friends.friendships,
   loading: state.loading
-
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // getEvents: (start, end) => dispatch(getEvents(start, end)),
-    // editEvent: () => dispatch(editEvent()),
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),
     addEvent: (myEvent, image) => dispatch(addEvent(myEvent, image)),
     getInvitations: (start, end)=>dispatch(getInvitations(start, end)),
-    addInvitations: (event, relationshipIds) => dispatch(addInvitations(event, relationshipIds))
+    addInvitations: (event, friendIds) => dispatch(addInvitations(event, friendIds))
   };
 };
 

@@ -59,7 +59,7 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
-  const { selectedGroup, relationships, selectedGroupMembers, buttons, closeModal } = props;
+  const { selectedGroup, friendships, selectedGroupMembers, buttons, closeModal } = props;
   const [tab, setTab] = useState("Members");
 
   return (
@@ -94,7 +94,7 @@ function EditMembers(props) {
             <AddMembers
               groupId={selectedGroup.group.id}
               selectedGroupMembers={selectedGroupMembers}
-              relationships={relationships}
+              friendships={friendships}
             />
           )}
         </Table>
@@ -109,7 +109,7 @@ EditMembers.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
   selectedGoup: PropTypes.object,
-  relationships: PropTypes.array,
+  friendships: PropTypes.array,
   buttons: PropTypes.array,
   closeModal: PropTypes.func,
 };
@@ -118,7 +118,7 @@ EditMembers.defaultProps = {
   title: "Table Title",
   headers: null,
   selectedGoup: { group: { id: "", groupname: "unknown" }, members: [] },
-  relationships: [],
+  friendships: [],
   buttons: [
     { content: "Members", url: null },
     { content: "Add",url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",},

@@ -38,7 +38,7 @@ function AddFriend(props) {
       console.log(friendship)
       if(groups.length){
         var groupData = groups.map((group) => {
-          return { friendship: friendship.data.friendshipId, group: group };
+          return { friend: friendship.data.friend.id, group: group };
         });
         await props.addToGroup(groupData);
       }

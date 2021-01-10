@@ -50,8 +50,8 @@ const Result = styled(ResultTable)``;
 const transformIntoTableData = (candidates) => {
   return [
     ...new Set(
-      candidates.map((friend) => {
-        return { ...friend.friend, id: friend.relationshipId };
+      candidates.map((friendship) => {
+        return { ...friendship.friend, id: friendship.friend.id };
       })
     ),
   ];
@@ -59,7 +59,7 @@ const transformIntoTableData = (candidates) => {
 
 
 function AddGroup(props) {
-  const { groups, relationships, closeModal } = props;
+  const { groups, friendships, closeModal } = props;
   const inputRef = useRef(null);
 
   //UI
@@ -68,7 +68,7 @@ function AddGroup(props) {
 
   //Data Filtering
   const [selectedFriends, setSelectedFriends] = useState([]);
-  const [tableData, setTableData] = useState(transformIntoTableData(relationships));
+  const [tableData, setTableData] = useState(transformIntoTableData(friendships));
   const [isValid, setIsValid] = useState(false);
 
 
@@ -105,15 +105,16 @@ function AddGroup(props) {
     if (isValid) {
       try {
         const group = await props.createGroup(groupname);
+        console.log(selectedFriends)
         if (selectedFriends.length > 0) {
-          var mambersTogroup = selectedFriends.map((relationshipId) => {
-            return { relationship: relationshipId, group: group.id };
+          var mambersTogroup = selectedFriends.map((friendId) => {
+            return { friend: friendId, group: group.id };
           });
           await props.addToGroup(mambersTogroup);
         }
         closeModal();
       } catch (err) {
-        console.log("relationshipError", err);
+        console.log("friendshipError", err);
       }
     } else {
       inputRef.current.focus();
@@ -123,9 +124,10 @@ function AddGroup(props) {
 
   //친구 내에서 검색
   const searchFriends = (field, keyword) => {
-    var filtered = relationships.filter((relationship) =>
-      relationship.friend[field].includes(keyword)
+    var filtered = friendships.filter((friendship) =>
+    friendship.friend[field].includes(keyword)
     );
+
 
     setTableData(transformIntoTableData(filtered));
   };
@@ -190,7 +192,7 @@ function AddGroup(props) {
       title="Add Group"
       pages={[renderChild()]}
       totalPage={1}
-      submitHandler={handleSubmit}
+      handleSubmit={handleSubmit}
       height="auto"
       closeModal={closeModal}
     ></DefaultModal>

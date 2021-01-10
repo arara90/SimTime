@@ -64,7 +64,7 @@ export default function (state = initialState, action) {
         selectedGroup: {
           ...state.selectedGroup,
           members: state.selectedGroup.members.filter(
-            (member) => member.RGmapId != action.payload
+            (member) => member.FGmapId != action.payload
           ),
         },
       };

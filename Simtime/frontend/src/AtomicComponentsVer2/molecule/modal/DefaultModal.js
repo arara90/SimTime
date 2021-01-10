@@ -57,8 +57,9 @@ function DefaultModal(props) {
   const [page, setPage] = useState(0);
 
   const submitHandler = (e) => {
+    console.log('submitHandler')
     e.preventDefault();
-    props.submitHandler();
+    props.handleSubmit();
   };
 
   const clickHandler = (e, newPage) => {

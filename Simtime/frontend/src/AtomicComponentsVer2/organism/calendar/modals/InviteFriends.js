@@ -42,7 +42,7 @@
 // `
 
 // function InviteFriends(props) {
-//   const {getMembers, selectedGroup, groups, relationships, inviteSubmitHandler} = props;
+//   const {getMembers, selectedGroup, groups, friendships, inviteSubmitHandler} = props;
 
 //   ////variables
 //   const rowHeight = "3em"
@@ -52,7 +52,7 @@
 //   //hook1-useState
 //   const [currGroup, setCurrGroup] = useState(allGroup.id+allGroup.groupname)
 //   const [displayGroups, setDisplayGroups] = useState(groups);
-//   const [displayFriends, setDisplayFriends] = useState(relationships);
+//   const [displayFriends, setDisplayFriends] = useState(friendships);
 //   const [selectedItems, setSelectedItems] = useState([]);
 //   const [allChecked, setAllChecked] = useState(false);
   
@@ -65,11 +65,11 @@
 //   useEffect(
 //     ()=> {
 //       //새로운 그룹 선택-> 해당 그룹 멤버들이 이미 모두 추가된 상태인지 검사 후 전체 선택/해제
-//       var targetArray = (currGroup==allGroup.id+allGroup.groupname ? relationships : selectedGroup.members)
+//       var targetArray = (currGroup==allGroup.id+allGroup.groupname ? friendships : selectedGroup.members)
 //       var isAll = isAllChecked(selectedItems, targetArray)
 //       setAllChecked(isAll)
 //       setDisplayFriends(targetArray)
-//     }, [currGroup, relationships] 
+//     }, [currGroup, friendships] 
 //   )
 
 //   useEffect(
@@ -231,7 +231,7 @@ const Selected = styled(CaretIcon)`
 `
 
 function InviteFriends(props) {
-  const {getMembers, selectedGroup, groups, relationships, inviteSubmitHandler} = props;
+  const {getMembers, selectedGroup, groups, friendships, inviteSubmitHandler} = props;
 
   ////variables
   const rowHeight = "3em"
@@ -241,7 +241,7 @@ function InviteFriends(props) {
   //hook1-useState
   const [currGroup, setCurrGroup] = useState(allGroup.id+allGroup.groupname)
   const [displayGroups, setDisplayGroups] = useState(groups);
-  const [displayFriends, setDisplayFriends] = useState(relationships);
+  const [displayFriends, setDisplayFriends] = useState(friendships);
   const [selectedItems, setSelectedItems] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
   
@@ -254,11 +254,11 @@ function InviteFriends(props) {
   useEffect(
     ()=> {
       //새로운 그룹 선택-> 해당 그룹 멤버들이 이미 모두 추가된 상태인지 검사 후 전체 선택/해제
-      var targetArray = (currGroup==allGroup.id+allGroup.groupname ? relationships : selectedGroup.members)
+      var targetArray = (currGroup==allGroup.id+allGroup.groupname ? friendships : selectedGroup.members)
       var isAll = isAllChecked(selectedItems, targetArray)
       setAllChecked(isAll)
       setDisplayFriends(targetArray)
-    }, [currGroup, relationships] 
+    }, [currGroup, friendships] 
   )
 
   useEffect(
@@ -358,7 +358,7 @@ function InviteFriends(props) {
         </Wrap>
     ]}
       totalPage={1}
-      submitHandler={submitHandler}
+      handleSubmit={submitHandler}
       height="auto"
     ></MyModal>
   )

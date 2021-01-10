@@ -93,12 +93,11 @@ class Event(CustomizedModel):
 class Invitation(models.Model):
     objects = models.Manager()
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='invitations')
-    relationship = models.ForeignKey(settings.AUTH_USER_RELATIONSHIP_MODEL, on_delete=models.CASCADE, related_name='invitations', default = 72 )
-    guest = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='invitations', blank=False, default = 1 )
+    guest = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='invitations', null=False, default=0)
     attendance = models.BooleanField(default=False)
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함
     show = models.BooleanField(default=True)
     like = models.BooleanField(default=False)
-
+    # created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
-        constraints = [models.UniqueConstraint(fields=['event', 'relationship'], name='er_compositeKey')]
+        constraints = [models.UniqueConstraint(fields=['event', 'friend'], name='ef_compositeKey')]

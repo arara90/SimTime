@@ -42,20 +42,19 @@ const TextButton = styled(Paragraph)`
 
 function MemberList(props) {
   const { selectedGroupMembers } = props;
+  console.log('selectedGroupMembers', selectedGroupMembers)
 
-  const flatMembers = selectedGroupMembers.reduce(
-    (acc, item) => [
-      ...acc,
-      {
-        id: item.RGmapId,
-        relationshipId: item.relationshipid, //relationshipid
-        friendId: item.friend.id,
-        username: item.friend.username,
-        profile_image: item.friend.profile_image,
-      },
-    ],
-    []
-  );
+  // const selectedGroupMembers = selectedGroupMembers.reduce(
+  //   (acc, item) => [
+  //     ...acc,
+  //     {
+  //       friendId: item.id,
+  //       username: item.username,
+  //       profile_image: item.profile_image,
+  //     },
+  //   ],
+  //   []
+  // );
 
   const renderButton = useCallback((fn) => {
     return (
@@ -76,17 +75,18 @@ function MemberList(props) {
   }, []);
 
   const renderRows = (friends = []) => {
+    console.log('friends', friends)
     return friends.map((data, index) => {
       return (
-        <TableRow rowNum={index} key={data.username}>
+        <TableRow rowNum={index} key={data.FGmapId}>
           <UserCard
-            username={data.username}
+            username={data.friend.username}
             imageSize="32px"
-            url={data.profile_image}
+            url={data.friend.profile_image}
           ></UserCard>
           <Buttons>
             {renderButton(() => {
-              props.deleteMember(data.id);
+              props.deleteMember(data.FGmapId);
             })}
           </Buttons>
         </TableRow>
@@ -94,7 +94,7 @@ function MemberList(props) {
     });
   };
 
-  return <Fragment>{renderRows(flatMembers)}</Fragment>;
+  return <Fragment>{renderRows(selectedGroupMembers)}</Fragment>;
 }
 
 const mapDispatchToProps = (dispatch) => {

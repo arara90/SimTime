@@ -40,15 +40,12 @@ const TextButton = styled(Paragraph)`
   margin-left: ${buttonMargin}px;
   cursor: pointer;
 `;
-const StyledButtonWithImage = styled(ButtonWithImage)`
-  margin-left: ${buttonMargin}px;
-`;
 
 function GroupList(props) {
-  const { groups, selectedGroup, selectedGroupMembers, relationships } = props;
+  const { groups, selectedGroup, selectedGroupMembers, friendships } = props;
   let { handleContextModal, closeContextModal, setContextModalContent, contextModalContent } = React.useContext(ModalContext);
   const [modal, setModal] = useState(false);
-
+  
 
   useEffect(()=>{
     if(modal){ handleContextModal(renderModal())}
@@ -74,7 +71,7 @@ function GroupList(props) {
       <EditMembers
         selectedGroup={selectedGroup}
         selectedGroupMembers = {selectedGroupMembers}
-        relationships={relationships}
+        friendships={friendships}
         closeModal={setModal}
       />
 
@@ -136,7 +133,7 @@ GroupList.propTypes = {
   headers: PropTypes.array,
   groups: PropTypes.array,
   selectedGroup: PropTypes.object,
-  relationships: PropTypes.array,
+  friendships: PropTypes.array,
 };
 
 GroupList.defaultProps = {
@@ -144,5 +141,5 @@ GroupList.defaultProps = {
   headers: null,
   groups: [],
   selectedGroup: { group: {}, members: [] },
-  relationships: [],
+  friendships: [],
 };

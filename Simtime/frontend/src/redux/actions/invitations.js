@@ -21,19 +21,18 @@ function separateTime(data){
 }
 
 export const addInvitations = (event, friendIds) => async (dispatch) => {
+  console.log('addInvitations',event, friendIds )
   var invitations = new Array(friendIds.length)
 
-  relationshipIds.forEach( (friendId, index) => {
-    invitations[index] = {event: event, friend:friendId  }
+  friendIds.forEach( (friendId, index) => {
+    invitations[index] = {event: event, guest:friendId}
   });
 
-  console.log("addInvitations action", invitations);
-  
   return axiosInstance
   .post("/api/invitations/create", invitations)
   .then((response) => {
     console.log(response)
-    // return invitations.id
+    return response
   })
   .catch((err) => {
     dispatch(returnErrors(err, err.response.status));

@@ -2,6 +2,7 @@ import { createMessage, returnErrors } from "./messages";
 import { axiosInstance, axiosFormInstance } from "./axiosApi";
 import {getStrFullDate , getFullTime} from "./calendar"
 import {startLoading, finishLoading } from "./loading"
+import {addInvitations} from "./invitations"
 
 import {
   GET_EVENTS,
@@ -71,7 +72,7 @@ export const addEvent =  (event, img) => async (dispatch) =>{
       return axiosFormInstance
         .post("/api/events/create", formData)
         .then((response) => {
-          return separateEventTime(response.data).id
+          return response.data.id
         })
         .catch((err) => {
           console.log(err)
@@ -80,7 +81,12 @@ export const addEvent =  (event, img) => async (dispatch) =>{
       return axiosInstance
         .post("/api/events/create", event)
         .then((response) => {
-          return separateEventTime(response.data).id
+          //본인 to 본인 invitation 보내기
+          return dispatch(addInvitations(response.data.id, [response.data.host.id]))
+        })
+        .then((res)=>{
+          dispatch(createMessage({ addEvent: "Event Added" }));
+          return res.data[0].event.id
         })
         .catch((err) => {
           dispatch(returnErrors(err, err.response.status));

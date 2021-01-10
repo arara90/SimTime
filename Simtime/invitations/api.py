@@ -30,7 +30,7 @@ class EventAPI(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print("gre", request.data)
+        # print("gre", request.data)
         serializer = EventSerializer(data=request.data)
         if(serializer.is_valid()):
             serializer.save(host=self.request.user)
@@ -43,7 +43,7 @@ class EventDetailAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
-        return self.request.user.events.get(pk=pk)
+        return Event.objects.get(pk=pk)
 
     def get(self, request, pk):
         event = self.get_object(pk=pk)
@@ -51,8 +51,8 @@ class EventDetailAPI(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
+        print(pk)
         event = self.get_object(pk)
-        # serializer = EventSerializer(event)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -77,12 +77,9 @@ class InvitationAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
-        print("gre", request.data)
         serializer = InvitationSerializer(data=request.data, many=True)
         if(serializer.is_valid()):
-            # print('valid')
             serializer.save()
-            # print('done', serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
