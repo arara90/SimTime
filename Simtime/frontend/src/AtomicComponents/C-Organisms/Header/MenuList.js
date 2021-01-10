@@ -16,8 +16,8 @@ const Wrap = styled.div`
   flex-direction: row;
   align-items: flex-end;
   justify-content: space-around;
-  width: 300px;
-  //
+  // width: 300px;
+  flex: 0.6;
 `;
 
 function MenuList(props) {

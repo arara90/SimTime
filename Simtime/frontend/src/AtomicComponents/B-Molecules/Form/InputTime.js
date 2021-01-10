@@ -1,9 +1,6 @@
 import React, {
   useState,
-  useCallback,
-  createRef,
-  forwardRef,
-  useEffect,
+  useRef,
 } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -70,9 +67,9 @@ function InputTime(props) {
   const [meridiem, setMeridiem] = useState("AM");
   const [param, setParam] = useState("");
 
-  const hourRef = createRef();
-  const minRef = createRef();
-  const meridiemRef = createRef(); //meridiem
+  const hourRef = useRef();
+  const minRef = useRef();
+  const meridiemRef = useRef(); //meridiem
 
   var minAsParam = 0; //24시기준
 
@@ -112,22 +109,14 @@ function InputTime(props) {
       else if (res < 12 && selectedMerdiem == "PM") res = res + 12;
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
       else if (res > 12 && selectedMerdiem == "AM") setMeridiem("PM");
-      changeTime(
-        res.toString().padStart(2, "0") +
-          ":" +
-          min.toString().padStart(2, "0") +
-          " " +
-          selectedMerdiem
-      );
+
+      var resTime =  res.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
+      changeTime(resTime);
+
     } else {
       setMin(res);
-      changeTime(
-        hour.toString().padStart(2, "0") +
-          ":" +
-          res.toString().padStart(2, "0") +
-          " " +
-          selectedMerdiem
-      );
+      var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
+      changeTime(resTime);
     }
   };
 

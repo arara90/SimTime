@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 //context
 import { ModalContext } from "../../../contexts/modalContext";
-// import { getHosts } from "../../actions/invitations"
+// import { getHosts } from "../../redux/actions/invitations"
 
 //components
 import { ST_WHITE, ST_GRAY } from "../../Colors";
@@ -15,7 +15,7 @@ import GroupList from "../../C-Organisms/Friends/Lists/GroupList";
 import AddGroup from "../../C-Organisms/Friends/Modals/Groups/AddGroup";
 
 function Groups(props) {
-  const { groups, selectedGroup, relationships } = props;
+  const { groups, selectedGroup, selectedGroupMembers, friendships } = props;
   const { handleContextModal, closeContextModal } = useContext(ModalContext);
 
   return (
@@ -26,7 +26,7 @@ function Groups(props) {
         handleContextModal(
           <AddGroup
             groups={groups}
-            relationships={relationships}
+            friendships={friendships}
             closeModal={closeContextModal}
           />
         )
@@ -35,11 +35,11 @@ function Groups(props) {
       rowHeight={props.width}
       rowNum={props.rowNum}
     >
-      {console.log("Groups selectedGroup", selectedGroup)}
       <GroupList
         groups={groups}
         selectedGroup={selectedGroup}
-        relationships={relationships}
+        selectedGroupMembers={selectedGroupMembers}
+        friendships={friendships}
       />
     </Table>
   );

@@ -10,7 +10,7 @@ import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 import ResultTable from "../../ResultTable";
 
 import { MAIN_COLOR } from "../../../../Colors";
-import { addToGroup } from "../../../../../actions/friends";
+import { addToGroup } from "../../../../../redux/actions/friends";
 
 const Wrap = styled.div`
   display: flex;

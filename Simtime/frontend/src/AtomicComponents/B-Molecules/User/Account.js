@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Paragraph from "../../A-Atomics/Font/Paragraph";
 import MenuLink from "../../A-Atomics/Menu/MenuLink";
 import ImageUser from "../../A-Atomics/ImageUser";
-import { logout } from "../../../actions/auth";
+import { logout } from "../../../redux/actions/auth";
 
 const Wrap = styled.div`
   width: auto;
@@ -112,7 +112,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { logout })(Account);
 
 Account.propTypes = {
-  url: PropTypes.string,
   username: PropTypes.string,
   imageSize: PropTypes.string,
 };

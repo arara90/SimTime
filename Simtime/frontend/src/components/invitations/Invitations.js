@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { getInvitations, deleteInvitation } from "../../actions/invitations";
+import { getInvitations, deleteInvitation } from "../../redux/actions/invitations";
 import { connect } from "react-redux";
 
 export class Invitations extends Component {

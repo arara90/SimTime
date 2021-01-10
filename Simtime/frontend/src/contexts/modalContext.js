@@ -8,22 +8,24 @@ let { Provider } = (ModalContext = React.createContext());
 let ModalProvider = ({ children }) => {
   let {
     contextModal,
+    contextModalContent,
+    setContextModalContent,
     setContextModal,
     handleContextModal,
     openContextModal,
     closeContextModal,
-    contextModalContent,
   } = useContextModal();
 
   return (
     <Provider
       value={{
         contextModal,
+        contextModalContent,
+        setContextModalContent,
         setContextModal,
         handleContextModal,
         openContextModal,
         closeContextModal,
-        contextModalContent,
       }}
     >
       <ModalContextPortal />

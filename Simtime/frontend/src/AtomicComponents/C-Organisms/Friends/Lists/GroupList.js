@@ -4,12 +4,11 @@ import PropTypes from "prop-types";
 
 //context
 import { ModalContext } from "../../../../contexts/modalContext";
-import { ModalPortalBasic } from "../../../A-Atomics/Modal/ModalPortal";
-import Modal from "../../../A-Atomics/Modal/Modal";
+
 //redux
 import { connect } from "react-redux";
 //components
-import { deleteGroup, getGroup, getMemebers } from "../../../../actions/groups";
+import { deleteGroup, getGroup, getMembers } from "../../../../redux/actions/groups";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
@@ -41,16 +40,21 @@ const TextButton = styled(Paragraph)`
   margin-left: ${buttonMargin}px;
   cursor: pointer;
 `;
-const StyledButtonWithImage = styled(ButtonWithImage)`
-  margin-left: ${buttonMargin}px;
-`;
 
 function GroupList(props) {
-  const { groups, selectedGroup, relationships } = props;
-  let { handleContextModal, closeContextModal } = React.useContext(
-    ModalContext
-  );
+  const { groups, selectedGroup, selectedGroupMembers, friendships } = props;
+  let { handleContextModal, closeContextModal, setContextModalContent, contextModalContent } = React.useContext(ModalContext);
   const [modal, setModal] = useState(false);
+  
+
+  useEffect(()=>{
+    if(modal){ handleContextModal(renderModal())}
+  }, [modal])
+
+  useEffect(()=>{
+    if(modal){setContextModalContent(renderModal())}
+  }, [selectedGroupMembers])
+
 
   const clickEvent = (e, cb) => {
     e.preventDefault();
@@ -58,22 +62,24 @@ function GroupList(props) {
   };
 
   const editMembers = async (id) => {
-    const friends = await props.getMemebers(id);
-    setModal(!modal);
+    const friends = await props.getMembers(id);
+    setModal(true);
   };
 
-  const renderModal = (selectedGroup, relationships) => {
+  const renderModal = () => {
     return (
       <EditMembers
         selectedGroup={selectedGroup}
-        relationships={relationships}
-        closeModal={() => setModal(false)}
+        selectedGroupMembers = {selectedGroupMembers}
+        friendships={friendships}
+        closeModal={setModal}
       />
+
     );
   };
 
   const renderButton = useCallback(
-    (content = "삭제", fn, color = "TEXT_LINK") => {
+    (content = "삭제", fn, color="TEXT_LINK") => {
       return (
         <ButtonWrap>
           <TextButton
@@ -100,11 +106,7 @@ function GroupList(props) {
             url="https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"
           ></UserCard>
           <Buttons>
-            {renderButton("이름변경", () =>
-              handleContextModal(
-                <EditGroup group={group} closeModal={closeContextModal} />
-              )
-            )}
+            {renderButton("이름변경", () => handleContextModal(<EditGroup group={group} closeModal={closeContextModal} />))}
             {renderButton("멤버관리", () => editMembers(group.id))}
             {renderButton(
               "삭제",
@@ -120,23 +122,18 @@ function GroupList(props) {
   return (
     <Wrap>
       {renderRows(props.groups)}
-      {modal && (
-        <ModalPortalBasic
-          children={<Modal>{renderModal(selectedGroup, relationships)}</Modal>}
-        />
-      )}
     </Wrap>
   );
 }
 
-export default connect(null, { deleteGroup, getGroup, getMemebers })(GroupList);
+export default connect(null, { deleteGroup, getGroup, getMembers })(GroupList);
 
 GroupList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
   groups: PropTypes.array,
   selectedGroup: PropTypes.object,
-  relationships: PropTypes.array,
+  friendships: PropTypes.array,
 };
 
 GroupList.defaultProps = {
@@ -144,5 +141,5 @@ GroupList.defaultProps = {
   headers: null,
   groups: [],
   selectedGroup: { group: {}, members: [] },
-  relationships: [],
+  friendships: [],
 };

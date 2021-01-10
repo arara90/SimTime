@@ -2,35 +2,35 @@ import React from "react";
 
 export default () => {
   let [contextModal, setContextModal] = React.useState(false);
-  let [contextModalContent, setContextModalContent] = React.useState(
-    "I'm the Modal Content"
-  );
+  let [contextModalContent, setContextModalContent] = React.useState(null);
 
   let handleContextModal = (content = false) => {
     setContextModal(!contextModal);
-    if (content) {
-      setContextModalContent(content);
-    }
+    if (content) setContextModalContent(content);
   };
 
-  let closeContextModal = (content = false) => {
+  let closeContextModal = () => {
     setContextModal(false);
-    setContextModalContent(content);
+    setContextModalContent(null);
   };
 
   let openContextModal = (content = false) => {
-    setContextModal(true);
+
     if (content) {
+      setContextModal(true);
       setContextModalContent(content);
+    }else{
+      console.log('no Content')
     }
   };
 
   return {
     contextModal,
+    contextModalContent,
     setContextModal,
+    setContextModalContent,
     handleContextModal,
     openContextModal,
     closeContextModal,
-    contextModalContent,
   };
 };

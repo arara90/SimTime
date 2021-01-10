@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import React, { Fragment, useState, createRef, useEffect } from "react";
+import React, { Fragment, useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -34,8 +34,8 @@ function SearchBar(props) {
   const { height, width, newFriends, searchUsers,searchFriends } = props;
   const [field, setField] = useState("Username");
 
-  const selectRef = createRef();
-  const searchRef = createRef();
+  const selectRef = useRef();
+  const searchRef = useRef();
 
   const handleOptionChange = (option) => {
     setField(option);

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Fragment, createRef } from "react";
+import React, { useState , useEffect} from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { deleteMemebers } from "../../../../../actions/groups";
+import { deleteMembers } from "../../../../../redux/actions/groups";
 
 import { MAIN_COLOR } from "../../../../Colors";
-import BasicModal from "../../../../B-Molecules/Modal/BasicModal";
+import BasicModal from "../../../../../AtomicComponentsVer2/molecule/modal/BasicModal";
 import TabTable from "../../../../B-Molecules/Table/TabTable";
 import ImageUser from "../../../../A-Atomics/ImageUser";
 import Image from "../../../../A-Atomics/Image";
@@ -59,11 +59,11 @@ const Table = styled(TabTable)`
 `;
 
 function EditMembers(props) {
-  const { selectedGroup, relationships, buttons, closeModal } = props;
+  const { selectedGroup, friendships, selectedGroupMembers, buttons, closeModal } = props;
   const [tab, setTab] = useState("Members");
 
   return (
-    <BasicModal title="Edit Group" closeModal={closeModal}>
+    <BasicModal title="Edit Group" closeModal={()=>closeModal(false)}>
       <Wrap className="EditMembersWrap">
         <Group>
           <GroupImage
@@ -89,12 +89,12 @@ function EditMembers(props) {
           changeHandler={(tab) => setTab(tab)}
         >
           {tab == "Members" ? (
-            <MemberList members={selectedGroup.members} />
+            <MemberList selectedGroupMembers={selectedGroupMembers} />
           ) : (
             <AddMembers
               groupId={selectedGroup.group.id}
-              members={selectedGroup.members}
-              relationships={relationships}
+              selectedGroupMembers={selectedGroupMembers}
+              friendships={friendships}
             />
           )}
         </Table>
@@ -103,13 +103,13 @@ function EditMembers(props) {
   );
 }
 
-export default connect(null, { deleteMemebers })(EditMembers);
+export default connect(null, { deleteMembers })(EditMembers);
 
 EditMembers.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
   selectedGoup: PropTypes.object,
-  relationships: PropTypes.array,
+  friendships: PropTypes.array,
   buttons: PropTypes.array,
   closeModal: PropTypes.func,
 };
@@ -118,14 +118,10 @@ EditMembers.defaultProps = {
   title: "Table Title",
   headers: null,
   selectedGoup: { group: { id: "", groupname: "unknown" }, members: [] },
-  relationships: [],
+  friendships: [],
   buttons: [
     { content: "Members", url: null },
-    {
-      content: "Add",
-      url:
-        "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",
-    },
+    { content: "Add",url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/add-yellow.png",},
   ],
   closeModal: () => {
     console.log("Waring clsModal");

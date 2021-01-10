@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addInvitation } from "../../actions/invitations";
+import { addInvitation } from "../../redux/actions/invitations";
 import PropTypes from "prop-types";
 
 export class Form extends Component {

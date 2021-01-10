@@ -2,13 +2,8 @@ import React, { useState, useCallback, Fragment, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
-import ContextStore from "../../../contexts/contextStore";
-
-import { MAIN_COLOR, ST_GTAY } from "../../Colors";
 
 import ModalTitle from "../../A-Atomics/Modal/ModalTitle";
-import ProgressBar from "../../A-Atomics/Deco/ProgressBar";
 import DashedButton from "../../A-Atomics/Button/DashedButton";
 
 const Wrap = styled.div`
@@ -94,18 +89,20 @@ function DefaultModal(props) {
     setPage(newPage);
   };
 
-  const renderPages = () => {
+  const renderPages = (page) => {
+    console.log('renderPages', page)
+    console.log('renderPages, children', props.pages)
     return (
       <PageWrap {...props} isActivePage={page == 0}>
-        {props.children}
+        {props.pages[page]}
         <ButtonSpace></ButtonSpace>
       </PageWrap>
     );
   };
 
   const renderButtons = (page) => {
-    if (page == props.totalPage) {
-      if (props.totalPage == 0) {
+    if (page == props.totalPage-1) {
+      if (props.totalPage == 1) {
         return (
           <ButtonWrap width="100%">
             <Button type="submit" onClick={(e) => handleSubmit(e)}>
@@ -158,7 +155,7 @@ function DefaultModal(props) {
       </HeaderWrap>
 
       <ContentWrap>
-        {renderPages()}
+        {renderPages(page)}
         {renderButtons(page)}
       </ContentWrap>
     </Wrap>
@@ -171,6 +168,7 @@ DefaultModal.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   totalPage: PropTypes.number,
+  pages: PropTypes.array,
   title: PropTypes.string,
   closeModal: PropTypes.func,
 };
@@ -178,7 +176,8 @@ DefaultModal.propTypes = {
 DefaultModal.defaultProps = {
   height: "548px",
   width: "320px",
-  totalPage: 1,
+  pages: [<div>page1</div>, <div>page2</div>],
+  totalPage: 2,
   title: null,
   closeModal: () => {},
 };

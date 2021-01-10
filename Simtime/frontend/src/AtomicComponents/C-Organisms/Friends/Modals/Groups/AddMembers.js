@@ -10,7 +10,7 @@ import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 import ResultTable from "../../ResultTable";
 
 import { MAIN_COLOR } from "../../../../Colors";
-import { addToGroup } from "../../../../../actions/friends";
+import { addToGroup } from "../../../../../redux/actions/friends";
 
 const Wrap = styled.div`
   display: flex;
@@ -40,55 +40,57 @@ const MyItem = styled(SelectedItem)`
 
 //search하기 위해 id를 index로
 const flatGroupMembers = (members) => {
+  console.log('flatGroupMembers members', members)
   return members.reduce(
     (acc, member) => ({
       ...acc,
-      [member.relationship.relationshipId]: member.relationship.relationshipId,
+      [member.friend.id]: member.friend.id,
     }),
     {}
   );
 };
 
 // 친구 중에 멤버가 아닌 사람 구하기
-const getNonMembers = (relationships, groupMembers) => {
-  return relationships.filter((friend) => !groupMembers[friend.relationshipId]);
+const getNonMembers = (friendships, groupMembers) => {
+  return friendships.filter((friendship) => !groupMembers[friendship.friend.id]);
 };
 
 //TableData 형태로 만들기
 const transformIntoTableData = (candidates) => {
   return [
     ...new Set(
-      candidates.map((friend) => {
-        return { ...friend.friend, id: friend.relationshipId };
+      candidates.map((friendship) => {
+        return { ...friendship.friend, id: friendship.friend.id };
       })
     ),
   ];
 };
 
 function AddMembers(props) {
-  const { relationships, members, groupId } = props;
+  const { friendships, selectedGroupMembers, groupId } = props;
 
-
-  var flatMembers = flatGroupMembers(members);
-  var nonMembers = getNonMembers(relationships, flatMembers);
+  var flatMembers = flatGroupMembers(selectedGroupMembers);
+  var nonMembers = getNonMembers(friendships, flatMembers);
 
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [tableData, setTableData] = useState(transformIntoTableData(nonMembers))
 
   React.useEffect(() => {
-    console.log('useEffect', selectedFriends,tableData )
+    console.log('AddMembers useEffect', selectedFriends, tableData)
     var newData = setTableData(tableData.filter(
       (data) => !selectedFriends.includes(data.id)
     ));
       
     setSelectedFriends([])
-  }, [members, relationships, groupId]);
+  }, [selectedGroupMembers, friendships, groupId]);
 
+
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     var data = selectedFriends.map((friend) => {
-      return { relationship: friend, group: groupId };
+      return { friend: friend, group: groupId };
     });
 
     //멤버로 등록

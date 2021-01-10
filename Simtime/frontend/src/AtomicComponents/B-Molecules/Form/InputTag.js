@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef,  useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -73,7 +73,7 @@ const MyItem = styled(SelectedItem)`
 `;
 
 function InputTag(props) {
-  const { name, label, desc, tags, width, height, items } = props;
+  const { name, label, desc, tags, width, height, items, changeTags } = props;
   const [myTags, setMyTags] = useState(items);
   // const inputRef = useRef();
 
@@ -92,6 +92,7 @@ function InputTag(props) {
     if (e.key == "Enter") {
       if( myTags.indexOf( e.target.value) == -1 ){
         let newItems = [...myTags, e.target.value];
+        changeTags(newItems)
         setMyTags(newItems);
         e.target.value=""
       }else{
@@ -137,7 +138,7 @@ InputTag.propTypes = {
 };
 
 InputTag.defaultProps = {
-  items: ["test1", "test2"],
+  items: [],
   desc:"Tag",
 };
 

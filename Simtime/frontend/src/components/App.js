@@ -11,7 +11,7 @@ import PrivateRoute from "./common/privateRoute";
 //redux
 import { Provider } from "react-redux";
 import store from "../store";
-import { loadUser } from "../actions/auth";
+import { loadUser } from "../redux/actions/auth";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import GlobalStyle from "../AtomicComponents/GlobalStyle";
@@ -19,9 +19,10 @@ import Header from "../AtomicComponents/D-Templates/Header";
 
 //Page
 // import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
-import CalendarPage from "../AtomicComponentsVer2/page/Calendar";
+import Calendar from "../AtomicComponentsVer2/page/Calendar";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
 import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
+import Components from "../AtomicComponentsVer2/Components";
 
 import { ModalProvider } from "../contexts/modalContext";
 import { MenuProvider } from "../contexts/menuContext";
@@ -79,7 +80,12 @@ class App extends Component {
                     <Header />
                     <Alerts />
                     <Switch>
-                      <PrivateRoute exact path="/" component={CalendarPage} />
+                      <PrivateRoute exact path="/" component={Components} />
+                      <PrivateRoute
+                        exact
+                        path="/calendar"
+                        component={Calendar}
+                      />
                       <PrivateRoute
                         exact
                         path="/friends"
@@ -89,6 +95,11 @@ class App extends Component {
                         exact
                         path="/mysimtime"
                         component={MySimtimePage}
+                      />
+                      <Route
+                        exact
+                        path="/component"
+                        component={Components}
                       />
                       <Route exact path="/register" component={Register} />
                       <Route exact path="/login" component={Login} />

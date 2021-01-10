@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { logout } from "../../actions/auth";
+import { logout } from "../../redux/actions/auth";
 
 export class Header extends Component {
   static propType = {

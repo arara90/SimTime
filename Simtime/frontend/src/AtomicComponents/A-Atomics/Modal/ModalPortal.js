@@ -17,15 +17,15 @@ const MyModal = styled.div`
   z-index: 999;
 `;
 
-const ContentWrap = styled.div`
+const ContentWrap = styled.section`
   background: rgba(0, 0, 0, 0);
-  width: auto;
-  height: auto;
+  // width: auto;
+  // height: auto;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-end;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  // align-items: flex-end;
 
   @media only screen and (max-width: 320px) {
     width: 98%;
@@ -57,11 +57,10 @@ export const ModalContextPortal = (props) => {
   let { contextModalContent, contextModal } = React.useContext(ModalContext);
   if (contextModal) {
     return ReactDOM.createPortal(
-      <Fragment>
         <MyModal className="modalcontextPotal">
-          <ContentWrap contextModal>{contextModalContent}</ContentWrap>
-        </MyModal>
-      </Fragment>,
+          {/* <ContentWrap contextModal>{contextModalContent}</ContentWrap> */}
+          {contextModalContent}
+        </MyModal>,
       el
     );
   } else return null;
@@ -70,11 +69,9 @@ export const ModalContextPortal = (props) => {
 export const ModalPortalBasic = (props) => {
   const el = document.getElementById("app-modal");
   return ReactDOM.createPortal(
-    <Fragment>
       <MyModal className="modalcontextPotal">
         <ContentWrap>{props.children}</ContentWrap>
-      </MyModal>
-    </Fragment>,
+      </MyModal>,
     el
   );
 };

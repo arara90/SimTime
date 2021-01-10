@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import "babel-polyfill";
 import { connect } from "react-redux";
 import { MAIN_COLOR } from "../../../../Colors";
-import { editGroup } from "../../../../../actions/groups";
+import { editGroup } from "../../../../../redux/actions/groups";
 
 import InputWrap from "../../../../A-Atomics/Form/InputWrap";
-import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
+import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal";
 
-const StyledInput = styled(InputWrap)`
-  padding-bottom: 15px;
-`;
+
+const StyledInput = styled(InputWrap)``;
+
 function EditGroup(props) {
   const { group, closeModal } = props;
   const [groupname, setGroupName] = useState(group.groupname);
@@ -21,6 +21,7 @@ function EditGroup(props) {
   });
 
   const handleSubmit = async () => {
+    console.log('submit')
     try {
       const res = await props.editGroup({ ...group, groupname: groupname });
       closeModal();
@@ -30,28 +31,17 @@ function EditGroup(props) {
   };
 
   const renderChild = () => {
-    return (
-      <Fragment>
-        <StyledInput
-          height="55px"
-          label="Name"
-          name="GroupName"
-          desc="Group Name"
-          value={groupname}
-          onChange={handleChange}
-        />
-      </Fragment>
-    );
+    return <StyledInput label="Name" name="GroupName" desc="Group Name" value={groupname} enterHandler={handleSubmit} onChange={handleChange}/>
+
   };
 
   return (
     <DefaultModal
-      title="Add Group"
-      children={renderChild()}
-      totalPage={0}
+      title="Group Name"
+      pages={[renderChild()]}
+      totalPage={1}
       handleSubmit={handleSubmit}
       height="auto"
-      closeModal={closeModal}
     ></DefaultModal>
   );
 }

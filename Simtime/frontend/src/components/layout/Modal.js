@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { addEvent, getEvent, editEvent } from "../../actions/events";
+import { addEvent, getEvent, editEvent } from "../../redux/actions/events";
 import { EventForm } from "../invitations/EventForm";
 
 const MyModal = styled.div`

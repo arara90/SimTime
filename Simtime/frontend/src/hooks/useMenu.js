@@ -3,7 +3,8 @@ import React from "react";
 export default () => {
   //후에 DB로 관리
   let menus = [
-    { src: "/", name: "CALENDAR" },
+    { src: "/", name: "COMP" },
+    { src: "/calendar", name: "CALENDAR" },
     { src: "/mysimtime", name: "MY SIMTIME" },
     { src: "/friends", name: "FRIENDS" },
   ];

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, Fragment } from "react";
+import React, { useCallback, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -7,8 +7,8 @@ import Table from "../../../B-Molecules/Table/Table";
 import TableRow from "../../../A-Atomics/Table/TableRow";
 import Paragraph from "../../../A-Atomics/Font/Paragraph";
 import UserCardForList from "../../../B-Molecules/User/UserCardForList";
-import { deleteMemeber } from "../../../../actions/groups";
-import { addToGroup } from "../../../../actions/friends"
+import { deleteMember } from "../../../../redux/actions/groups";
+import { addToGroup } from "../../../../redux/actions/friends"
 
 const buttonMargin = 10;
 const buttonsWidth = 160 + 8; //"삭제"-26px, "수신차단" or 차단-52 , bittonMargin * 버튼수 => 26 +104 + 30
@@ -41,21 +41,20 @@ const TextButton = styled(Paragraph)`
 `;
 
 function MemberList(props) {
-  const { members } = props;
+  const { selectedGroupMembers } = props;
+  console.log('selectedGroupMembers', selectedGroupMembers)
 
-  const flatMembers = members.reduce(
-    (acc, item) => [
-      ...acc,
-      {
-        id: item.RGmapId,
-        relationshipId: item.relationship.relationshipid, //relationshipid
-        friendId: item.relationship.friend.id,
-        username: item.relationship.friend.username,
-        profile_image: item.relationship.friend.profile_image,
-      },
-    ],
-    []
-  );
+  // const selectedGroupMembers = selectedGroupMembers.reduce(
+  //   (acc, item) => [
+  //     ...acc,
+  //     {
+  //       friendId: item.id,
+  //       username: item.username,
+  //       profile_image: item.profile_image,
+  //     },
+  //   ],
+  //   []
+  // );
 
   const renderButton = useCallback((fn) => {
     return (
@@ -76,17 +75,18 @@ function MemberList(props) {
   }, []);
 
   const renderRows = (friends = []) => {
+    console.log('friends', friends)
     return friends.map((data, index) => {
       return (
-        <TableRow rowNum={index} key={data.username}>
+        <TableRow rowNum={index} key={data.FGmapId}>
           <UserCard
-            username={data.username}
+            username={data.friend.username}
             imageSize="32px"
-            url={data.profile_image}
+            url={data.friend.profile_image}
           ></UserCard>
           <Buttons>
             {renderButton(() => {
-              props.deleteMemeber(data.id);
+              props.deleteMember(data.FGmapId);
             })}
           </Buttons>
         </TableRow>
@@ -94,12 +94,12 @@ function MemberList(props) {
     });
   };
 
-  return <Fragment>{renderRows(flatMembers)}</Fragment>;
+  return <Fragment>{renderRows(selectedGroupMembers)}</Fragment>;
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteMemeber: (id) => dispatch(deleteMemeber(id)),
+    deleteMember: (id) => dispatch(deleteMember(id)),
     addToGroup: (data) => dispatch(addToGroup(data)),
   };
 };
@@ -109,11 +109,11 @@ export default connect(null, mapDispatchToProps)(MemberList);
 MemberList.propTypes = {
   title: PropTypes.string,
   headers: PropTypes.array,
-  members: PropTypes.array,
+  selectedGroupMembers: PropTypes.array,
 };
 
 MemberList.defaultProps = {
   title: "Table Title",
   headers: null,
-  members: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
+  selectedGroupMembers: [{ id: 0, friendId: 0, username: "", profile_image: "" }],
 };

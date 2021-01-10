@@ -4,18 +4,19 @@ import React, {
   useEffect,
   useState,
   useCallback,
-  createRef,
+  useRef,
 } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { MAIN_COLOR, ST_GREEN, ST_RED } from "../../../../Colors";
-import { createGroup } from "../../../../../actions/groups";
-import { addToGroup } from "../../../../../actions/friends";
+import { createGroup } from "../../../../../redux/actions/groups";
+import { addToGroup } from "../../../../../redux/actions/friends";
+
+import DefaultModal from "../../../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
 
 import InputWrap from "../../../../A-Atomics/Form/InputWrap";
 import Paragraph from "../../../../A-Atomics/Font/Paragraph";
-import DefaultModal from "../../../../B-Molecules/Modal/DefaultModal";
 import ResultTable from "../../ResultTable";
 import SearchBar from "../../../../C-Organisms/Friends/SearchFriend/SearchBar";
 
@@ -49,8 +50,8 @@ const Result = styled(ResultTable)``;
 const transformIntoTableData = (candidates) => {
   return [
     ...new Set(
-      candidates.map((friend) => {
-        return { ...friend.friend, id: friend.relationshipId };
+      candidates.map((friendship) => {
+        return { ...friendship.friend, id: friendship.friend.id };
       })
     ),
   ];
@@ -58,8 +59,8 @@ const transformIntoTableData = (candidates) => {
 
 
 function AddGroup(props) {
-  const { groups, relationships, closeModal } = props;
-  const inputRef = createRef(null);
+  const { groups, friendships, closeModal } = props;
+  const inputRef = useRef(null);
 
   //UI
   const [groupname, setGroupName] = useState("");
@@ -67,7 +68,7 @@ function AddGroup(props) {
 
   //Data Filtering
   const [selectedFriends, setSelectedFriends] = useState([]);
-  const [tableData, setTableData] = useState(transformIntoTableData(relationships));
+  const [tableData, setTableData] = useState(transformIntoTableData(friendships));
   const [isValid, setIsValid] = useState(false);
 
 
@@ -100,20 +101,20 @@ function AddGroup(props) {
 
 
   ///////////////////////addMember
-
   const handleSubmit = async () => {
     if (isValid) {
       try {
         const group = await props.createGroup(groupname);
+        console.log(selectedFriends)
         if (selectedFriends.length > 0) {
-          var mambersTogroup = selectedFriends.map((relationshipId) => {
-            return { relationship: relationshipId, group: group.id };
+          var mambersTogroup = selectedFriends.map((friendId) => {
+            return { friend: friendId, group: group.id };
           });
           await props.addToGroup(mambersTogroup);
         }
         closeModal();
       } catch (err) {
-        console.log("relationshipError", err);
+        console.log("friendshipError", err);
       }
     } else {
       inputRef.current.focus();
@@ -123,15 +124,15 @@ function AddGroup(props) {
 
   //친구 내에서 검색
   const searchFriends = (field, keyword) => {
-    var filtered = relationships.filter((relationship) =>
-      relationship.friend[field].includes(keyword)
+    var filtered = friendships.filter((friendship) =>
+    friendship.friend[field].includes(keyword)
     );
+
 
     setTableData(transformIntoTableData(filtered));
   };
 
   
-
   const renderAddMember = () => {
     return (
       <Wrap>
@@ -189,8 +190,8 @@ function AddGroup(props) {
   return (
     <DefaultModal
       title="Add Group"
-      children={renderChild()}
-      totalPage={0}
+      pages={[renderChild()]}
+      totalPage={1}
       handleSubmit={handleSubmit}
       height="auto"
       closeModal={closeModal}
