@@ -20,8 +20,8 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
 import {generate, getStrFullDate, addDate} from "../../redux/actions/calendar"
-import {getEvents, editEvent, addEvent} from "../../redux/actions/events"
-import {getInvitations, addInvitations} from "../../redux/actions/invitations"
+import {getEvents, addEvent} from "../../redux/actions/events"
+import {getInvitations, addInvitations, acceptInvitations} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
 
@@ -62,6 +62,7 @@ function Calendar(props) {
   const [endDate, setEndDate] = useState("");
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
   ////data
+  const [filteredInvitations, setFilteredInvitations] = useState({}) 
   const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
   //// modal
@@ -76,10 +77,22 @@ function Calendar(props) {
     setStartDate(start)
     setEndDate(end)
     setWeekDates(weeks)
+
     // invitations 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
   }, [])
+
+  useEffect(()=>{ 
+    //filter 적용
+    if(invitations){
+      var filtered = {}
+      for (var date in invitations) {
+        filtered[date] = invitations[date].filter(invitaion =>invitaion.show)
+      }
+      setFilteredInvitations(filtered)
+    }
+  }, [invitations])
 
   //// update friends information
   useEffect(()=>{
@@ -126,9 +139,8 @@ function Calendar(props) {
   const eventSubmitHandler = async (event, image) =>{
     try{
       //event 추가
-      var res =  await addEvent(event, image); 
+      var res = await addEvent(event, image); 
       setNewEvent(res)
-      // await addInvitations(res, [user.id])
       //modal 변경
       await closeContextModal()
       setModalContent("Dialog")
@@ -165,7 +177,7 @@ function Calendar(props) {
                         selectedDate={selectedDate} 
                         current={current} 
                         dates={weekDates} 
-                        invitations={invitations} />
+                        invitations={filteredInvitations} />
                       } 
         rightTop    = { <NewButton color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
                           <Pencil />New Event
@@ -173,7 +185,7 @@ function Calendar(props) {
                       }
         rightBottom = {showDetail ? 
                        <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
-                       <EventList invitations={invitations ? invitations[selectedDate] : [] } current={selectedDate}
+                       <EventList invitations={filteredInvitations ? filteredInvitations[selectedDate] : [] } current={selectedDate}
                           dateHandler={setSelectedDate}
                           itemClickHandler={(e, invitation)=>{
                             e.preventDefault();

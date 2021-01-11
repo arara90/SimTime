@@ -41,6 +41,7 @@ const Detail = styled.div`
 const LikeButton = styled(StatusButton)`
   padding-right: 1px;
   padding-top: 0;
+
 `
 
 const Users = styled.ul`
@@ -86,12 +87,12 @@ const Message = styled(TextBox)`
 const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
-    const { event_place, event_date, event_time, participants, message, tags, like} = props;
+    const { event_place, event_date, event_time, participants, message, tags, like, likeBtnClick} = props;
     return (
         <Wrap className="event-detail">
             <Detail>
                 <strong>Details</strong>
-                <LikeButton color="ST_PINK" selected={like}><HeartIcon /></LikeButton>
+                <LikeButton color="ST_PINK" selected={like} onClick={likeBtnClick} ><HeartIcon /></LikeButton>
             </Detail> 
             <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{getStringDate(event_date, 'day')+"  "+event_time}</DetailTextRow>
             <DetailTextRow as="address" title={event_place.address}><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>

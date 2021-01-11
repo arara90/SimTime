@@ -16,6 +16,11 @@ from django.utils import timezone
 
 class EventAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+    def get_object(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, start, end):
         # events = self.request.user.events.all()
@@ -30,11 +35,9 @@ class EventAPI(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        # print("gre", request.data)
         serializer = EventSerializer(data=request.data)
         if(serializer.is_valid()):
             serializer.save(host=self.request.user)
-            # print('done', serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -43,7 +46,10 @@ class EventDetailAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self, pk):
-        return Event.objects.get(pk=pk)
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk):
         event = self.get_object(pk=pk)
@@ -75,10 +81,17 @@ class EventDetailAPI(APIView):
 
 class InvitationAPI(APIView):
     permission_classes = (permissions.IsAuthenticated,)
+    def get_object(self, pk):
+        try:
+            return Invitation.objects.get(pk=pk)
+        except Invitation.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
+        print(request.data)
         serializer = InvitationSerializer(data=request.data, many=True)
         if(serializer.is_valid()):
+            print('is_valid')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -90,15 +103,18 @@ class InvitationAPI(APIView):
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        # invitations = Invitation.objects\
-        #     .select_related('relationship').filter(relationship__friend=request.user, relationship__subscribe=True)\
-        #         .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
-
         invitations = Invitation.objects\
             .select_related('guest').filter(guest=request.user.pk)\
-            .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])
-
-
-        # print(str(invitations.query))
+            .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
+                
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)  
+
+    def put(self, request, pk):
+        invitation = self.get_object(pk)
+        serializer = InvitationSerializer(invitation, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

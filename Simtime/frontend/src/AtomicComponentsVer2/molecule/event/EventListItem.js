@@ -117,7 +117,8 @@ const Empty = styled.li`
 `
 
 function EventListItem(props) {
-    const {id, event_name, event_place, event_date, event_time, tags, host, like, join} = props.event;
+    const {id, like, join, event} = props.invitation;
+    const {event_name, event_place, event_date, event_time} = event;
     if(id){
         return(
             <EventList {...props} className='list-event-item'>
@@ -141,20 +142,9 @@ function EventListItem(props) {
 export default EventListItem
 
 EventListItem.propTypes = {
-    event: PropTypes.object,
   };
 
 EventListItem.defaultProps = {
-    event: {
-        id: null,
-        event_name: "Simtime Test",
-        event_place: {name:null, address:null, lat:"", lng:""},
-        event_date: null,
-        event_time: null,
-        tags: null,
-        host: {name:"test", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
-        like: null,
-        join: null,
-    }
+
   };
   

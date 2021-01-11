@@ -3,8 +3,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { deleteEvent, joinEvent } from "../../../../redux/actions/events"
-// import {deleteInvitation} from "../../../../redux/actions/invitations"
+import { deleteEvent } from "../../../../redux/actions/events"
+import { toggleInvitations, deleteInvitation } from "../../../../redux/actions/invitations"
 
 import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
 import EventDetailContent from "../../../molecule/event/EventDetailContent"
@@ -44,26 +44,29 @@ const DeleteButton = styled(TextButton)``
 
 
 function EventDetail(props) {
-  const {isHost, invitation} = props;
+  const {isHost, invitation, toggleInvitations} = props;
   const {id, attendance, show, like, event} = invitation;
   const {event_name, event_date, tags, host} = event;
 
-  const deleteHandler=(eventId, date)=>{
+  const deleteEventHandler=(eventId, date)=>{
     props.deleteEvent(eventId, date);
     props.backHandler();
   }
 
-  const joinHandler=(invitationId)=>{
-
+  const deleteInvitationHandler=(invitationId, date)=>{
+    props.deleteInvitation(invitationId, date);
+    props.backHandler();
   }
+
+
   return (
         <Wrap>
           <EventDetailHeader  host={host} event_name={event_name} tags={tags} backHandler={props.backHandler}/>
-          <EventDetailContent {...event} like={like}/>
+          <EventDetailContent {...event} like={like} likeBtnClick={()=>toggleInvitations(invitation,'like')}/>
           <Buttons>
-            <JoinButton color="ST_BLUE" >Join</JoinButton>
-            {isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(event.id, event_date)}>delete</DeleteButton>}
-            {!isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteHandler(event.id, event_date)}>hide</DeleteButton>}
+            <JoinButton color={attendance? "ST_RED" :"ST_BLUE"} onClick={()=>toggleInvitations(invitation,'attendance')} > {attendance?"Cancel":"Join"} </JoinButton>
+            {isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteEventHandler(event.id, event_date)}>delete</DeleteButton>}
+            {!isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>hide</DeleteButton>}
           </Buttons>
         </Wrap>
     )
@@ -73,7 +76,8 @@ function EventDetail(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteEvent: (id,date) => dispatch(deleteEvent(id,date)),
-    joinEvent: ()=>dispatch(joinEvent())
+    // deleteInvitation: (id,date) => dispatch(deleteInvitation(id,date)),
+    toggleInvitations: (invitation, key)=>dispatch(toggleInvitations(invitation, key))
   };
 };
 

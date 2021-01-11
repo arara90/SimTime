@@ -1,12 +1,13 @@
+import { isCompositeComponent } from "react-dom/test-utils";
 import {
   GET_INVITATIONS,
   ADD_INVITATION,
-  DELETE_INVITATION
+  TOGGLE_INVITATION,
+  DELETE_INVITATION,
 } from "../actions/types";
 
 const initialState = {
   datas: [],
-  somthing: "text"
 };
 
 export default function(state = initialState, action) {
@@ -16,11 +17,30 @@ export default function(state = initialState, action) {
         ...state,
         datas: action.payload
       };
+
     case ADD_INVITATION:
+      var date = action.payload['event']['event_date']
+      var newData = []
+      if(state.datas[date]){
+        newData = state.datas[date].map((value) => {return value});
+      }
+
+      newData.push(action.payload)
+
       return {
         ...state,
-        datas: [...state.datas, action.payload]
+        datas: {...state.datas, [date]:newData}
       };
+
+    case TOGGLE_INVITATION:
+      var date = action.payload['event']['event_date']
+      var newData = state.datas[date].map(invitation => 
+        invitation.id == action.payload['id'] ? action.payload : invitation)
+      return {
+        ...state,
+        datas: {...state.datas, [date]: newData}
+      };
+
     case DELETE_INVITATION:
       return {
         ...state,

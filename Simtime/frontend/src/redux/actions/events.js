@@ -72,7 +72,12 @@ export const addEvent =  (event, img) => async (dispatch) =>{
       return axiosFormInstance
         .post("/api/events/create", formData)
         .then((response) => {
-          return response.data.id
+          //본인 to 본인 invitation 보내기
+          return dispatch(addInvitations(response.data.id, [response.data.host.id]))
+        })
+        .then((res)=>{
+          dispatch(createMessage({ addEvent: "Event Added" }));
+          return res.event.id
         })
         .catch((err) => {
           console.log(err)
@@ -82,11 +87,13 @@ export const addEvent =  (event, img) => async (dispatch) =>{
         .post("/api/events/create", event)
         .then((response) => {
           //본인 to 본인 invitation 보내기
-          return dispatch(addInvitations(response.data.id, [response.data.host.id]))
+          var resEvent = response.data
+          return dispatch(addInvitations(resEvent.id, [resEvent.host.id]))
         })
         .then((res)=>{
+          console.log('eventres', res)
           dispatch(createMessage({ addEvent: "Event Added" }));
-          return res.data[0].event.id
+          return res.event.id
         })
         .catch((err) => {
           dispatch(returnErrors(err, err.response.status));
@@ -122,3 +129,5 @@ export const editEvent = (event) => (dispatch) => {
       console.log(err)
     });
 };
+
+

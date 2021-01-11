@@ -29,6 +29,8 @@ export const EDIT_EVENT = "EDIT_EVENT";
 export const GET_INVITATIONS = "GET_INVITATIONS";
 export const ADD_INVITATION = "ADD_INVITATION";
 export const DELETE_INVITATION = "DELETE_INVITATION";
+export const TOGGLE_INVITATION = "TOGGLE_INVITATION";
+
 
 //Groups
 export const GET_GROUPS = "GET_GROUPS";
@@ -47,6 +49,7 @@ export const GET_FRIEND = "GET_FRIEND";
 export const ADD_FRIEND = "ADD_FRIEND";
 export const DELETE_FRIEND = "DELETE_FRIEND";
 export const EDIT_FRIEND = "EDIT_FRIEND";
+
 
 //loading
 export const START_LOADING = 'loading/START_LOADING'
