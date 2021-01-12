@@ -47,7 +47,7 @@ const LikeButton = styled(StatusButton)`
 const Users = styled.ul`
     width: 100%;
     margin-top: 0.5em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     padding: 0 1em 2px 1em;
     
     display: flex;
@@ -100,8 +100,8 @@ function EventDetailContent(props) {
                 <ParticipantsIcon className="fa-fw" />
                 {participants.map((p)=>{
                 return (
-                    <UserList key={p.name}>
-                        <StyledImageUser width="2em" height="2em" url={p.url}/>
+                    <UserList key={p.username}>
+                        <StyledImageUser title={p.username} width="2em" height="2em" url={p.profile_image}/>
                     </UserList>)
                 })}
             </Users>

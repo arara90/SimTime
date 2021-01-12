@@ -103,8 +103,7 @@ class InvitationAPI(APIView):
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        invitations = Invitation.objects\
-            .select_related('guest').filter(guest=request.user.pk)\
+        invitations = request.user.invitations\
             .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
             
         serializer = InvitationSerializer(invitations, many=True)

@@ -31,16 +31,13 @@ class InvitationSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         res = super().to_representation(instance)
-
         entryQuery = instance.invitations.filter(attendance=True)
-        entry=[]
-        for item in entryQuery:
-            entry.append(UserSerializer(item.guest).data)
+        participants=[]
 
-        res.update({
-            'host': UserSerializer(instance.host).data,
-            'entry': entry})
-            
+        for item in entryQuery:
+            participants.append(UserSerializer(item.guest).data)
+
+        res.update({ 'host': UserSerializer(instance.host).data, 'participants': participants})
         return res
 
     class Meta:

@@ -16,7 +16,8 @@ const Button = styled.button`
   }
 
   &:hover {
-    color: ${props=> props.selected ? Colors.ST_GRAY : Colors[props.color]};
+    color: ${props=> props.selected ? Colors[props.color] : Colors.ST_GRAY};
+    transform: scale(1.1, 1.1);
   }
 
 `

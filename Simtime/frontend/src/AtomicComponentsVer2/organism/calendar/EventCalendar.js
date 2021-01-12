@@ -29,16 +29,18 @@ function EventCalendar(props) {
   const renderEventLabel = (date)=>{
     if( invitations && date in invitations){
       return invitations[date].map((invitation)=>{ 
+        const {id, event} = invitation;
         return (
           <CalendarEventLabel
             join 
-            key={invitation.id} 
-            host = {invitation.event.host}
-            title={invitation.event.event_name}
-            time={invitation.event.event_time}
-            location={invitation.event.event_place.name}
-            tags = {invitation.event.tags}
-            color={invitation.event.color}
+            key={id} 
+            host = {event.host}
+            name = {event.event_name}
+            title={event.event_time + " | " + event.event_place.name}
+            time={event.event_time}
+            location={event.event_place.name}
+            tags = {event.tags}
+            color={event.color}
             onClick={(e) => invitationClickHandler(e, invitation)}
             />
           )}

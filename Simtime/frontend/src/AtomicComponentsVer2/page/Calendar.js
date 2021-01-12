@@ -174,7 +174,6 @@ function Calendar(props) {
                         dateClickHandler={dateCellClickHandler} 
                         invitationClickHandler={invitationClickHandler} 
                         selectedInvitation={selectedInvitation} 
-                        selectedDate={selectedDate} 
                         current={current} 
                         dates={weekDates} 
                         invitations={filteredInvitations} />
@@ -200,7 +199,6 @@ function Calendar(props) {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   invitations: state.invitations.datas,
-  addedEvent: state.events.selectedEvent,
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
   friendships: state.friends.friendships,
