@@ -117,26 +117,25 @@ const Empty = styled.li`
 `
 
 function EventListItem(props) {
-    const {id, like, join, event} = props.invitation;
-    const {event_name, event_place, event_date, event_time} = event;
-    if(id){
+    if(props.invitation){
+        const {id, like, join, event} = props.invitation;
         return(
             <EventList {...props} className='list-event-item'>
                 <Header>
-                <a href="#"><Title> {join? <CheckCircleIcon />: null} {event_name} </Title></a>
+                <a href="#"><Title> {join? <CheckCircleIcon />: null} {event.event_name} </Title></a>
                 <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
                 </Header>
                 <Content href="#" className="event-list-content">
-                    <Host url={host.profile_image}/>
+                    <Host url={event.host.profile_image}/>
                     <EventDesc>
-                        <Address>{event_place? event_place.name : null}</Address>
-                        <Time>{getStringDate(event_date, 'day')+"  "+event_time}</Time>
+                        <Address>{event.event_place? event.event_place.name : null}</Address>
+                        <Time>{getStringDate(event.event_date, 'day')+"  "+event.event_time}</Time>
                         {/* <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags> */}
                         {/* <Tags>{tags}</Tags> */}
                     </EventDesc>
                 </Content>
             </EventList>)
-    }else return <Empty > <ExclamationTriangleIcon /> <strong> No results :( </strong> </Empty>
+    }else return <Empty ><ExclamationTriangleIcon /> <strong> No results :( </strong> </Empty>
 }
 
 export default EventListItem

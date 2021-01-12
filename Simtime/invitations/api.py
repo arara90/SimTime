@@ -106,7 +106,7 @@ class InvitationAPI(APIView):
         invitations = Invitation.objects\
             .select_related('guest').filter(guest=request.user.pk)\
             .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
-                
+            
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)  
 

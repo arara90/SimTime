@@ -9,7 +9,10 @@ from datetime import datetime
 class InvitationSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        res.update({'event': EventSerializer(instance.event).data})
+        res.update({
+            'event': EventSerializer(instance.event).data,
+            })
+
         return res
 
     def to_internal_value(self, data):
@@ -28,7 +31,16 @@ class InvitationSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        res.update({'host': UserSerializer(instance.host).data})
+
+        entryQuery = instance.invitations.filter(attendance=True)
+        entry=[]
+        for item in entryQuery:
+            entry.append(UserSerializer(item.guest).data)
+
+        res.update({
+            'host': UserSerializer(instance.host).data,
+            'entry': entry})
+            
         return res
 
     class Meta:
