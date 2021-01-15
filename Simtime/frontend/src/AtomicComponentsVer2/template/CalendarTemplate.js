@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import * as Colors from "../Colors";
 
 const Wrap = styled.main`
   display: flex;
@@ -15,9 +16,10 @@ const Wrap = styled.main`
 
 const LeftSection = styled.section`
   width: 68.5%;
-  height: 680px;
+  height: auto;
   display: flex;
   flex-direction: column;
+  // background-color:  ${Colors.BG_INACTIVE_LIGHT};
 
   @media only screen and (max-width: 920px) {
     width: 100%;
@@ -25,10 +27,12 @@ const LeftSection = styled.section`
 `
 const RightSection = styled.section`
   width: 31%;
-  height: 680px;
+  height: auto;
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
+
+  // background-color:  ${Colors.BG_INACTIVE_LIGHT};
 
   @media only screen and (max-width: 920px) {
     width: 100%;
@@ -37,15 +41,6 @@ const RightSection = styled.section`
 
 const LeftTop = styled.div`
   width: 100%;
-  height: 45px;
-  margin-bottom: 5px;
-
-  // display:flex;
-  // flex-direction: row;
-  // justify-content: flex-start;
-  // align-items: center;
-  // background: lightcoral;
-
   @media only screen and (max-width: 920px) {
     height: 40px;
   }
@@ -55,14 +50,10 @@ const LeftTop = styled.div`
 const LeftBottom = styled.section`
   width: 100%;
   flex: 1;
-  // background: pink;
 `
 
 const RightTop = styled.div`
-  height: 45px;
   width: 100%;
-  // background: gray;
-
   @media only screen and (max-width: 920px) {
     display: none;
   }
@@ -71,21 +62,20 @@ const RightTop = styled.div`
 const RightBottom = styled.section`
   width: 100%;
   flex: 1;
-  // font-size: 13px;
 `
 
 
 const CalendarTemplate = ({children, ...props }) => {
-  const {leftTop, leftBottom, rightTop, rightBottom} = props;
+  const {leftTop, leftBottom, rightTop, rightBottom } = props;
   return (
     <Wrap>
       <LeftSection>
         <LeftTop>{leftTop}</LeftTop>
-        <LeftBottom>{leftBottom} </LeftBottom>
+        <LeftBottom >{leftBottom} </LeftBottom>
       </LeftSection>
       <RightSection>
-        <RightTop>{rightTop}</RightTop>
-        <RightBottom>{rightBottom}</RightBottom>
+        <RightTop >{rightTop}</RightTop>
+        <RightBottom >{rightBottom}</RightBottom>
       </RightSection>
     </Wrap>
   );

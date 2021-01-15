@@ -19,7 +19,7 @@ const Wrap = styled(CalendarCell)`
   
 `;
 
-const ContentWrap = styled.div`
+const ContentWrap = styled.ul`
   width: 100%;
   flex: 1;
   overflow: auto;

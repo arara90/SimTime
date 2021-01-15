@@ -9,7 +9,7 @@ import Table from "../../B-Molecules/Table/Table";
 import FriendList from "../../C-Organisms/Friends/Lists/FriendList";
 import AddFriend from "../../C-Organisms/Friends/Modals/Friends/AddFriend";
 
-function Friends(props) {
+function FriendSection(props) {
   const { handleContextModal, closeContextModal } = useContext(ModalContext);
   return (
     <Table
@@ -32,16 +32,16 @@ function Friends(props) {
   );
 }
 
-export default React.memo(Friends);
+export default React.memo(FriendSection);
 
-Friends.propTypes = {
+FriendSection.propTypes = {
   rowNum: PropTypes.number,
   rowHeight: PropTypes.string,
   width: PropTypes.string,
   friends: PropTypes.array,
 };
 
-Friends.defaultProps = {
+FriendSection.defaultProps = {
   rowNum: 6,
   rowHeight: "45px",
   width: "100%",

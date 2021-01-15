@@ -17,14 +17,14 @@ const Button = styled.button`
 
   &:hover {
     color: ${props=> props.selected ? Colors[props.color] : Colors.ST_GRAY};
-    transform: scale(1.1, 1.1);
+    transform: scale(1.2, 1.2);
   }
 
 `
 function StatusButton(props) {
 
     return (
-        <Button {...props} className={['btn', 'status-btn', props.className].join(' ')} type={props.type} >
+        <Button {...props}>
           {props.children}
         </Button>
     )

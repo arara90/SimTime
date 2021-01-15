@@ -9,6 +9,7 @@ import {getStringDate} from "../../../../redux/actions/calendar"
 
 const Wrap = styled.div`
   width: 100%;
+  height: 100%;
   border : solid 1px ${Colors.MAIN_COLOR};
   // border-bottom: 0px;
   display: flex;

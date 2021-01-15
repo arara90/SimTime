@@ -7,9 +7,9 @@ import {addInvitations} from "./invitations"
 import {
   GET_EVENTS,
   GET_EVENT,
-  ADD_EVENT,
   DELETE_EVENT,
   EDIT_EVENT,
+  DELETE_INVITATION,
   GET_ERRORS,
   CREATE_MESSAGE,
   START_LOADING,
@@ -26,11 +26,9 @@ function separateEventTime(data){
 }
 
 export const getEvents = (start, end) => (dispatch) => {
-  console.log(start, end)
   axiosFormInstance
     .get(`/api/events/${start}/${end}`)
     .then((res={data:[]}) => {
-      console.log('getEve Success', res)
       var transformed = {}
       res.data.map((d)=>{
         var separated = separateEventTime(d)
@@ -41,7 +39,6 @@ export const getEvents = (start, end) => (dispatch) => {
           transformed[date] = [...transformed[date], separated]
         }
       })
-      console.log('ev transformed', transformed)
       dispatch({type: GET_EVENTS,payload: transformed,});
     })
     .catch((err) =>{
@@ -111,6 +108,7 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     .then(() => {
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
       dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
+      dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
     })
     .catch((err) => {
       // dispatch(returnErrors(err, err.response.status));

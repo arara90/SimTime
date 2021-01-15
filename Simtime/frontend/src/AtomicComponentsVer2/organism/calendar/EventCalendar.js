@@ -5,15 +5,23 @@ import * as Colors from "../../Colors"
 
 import CalendarMonthCell from "../../molecule/calendar/CalendarMonthCell" 
 import CalendarEventLabel from "../../molecule/calendar/CalendarEventLabel"
+import SolidButton from "../../atom/buttons/SolidButton"
 
 
 const Wrap = styled.div`
   width: 100%;
   background-color:  ${Colors.BG_INACTIVE_LIGHT};
-  height: 40em;
-  overflow: hidden;
+  height: 42em;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
 `
 
+const CalendarWrap = styled.div`
+  flex: 1;
+`
 const Week = styled.div`
   width: 100%;
   height: 8em;
@@ -23,17 +31,28 @@ const Week = styled.div`
   align-items: flex-start;
 `
 
+const More = styled(SolidButton)`
+  height: 2em;
+  opacity: 65%;
+
+  &:hover{
+    opacity: 50%;
+  }
+`
+
+
 function EventCalendar(props) {
-  const { dateClickHandler, invitationClickHandler, dates, invitations } = props;
+  const { current, dateClickHandler, invitationClickHandler, dates, invitations, moreClickHandler } = props;
 
   const renderEventLabel = (date)=>{
     if( invitations && date in invitations){
       return invitations[date].map((invitation)=>{ 
-        const {id, event} = invitation;
+        const {id, event, attendance} = invitation;
         return (
           <CalendarEventLabel
             join 
-            key={id} 
+            key={id}
+            attendance={attendance}
             host = {event.host}
             name = {event.event_name}
             title={event.event_time + " | " + event.event_place.name}
@@ -62,7 +81,8 @@ function EventCalendar(props) {
                 day={parseInt(date.day)}
                 isActive={date.isActive}
                 isToday={date.id == "0D"}
-                isActiveMonth={true}
+                // isActiveMonth={current.getMonth()+1 == parseInt(date.month)}
+                isActiveMonth={current.getMonth()+1 == parseInt(date.month)}
                 onClick={(e) =>dateClickHandler(e, date.strDate)}
               >
                 {renderEventLabel(date.strDate)}
@@ -77,14 +97,17 @@ function EventCalendar(props) {
   
     return (
       <Wrap {...props} onScroll={props.scrollHandler}>
-        {renderCalendarCells(dates)}
+        <CalendarWrap>{renderCalendarCells(dates)}</CalendarWrap>
+        {/* <More color={'ST_GRAY'} onClick={moreClickHandler}>More</More> */}
       </Wrap>
     )
 }
 
 export default EventCalendar
 
-EventCalendar.propTypes = {};
+EventCalendar.propTypes = {
+  current: PropTypes.object
+};
 
 EventCalendar.defaultProps = {};
   

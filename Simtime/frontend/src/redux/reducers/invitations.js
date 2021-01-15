@@ -7,7 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  datas: [],
+  datas: {},
 };
 
 export default function(state = initialState, action) {
@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
     case GET_INVITATIONS:
       return {
         ...state,
-        datas: action.payload
+        datas: {...state.datas, ...action.payload}
       };
 
     case ADD_INVITATION:

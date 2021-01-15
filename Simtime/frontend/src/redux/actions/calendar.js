@@ -1,12 +1,14 @@
-import { func } from "prop-types";
-
 export function getStringDate(date, type='month'){
   const now = new Date(date)
   var year = now.getFullYear().toString();
-  var month = (now.getMonth() + 1).toString();
+  var month = ('0'.concat(now.getMonth() + 1).toString()).slice(-2);
   var date = now.getDate().toString();
   var day = now.getDay().toString().substr(0,3);
 
+  var koMonth = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  var engMonth = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var engMonthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  
   var koWeek = ['일', '월', '화', '수', '목', '금', '토'];
   var engWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -125,18 +127,25 @@ export function generate(currDate, num=0) {
   var endDate = new Date();
 
 
-  if(num==0){
+  if(num==0){//monthly
     weekDay = firstDay.getDay();
     offset = 7 - parseInt((lastDay.getDate() + weekDay) % 7);
     startDate = addDate(firstDay, weekDay * -1);
     endDate = addDate(lastDay, offset < 7 ? offset : 0);
-
-
   }else {
     weekDay = currDate.getDay();
-    offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
-    startDate = addDate(currDate, weekDay * -1);
-    endDate = addDate(currDate, offset); 
+
+    if(num>0){
+      offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
+      startDate = addDate(currDate, weekDay * -1);
+      endDate = addDate(currDate, offset); 
+    }else{
+      offset = ( (7 *( num -1 ))  + 7 - weekDay); // num weeks
+      endDate = addDate(currDate, weekDay * -1);
+      startDate = addDate(currDate, offset);
+      
+      console.log('currDate, offset', currDate, offset, weekDay)
+    }
   }
 
   var curr = new Date(startDate);

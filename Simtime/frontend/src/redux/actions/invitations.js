@@ -1,6 +1,6 @@
 import { axiosInstance } from "./axiosApi";
 import { createMessage, returnErrors } from "./messages";
-import {getStrFullDate , getFullTime} from "./calendar"
+import { getStrFullDate , getFullTime } from "./calendar"
 
 import {
   GET_INVITATIONS,
@@ -12,23 +12,6 @@ import {
   GET_EVENTS,
 } from "./types";
 
-
-
-// function tranformPayload(data){
-//   console.log('tranformPayload', data)
-//   var transformed = {}
-//   data.map((item)=>{
-//     var separated = separateTime(item.event)
-//     var date = separated.event_date
-//     if( transformed[date]==undefined){
-//       transformed[date] = [{...item, 'event': separated}]
-//     }else{
-//       transformed[date] = [...transformed[date], {...item, 'event': separated}]
-//     }
-//   })
-
-//   return transformed
-// }
 
 function separateTime(data){
   var res = {...data}
@@ -84,7 +67,6 @@ export const getInvitations = (start, end) => (dispatch) => {
           transformed[date] = [...transformed[date], {...item, 'event': separated}]
         }
       })
-      console.log('inv transformed',transformed)
       dispatch({type: GET_INVITATIONS, payload: transformed,});
     })
     .catch((err) =>{

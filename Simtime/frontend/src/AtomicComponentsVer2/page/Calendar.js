@@ -25,12 +25,17 @@ import {getInvitations, addInvitations, acceptInvitations} from "../../redux/act
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
 
+
+const topHeight='2.5em';
+
 const NewButton = styled(TextButton)`
   width: 100%;
   border-radius: 0;
   font-weight: bold;
   font-size: 1.25em;
   border: solid 1px ${MAIN_COLOR};
+
+  margin-bottom: 0.5em;
 `
 
 const Pencil = styled(PencilIcon)`
@@ -39,28 +44,24 @@ const Pencil = styled(PencilIcon)`
   font-size: 1rem;
 `
 
-const Error = styled.div`
-width: 200px;
-height: 200px;
-background: red;
-`
 
 function Calendar(props) {
   //1.props
   // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, friendships ,invitations, loading} = props;
   const {getFriends, getGroups, getInvitations, addInvitations, addEvent, loading, user, groups, friendships, invitations} = props;
 
-
   //2.context
   const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
 
   //3.state
   ////calenedar 관련 
-  const [current, setCurrent] = useState(new Date()); 
-  const [weekDates, setWeekDates] = useState([]); 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [current, setCurrent] = useState(new Date()); //현재 화면에 보이는 첫번째 날짜
+  const [startDate, setStartDate] = useState(""); //지금까지 읽어온 데이터 중 첫번째 날짜
+  const [endDate, setEndDate] = useState("");//지금까지 읽어온 데이터 중 마지막날짜
+  const [weekDates, setWeekDates] = useState([]); //지금까지 읽은 전체 날짜들
+
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
+
   ////data
   const [filteredInvitations, setFilteredInvitations] = useState({}) 
   const [selectedInvitation, setSelectedInvitation] = useState({}) 
@@ -73,7 +74,9 @@ function Calendar(props) {
   //4.hooks - useEffect
   //// initialization
   useEffect(()=>{ 
-    var {start, end, weeks} = generate(current, 5);
+    var {start, end, weeks} = generate(new Date(), 6);
+
+    setCurrent(start)
     setStartDate(start)
     setEndDate(end)
     setWeekDates(weeks)
@@ -82,6 +85,11 @@ function Calendar(props) {
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
   }, [])
+
+  useEffect(()=>{ 
+
+
+  }, [current])
 
   useEffect(()=>{ 
     //filter 적용
@@ -123,18 +131,44 @@ function Calendar(props) {
   //// modal
   const closeModal = () => setModalContent(null)
   //// click date cell
-  const dateCellClickHandler = (e, date) =>{
+  const dateClickHandler = (e, date) =>{
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
   }
-  //// click invitation
-  const invitationClickHandler = (e, invitation) =>{
-    e.stopPropagation();
-    setSelectedInvitation(invitation);
-    setSelectedDate(invitation.event.event_date)
-    setShowDetail(true);
+
+ const monthClickHandler=(res)=>{
+  var newDate = new Date(getStrFullDate(res, 'date'))
+  var dataStart = ''
+  var dataEnd = ''
+  
+  if(res<startDate){//Prev
+    var { start, weeks } = generate(newDate, 0);
+    dataStart = getStrFullDate(start, "yyyy-mm-dd");
+    dataEnd = getStrFullDate(new Date(addDate(startDate, -1)), "yyyy-mm-dd"); 
+    setStartDate(start)
+    setWeekDates(weeks)
+  }else{//Next
+    var { end, weeks } = generate(newDate, 0);
+    dataStart = getStrFullDate(new Date(addDate(endDate, 1)), "yyyy-mm-dd"); 
+    dataEnd = getStrFullDate(end, "yyyy-mm-dd");;
+    setEndDate(end)
+    setWeekDates(weeks)
+    
   }
+
+  setCurrent(res)
+  getInvitations(dataStart, dataEnd);
+ }
+
+//// click invitation
+  const invitationClickHandler = (e, invitation) =>{
+  e.stopPropagation();
+  setSelectedInvitation(invitation);
+  setSelectedDate(invitation.event.event_date)
+  setShowDetail(true);
+}
+
   //// submit new event
   const eventSubmitHandler = async (event, image) =>{
     try{
@@ -167,29 +201,32 @@ function Calendar(props) {
 
   return (
     <Fragment>
-      {loading&&<PencilIcon>Loading</PencilIcon>}
+      {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
-        leftTop     = {<Filters current={selectedDate} dateHandler={setCurrent}/>}  
+        leftTop     = {<Filters height={topHeight} current={current} dateHandler={monthClickHandler}/>}  
         leftBottom  = {<EventCalendar 
-                        dateClickHandler={dateCellClickHandler} 
+                        dateClickHandler={dateClickHandler}
                         invitationClickHandler={invitationClickHandler} 
                         selectedInvitation={selectedInvitation} 
                         current={current} 
                         dates={weekDates} 
                         invitations={filteredInvitations} />
                       } 
-        rightTop    = { <NewButton color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
+        rightTop    = { <NewButton  height={topHeight} color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
                           <Pencil />New Event
                         </NewButton> 
                       }
         rightBottom = {showDetail ? 
                        <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
-                       <EventList invitations={filteredInvitations ? filteredInvitations[selectedDate] : [] } current={selectedDate}
-                          dateHandler={setSelectedDate}
-                          itemClickHandler={(e, invitation)=>{
-                            e.preventDefault();
-                            setShowDetail(true);
-                            setSelectedInvitation(invitation)} } /> 
+                       <EventList 
+                        invitations={filteredInvitations ? filteredInvitations[selectedDate] : [] }
+                        current={selectedDate}
+                        dateHandler={setSelectedDate}
+                        itemClickHandler={(e, invitation)=>{
+                          e.preventDefault();
+                          setShowDetail(true);
+                          setSelectedInvitation(invitation)} } /> 
+
                       }
       />
       </Fragment>

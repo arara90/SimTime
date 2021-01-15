@@ -25,6 +25,8 @@ h1, h2, h3, h4, h5, h6{
   padding: 0;
 }
 
+
+
 .app-contents{
   float: left;
   width: 920px;
@@ -58,6 +60,7 @@ h1, h2, h3, h4, h5, h6{
 
 &::-webkit-scrollbar-track {
   background-color: ${Colors.ST_SEMI_GRAY};
+  border-radius: 5px;
   box-shadow: inset 0px 0px 3x white;
 }
 
@@ -76,16 +79,16 @@ a{
   }
 }
 
-button{
+
+.btn-simtime{
   background-color: transparent;
   border: 1px solid transparent;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+
 };
-
-`;
-
+`
 // strong{}
 // em{}
 // ins{}

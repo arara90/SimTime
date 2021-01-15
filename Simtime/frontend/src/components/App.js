@@ -14,19 +14,21 @@ import store from "../store";
 import { loadUser } from "../redux/actions/auth";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import GlobalStyle from "../AtomicComponents/GlobalStyle";
+
 import Header from "../AtomicComponents/D-Templates/Header";
 
 //Page
 // import CalendarPage from "../AtomicComponents/E-Pages/CalendarPage";
-import Calendar from "../AtomicComponentsVer2/page/Calendar";
 import FriendsPage from "../AtomicComponents/E-Pages/FriendsPage";
-import MySimtimePage from "../AtomicComponents/E-Pages/MySimtimePage";
+import Calendar from "../AtomicComponentsVer2/page/Calendar";
+import Friends from "../AtomicComponentsVer2/page/Friends";
+import MySimtime from "../AtomicComponentsVer2/page/MySimtime";
 import Components from "../AtomicComponentsVer2/Components";
 
 import { ModalProvider } from "../contexts/modalContext";
 import { MenuProvider } from "../contexts/menuContext";
 
+import GlobalStyle from "../AtomicComponents/GlobalStyle";
 const alertOptions = {
   timeout: 3000,
   position: "top center",
@@ -94,7 +96,7 @@ class App extends Component {
                       <PrivateRoute
                         exact
                         path="/mysimtime"
-                        component={MySimtimePage}
+                        component={MySimtime}
                       />
                       <Route
                         exact

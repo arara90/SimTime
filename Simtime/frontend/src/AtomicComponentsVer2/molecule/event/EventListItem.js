@@ -135,7 +135,7 @@ function EventListItem(props) {
                     </EventDesc>
                 </Content>
             </EventList>)
-    }else return <Empty ><ExclamationTriangleIcon /> <strong> No results :( </strong> </Empty>
+    }else return <Empty><ExclamationTriangleIcon /><strong> No results :( </strong> </Empty>
 }
 
 export default EventListItem

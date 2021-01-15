@@ -12,8 +12,8 @@ import { ST_WHITE, ST_GRAY } from "../Colors";
 
 import Header from "../A-Atomics/Font/Header";
 // import Search from "../B-Molecules/Filter/Search";
-import Friends from "../D-Templates/Friends/Friends";
-import Groups from "../D-Templates/Friends/Groups";
+import FriendSection from "../D-Templates/Friends/FriendSection";
+import GroupSection from "../D-Templates/Friends/GroupSection";
 
 const Wrap = styled.div`
   overflow: hidden;
@@ -66,13 +66,13 @@ function FriendsPage(props) {
           {/* <StyledSearch width="125px" desc="Find a friend" height="25px" /> */}
         </SectionTitle>
         <ContentWrap>
-          <Friends
+          <FriendSection
             friendships={friendships}
             rowNum={6}
             rowHeight="45px"
             width="48%"
           />
-          <Friends
+          <FriendSection
             friendships={friendships}
             rowNum={6}
             rowHeight="45px"
@@ -86,7 +86,7 @@ function FriendsPage(props) {
           Group
         </Header>
         <ContentWrap>
-          <Groups
+          <GroupSection
             groups={groups}
             selectedGroup={selectedGroup}
             friendships={friendships}

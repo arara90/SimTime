@@ -24,7 +24,7 @@ const CalendarWrap = styled.div`
 function Calendar(props) {
   const { currDate } = props;
   // 5weeks 보여주기
-  var dates = generate(currDate, 5); //["2020-4-12", 0, false, "12" ] [날짜, day(요일), isActive, date]
+  var dates = generate(currDate, 6); //["2020-4-12", 0, false, "12" ] [날짜, day(요일), isActive, date]
 
   const renderWeek = () => {
     return dates.map((week, index) => {
