@@ -36,28 +36,21 @@ function CalendarHeader(props) {
     const changeDate = (num)=>{
         var curr = new Date(current)
         var res = new Date(current)
-
+        var newMonth = null
 
         if(type=='year'){
             res.setYear(curr.getFullYear() + num);
         } else if(type=='month') {
-            if(num>0){
-                var newMonth = curr.getMonth() + num 
-            }else{
-                console.log('ddddddd', curr.getMonth() + num + 1 )
-                var newMonth = (curr.getDate()==1  ? curr.getMonth() + num : curr.getMonth())
-            }
-
+            if(num>0) newMonth = curr.getMonth() + num  //next Month
+            else newMonth = (curr.getDate()==1  ? curr.getMonth() + num : curr.getMonth()) //prev Month
+            
             res.setMonth(newMonth);
             res.setDate(1);
         } else {
             res.setDate(curr.getDate() + num); 
         } 
 
-        console.log(current, res)
-        // clickHandler(getStrFullDate(res, 'date'))
         clickHandler(res) //res는 날짜 object
-
     }
 
     

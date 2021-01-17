@@ -11,9 +11,7 @@ import SolidButton from "../../atom/buttons/SolidButton"
 const Wrap = styled.div`
   width: 100%;
   background-color:  ${Colors.BG_INACTIVE_LIGHT};
-  height: 42em;
-  overflow-y: auto;
-  overflow-x: hidden;
+  // height: 42em;
 
   display: flex;
   flex-direction: column;
@@ -43,23 +41,21 @@ const More = styled(SolidButton)`
 
 function EventCalendar(props) {
   const { current, dateClickHandler, invitationClickHandler, dates, invitations, moreClickHandler } = props;
-
+  
   const renderEventLabel = (date)=>{
     if( invitations && date in invitations){
-      return invitations[date].map((invitation)=>{ 
-        const {id, event, attendance} = invitation;
+      return invitations[date].map((invitation)=>{
+  
         return (
           <CalendarEventLabel
-            join 
-            key={id}
-            attendance={attendance}
-            host = {event.host}
-            name = {event.event_name}
-            title={event.event_time + " | " + event.event_place.name}
-            time={event.event_time}
-            location={event.event_place.name}
-            tags = {event.tags}
-            color={event.color}
+            key={invitation.id}
+            attendance = {invitation.attendance}  
+            host = {invitation.event.host}
+            title={invitation.event.event_name}
+            time={invitation.event.event_time}
+            location={invitation.event.event_place.name}
+            tags = {invitation.event.tags}
+            color={invitation.event.color}
             onClick={(e) => invitationClickHandler(e, invitation)}
             />
           )}
@@ -68,21 +64,22 @@ function EventCalendar(props) {
     }
 
   const renderCalendarCells = (weeks, events={}) => {
-    return Object.keys(weeks).map((week, index) => {
+    var firstDaysOfweeks = [...weeks.keys()]
+    return firstDaysOfweeks.map((firstDay, index) => {
+      var days = weeks.get(firstDay)
       return(
-      <Week key={week}>
-        { weeks[week].weekDates.map((date, index) => {
+      <Week key={firstDay}>
+        { days.map((date, index) => {
             return (
               <CalendarMonthCell
-                key={date.id}
+                key={date.strDate}
                 year={parseInt(date.year)}
                 month={parseInt(date.month)}
                 date={parseInt(date.date)}
                 day={parseInt(date.day)}
                 isActive={date.isActive}
                 isToday={date.id == "0D"}
-                // isActiveMonth={current.getMonth()+1 == parseInt(date.month)}
-                isActiveMonth={current.getMonth()+1 == parseInt(date.month)}
+                isActiveMonth={ parseInt(date.month) == current.getMonth()+1}
                 onClick={(e) =>dateClickHandler(e, date.strDate)}
               >
                 {renderEventLabel(date.strDate)}
@@ -95,10 +92,64 @@ function EventCalendar(props) {
     // return <div>ddd{console.log('myweeks', weeks)}</div>
   };
   
+  // const renderCalendarCells = (weeks, events={}) => {
+  //   return weeks.map((week, index) => {
+  //     return(
+  //       <Week>
+  //         {Object.values(week).map((date, index) => {
+  //           console.log(date)
+  //             return (
+  //               <CalendarMonthCell
+  //                 key={date.id}
+  //                 year={parseInt(date.year)}
+  //                 month={parseInt(date.month)}
+  //                 date={parseInt(date.date)}
+  //                 day={parseInt(date.day)}
+  //                 isActive={date.isActive}
+  //                 isToday={date.id == "0D"}
+  //                 isActiveMonth={true}
+  //                 onClick={(e) =>dateClickHandler(e, date.strDate)}
+  //               >
+  //                 {renderEventLabel(date.strDate)}
+  //               </CalendarMonthCell>
+  //             );
+  //           })
+  //         }
+  //       </Week>)
+  //   });
+  //   // return <div>ddd{console.log('myweeks', weeks)}</div>
+  // };
+
+    
+//   const renderCalendarCells = (weeks, events={}) => {
+//     return weeks.map((week, index) => {
+//       return Object.keys(week).map((key, index) => {
+//         return (
+//           <Week>
+//             {week[key].map((date, index) => {
+//               return (
+//                 <CalendarMonthCell
+//                   key={date.id}
+//                   year={parseInt(date.year)}
+//                   month={parseInt(date.month)}
+//                   date={parseInt(date.date)}
+//                   day={parseInt(date.day)}
+//                   isActive={date.isActive}
+//                   isToday={date.id == "0D"}
+//                   isActiveMonth={true}
+//                   onClick={(e) =>dateClickHandler(e, date.strDate)}
+//                 >{renderEventLabel(date.strDate)}
+//                 </CalendarMonthCell>
+//               )
+//               })}
+//           </Week>)
+//     });
+//   });
+// }
+
     return (
       <Wrap {...props} onScroll={props.scrollHandler}>
-        <CalendarWrap>{renderCalendarCells(dates)}</CalendarWrap>
-        {/* <More color={'ST_GRAY'} onClick={moreClickHandler}>More</More> */}
+        {renderCalendarCells(dates)}
       </Wrap>
     )
 }

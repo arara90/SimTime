@@ -15,10 +15,20 @@ import AccountInfo from "../C-Organisms/Header/AccountInfo"
 //import Account from "../B-Molecules/User/Account";
 
 const Wrap = styled.header`
+  max-width: 1300px;
+  width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  margin-bottom: 15px;
+  border-top: solid 8px ${MAIN_COLOR};
+  background: white;
+
   display: flex;
   flex-direction: column;
                                       
-  margin-bottom: 15px;
+
   @media only screen and (max-width: 680px) {
     margin-bottom: 0px;
   }

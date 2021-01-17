@@ -19,7 +19,7 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
-import {generate, getStrFullDate, addDate} from "../../redux/actions/calendar"
+import {generate, getStrFullDate, addDate, subWeek} from "../../redux/actions/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
 import {getInvitations, addInvitations, acceptInvitations} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
@@ -58,7 +58,7 @@ function Calendar(props) {
   const [current, setCurrent] = useState(new Date()); //현재 화면에 보이는 첫번째 날짜
   const [startDate, setStartDate] = useState(""); //지금까지 읽어온 데이터 중 첫번째 날짜
   const [endDate, setEndDate] = useState("");//지금까지 읽어온 데이터 중 마지막날짜
-  const [weekDates, setWeekDates] = useState([]); //지금까지 읽은 전체 날짜들
+  const [weekDates, setWeekDates] = useState(new Map()); //지금까지 읽은 전체 날짜들
 
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
 
@@ -86,10 +86,6 @@ function Calendar(props) {
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
   }, [])
 
-  useEffect(()=>{ 
-
-
-  }, [current])
 
   useEffect(()=>{ 
     //filter 적용
@@ -141,25 +137,54 @@ function Calendar(props) {
   var newDate = new Date(getStrFullDate(res, 'date'))
   var dataStart = ''
   var dataEnd = ''
-  
+  var newWeekDates = new Map()
+
   if(res<startDate){//Prev
     var { start, weeks } = generate(newDate, 0);
-    dataStart = getStrFullDate(start, "yyyy-mm-dd");
-    dataEnd = getStrFullDate(new Date(addDate(startDate, -1)), "yyyy-mm-dd"); 
-    setStartDate(start)
-    setWeekDates(weeks)
-  }else{//Next
-    var { end, weeks } = generate(newDate, 0);
-    dataStart = getStrFullDate(new Date(addDate(endDate, 1)), "yyyy-mm-dd"); 
-    dataEnd = getStrFullDate(end, "yyyy-mm-dd");;
-    setEndDate(end)
-    setWeekDates(weeks)
-    
-  }
+    if(start < startDate ){
+      //data 구간 구하기
+      dataStart = getStrFullDate(start, "yyyy-mm-dd");
+      dataEnd = getStrFullDate(new Date(addDate(startDate, -1)), "yyyy-mm-dd"); 
 
+      //새로 읽어온 주차 먼저 입력 후, 그 다음 기존값 붙여넣기
+      weeks.forEach((v,k)=>newWeekDates.set(k,v))
+      weekDates.forEach((v,k)=>newWeekDates.set(k,v))
+
+      //setStates
+      setStartDate(start)
+      setWeekDates(newWeekDates)
+
+      getInvitations(dataStart, dataEnd);
+    }
+
+  }else{//Nexts
+    var { end, weeks } = generate(newDate, 0);
+    if(end > endDate ){
+      //data 구간 구하기
+      dataStart = getStrFullDate(new Date(addDate(endDate, 1)), "yyyy-mm-dd"); 
+      dataEnd = getStrFullDate(end, "yyyy-mm-dd");
+
+      // 기존값에 새로 읽은 주차 붙이기
+      newWeekDates = new Map(weekDates)
+      weeks.forEach((v,k)=>newWeekDates.set(k,v))
+
+      //set States
+      setEndDate(end)
+      setWeekDates(newWeekDates)
+
+      getInvitations(dataStart, dataEnd);
+    }
+  }
   setCurrent(res)
-  getInvitations(dataStart, dataEnd);
  }
+
+
+
+
+
+
+ 
+
 
 //// click invitation
   const invitationClickHandler = (e, invitation) =>{

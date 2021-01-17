@@ -45,12 +45,9 @@ function Filters(props) {
     
     return (
       <Wrap {...props}>
-        {/* <CalendarHeader size="1.2em" type="month" current={current} clickHandler={props.dateHandler} >
-          {getStringDate(current,"month")}
-        </CalendarHeader> */}
       <Left></Left>
       <Center>
-        <CalendarHeader size="1.2em" type="month" current={current} clickHandler={props.dateHandler} >
+        <CalendarHeader size="1.2em" type="month" current={current} clickHandler={dateHandler} >
           {getStringDate(current,"month")}
         </CalendarHeader>
         </Center>

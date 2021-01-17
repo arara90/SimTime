@@ -7,12 +7,14 @@ const GlobalStyle = createGlobalStyle`
   font-family: "roboto", "Source Sans";
 }
 
-width: 100%;
+html{
+  scroll-behavior: smooth;
+}
 
 #app{
-    display: flex;
-    flex-direction: row;
-    justify-content : center;
+  box-shadow: none;
+  max-width: 1300px;
+  margin: 0px auto;
 }
 
 dl, ol, ul {
@@ -26,11 +28,13 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .app-contents{
-  float: left;
-  width: 920px;
-  padding: 0 0.5rem 0.5rem 0.5rem;
-  border-top: solid 8px ${Colors.MAIN_COLOR};
 
+  // float: left;
+  // width: 920px;
+  padding: 0 10px 0.5rem 10px;
+
+  // border-top: solid 8px ${Colors.MAIN_COLOR};
+  position: relative;
   @media only screen and (max-width: 768px) {
     width: 100%;
     padding: 0 0 0 0;

@@ -103,8 +103,10 @@ export function addDate(date, num) {
 }
 
 export function subDate(date1, date2) {
+  var a = new Date(date1)
+  var b = new Date(date2)
   return Math.floor(
-    (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)
+    (a.getTime() - b.getTime()) / (1000 * 60 * 60 * 24) + 1
   );
 }
 
@@ -150,19 +152,57 @@ export function generate(currDate, num=0) {
 
   var curr = new Date(startDate);
 
+  // //한 주차씩 담기용
+  // var weekDates_orgin = [];
+  // var weekDates = [];
+
+  // //최종 배열
+  // var dates_origin = [];
+  // var dates = [];
+
+  // while (curr <= endDate) {
+  //   //week별 저장
+  //   weekDates_orgin.push({ id: `${subDate(today, curr)}D`, day: curr });
+  //   weekDates.push({
+  //      id: `${subDate(today, curr)}D`,
+  //     strDate: getStrFullDate(curr, "yyyy-mm-dd"), //"2020-04-15"
+  //     year: curr.getUTCFullYear(),
+  //     month: curr.getMonth() + 1,
+  //     day: curr.getDay(), // 0~6
+  //     isActive: getStrFullDate(curr) >= getStrFullDate(today),
+  //     isActiveMonth:
+  //       getStrFullDate(curr).substr(0, 6) ==
+  //       getStrFullDate(currDate).substr(0, 6),
+  //     date: curr.getDate().toString(), // "15"
+  //   });
+
+  //   //다음날 저장
+  //   curr.setDate(curr.getDate() + 1);
+
+  //   if (curr.getDay() == 0) {
+  //     dates_origin.push({
+  //       id: `${subWeek(today, curr)}W`,
+  //       weekDates: weekDates_orgin,
+  //     });
+
+  //     dates.push({ [weekDates[0].strDate]: weekDates });
+  //     weekDates_orgin = [];
+  //     weekDates = [];
+  //   }
+  // }
+  
   //한 주차씩 담기용
-  var weekDates_orgin = [];
-  var weekDates = [];
+  var weekDates_orgin = new Map();
+  var weekDates =  []
+  var data = {};
 
   //최종 배열
-  var dates_origin = [];
-  var dates = [];
+  var dates_origin =  new Map();
+  var dates =  new Map();
 
   while (curr <= endDate) {
     //week별 저장
-    weekDates_orgin.push({ id: `${subDate(today, curr)}D`, day: curr });
-    weekDates.push({
-      id: `${subDate(today, curr)}D`,
+    data = {
       strDate: getStrFullDate(curr, "yyyy-mm-dd"), //"2020-04-15"
       year: curr.getUTCFullYear(),
       month: curr.getMonth() + 1,
@@ -172,22 +212,24 @@ export function generate(currDate, num=0) {
         getStrFullDate(curr).substr(0, 6) ==
         getStrFullDate(currDate).substr(0, 6),
       date: curr.getDate().toString(), // "15"
-    });
+    }
+
+    weekDates_orgin.set(`${subDate(today, curr)}D`, curr); 
+    // weekDates.set(`${subDate(today, curr)}D`, data);
+    weekDates.push(data);
 
     //다음날 저장
     curr.setDate(curr.getDate() + 1);
 
     if (curr.getDay() == 0) {
-      dates_origin.push({
-        id: `${subWeek(today, curr)}W`,
-        weekDates: weekDates_orgin,
-      });
-
-      dates.push({ id: `${subWeek(today, curr)}W`, weekDates: weekDates });
-      weekDates_orgin = [];
+      // dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
+      // dates.set(`${subWeek(today, curr)}W`, weekDates);
+      dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
+      dates.set(data.strDate, weekDates);
+      weekDates_orgin = new Map();
       weekDates = [];
     }
   }
-
+  // console.log('calendar', dates)
   return { start:startDate, end:endDate , weeks:dates};
 }
