@@ -67,7 +67,7 @@ const Checked = styled.div`
   top: 0;
   right: 0;
 
-  z-index: 99;
+  z-index: 9;
   background-color: white;
 
   border: solid 5px ${Colors["ST_GREEN"]};

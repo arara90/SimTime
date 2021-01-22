@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react"
+import React, {Fragment, useEffect, useState, useRef} from "react"
 import styled from "styled-components"
 import {connect} from "react-redux"
 
@@ -34,14 +34,16 @@ const NewButton = styled(TextButton)`
   font-weight: bold;
   font-size: 1.25em;
   border: solid 1px ${MAIN_COLOR};
-
-  margin-bottom: 0.5em;
 `
 
 const Pencil = styled(PencilIcon)`
   transform: rotate(275deg);
   margin-right: 0.5em;
   font-size: 1rem;
+`
+
+const MyFilter = styled(Filters)`
+border: solid 1px ${MAIN_COLOR};
 `
 
 
@@ -56,10 +58,7 @@ function Calendar(props) {
   //3.state
   ////calenedar 관련 
   const [current, setCurrent] = useState(new Date()); //현재 화면에 보이는 첫번째 날짜
-  const [startDate, setStartDate] = useState(""); //지금까지 읽어온 데이터 중 첫번째 날짜
-  const [endDate, setEndDate] = useState("");//지금까지 읽어온 데이터 중 마지막날짜
   const [weekDates, setWeekDates] = useState(new Map()); //지금까지 읽은 전체 날짜들
-
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
 
   ////data
@@ -71,21 +70,33 @@ function Calendar(props) {
   ////ui
   const [showDetail, setShowDetail] = useState(false); // invitation-detail or list
 
-  //4.hooks - useEffect
+
+  //4. ref
+  const startDate = useRef(null);; //지금까지 읽어온 데이터 중 첫번째 날짜
+  const endDate = useRef(null);//지금까지 읽어온 데이터 중 마지막날짜
+  const monthRefs = useRef({})
+
+  //5.hooks - useEffect
   //// initialization
   useEffect(()=>{ 
-    var {start, end, weeks} = generate(new Date(), 6);
+    var {start, end, weeks} = generate(new Date(), 7);
 
     setCurrent(start)
-    setStartDate(start)
-    setEndDate(end)
     setWeekDates(weeks)
+    startDate.current = start
+    endDate.current = end
 
     // invitations 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
   }, [])
 
+  // useEffect(
+  //   ()=>{
+  //     console.log('newWeekDates', weekDates)
+  //     document.addEventListener('scroll', handleScroll)
+  //   }
+  // )
 
   useEffect(()=>{ 
     //filter 적용
@@ -96,6 +107,7 @@ function Calendar(props) {
       }
       setFilteredInvitations(filtered)
     }
+
   }, [invitations])
 
   //// update friends information
@@ -124,6 +136,24 @@ function Calendar(props) {
 
 
   //5. functions
+  // function handleScroll(){
+  //   const scrollHeight = document.documentElement.scrollHeight;
+  //   const scrollTop = document.documentElement.scrollTop;
+  //   const clientHeight = document.documentElement.clientHeight;
+
+  //   if (scrollTop + clientHeight >= scrollHeight) {
+  //     var curr = new Date(current)
+  //     var res = new Date(current)
+  //     var newMonth = curr.getMonth() + 2
+  //     res.setMonth(newMonth);
+  //     res.setDate(1);
+  //     console.log('res', res)
+
+  //     monthClickHandler(res)
+  //   }
+  // }
+
+
   //// modal
   const closeModal = () => setModalContent(null)
   //// click date cell
@@ -133,35 +163,43 @@ function Calendar(props) {
     setShowDetail(false);
   }
 
- const monthClickHandler=(res)=>{
+ const monthClickHandler= (res)=>{
   var newDate = new Date(getStrFullDate(res, 'date'))
-  var dataStart = ''
-  var dataEnd = ''
+  var { start, end, weeks } = generate(newDate, 7); 
+  //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
   var newWeekDates = new Map()
 
-  if(res<startDate){//Prev
-    var { start, weeks } = generate(newDate, 0);
-    if(start < startDate ){
+  //새롭게 읽을 데이터 시작/끝
+  var dataStart = ''
+  var dataEnd = ''
+
+  // 매월 첫주차(day=0) element 저장 -> scrollTo 지점
+  monthRefs.current[getStrFullDate(start, "yyyy-mm-dd")] = null;
+
+
+  if(res<startDate.current){
+    //Prev Month
+    if(start < startDate.current ){
       //data 구간 구하기
       dataStart = getStrFullDate(start, "yyyy-mm-dd");
-      dataEnd = getStrFullDate(new Date(addDate(startDate, -1)), "yyyy-mm-dd"); 
+      dataEnd = getStrFullDate(new Date(addDate(startDate.current, -1)), "yyyy-mm-dd"); 
 
       //새로 읽어온 주차 먼저 입력 후, 그 다음 기존값 붙여넣기
       weeks.forEach((v,k)=>newWeekDates.set(k,v))
       weekDates.forEach((v,k)=>newWeekDates.set(k,v))
 
       //setStates
-      setStartDate(start)
+      startDate.current = start
       setWeekDates(newWeekDates)
-
       getInvitations(dataStart, dataEnd);
     }
 
-  }else{//Nexts
-    var { end, weeks } = generate(newDate, 0);
-    if(end > endDate ){
+  }
+  else{
+    //Next Month
+    if(end > endDate.current ){
       //data 구간 구하기
-      dataStart = getStrFullDate(new Date(addDate(endDate, 1)), "yyyy-mm-dd"); 
+      dataStart = getStrFullDate(new Date(addDate(endDate.current, 1)), "yyyy-mm-dd"); 
       dataEnd = getStrFullDate(end, "yyyy-mm-dd");
 
       // 기존값에 새로 읽은 주차 붙이기
@@ -169,21 +207,14 @@ function Calendar(props) {
       weeks.forEach((v,k)=>newWeekDates.set(k,v))
 
       //set States
-      setEndDate(end)
+      endDate.current = end
       setWeekDates(newWeekDates)
-
-      getInvitations(dataStart, dataEnd);
     }
   }
   setCurrent(res)
+
  }
 
-
-
-
-
-
- 
 
 
 //// click invitation
@@ -228,8 +259,9 @@ function Calendar(props) {
     <Fragment>
       {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
-        leftTop     = {<Filters height={topHeight} current={current} dateHandler={monthClickHandler}/>}  
+        leftTop     = {<MyFilter id='filter' height={topHeight} current={current} dateHandler={monthClickHandler}/>}  
         leftBottom  = {<EventCalendar 
+                        ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
                         invitationClickHandler={invitationClickHandler} 
                         selectedInvitation={selectedInvitation} 

@@ -12,31 +12,12 @@ import { MAIN_COLOR, ST_GRAY } from "../Colors";
 import MenuList from "../C-Organisms/Header/MenuList"
 import Logo from "../C-Organisms/Header/Logo"
 import AccountInfo from "../C-Organisms/Header/AccountInfo"
-//import Account from "../B-Molecules/User/Account";
 
 const Wrap = styled.header`
-  max-width: 1300px;
-  width: 100%;
-
-  position: sticky;
-  top: 0;
-  z-index: 99;
-  margin-bottom: 15px;
-  border-top: solid 8px ${MAIN_COLOR};
-  background: white;
-
-  display: flex;
-  flex-direction: column;
-                                      
-
-  @media only screen and (max-width: 680px) {
-    margin-bottom: 0px;
-  }
 `;
 
 const ContentWrap = styled.div`
   width: 100%;
-  height: 62px;
 
   display: flex;
   flex-direction: row;
@@ -53,45 +34,35 @@ const ContentWrap = styled.div`
   }
 `;
 
-// const LogoWrap = styled.div`
-//   @media only screen and (max-width: 680px) {
-//     display: none;
-//   }
-// `;
-
-// const MenuList = styled.div`
-//   // border: solid 1px blue;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-end;
-//   justify-content: space-around;
-//   width: 300px;
-// `;
-
-const AccountWrap = styled.div`
-  width: 150px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  @media only screen and (max-width: 560px) {
+const SimtimeLogo= styled(Logo)`
+  padding-left: 20px;
+  @media only screen and (max-width: 680px) {
     display: none;
   }
-`;
+`
 
-// const StyledLink = styled(Link)`
-//   text-decoration: none;
+const Account = styled(AccountInfo)`
+  padding-right: 20px;
+`
 
-//   &:focus,
-//   &:hover,
-//   &:visited,
-//   &:link,
-//   &:active {
-//     text-decoration: none;
-//   }
-// `;
 
 function Header(props) {
+
+  return (
+    <Wrap id="simtime-header">
+      <ContentWrap>
+        <SimtimeLogo />
+        <MenuList/>
+        <Account /> 
+      </ContentWrap>
+    </Wrap>
+  );
+}
+
+export default Header;
+
+
+
 //  const { isAuthenticated, user } = props.auth;
 
   // //ActiveMenu는 context로 하자.
@@ -130,23 +101,3 @@ function Header(props) {
   // );
 
   
-  return (
-    <Wrap>
-      <ContentWrap>
-        <Logo />
-        <MenuList/>
-        <AccountInfo /> 
-      </ContentWrap>
-    </Wrap>
-  );
-}
-
-// const mapStateToProps = (state) => ({
-//   auth: state.auth,
-// });
-
-// export default connect(mapStateToProps, {})(Header);
-
-// export default connect(mapStateToProps, { logout });
-
-export default Header;

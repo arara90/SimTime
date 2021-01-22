@@ -12,12 +12,18 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
 `;
 
 const ContentWrap = styled.div`
-  ${(props) => (props.width ? `width : ${props.width}px` : "")};
+  // ${(props) => (props.width ? `width : ${props.width}px` : "")};
+  @media only screen and (max-width:1099px){
+    max-width: 110px;
+  }
+
+  min-width: 80px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   justify-content: center;
   align-items: center;
 `;

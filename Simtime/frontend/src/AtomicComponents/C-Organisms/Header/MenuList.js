@@ -11,13 +11,17 @@ import MenuInActive from "../../A-Atomics/Menu/MenuInActive";
 import MenuLink from "../../A-Atomics/Menu/MenuLink";
 
 const Wrap = styled.div`
-  // border: solid 1px blue;
+  // // border: solid 1px blue;
   display: flex;
+  flex-grow: 1;
   flex-direction: row;
   align-items: flex-end;
-  justify-content: space-around;
-  // width: 300px;
-  flex: 0.6;
+  justify-content: center;
+
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
 `;
 
 function MenuList(props) {

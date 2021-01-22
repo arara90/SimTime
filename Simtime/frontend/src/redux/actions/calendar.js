@@ -24,7 +24,8 @@ export function getStringDate(date, type='month'){
 }
 
 export function getStrYear(date) {
-  return date.getFullYear().toString();
+  var now = new Date(date);
+  return now.getFullYear().toString();
 }
 
 export function getStrMonth(date, type = "mm") {
@@ -225,7 +226,7 @@ export function generate(currDate, num=0) {
       // dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
       // dates.set(`${subWeek(today, curr)}W`, weekDates);
       dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
-      dates.set(data.strDate, weekDates);
+      dates.set(weekDates[0].strDate, weekDates);
       weekDates_orgin = new Map();
       weekDates = [];
     }

@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import * as Colors from "./Colors";
 
 const GlobalStyle = createGlobalStyle`
+
 * {
   box-sizing: border-box;
   font-family: "roboto", "Source Sans";
@@ -9,11 +10,15 @@ const GlobalStyle = createGlobalStyle`
 
 html{
   scroll-behavior: smooth;
+  max-width: 1464px;
+}
+
+body{
+  margin: 0;
 }
 
 #app{
   box-shadow: none;
-  max-width: 1300px;
   margin: 0px auto;
 }
 
@@ -28,13 +33,6 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .app-contents{
-
-  // float: left;
-  // width: 920px;
-  padding: 0 10px 0.5rem 10px;
-
-  // border-top: solid 8px ${Colors.MAIN_COLOR};
-  position: relative;
   @media only screen and (max-width: 768px) {
     width: 100%;
     padding: 0 0 0 0;
@@ -87,6 +85,32 @@ button{
   vertical-align: middle;
   cursor: pointer;
 };
+
+#simtime-header{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+
+  margin-bottom: 15px;
+  border-top: solid 8px ${Colors.MAIN_COLOR};
+  background: white;
+
+  display: flex;
+  flex-direction: column;
+                                      
+  @media only screen and (max-width: 680px) {
+    margin-bottom: 0px;
+  }
+}
+
+#simtime-page{
+  position: relative;
+  min-height: calc(100vh - ${({headerHeight})=>headerHeight}px);
+  top: ${({headerHeight})=>headerHeight}px;
+  margin-top:10px;
+}
+
 
 `;
 

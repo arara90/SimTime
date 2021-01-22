@@ -13,8 +13,6 @@ const Wrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
-  margin: 5px 0px 5px 0px;
   font-size: 1.25em;
 `
 
@@ -42,7 +40,6 @@ const Right = styled.div`
 function Filters(props) {
   const { current, height,  nextHandler, prevHandler, dateHandler} = props;
 
-    
     return (
       <Wrap {...props}>
       <Left></Left>

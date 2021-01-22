@@ -79,7 +79,7 @@ class App extends Component {
                 <Fragment>
                   <GlobalStyle />
                   <div className="app-contents">
-                    <Header />
+                    <Header/>
                     <Alerts />
                     <Switch>
                       <PrivateRoute exact path="/" component={Components} />

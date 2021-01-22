@@ -10,7 +10,13 @@ const Wrap = styled.div`
 `;
 
 const ContentWrap = styled.div`
-  ${(props) => (props.width ? `width : ${props.width}px` : "")};
+  // ${(props) => (props.width ? `width : ${props.width}px` : "")};
+
+  @media (max-width: 1099px){
+    max-width: calc(15vw - 55px);
+  }
+
+  min-width: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;

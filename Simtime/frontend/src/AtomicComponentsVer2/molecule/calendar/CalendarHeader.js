@@ -42,8 +42,8 @@ function CalendarHeader(props) {
             res.setYear(curr.getFullYear() + num);
         } else if(type=='month') {
             if(num>0) newMonth = curr.getMonth() + num  //next Month
-            else newMonth = (curr.getDate()==1  ? curr.getMonth() + num : curr.getMonth()) //prev Month
-            
+            else newMonth = (curr.getDate()==1  ? curr.getMonth()  + num : curr.getMonth()) //prev Month
+
             res.setMonth(newMonth);
             res.setDate(1);
         } else {

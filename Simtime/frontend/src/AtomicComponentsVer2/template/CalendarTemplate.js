@@ -7,14 +7,18 @@ const Wrap = styled.main`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   @media only screen and (max-width: 920px) {
     width: 100%;
     flex-direction: column;
   }
-  overflow: hidden;
 `;
 
 const LeftSection = styled.section`
+  position: relative;
+  min-height: inherit;
+  // margin-bottom: calc(-100vh + ${({headerHeight})=>headerHeight}px);
+
   width: 68.5%;
   height: auto;
   display: flex;
@@ -26,6 +30,10 @@ const LeftSection = styled.section`
   }
 `
 const RightSection = styled.section`
+  position: relative;
+  min-height: inherit;
+
+
   width: 31%;
   height: auto;
   display: flex;
@@ -41,6 +49,7 @@ const RightSection = styled.section`
 
 const LeftTop = styled.div`
   width: 100%;
+  height: 4em;
   @media only screen and (max-width: 920px) {
     height: 40px;
   }
@@ -50,10 +59,12 @@ const LeftTop = styled.div`
 const LeftBottom = styled.section`
   width: 100%;
   flex: 1;
+
 `
 
 const RightTop = styled.div`
   width: 100%;
+  height: 4em;
   @media only screen and (max-width: 920px) {
     display: none;
   }
@@ -66,14 +77,15 @@ const RightBottom = styled.section`
 
 
 const CalendarTemplate = ({children, ...props }) => {
+  const headerHeight = document.getElementById('simtime-header').getBoundingClientRect().height
   const {leftTop, leftBottom, rightTop, rightBottom } = props;
   return (
-    <Wrap>
-      <LeftSection>
+    <Wrap id="simtime-page" headerHeight= {headerHeight}>
+      <LeftSection headerHeight= {headerHeight}>
         <LeftTop>{leftTop}</LeftTop>
         <LeftBottom >{leftBottom} </LeftBottom>
       </LeftSection>
-      <RightSection>
+      <RightSection headerHeight= {headerHeight}>
         <RightTop >{rightTop}</RightTop>
         <RightBottom >{rightBottom}</RightBottom>
       </RightSection>

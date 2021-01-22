@@ -86,8 +86,20 @@ a{
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+  height: 62px;
 
 };
+
+#page-wrap{
+  position: relative;
+  min-height: calc(100vh - ${document.getElementById('simtime-header').getBoundingClientRect().height}px);
+  top: ${document.getElementById('simtime-header').getBoundingClientRect().height}px;
+  margin-top:10px;
+}
+
+
+
+
 `
 // strong{}
 // em{}
