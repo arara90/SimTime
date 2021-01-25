@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import * as Colors from "./Colors";
 
+const headerHeight='60px'
 const GlobalStyle = createGlobalStyle`
 
 * {
@@ -10,14 +11,16 @@ const GlobalStyle = createGlobalStyle`
 
 html{
   scroll-behavior: smooth;
-  max-width: 1464px;
+  
 }
 
 body{
   margin: 0;
+  width: inherit;
 }
 
 #app{
+  max-width: 1464px;
   box-shadow: none;
   margin: 0px auto;
 }
@@ -90,25 +93,29 @@ button{
   width: 100%;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 10;
 
-  margin-bottom: 15px;
   border-top: solid 8px ${Colors.MAIN_COLOR};
   background: white;
-
   display: flex;
   flex-direction: column;
                                       
   @media only screen and (max-width: 680px) {
     margin-bottom: 0px;
+    height: 50px;
   }
 }
 
 #simtime-page{
   position: relative;
-  min-height: calc(100vh - ${({headerHeight})=>headerHeight}px);
-  top: ${({headerHeight})=>headerHeight}px;
-  margin-top:10px;
+  top: 0;
+  height: 100%;
+  padding-top: 60px;
+
+  @media only screen and (max-width: 680px) {
+    padding-top: 50px;
+  }
 }
 
 

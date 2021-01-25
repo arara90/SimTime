@@ -18,20 +18,24 @@ import GroupSection from "../D-Templates/Friends/GroupSection";
 const Wrap = styled.div`
   overflow: hidden;
 
-
-  
 `;
 
+const SectionHeader = styled(Header)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
 const Section = styled.div`
   height: auto;
   margin-bottom: ${(props) => props.bottom};
+  margin-top: 1em;
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  aling-items: flex-end;
+  aling-items: center;
 `;
 
 // const StyledSearch = styled(Search)`
@@ -57,8 +61,8 @@ function FriendsPage(props) {
   }, []);
 
   return (
-    <Wrap>
-      <Section bottom="30px">
+    <Wrap id="simtime-page">
+      <Section bottom="2em">
         <SectionTitle>
           <Header type="h3" color="MAIN_COLOR">
             Friends
@@ -82,7 +86,7 @@ function FriendsPage(props) {
       </Section>
 
       <Section bottom="0px">
-        <Header type="h3" color="MAIN_COLOR">
+        <Header height="4em"  type="h3" color="MAIN_COLOR">
           Group
         </Header>
         <ContentWrap>

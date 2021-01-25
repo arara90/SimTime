@@ -11,7 +11,7 @@ const Wrap = styled.div`
   width: 100%;
 
   border : solid 1px ${Colors.MAIN_COLOR};
-  // border-bottom: 0px;
+  border-bottom: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,6 +33,8 @@ const List = styled.ul`
    & li:last-child{
     border-bottom: 0px;
   }
+
+  border-bottom: solid 1px ${Colors.MAIN_COLOR};
 `
 
 

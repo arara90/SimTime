@@ -1,70 +1,78 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { css} from "styled-components";
 import * as Colors from "../Colors";
 
 const Wrap = styled.main`
+  width:inherit;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 
   @media only screen and (max-width: 920px) {
-    width: 100%;
     flex-direction: column;
   }
+
 `;
 
 const LeftSection = styled.section`
-  position: relative;
-  min-height: inherit;
-  // margin-bottom: calc(-100vh + ${({headerHeight})=>headerHeight}px);
-
-  width: 68.5%;
-  height: auto;
   display: flex;
   flex-direction: column;
-  // background-color:  ${Colors.BG_INACTIVE_LIGHT};
-
+  width: 70%;
   @media only screen and (max-width: 920px) {
     width: 100%;
   }
+  z-index: 1;
 `
 const RightSection = styled.section`
-  position: relative;
-  min-height: inherit;
-
-
-  width: 31%;
-  height: auto;
+  flex: 1;
+  margin-left: 10px; 
   display: flex;
   flex-direction: column;
-  margin-bottom: 5px;
 
-  // background-color:  ${Colors.BG_INACTIVE_LIGHT};
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 2;
+  top: 60px;   // header 높이만큼
+  height: 100%;  // height 반드시 있어야함(sticky)
 
   @media only screen and (max-width: 920px) {
     width: 100%;
   }
+
+  @media only screen and (max-width: 680px) {
+      top: 50px;
+    }
+
+`
+const topCss = css`
+  width: 100%;
+  padding-bottom: 10px;
+  top: 60px;
+  height: 4em;
+
+  @media only screen and (max-width: 680px) {
+    top: 50px;
+    height: 3em;
+  }
+
 `
 
 const LeftTop = styled.div`
-  width: 100%;
-  height: 4em;
-  @media only screen and (max-width: 920px) {
-    height: 40px;
-  }
+  ${topCss}
 
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 5;
 `
 
 const LeftBottom = styled.section`
   width: 100%;
   flex: 1;
-
 `
 
 const RightTop = styled.div`
-  width: 100%;
-  height: 4em;
+  ${topCss}
+
   @media only screen and (max-width: 920px) {
     display: none;
   }
@@ -73,6 +81,12 @@ const RightTop = styled.div`
 const RightBottom = styled.section`
   width: 100%;
   flex: 1;
+
+  @media only screen and (max-width: 920px) {
+    position: -webkit-sticky;
+    position: sticky;
+    top:150px;
+  }
 `
 
 

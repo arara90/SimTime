@@ -7,6 +7,7 @@ import {ModalContext} from "../../contexts/modalContext"
 
 import TextButton from "../atom/buttons/TextButton"
 import PencilIcon from "../atom/icons/PencilIcon"
+import PlusCircleIcon from "../atom/icons/PlusCircleIcon"
 import YNDialogModal from "../molecule/modal/YNDialogModal"
 
 import Filters from "../organism/calendar/Filters"
@@ -33,17 +34,24 @@ const NewButton = styled(TextButton)`
   border-radius: 0;
   font-weight: bold;
   font-size: 1.25em;
-  border: solid 1px ${MAIN_COLOR};
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `
 
-const Pencil = styled(PencilIcon)`
-  transform: rotate(275deg);
+// const AddIcon = styled(PencilIcon)`
+//   transform: rotate(275deg);
+//   margin-right: 0.5em;
+//   font-size: 1rem;
+// `
+const AddIcon = styled(PlusCircleIcon)`
   margin-right: 0.5em;
-  font-size: 1rem;
+  font-size: 1.2rem;
 `
 
 const MyFilter = styled(Filters)`
-border: solid 1px ${MAIN_COLOR};
 `
 
 
@@ -259,7 +267,7 @@ function Calendar(props) {
     <Fragment>
       {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
-        leftTop     = {<MyFilter id='filter' height={topHeight} current={current} dateHandler={monthClickHandler}/>}  
+        leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler}/>}  
         leftBottom  = {<EventCalendar 
                         ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
@@ -269,8 +277,8 @@ function Calendar(props) {
                         dates={weekDates} 
                         invitations={filteredInvitations} />
                       } 
-        rightTop    = { <NewButton  height={topHeight} color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
-                          <Pencil />New Event
+        rightTop    = { <NewButton height={'inherit'} color={"MAIN_COLOR"} onClick={()=>setModalContent("EventMaker")}>
+                          <AddIcon />New Event
                         </NewButton> 
                       }
         rightBottom = {showDetail ? 

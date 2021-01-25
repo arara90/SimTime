@@ -18,8 +18,8 @@ const Wrap = styled.div`
   align-items: flex-end;
   justify-content: center;
 
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 `;

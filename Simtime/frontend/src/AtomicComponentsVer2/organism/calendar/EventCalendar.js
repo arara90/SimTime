@@ -53,8 +53,6 @@ function EventCalendar(props) {
 
   function scrollToTargetAdjusted(target){
     var targetElement = document.getElementById(target);
-    // var offsetElement =  document.getElementById('event-calendar');
-    // var headerOffset = 141.875; //(header+filter)
     var headerOffset = document.getElementById('event-calendar').getBoundingClientRect().top + document.getElementById('simtime-header').getBoundingClientRect().top 
     var elementPosition = targetElement.getBoundingClientRect().top;
     var offsetPosition = elementPosition - headerOffset;

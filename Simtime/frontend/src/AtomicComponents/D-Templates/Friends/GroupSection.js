@@ -32,7 +32,7 @@ function GroupSection(props) {
         )
       }
       width={props.width}
-      rowHeight={props.width}
+      rowHeight={props.rowHeight}
       rowNum={props.rowNum}
     >
       <GroupList

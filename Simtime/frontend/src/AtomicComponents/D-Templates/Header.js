@@ -14,15 +14,18 @@ import Logo from "../C-Organisms/Header/Logo"
 import AccountInfo from "../C-Organisms/Header/AccountInfo"
 
 const Wrap = styled.header`
+
 `;
 
 const ContentWrap = styled.div`
-  width: 100%;
 
+  width: 100%;
+  max-width: 1464px;
+  margin: 0 auto;
+  border-bottom: solid 1px ${ST_GRAY};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: solid 1px ${ST_GRAY};
 
   @media only screen and (max-width: 680px) {
     justify-content: space-around;

@@ -19,7 +19,7 @@ function FriendSection(props) {
         handleContextModal(<AddFriend closeModal={closeContextModal} />)
       }
       width={props.width}
-      rowHeight={props.width}
+      rowHeight={props.rowHeight}
       rowNum={props.rowNum}
       button={{
         content: "Add",
