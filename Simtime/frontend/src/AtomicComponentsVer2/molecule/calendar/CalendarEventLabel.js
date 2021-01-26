@@ -2,7 +2,8 @@ import React from 'react'
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
+// import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
+import CheckIcon from "../../atom/icons/CheckIcon"
 import SolidButton from "../../atom/buttons/SolidButton"
 import BorderButton from "../../atom/buttons/BorderButton"
 
@@ -49,18 +50,30 @@ const Bordered = styled(BorderButton)`
     // background-color: ${({color}) => Colors["MAIN_COLOR_LIGHT"]};
   }
 `
-const Checked = styled(CheckCircleIcon)`
-  ${({join})=>join==1?`
-    background: ${Colors.ST_WHITE};
-    position: absolute;
-    top: -0.3em;
-    right: -0.45em;
-    border-radius: 50%;
-    color: ${Colors.CHECK_GREEN};
-    z-index: 99;
-  `:   'display:none;'}
-}
-`
+// const Checked = styled(CheckIcon)`
+//     position: absolute;
+//     top: 50%;
+//     right: 50%;
+//     border-radius: 50%;
+//     z-index: 99;
+//     color: ${Colors["MAIN_COLOR"]}
+
+//   `
+
+const Checked = styled.div`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  right: 0;
+
+  z-index: 9;
+  background-color: white;
+
+  border: solid 5px ${Colors["ST_GREEN"]};
+  border-top: solid 5px ${Colors["ST_WHITE"]};
+  border-right: solid 5px ${Colors["ST_WHITE"]};
+  `
 
 const Host = styled(ImageUser)`
   width: 1.7em;
@@ -92,16 +105,15 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, join, fontColor, color, title, time, location, tags, host} = props;
+  const {solid, attendance, fontColor, color, name, time, location, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
-
   return (
       <Wrap {...props}>
-        {/* <Checked size="lg" join={join ? 1 : 0}/> */}
+        {attendance? <Checked className='check'/> : null}
         <Button fontColor={solid? fontColor: color} color={color}> 
           <Host url={host.profile_image} />
           <Content>
-            <Title>{title}</Title>
+            <Title>{name}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>
               {tags? tags.map((tag)=> {return '#'+tag+" "}) : time + " " + location}
             </StyledTag>

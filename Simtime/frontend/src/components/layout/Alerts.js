@@ -29,6 +29,7 @@ export class Alerts extends Component {
 
       //auth
       if (message.logout) alert.success(message.logout);
+      if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
 
       //event
       if (message.deleteEvent) alert.success(message.deleteEvent);
@@ -38,7 +39,7 @@ export class Alerts extends Component {
       //invitation
       if (message.deleteInvitation) alert.success(message.deleteInvitation);
       if (message.addInvitation) alert.success(message.addInvitation);
-      if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
+      if (message.toggleInvitation) alert.success(message.toggleInvitation);
       //friend
       if (message.addFriend) alert.success(message.addFriend);
       if (message.deleteFriend) alert.success(message.deleteFriend);

@@ -1,28 +1,18 @@
 import { createGlobalStyle } from "styled-components";
 import * as Colors from "./Colors";
 
-const headerHeight='60px'
 const GlobalStyle = createGlobalStyle`
-
 * {
   box-sizing: border-box;
   font-family: "roboto", "Source Sans";
 }
 
-html{
-  scroll-behavior: smooth;
-  
-}
-
-body{
-  margin: 0;
-  width: inherit;
-}
+width: 100%;
 
 #app{
-  max-width: 1464px;
-  box-shadow: none;
-  margin: 0px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content : center;
 }
 
 dl, ol, ul {
@@ -35,7 +25,14 @@ h1, h2, h3, h4, h5, h6{
   padding: 0;
 }
 
+
+
 .app-contents{
+  float: left;
+  width: 920px;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-top: solid 8px ${Colors.MAIN_COLOR};
+
   @media only screen and (max-width: 768px) {
     width: 100%;
     padding: 0 0 0 0;
@@ -63,6 +60,7 @@ h1, h2, h3, h4, h5, h6{
 
 &::-webkit-scrollbar-track {
   background-color: ${Colors.ST_SEMI_GRAY};
+  border-radius: 5px;
   box-shadow: inset 0px 0px 3x white;
 }
 
@@ -81,46 +79,28 @@ a{
   }
 }
 
-button{
+
+.btn-simtime{
   background-color: transparent;
   border: 1px solid transparent;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+  height: 62px;
+
 };
 
-#simtime-header{
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-
-  border-top: solid 8px ${Colors.MAIN_COLOR};
-  background: white;
-  display: flex;
-  flex-direction: column;
-                                      
-  @media only screen and (max-width: 680px) {
-    margin-bottom: 0px;
-    height: 50px;
-  }
-}
-
-#simtime-page{
+#page-wrap{
   position: relative;
-  top: 0;
-  height: 100%;
-  padding-top: 60px;
-
-  @media only screen and (max-width: 680px) {
-    padding-top: 50px;
-  }
+  min-height: calc(100vh - ${document.getElementById('simtime-header').getBoundingClientRect().height}px);
+  top: ${document.getElementById('simtime-header').getBoundingClientRect().height}px;
+  margin-top:10px;
 }
 
 
-`;
 
+
+`
 // strong{}
 // em{}
 // ins{}

@@ -8,15 +8,13 @@ import LOGO from "../../A-Atomics/Logo";
 import MenuLink from "../../A-Atomics/Menu/MenuLink";
 
 const LogoWrap = styled.div`
-  @media only screen and (max-width: 680px) {
-    display: none;
-  }
+
 `;
 
 function Logo(props) {
   const { handleMenu } = useContext(MenuContext);
   return (
-    <LogoWrap>
+    <LogoWrap {...props}>
       <MenuLink
         handleClick={() => {
           handleMenu("/");

@@ -1,11 +1,12 @@
 import { axiosInstance } from "./axiosApi";
 import { createMessage, returnErrors } from "./messages";
-import {getStrFullDate , getFullTime} from "./calendar"
+import { getStrFullDate , getFullTime } from "./calendar"
 
 import {
   GET_INVITATIONS,
-  ADD_INVITATIONS,
+  ADD_INVITATION,
   DELETE_INVITATION,
+  TOGGLE_INVITATION, 
   GET_ERRORS,
   CREATE_MESSAGE,
   GET_EVENTS,
@@ -21,18 +22,27 @@ function separateTime(data){
 }
 
 export const addInvitations = (event, friendIds) => async (dispatch) => {
-  console.log('addInvitations',event, friendIds )
   var invitations = new Array(friendIds.length)
-
   friendIds.forEach( (friendId, index) => {
     invitations[index] = {event: event, guest:friendId}
   });
-
   return axiosInstance
   .post("/api/invitations/create", invitations)
-  .then((response) => {
-    console.log(response)
-    return response
+  .then((res={data:[]}) => {
+    var datas = res.data
+    if(datas.length==1 && (datas[0].event.host.id == datas[0].guest)){
+      var resInvitation = datas[0]
+      var separated = separateTime(resInvitation.event)
+      resInvitation['event'] = separated
+      dispatch({
+        type: ADD_INVITATION,
+        payload: resInvitation,
+      });
+
+      return resInvitation
+      }else{
+        dispatch(createMessage({ addInvitations: 'Invited friends!' }));
+      }
   })
   .catch((err) => {
     dispatch(returnErrors(err, err.response.status));
@@ -47,7 +57,6 @@ export const getInvitations = (start, end) => (dispatch) => {
   axiosInstance
     .get(`/api/invitations/${start}/${end}`)
     .then((res={data:[]}) => {
-      console.log('getInv Success', res.data)
       var transformed = {}
       res.data.map((item)=>{
         var separated = separateTime(item.event)
@@ -58,11 +67,51 @@ export const getInvitations = (start, end) => (dispatch) => {
           transformed[date] = [...transformed[date], {...item, 'event': separated}]
         }
       })
-      console.log('inv transformed',transformed)
       dispatch({type: GET_INVITATIONS, payload: transformed,});
     })
     .catch((err) =>{
       dispatch(returnErrors(err.response, err.response.status))
+      console.log(err)
+    });
+};
+
+export const toggleInvitations = (invitation, key) => async (dispatch) => {
+  invitation[key] = !invitation[key]
+  // invitation['event'] = invitation.evnet.id
+  var message = {
+    'like' : 'Like',
+    'show' :  !invitation[key] ?  "Hide" : "Show",
+    'attendance' : !invitation[key] ?  "Cancel" : "Join the Event",
+  }
+
+  return axiosInstance
+  .put(`/api/invitations/${invitation.id}`, invitation)
+  .then((res) => {
+    var separated = separateTime(res.data.event)
+    res.data['event'] = separated
+
+    dispatch({
+      type: TOGGLE_INVITATION,
+      payload: res.data,
+    });
+    dispatch(createMessage({ toggleInvitation: message[key] }));
+  })
+  .catch((err) => {
+    dispatch(returnErrors(err.response, err.response.status));
+    console.log(err)
+  });
+
+};
+
+export const deleteInvitation= (id, event_date) => (dispatch) => {
+  axiosInstance
+    .delete(`/api/invitation/${id}`)
+    .then(() => {
+      dispatch(createMessage({ deleteInvitation: "Invitation Deleted" }));
+      dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
+    })
+    .catch((err) => {
+      // dispatch(returnErrors(err, err.response.status));
       console.log(err)
     });
 };

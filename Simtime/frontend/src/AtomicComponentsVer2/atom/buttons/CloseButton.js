@@ -20,7 +20,7 @@ const Button = styled.div`
 `;
 
 function CloseButton(props) {
-  return <Button {...props} />;
+  return <Button {...props}></Button>;
 }
 
 export default CloseButton;

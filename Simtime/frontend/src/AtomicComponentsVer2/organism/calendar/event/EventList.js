@@ -9,8 +9,9 @@ import {getStringDate} from "../../../../redux/actions/calendar"
 
 const Wrap = styled.div`
   width: 100%;
+
   border : solid 1px ${Colors.MAIN_COLOR};
-  // border-bottom: 0px;
+  border-bottom: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,21 +33,21 @@ const List = styled.ul`
    & li:last-child{
     border-bottom: 0px;
   }
+
+  border-bottom: solid 1px ${Colors.MAIN_COLOR};
 `
 
 
 function EventList(props) {
   const { invitations, current, itemClickHandler, dateHandler} = props;
-  const { event } = invitations
-
     return (
       <Wrap>
-        <Header size="1.2em" type="date" current={current} clickHandler={props.dateHandler} >
+        <Header size="1.2em" type="date" current={current} clickHandler={dateHandler} >
           {getStringDate(current,"day")}
         </Header>
-        <List isEmpty={invitations.length==0}>
-          { invitations.map((invitation) => {
-            return <EventListItem key={invitation.id} event={invitation.event} onClick={(e)=>{itemClickHandler(e,invitation)}}  />})
+        <List isEmpty={!invitations}>
+          { invitations && invitations.map((invitation) => {
+            return <EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{itemClickHandler(e,invitation)}}  />})
           }
         </List>
       </Wrap>
@@ -56,23 +57,8 @@ function EventList(props) {
 export default EventList
 
 EventList.propTypes = {
-  invitations: PropTypes.array
   };
 
 EventList.defaultProps = {
-  invitations: [{
-      id:null,
-      event:{
-        id: null,
-        event_name: "Simtime Test",
-        event_place: {name:null, address:null, lat:"", lng:""},
-        event_date: null,
-        event_time: null,
-        tags: null,
-        host: {name:"test", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
-        like: null,
-        join: null,
-    }}
-  ]
-  };
+ }
   

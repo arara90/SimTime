@@ -25,7 +25,8 @@ function BorderButton(props) {
     
     
     return (
-        <Button {...props} className={['btn', 'border-btn', props.className].join(' ')}>
+        // className={['btn', 'btn-simtime', 'border-btn', props.className].join(' ')}
+        <Button {...props}>
             {props.children}
         </Button>
     )

@@ -1,12 +1,14 @@
-import { func } from "prop-types";
-
 export function getStringDate(date, type='month'){
   const now = new Date(date)
   var year = now.getFullYear().toString();
-  var month = (now.getMonth() + 1).toString();
+  var month = ('0'.concat(now.getMonth() + 1).toString()).slice(-2);
   var date = now.getDate().toString();
   var day = now.getDay().toString().substr(0,3);
 
+  var koMonth = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  var engMonth = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var engMonthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  
   var koWeek = ['일', '월', '화', '수', '목', '금', '토'];
   var engWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -22,7 +24,8 @@ export function getStringDate(date, type='month'){
 }
 
 export function getStrYear(date) {
-  return date.getFullYear().toString();
+  var now = new Date(date);
+  return now.getFullYear().toString();
 }
 
 export function getStrMonth(date, type = "mm") {
@@ -101,8 +104,10 @@ export function addDate(date, num) {
 }
 
 export function subDate(date1, date2) {
+  var a = new Date(date1)
+  var b = new Date(date2)
   return Math.floor(
-    (date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)
+    (a.getTime() - b.getTime()) / (1000 * 60 * 60 * 24) + 1
   );
 }
 
@@ -125,35 +130,80 @@ export function generate(currDate, num=0) {
   var endDate = new Date();
 
 
-  if(num==0){
+  if(num==0){//monthly
     weekDay = firstDay.getDay();
     offset = 7 - parseInt((lastDay.getDate() + weekDay) % 7);
     startDate = addDate(firstDay, weekDay * -1);
     endDate = addDate(lastDay, offset < 7 ? offset : 0);
-
-
   }else {
     weekDay = currDate.getDay();
-    offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
-    startDate = addDate(currDate, weekDay * -1);
-    endDate = addDate(currDate, offset); 
+
+    if(num>0){
+      offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
+      startDate = addDate(currDate, weekDay * -1);
+      endDate = addDate(currDate, offset); 
+    }else{
+      offset = ( (7 *( num -1 ))  + 7 - weekDay); // num weeks
+      endDate = addDate(currDate, weekDay * -1);
+      startDate = addDate(currDate, offset);
+      
+      console.log('currDate, offset', currDate, offset, weekDay)
+    }
   }
 
   var curr = new Date(startDate);
 
+  // //한 주차씩 담기용
+  // var weekDates_orgin = [];
+  // var weekDates = [];
+
+  // //최종 배열
+  // var dates_origin = [];
+  // var dates = [];
+
+  // while (curr <= endDate) {
+  //   //week별 저장
+  //   weekDates_orgin.push({ id: `${subDate(today, curr)}D`, day: curr });
+  //   weekDates.push({
+  //      id: `${subDate(today, curr)}D`,
+  //     strDate: getStrFullDate(curr, "yyyy-mm-dd"), //"2020-04-15"
+  //     year: curr.getUTCFullYear(),
+  //     month: curr.getMonth() + 1,
+  //     day: curr.getDay(), // 0~6
+  //     isActive: getStrFullDate(curr) >= getStrFullDate(today),
+  //     isActiveMonth:
+  //       getStrFullDate(curr).substr(0, 6) ==
+  //       getStrFullDate(currDate).substr(0, 6),
+  //     date: curr.getDate().toString(), // "15"
+  //   });
+
+  //   //다음날 저장
+  //   curr.setDate(curr.getDate() + 1);
+
+  //   if (curr.getDay() == 0) {
+  //     dates_origin.push({
+  //       id: `${subWeek(today, curr)}W`,
+  //       weekDates: weekDates_orgin,
+  //     });
+
+  //     dates.push({ [weekDates[0].strDate]: weekDates });
+  //     weekDates_orgin = [];
+  //     weekDates = [];
+  //   }
+  // }
+  
   //한 주차씩 담기용
-  var weekDates_orgin = [];
-  var weekDates = [];
+  var weekDates_orgin = new Map();
+  var weekDates =  []
+  var data = {};
 
   //최종 배열
-  var dates_origin = [];
-  var dates = [];
+  var dates_origin =  new Map();
+  var dates =  new Map();
 
   while (curr <= endDate) {
     //week별 저장
-    weekDates_orgin.push({ id: `${subDate(today, curr)}D`, day: curr });
-    weekDates.push({
-      id: `${subDate(today, curr)}D`,
+    data = {
       strDate: getStrFullDate(curr, "yyyy-mm-dd"), //"2020-04-15"
       year: curr.getUTCFullYear(),
       month: curr.getMonth() + 1,
@@ -163,22 +213,24 @@ export function generate(currDate, num=0) {
         getStrFullDate(curr).substr(0, 6) ==
         getStrFullDate(currDate).substr(0, 6),
       date: curr.getDate().toString(), // "15"
-    });
+    }
+
+    weekDates_orgin.set(`${subDate(today, curr)}D`, curr); 
+    // weekDates.set(`${subDate(today, curr)}D`, data);
+    weekDates.push(data);
 
     //다음날 저장
     curr.setDate(curr.getDate() + 1);
 
     if (curr.getDay() == 0) {
-      dates_origin.push({
-        id: `${subWeek(today, curr)}W`,
-        weekDates: weekDates_orgin,
-      });
-
-      dates.push({ id: `${subWeek(today, curr)}W`, weekDates: weekDates });
-      weekDates_orgin = [];
+      // dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
+      // dates.set(`${subWeek(today, curr)}W`, weekDates);
+      dates_origin.set(`${subWeek(today, curr)}W`, weekDates_orgin);
+      dates.set(weekDates[0].strDate, weekDates);
+      weekDates_orgin = new Map();
       weekDates = [];
     }
   }
-
+  // console.log('calendar', dates)
   return { start:startDate, end:endDate , weeks:dates};
 }

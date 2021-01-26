@@ -117,44 +117,33 @@ const Empty = styled.li`
 `
 
 function EventListItem(props) {
-    const {id, event_name, event_place, event_date, event_time, tags, host, like, join} = props.event;
-    if(id){
+    if(props.invitation){
+        const {id, like, join, event} = props.invitation;
         return(
             <EventList {...props} className='list-event-item'>
                 <Header>
-                <a href="#"><Title> {join? <CheckCircleIcon />: null} {event_name} </Title></a>
+                <a href="#"><Title> {join? <CheckCircleIcon />: null} {event.event_name} </Title></a>
                 <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
                 </Header>
                 <Content href="#" className="event-list-content">
-                    <Host url={host.profile_image}/>
+                    <Host url={event.host.profile_image}/>
                     <EventDesc>
-                        <Address>{event_place? event_place.name : null}</Address>
-                        <Time>{getStringDate(event_date, 'day')+"  "+event_time}</Time>
+                        <Address>{event.event_place? event.event_place.name : null}</Address>
+                        <Time>{getStringDate(event.event_date, 'day')+"  "+event.event_time}</Time>
                         {/* <Tags>{tags.map((tag)=> {return '#'+tag+" "})}</Tags> */}
                         {/* <Tags>{tags}</Tags> */}
                     </EventDesc>
                 </Content>
             </EventList>)
-    }else return <Empty > <ExclamationTriangleIcon /> <strong> No results :( </strong> </Empty>
+    }else return <Empty><ExclamationTriangleIcon /><strong> No results :( </strong> </Empty>
 }
 
 export default EventListItem
 
 EventListItem.propTypes = {
-    event: PropTypes.object,
   };
 
 EventListItem.defaultProps = {
-    event: {
-        id: null,
-        event_name: "Simtime Test",
-        event_place: {name:null, address:null, lat:"", lng:""},
-        event_date: null,
-        event_time: null,
-        tags: null,
-        host: {name:"test", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
-        like: null,
-        join: null,
-    }
+
   };
   

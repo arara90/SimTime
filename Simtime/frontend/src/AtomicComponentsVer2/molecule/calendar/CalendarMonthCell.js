@@ -19,7 +19,7 @@ const Wrap = styled(CalendarCell)`
   
 `;
 
-const ContentWrap = styled.div`
+const ContentWrap = styled.ul`
   width: 100%;
   flex: 1;
   overflow: auto;
@@ -41,7 +41,8 @@ function CalendarMonthCell(props) {
   return (
     <Wrap {...props} >
       <CurrDate date={date} day={day}>
-        {date == 1 ? `${month}/1` : date}
+        {/* 매월 1일에는 표시 (ex. 12/1 )*/}
+        {date == 1 ? `${month}/1` : date}   
       </CurrDate>
       <ContentWrap>
       {props.children}

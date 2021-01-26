@@ -32,7 +32,7 @@ const AccountWrap = styled.div`
 function AccountInfo(props) {
 
   return (
-        <AccountWrap>
+        <AccountWrap {...props}>
             <Account />
         </AccountWrap>
     );

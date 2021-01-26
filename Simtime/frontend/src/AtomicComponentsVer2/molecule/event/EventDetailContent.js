@@ -41,12 +41,13 @@ const Detail = styled.div`
 const LikeButton = styled(StatusButton)`
   padding-right: 1px;
   padding-top: 0;
+
 `
 
 const Users = styled.ul`
     width: 100%;
     margin-top: 0.5em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     padding: 0 1em 2px 1em;
     
     display: flex;
@@ -86,23 +87,24 @@ const Message = styled(TextBox)`
 const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
-    const { event_place, event_date, event_time, participants, message, tags, like} = props;
+    const { host, event_place, event_date, event_time, participants, message, tags, like, likeBtnClick} = props;
     return (
         <Wrap className="event-detail">
             <Detail>
                 <strong>Details</strong>
-                <LikeButton color="ST_PINK" selected={like}><HeartIcon /></LikeButton>
+                <LikeButton color="ST_PINK" selected={like} onClick={likeBtnClick} ><HeartIcon /></LikeButton>
             </Detail> 
             <DetailTextRow as="time"><TimeIcon className="fa-fw"/>{getStringDate(event_date, 'day')+"  "+event_time}</DetailTextRow>
             <DetailTextRow as="address" title={event_place.address}><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
             <Users className="participants">
                 <ParticipantsIcon className="fa-fw" />
-                {participants.map((p)=>{
-                return (
-                    <UserList key={p.name}>
-                        <StyledImageUser width="2em" height="2em" url={p.url}/>
+                {host?participants.map((p)=>{
+                return (host.id==p.id?null:(
+                    <UserList key={p.username}>
+                        <StyledImageUser title={p.username} width="2em" height="2em" url={p.profile_image}/>
                     </UserList>)
-                })}
+                    )
+                }):null}
             </Users>
             <Map mapId="event-detail-map" location={event_place} />
             <Message line={6}>{message}</Message>

@@ -69,7 +69,7 @@ import {getStringDate, generate} from "../redux/actions/calendar"
 const palette = Colors.Palette;
 
 const Level = styled.section`
-    margin-top: 30px;
+    margin-bottom: 30px;
     min-height: 50px;
 `
 
@@ -77,7 +77,6 @@ const H = styled.h1`
     font-weight: bold;
 `
 const Wrap = styled.div`
-    margin-top: 30px;
 `
 const ItemsRow = styled.div`
     display: flex;

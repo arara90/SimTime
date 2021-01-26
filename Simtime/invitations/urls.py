@@ -8,7 +8,8 @@ urlpatterns = [
     path('api/events/<int:pk>', EventDetailAPI.as_view(), name='events'),
     path('api/events/create', EventAPI.as_view(), name='events_create'),
 
-    path('api/invitations/create', InvitationAPI.as_view(), name='events_create'),
+    path('api/invitations/create', InvitationAPI.as_view(), name='invitations_create'),
+    path('api/invitations/<int:pk>', InvitationAPI.as_view(), name='invitation_detail'),
     path('api/invitations/<str:start>/<str:end>', InvitationAPI.as_view(), name='invitations'),
     
 ]

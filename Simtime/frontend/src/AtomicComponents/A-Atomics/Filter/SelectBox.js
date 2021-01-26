@@ -72,7 +72,6 @@ const Option = styled.div`
   }
 `;
 
-const MySelect = forwardRef((props, ref) => <StyledSelect ref={ref} />);
 
 function SelectBox(props) {
   const { width, height, defaultOption, options, name, arrow, cursor } = props;

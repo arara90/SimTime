@@ -25,7 +25,7 @@ const Button = styled.button`
 `
 function TextButton(props) {
     return (
-        <Button {...props} className={['btn', 'solid-btn', props.className].join(' ')}>
+        <Button {...props}>
           {props.children}
         </Button>
     )

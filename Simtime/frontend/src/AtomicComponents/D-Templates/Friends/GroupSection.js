@@ -14,7 +14,7 @@ import Search from "../../B-Molecules/Filter/Search";
 import GroupList from "../../C-Organisms/Friends/Lists/GroupList";
 import AddGroup from "../../C-Organisms/Friends/Modals/Groups/AddGroup";
 
-function Groups(props) {
+function GroupSection(props) {
   const { groups, selectedGroup, selectedGroupMembers, friendships } = props;
   const { handleContextModal, closeContextModal } = useContext(ModalContext);
 
@@ -32,7 +32,7 @@ function Groups(props) {
         )
       }
       width={props.width}
-      rowHeight={props.width}
+      rowHeight={props.rowHeight}
       rowNum={props.rowNum}
     >
       <GroupList
@@ -45,15 +45,15 @@ function Groups(props) {
   );
 }
 
-export default Groups;
+export default GroupSection;
 
-Groups.propTypes = {
+GroupSection.propTypes = {
   rowNum: PropTypes.number,
   rowHeight: PropTypes.string,
   width: PropTypes.string,
 };
 
-Groups.defaultProps = {
+GroupSection.defaultProps = {
   rowNum: 6,
   rowHeight: "45px",
   width: "100%",

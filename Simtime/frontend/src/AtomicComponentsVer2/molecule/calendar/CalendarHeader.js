@@ -14,8 +14,8 @@ const Wrap = styled.div`
     justify-content: space-between;
     align-items: center;
     cursor: default;
-
     font-size: ${({size})=>size};
+    font-weight: bold;
 `
 
 const Arrow = styled(AngleIcon)`
@@ -24,33 +24,36 @@ const Arrow = styled(AngleIcon)`
 
 const PrevMonth = styled(Arrow)`
     transform: rotate(-90deg);
-    
 `
 const NextMonth = styled(Arrow)`
     transform: rotate(90deg);
 `
 
 
-
-
 function CalendarHeader(props) {
-    const {current, type, clickHandler, size} = props;
+    const {current, type, clickHandler, prevHandler, nextHandler, size} = props;
 
     const changeDate = (num)=>{
         var curr = new Date(current)
         var res = new Date(current)
+        var newMonth = null
 
         if(type=='year'){
             res.setYear(curr.getFullYear() + num);
         } else if(type=='month') {
-            res.setMonth(curr.getMonth() + num);
+            if(num>0) newMonth = curr.getMonth() + num  //next Month
+            else newMonth = (curr.getDate()==1  ? curr.getMonth()  + num : curr.getMonth()) //prev Month
+
+            res.setMonth(newMonth);
+            res.setDate(1);
         } else {
-            res.setDate(curr.getDate() + num);
+            res.setDate(curr.getDate() + num); 
         } 
 
-        clickHandler(getStrFullDate(res, 'date'))
-
+        clickHandler(res) //res는 날짜 object
     }
+
+    
     
     return (
         <Wrap {...props} >
@@ -64,7 +67,7 @@ function CalendarHeader(props) {
 export default CalendarHeader
 
 CalendarHeader.propTypes = {
-    current: PropTypes.string,
+    current: PropTypes.object,
     type: PropTypes.oneOf(['year','month', 'date', 'day']),
     size: PropTypes.string
   };

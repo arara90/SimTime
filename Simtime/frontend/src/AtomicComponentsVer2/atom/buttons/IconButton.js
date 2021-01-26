@@ -29,7 +29,7 @@ const Button = styled.button`
 function IconButton(props) {
 
     return (
-        <Button {...props} className={['btn', 'icon-btn', props.className].join(' ')} type={props.type}>
+        <Button {...props} type={props.type}>
           {props.children}
         </Button>
     )

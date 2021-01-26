@@ -12,26 +12,30 @@ import { ST_WHITE, ST_GRAY } from "../Colors";
 
 import Header from "../A-Atomics/Font/Header";
 // import Search from "../B-Molecules/Filter/Search";
-import Friends from "../D-Templates/Friends/Friends";
-import Groups from "../D-Templates/Friends/Groups";
+import FriendSection from "../D-Templates/Friends/FriendSection";
+import GroupSection from "../D-Templates/Friends/GroupSection";
 
 const Wrap = styled.div`
   overflow: hidden;
 
-
-  
 `;
 
+const SectionHeader = styled(Header)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
 const Section = styled.div`
   height: auto;
   margin-bottom: ${(props) => props.bottom};
+  margin-top: 1em;
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  aling-items: flex-end;
+  aling-items: center;
 `;
 
 // const StyledSearch = styled(Search)`
@@ -57,8 +61,8 @@ function FriendsPage(props) {
   }, []);
 
   return (
-    <Wrap>
-      <Section bottom="30px">
+    <Wrap id="simtime-page">
+      <Section bottom="2em">
         <SectionTitle>
           <Header type="h3" color="MAIN_COLOR">
             Friends
@@ -66,13 +70,13 @@ function FriendsPage(props) {
           {/* <StyledSearch width="125px" desc="Find a friend" height="25px" /> */}
         </SectionTitle>
         <ContentWrap>
-          <Friends
+          <FriendSection
             friendships={friendships}
             rowNum={6}
             rowHeight="45px"
             width="48%"
           />
-          <Friends
+          <FriendSection
             friendships={friendships}
             rowNum={6}
             rowHeight="45px"
@@ -82,11 +86,11 @@ function FriendsPage(props) {
       </Section>
 
       <Section bottom="0px">
-        <Header type="h3" color="MAIN_COLOR">
+        <Header height="4em"  type="h3" color="MAIN_COLOR">
           Group
         </Header>
         <ContentWrap>
-          <Groups
+          <GroupSection
             groups={groups}
             selectedGroup={selectedGroup}
             friendships={friendships}
