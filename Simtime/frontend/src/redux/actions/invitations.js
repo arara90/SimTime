@@ -7,6 +7,7 @@ import {
   ADD_INVITATION,
   DELETE_INVITATION,
   TOGGLE_INVITATION, 
+  SELECT_INVITATION,
   GET_ERRORS,
   CREATE_MESSAGE,
   GET_EVENTS,
@@ -80,8 +81,8 @@ export const toggleInvitations = (invitation, key) => async (dispatch) => {
   // invitation['event'] = invitation.evnet.id
   var message = {
     'like' : 'Like',
-    'show' :  !invitation[key] ?  "Hide" : "Show",
-    'attendance' : !invitation[key] ?  "Cancel" : "Join the Event",
+    'show' :  invitation[key] ? "Show":  "Hide" ,
+    'attendance' : invitation[key] ?  "Join the Event" : "Cancel" ,
   }
 
   return axiosInstance
@@ -114,4 +115,12 @@ export const deleteInvitation= (id, event_date) => (dispatch) => {
       // dispatch(returnErrors(err, err.response.status));
       console.log(err)
     });
+};
+
+export const selectInvitation = (invitation) => (dispatch) => {
+  dispatch({
+    type: SELECT_INVITATION,
+    payload: invitation,
+  });
+
 };

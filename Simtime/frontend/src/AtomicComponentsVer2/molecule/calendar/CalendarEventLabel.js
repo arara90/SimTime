@@ -105,7 +105,7 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, attendance, fontColor, color, name, time, location, tags, host} = props;
+  const {solid, attendance, fontColor, color, title, time, location, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
   return (
       <Wrap {...props}>
@@ -113,7 +113,7 @@ function CalendarEventLabel(props) {
         <Button fontColor={solid? fontColor: color} color={color}> 
           <Host url={host.profile_image} />
           <Content>
-            <Title>{name}</Title>
+            <Title>{title}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>
               {tags? tags.map((tag)=> {return '#'+tag+" "}) : time + " " + location}
             </StyledTag>

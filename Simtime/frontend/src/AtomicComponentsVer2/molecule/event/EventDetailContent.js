@@ -87,6 +87,7 @@ const Message = styled(TextBox)`
 const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
+
     const { host, event_place, event_date, event_time, participants, message, tags, like, likeBtnClick} = props;
     return (
         <Wrap className="event-detail">
@@ -98,13 +99,13 @@ function EventDetailContent(props) {
             <DetailTextRow as="address" title={event_place.address}><LocationIcon className="fa-fw"/>{event_place.name}</DetailTextRow>
             <Users className="participants">
                 <ParticipantsIcon className="fa-fw" />
-                {host?participants.map((p)=>{
-                return (host.id==p.id?null:(
-                    <UserList key={p.username}>
-                        <StyledImageUser title={p.username} width="2em" height="2em" url={p.profile_image}/>
-                    </UserList>)
-                    )
-                }):null}
+                {participants.map((p)=>{
+                    return ( 
+                        <UserList key={p.username}>
+                            <StyledImageUser title={p.username} width="2em" height="2em" url={p.profile_image}/>
+                        </UserList>)
+                    })
+                }
             </Users>
             <Map mapId="event-detail-map" location={event_place} />
             <Message line={6}>{message}</Message>

@@ -4,10 +4,13 @@ import {
   ADD_INVITATION,
   TOGGLE_INVITATION,
   DELETE_INVITATION,
+  SELECT_INVITATION,
+  
 } from "../actions/types";
 
 const initialState = {
   datas: {},
+  selected: null,
 };
 
 export default function(state = initialState, action) {
@@ -38,8 +41,15 @@ export default function(state = initialState, action) {
         invitation.id == action.payload['id'] ? action.payload : invitation)
       return {
         ...state,
-        datas: {...state.datas, [date]: newData}
+        datas: {...state.datas, [date]: newData},
+        selected: action.payload
       };
+
+    case SELECT_INVITATION:
+        return {
+          ...state,
+          selected: action.payload
+        };
 
     case DELETE_INVITATION:
       return {

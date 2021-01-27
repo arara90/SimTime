@@ -1,3 +1,4 @@
+import produce from 'immer'
 import {
   GET_EVENTS,
   ADD_EVENT,
