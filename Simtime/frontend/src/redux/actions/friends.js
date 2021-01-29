@@ -10,7 +10,7 @@ import {
   ADD_TO_GROUP,
 } from "./types";
 
-export const addfriend = (friend) => (dispatch) => {
+export const addfriend = (friend) => async (dispatch) => {
 
   return axiosInstance
     .post("/api/friend/create/", {
@@ -28,7 +28,7 @@ export const addfriend = (friend) => (dispatch) => {
     });
 };
 
-export const deleteFriend = (id) => (dispatch) => {
+export const deleteFriend = (id) => async (dispatch) => {
   return axiosInstance
     .delete(`/api/friend/${id}`)
     .then((res) => {
@@ -41,7 +41,7 @@ export const deleteFriend = (id) => (dispatch) => {
     });
 };
 
-export const editFriend = (data) => (dispatch) => {
+export const editFriend = (data) => async (dispatch) => {
   // subscribe:true
   // dispatch:true
   return axiosInstance
@@ -59,7 +59,7 @@ export const editFriend = (data) => (dispatch) => {
     });
 };
 
-export const getFriends = () => (dispatch) => {
+export const getFriends = () => async (dispatch) => {
   return axiosInstance
     .get("/api/friends/")
     .then((res) => {
@@ -77,7 +77,7 @@ export const getFriends = () => (dispatch) => {
 
 
 // 친구가 속한 그룹 관리
-export const addToGroup = (datas) => (dispatch) => {
+export const addToGroup = (datas) => async (dispatch) => {
   //{relationship:0, group:0}
   return axiosInstance
     .post("/api/friend/add-to-group/", datas)

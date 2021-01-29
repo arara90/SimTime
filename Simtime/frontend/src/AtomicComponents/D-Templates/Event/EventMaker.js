@@ -1,10 +1,14 @@
-import React, { useState, useCallback, Fragment, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+
 import DefaultModal from "../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
+import InputColor from "../../../AtomicComponentsVer2/atom/forms/InputColor"
+import CalendarEventLabel from "../../../AtomicComponentsVer2/molecule/calendar/CalendarEventLabel"
+
 
 import Input from "../../B-Molecules/Form/Input";
 import TextArea from "../../B-Molecules/Form/TextArea";
@@ -13,13 +17,14 @@ import InputTime from "../../B-Molecules/Form/InputTime";
 import DatePicker from "../../D-Templates/Calendar/DatePicker";
 import SearchLocation from "../../C-Organisms/Event/Create/SearchLocation";
 
-import DashedButton from "../../A-Atomics/Button/DashedButton";
 import { getStrFullDate } from "../Calendar/Generator";
 import { addEvent, getEvent, editEvent } from "../../../redux/actions/events";
 
-const ContentWrap = styled.form``
+import * as Colors from "../../Colors"
 
+const ContentWrap = styled.form``
 const PageWrap = styled.div`
+  overflow: hidden;
   height: 26em;
   width: 100%;
   display: flex;
@@ -49,11 +54,12 @@ const MyDatePicker = styled(DatePicker)`
       : "display: none;"}
 `;
 
-function EventMaker(props) {
-  const {closeModal, user, editEvent, addEvent, eventSubmitHandler } = props;
 
+
+function EventMaker(props) {
+  const palette = Object.values(Colors.Palette) ;
+  const {closeModal, user, editEvent, addEvent, eventSubmitHandler } = props;
   const today = new Date();
-  const timeRef = useRef();
   const [datePicker, setDatePicker] = useState(false);
   const [page, setPage] = useState(0);
   const [name, setName] = useState("");
@@ -61,6 +67,8 @@ function EventMaker(props) {
   const [time, setTime] = useState("");
   const [place, setPlace] = useState({});
   const [tags, setTags] = useState(null);
+  const [color, setColor] = useState(palette[Math.floor(Math.random() * palette.length)],);
+  const [fontColor, setFontColor] = useState();
   const [message, setMessage] = useState("");
 
   const [imgBase64, setImgBase64] = useState(""); // 파일 base64
@@ -78,9 +86,16 @@ function EventMaker(props) {
     
   });
 
+  useEffect(()=>{
+    console.log(color)
+  },[])
+
+
   const showDatePicker = () => setDatePicker(!datePicker);
 
   const submitHandler = () => {
+    // e.preventDefault();
+    // e.stopPropagation();
     const e_time = new Date(date + " " + time.split(" ")[0])
     const { eId, eStatus } = event;
     const myEvent = {
@@ -90,7 +105,8 @@ function EventMaker(props) {
       status: eStatus,
       event_place: place,
       message: message,
-      tags: tags
+      tags: tags,
+      color: color
       // photo: image,
     };
 
@@ -134,7 +150,6 @@ function EventMaker(props) {
     setTime(time);
     console.log(time)
   });
-
 
   //pages
   const firstPage = () => {
@@ -202,9 +217,12 @@ function EventMaker(props) {
         <img className="profile_preview" src={imgBase64} style={{width: "150px", height: "150px",}} />
       );
     }
+
     return (
       <PageWrap {...props} isActivePage={page == 2}>
         <div>
+          <InputColor value={color} changeHandler={setColor} type="color" name="LabelColor"></InputColor>
+          <CalendarEventLabel color={color}></CalendarEventLabel>
           <input
             type="file"
             name="imgFile"
@@ -241,16 +259,17 @@ function EventMaker(props) {
   };
 
   return(
-    <ContentWrap onSubmit={submitHandler} encType="multipart/form-data">
+    //0128 <ContentWrap onSubmit={submitHandler} encType="multipart/form-data"> 
+    // <ContentWrap onSubmit={submitHandler}>
       <DefaultModal
         title="New Event"
         pages={[firstPage(), secondPage(), thirdPage()]}
-        submitHandler={submitHandler}
         pageChangeHandler={handleClick}
+        handleSubmit={submitHandler}
         height="auto"
         closeModal={closeModal}
       />
-    </ContentWrap>
+    // </ContentWrap>
   )
 
 }
@@ -263,7 +282,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch)=> {
  return {
-  addEvent: (myEvent, image)=>dispatch(addEvent(myEvent, image)),
+  addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
   getEvent: getEvent(),
   editEvent: editEvent()
 }

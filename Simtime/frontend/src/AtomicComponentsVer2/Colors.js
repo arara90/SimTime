@@ -3,16 +3,16 @@
 import { faPalette } from "@fortawesome/free-solid-svg-icons";
 
 // https://color.adobe.com/ko/create/color-wheel
-export const Palette = [
-    "ST_YELLOW"
-    ,"ST_PINK"        
-    ,"ST_BLUE"        
-    ,"ST_ORANGE"         
-    ,"ST_RED"         
-    ,"ST_VIOLET"      
-    ,"ST_GREEN"         
-    ,"ST_GRAY"        
-]
+export const Palette = {
+    "ST_YELLOW": "#F2C94C",
+    "ST_PINK"  : "#E7156E",     
+    "ST_BLUE"  : "#0081C2",     
+    "ST_ORANGE": "#F96A32",        
+    "ST_RED"   : "#E90116",     
+    "ST_VIOLET": "#69366E",     
+    "ST_GREEN" : "#028538",       
+    "ST_GRAY"  : "#D0C9D6",     
+}
 
 export const ST_YELLOW_LIGHT     = "#FFF8E7";
 export const ST_YELLOW           = "#F2C94C"; //main (Deep) yellow (242,201,76)

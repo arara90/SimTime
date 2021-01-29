@@ -8,6 +8,7 @@ import {
   DELETE_INVITATION,
   TOGGLE_INVITATION, 
   SELECT_INVITATION,
+  GET_HOSTS,
   GET_ERRORS,
   CREATE_MESSAGE,
   GET_EVENTS,
@@ -123,4 +124,20 @@ export const selectInvitation = (invitation) => (dispatch) => {
     payload: invitation,
   });
 
+};
+
+
+export const getHosts = () => async (dispatch) => {
+  alert('hepp')
+  return axiosInstance
+    .get(`/api/hosts`)
+    .then((res) => {
+      dispatch({
+        type: GET_HOSTS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
 };

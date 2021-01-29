@@ -57,8 +57,10 @@ export const addEvent =  (event, img) => async (dispatch) =>{
 
   try{
     if(img) {
+      console.log('img')
       const formData = new FormData();
       formData.append("photo", img);
+      formData.append("color", event.color);
       formData.append("host", event.host);
       formData.append("event_name", event.event_name);
       formData.append("event_time", event.event_time);
@@ -107,7 +109,7 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     .delete(`/api/events/${id}`)
     .then(() => {
       dispatch(createMessage({ deleteEvent: "Event Deleted" }));
-      dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
+      // dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
       dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
     })
     .catch((err) => {

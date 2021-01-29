@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Invitation, Event
 # from .models import  Event
 from accounts.serializers import UserSerializer
+from accounts.models import Account
 from datetime import datetime
 
 
@@ -43,6 +44,15 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
+
+ 
+class HostSerializer(serializers.ModelSerializer):
+    # RGmapId = serializers.IntegerField(source='id')
+    host = UserSerializer(source='host')
+    class Meta:
+        model = Invitation
+        fields = ('host')
+
 
 
 

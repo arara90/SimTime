@@ -173,8 +173,8 @@ function InputModal(props) {
           <ModalTitle closeModal={props.closeModal}>{props.title}</ModalTitle>
         )}
       </HeaderWrap>
-
-      <ContentWrap encType="multipart/form-data">
+      {/*0128 <ContentWrap encType="multipart/form-data"> */}
+      <ContentWrap>
         {renderPages()}
         <Buttons>{renderButtons(page)}</Buttons>
       </ContentWrap>

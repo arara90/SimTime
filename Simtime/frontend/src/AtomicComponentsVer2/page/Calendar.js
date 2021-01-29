@@ -20,7 +20,7 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
-import {generate, getStrFullDate, addDate, subWeek} from "../../redux/actions/calendar"
+import {generate, getStrFullDate, addDate, subWeek, getStringDate} from "../../redux/actions/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
 import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
@@ -55,6 +55,7 @@ const MyFilter = styled(Filters)`
 `
 
 
+
 function Calendar(props) {
   //1.props
   // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, friendships ,invitations, loading} = props;
@@ -85,6 +86,7 @@ function Calendar(props) {
   const endDate = useRef(null);//지금까지 읽어온 데이터 중 마지막날짜
   const monthRefs = useRef({})
 
+
   //5.hooks - useEffect
   //// initialization
   useEffect(()=>{ 
@@ -98,14 +100,9 @@ function Calendar(props) {
     // invitations 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
+
   }, [])
 
-  // useEffect(
-  //   ()=>{
-  //     console.log('newWeekDates', weekDates)
-  //     document.addEventListener('scroll', handleScroll)
-  //   }
-  // )
 
   useEffect(()=>{ 
     //filter 적용
@@ -153,24 +150,6 @@ function Calendar(props) {
 
 
   //5. functions
-  // function handleScroll(){
-  //   const scrollHeight = document.documentElement.scrollHeight;
-  //   const scrollTop = document.documentElement.scrollTop;
-  //   const clientHeight = document.documentElement.clientHeight;
-
-  //   if (scrollTop + clientHeight >= scrollHeight) {
-  //     var curr = new Date(current)
-  //     var res = new Date(current)
-  //     var newMonth = curr.getMonth() + 2
-  //     res.setMonth(newMonth);
-  //     res.setDate(1);
-  //     console.log('res', res)
-
-  //     monthClickHandler(res)
-  //   }
-  // }
-
-
   //// modal
   const closeModal = () => setModalContent(null)
   //// click date cell
@@ -181,9 +160,11 @@ function Calendar(props) {
     selectInvitation(null);
   }
 
- const monthClickHandler= (res)=>{
+ const monthClickHandler= (res)=> {
+  console.log('monthClickHandler', res)
+
   var newDate = new Date(getStrFullDate(res, 'date'))
-  var { start, end, weeks } = generate(newDate, 7); 
+  var { start, end, weeks } = generate(newDate, 6); 
   //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
   var newWeekDates = new Map()
 
@@ -193,7 +174,6 @@ function Calendar(props) {
 
   // 매월 첫주차(day=0) element 저장 -> scrollTo 지점
   monthRefs.current[getStrFullDate(start, "yyyy-mm-dd")] = null;
-
 
   if(res<startDate.current){
     //Prev Month

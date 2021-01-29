@@ -36,8 +36,12 @@ const alertOptions = {
 };
 
 class App extends Component {
+
+
+  
   componentDidMount() {
     store.dispatch(loadUser());
+  
   }
 
   render() {
@@ -91,7 +95,7 @@ class App extends Component {
                       <PrivateRoute
                         exact
                         path="/friends"
-                        component={FriendsPage}
+                        component={Friends}
                       />
                       <PrivateRoute
                         exact

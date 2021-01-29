@@ -72,8 +72,8 @@ class Event(CustomizedModel):
 
     message = models.TextField(blank=True, null=True)
     photo = models.ImageField(upload_to=user_path, blank=True, null=True)
-    color = models.CharField(max_length=10, default="ST_VIOLET")  # violet
-    font_color = models.CharField(max_length=10, default="ST_WHITE")
+    color = models.CharField(max_length=10, default="#E7156E", blank=True, null=False)  # pink
+    font_color = models.CharField(max_length=10, default="#2B2738", blank=True, null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -98,6 +98,6 @@ class Invitation(models.Model):
     # 초대받은 사람의 달력에 보일것인지, 초대받은 사람이 설정함
     show = models.BooleanField(default=True)
     like = models.BooleanField(default=False)
-    # created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         constraints = [models.UniqueConstraint(fields=['event', 'friend'], name='ef_compositeKey')]

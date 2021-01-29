@@ -21,7 +21,7 @@ const Wrap = styled.section`
   }
 `;
 
-const PageWrap = styled.div`
+const PageWrap = styled.form`
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -59,6 +59,7 @@ function DefaultModal(props) {
   const submitHandler = (e) => {
     console.log('submitHandler')
     e.preventDefault();
+
     props.handleSubmit();
   };
 
@@ -83,7 +84,9 @@ function DefaultModal(props) {
         return (
           <Fragment>
               <Button width="48%" type="button" onClick={(e) => clickHandler(e, page - 1)}>Prev</Button>
-              <Button width="48%" type="submit" onSubmit={(e) => submitHandler(e)}>Done</Button>
+              {/* <Button width="48%" type="submit" onSubmit={(e) => submitHandler(e)}>Done</Button> */}
+              <Button width="48%" type="submit" onClick={(e) => submitHandler(e)}>Done</Button> 
+              
           </Fragment>
         );
       }

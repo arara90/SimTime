@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 //redux-actions
 import { getGroups } from "../../redux/actions/groups";
 import { getFriends } from "../../redux/actions/friends";
-// import { getHosts } from "../../redux/actions/invitations"
+import { getHosts } from "../../redux/actions/invitations"
 
 //components
 import { ST_WHITE, ST_GRAY } from "../Colors";
@@ -18,12 +18,11 @@ import GroupSection from "../../AtomicComponents/D-Templates/Friends/GroupSectio
 const Wrap = styled.div`
   overflow: hidden;
 
-  
 `;
 
 const Section = styled.div`
   height: auto;
-  margin-bottom: ${(props) => props.bottom};
+  margin: 1em auto;
 `;
 
 const SectionTitle = styled.div`
@@ -45,18 +44,20 @@ const ContentWrap = styled.div`
 `;
 
 function Friends(props) {
-  const { groups, selectedGroup,selectedGroupMembers, friendships } = props;
+  const {groups, selectedGroup, selectedGroupMembers, friendships,  hosts } = props;
 
   useEffect(() => {
     async function getDatas() {
-      var friend = await props.getFriends();
-      var group = await props.getGroups();
+      await props.getFriends();
+      await props.getHosts();
+      await props.getGroups();
     }
+
     getDatas();
   }, []);
 
   return (
-    <Wrap>
+    <Wrap id="simtime-page">
       <Section bottom="30px">
         <SectionTitle>
           <Header type="h3" color="MAIN_COLOR">
@@ -72,7 +73,7 @@ function Friends(props) {
             width="48%"
           />
           <FriendSection
-            friendships={friendships}
+            friendships={hosts}
             rowNum={6}
             rowHeight="45px"
             width="48%"
@@ -106,13 +107,14 @@ const mapStateToProps = (state) => ({
   selectedGroup: state.groups.selectedGroup,
   selectedGroupMembers : state.groups.selectedGroup.members,
   friendships: state.friends.friendships,
+  hosts: state.invitations.hosts
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),
-    // getHosts: () => dispatch(getHost())
+    getHosts: () => dispatch(getHosts())
   };
 };
 
