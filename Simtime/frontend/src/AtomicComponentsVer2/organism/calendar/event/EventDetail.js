@@ -66,6 +66,7 @@ function EventDetail(props) {
           <Buttons>
             <JoinButton color={attendance? "ST_RED" :"ST_BLUE"} onClick={()=>toggleInvitations(invitation,'attendance')} > {attendance?"Cancel":"Join"} </JoinButton>
             {isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteEventHandler(event.id, event_date)}>delete</DeleteButton>}
+            {isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>edit</DeleteButton>}
             {!isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>hide</DeleteButton>}
           </Buttons>
         </Wrap>

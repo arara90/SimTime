@@ -20,9 +20,9 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
-import {generate, getStrFullDate, addDate, subWeek} from "../../redux/actions/calendar"
+import {generate, getStrFullDate, addDate, subWeek, getStringDate} from "../../redux/actions/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
-import {getInvitations, addInvitations, acceptInvitations} from "../../redux/actions/invitations"
+import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
 
@@ -55,10 +55,12 @@ const MyFilter = styled(Filters)`
 `
 
 
+
 function Calendar(props) {
   //1.props
   // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, friendships ,invitations, loading} = props;
-  const {getFriends, getGroups, getInvitations, addInvitations, addEvent, loading, user, groups, friendships, invitations} = props;
+  const {getFriends, getGroups, getInvitations, addInvitations, selectInvitation, addEvent
+    , loading, user, groups, friendships, invitations, selectedInvitation } = props;
 
   //2.context
   const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
@@ -71,7 +73,7 @@ function Calendar(props) {
 
   ////data
   const [filteredInvitations, setFilteredInvitations] = useState({}) 
-  const [selectedInvitation, setSelectedInvitation] = useState({}) 
+  // const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
   //// modal
   const [modalContent, setModalContent] = useState(""); //modal (EventMaker, Dialog, InviteFriends, null )
@@ -83,6 +85,7 @@ function Calendar(props) {
   const startDate = useRef(null);; //지금까지 읽어온 데이터 중 첫번째 날짜
   const endDate = useRef(null);//지금까지 읽어온 데이터 중 마지막날짜
   const monthRefs = useRef({})
+
 
   //5.hooks - useEffect
   //// initialization
@@ -97,14 +100,9 @@ function Calendar(props) {
     // invitations 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
+
   }, [])
 
-  // useEffect(
-  //   ()=>{
-  //     console.log('newWeekDates', weekDates)
-  //     document.addEventListener('scroll', handleScroll)
-  //   }
-  // )
 
   useEffect(()=>{ 
     //filter 적용
@@ -117,6 +115,14 @@ function Calendar(props) {
     }
 
   }, [invitations])
+
+  useEffect(()=>{ 
+    if(selectedInvitation){
+      setSelectedDate(selectedInvitation.event.event_date)
+      setShowDetail(true);
+    }
+
+  }, [selectedInvitation])
 
   //// update friends information
   useEffect(()=>{
@@ -144,24 +150,6 @@ function Calendar(props) {
 
 
   //5. functions
-  // function handleScroll(){
-  //   const scrollHeight = document.documentElement.scrollHeight;
-  //   const scrollTop = document.documentElement.scrollTop;
-  //   const clientHeight = document.documentElement.clientHeight;
-
-  //   if (scrollTop + clientHeight >= scrollHeight) {
-  //     var curr = new Date(current)
-  //     var res = new Date(current)
-  //     var newMonth = curr.getMonth() + 2
-  //     res.setMonth(newMonth);
-  //     res.setDate(1);
-  //     console.log('res', res)
-
-  //     monthClickHandler(res)
-  //   }
-  // }
-
-
   //// modal
   const closeModal = () => setModalContent(null)
   //// click date cell
@@ -169,11 +157,14 @@ function Calendar(props) {
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
+    selectInvitation(null);
   }
 
- const monthClickHandler= (res)=>{
+ const monthClickHandler= (res)=> {
+  console.log('monthClickHandler', res)
+
   var newDate = new Date(getStrFullDate(res, 'date'))
-  var { start, end, weeks } = generate(newDate, 7); 
+  var { start, end, weeks } = generate(newDate, 6); 
   //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
   var newWeekDates = new Map()
 
@@ -183,7 +174,6 @@ function Calendar(props) {
 
   // 매월 첫주차(day=0) element 저장 -> scrollTo 지점
   monthRefs.current[getStrFullDate(start, "yyyy-mm-dd")] = null;
-
 
   if(res<startDate.current){
     //Prev Month
@@ -226,11 +216,9 @@ function Calendar(props) {
 
 
 //// click invitation
-  const invitationClickHandler = (e, invitation) =>{
+  const invitationClickHandler =  (e, invitation) =>{
   e.stopPropagation();
-  setSelectedInvitation(invitation);
-  setSelectedDate(invitation.event.event_date)
-  setShowDetail(true);
+  selectInvitation(invitation)
 }
 
   //// submit new event
@@ -264,6 +252,7 @@ function Calendar(props) {
   }
 
   return (
+
     <Fragment>
       {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
@@ -290,7 +279,7 @@ function Calendar(props) {
                         itemClickHandler={(e, invitation)=>{
                           e.preventDefault();
                           setShowDetail(true);
-                          setSelectedInvitation(invitation)} } /> 
+                          selectInvitation(invitation)} } /> 
 
                       }
       />
@@ -301,6 +290,7 @@ function Calendar(props) {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   invitations: state.invitations.datas,
+  selectedInvitation: state.invitations.selected,
   groups: state.groups.groups,
   selectedGroup: state.groups.selectedGroup,
   friendships: state.friends.friendships,
@@ -313,7 +303,8 @@ const mapDispatchToProps = (dispatch) => {
     getFriends: () => dispatch(getFriends()),
     addEvent: (myEvent, image) => dispatch(addEvent(myEvent, image)),
     getInvitations: (start, end)=>dispatch(getInvitations(start, end)),
-    addInvitations: (event, friendIds) => dispatch(addInvitations(event, friendIds))
+    addInvitations: (event, friendIds) => dispatch(addInvitations(event, friendIds)),
+    selectInvitation: (invitation) => dispatch(selectInvitation(invitation))
   };
 };
 

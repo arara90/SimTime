@@ -11,7 +11,6 @@ import ImageUser from "../../atom/ImageUser"
 import Tag from "../../atom/fonts/Tag"
 import * as Colors from "../../Colors"
 
-const palette = Colors.Palette;
 
 const Wrap = styled.li`
     position: relative;
@@ -70,7 +69,7 @@ const Checked = styled.div`
   z-index: 9;
   background-color: white;
 
-  border: solid 5px ${Colors["ST_GREEN"]};
+  border: solid 5px ${({color})=>color};
   border-top: solid 5px ${Colors["ST_WHITE"]};
   border-right: solid 5px ${Colors["ST_WHITE"]};
   `
@@ -97,23 +96,22 @@ const Title = styled.strong`
 const StyledTag = styled(Tag)`
   display: block;
   font-size: 0.8em;
-
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  
 `
 
 function CalendarEventLabel(props) {
-  const {solid, attendance, fontColor, color, name, time, location, tags, host} = props;
+  const {solid, attendance, fontColor, color, title, time, location, tags, host} = props;
   const Button = solid ? Colored: Bordered ; 
+
   return (
       <Wrap {...props}>
-        {attendance? <Checked className='check'/> : null}
+        {attendance? <Checked className='check' color={color}/> : null}
         <Button fontColor={solid? fontColor: color} color={color}> 
           <Host url={host.profile_image} />
           <Content>
-            <Title>{name}</Title>
+            <Title>{title}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>
               {tags? tags.map((tag)=> {return '#'+tag+" "}) : time + " " + location}
             </StyledTag>
@@ -140,8 +138,8 @@ CalendarEventLabel.propTypes = {
   
 CalendarEventLabel.defaultProps = {
   solid: null,
-  color: palette[Math.floor(Math.random() * palette.length)],
-  fontColor: "ST_WHITE",
+  color: "#fff",
+  fontColor: "#fff",
   join: false,
   title: "Chickenkkkkk",
   time: "00:00 AM",

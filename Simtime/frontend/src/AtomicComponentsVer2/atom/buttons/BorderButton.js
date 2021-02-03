@@ -4,8 +4,8 @@ import styled from "styled-components";
 import * as Colors from "../../Colors";
 
 const Button = styled.button`
-  border: solid 2px ${({color}) => Colors[color]};
-  color: ${({color}) => Colors[color]};
+  border: solid 2px ${({color}) => color};
+  color: ${({color}) => color};
   border-radius: 6px 6px 6px 6px;
   width: ${({width}) => width};
   height: ${({height}) => height};
@@ -16,8 +16,8 @@ const Button = styled.button`
   }
 
   &:hover {
-    border: solid 2px ${({color}) => Colors[color + "_DARK"]};
-    color: ${({color}) => Colors[color + "_DARK"]};  
+    border: solid 2px ${({color}) => color+"60"};
+    color: ${({color}) => color+"60"};  
 }
 `
 function BorderButton(props) {

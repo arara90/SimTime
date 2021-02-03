@@ -1,17 +1,19 @@
+import io
+import boto3
+import tempfile
+from datetime import datetime
+from django.conf import settings
+from django.utils import timezone
+from django.db.models import Max
 from .models import Invitation, Event
-from .serializers import InvitationSerializer, EventSerializer
+from .serializers import InvitationSerializer, EventSerializer, HostSerializer
+from accounts.models import Friendship
+
 # from .models import  Event
 # from .serializers import EventSerializer
 from rest_framework import viewsets, permissions, authentication, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.conf import settings
-import io
-import boto3
-import tempfile
-
-from datetime import datetime
-from django.utils import timezone
 
 
 class EventAPI(APIView):
@@ -88,7 +90,6 @@ class InvitationAPI(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        print(request.data)
         serializer = InvitationSerializer(data=request.data, many=True)
         if(serializer.is_valid()):
             print('is_valid')
@@ -117,3 +118,20 @@ class InvitationAPI(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class HostAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+    def get(self, request):
+        # hosts = request.user.invitations.distinct("host").order_by('created_at')
+        import json
+        print('ji')
+        # hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id)\
+        #     .values('event__host__id', 'event__host__username','event__host__profile_image', 'event__host__email' ).distinct()
+        # print(hosts)
+        hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id).values("event__host_id").annotate(order_temp=Max("event__host_id")).order_by("-order_temp") 
+        print(hosts)
+        # serializer = HostSerializer(hosts, many=True)
+        # return Response(serializer.data)  
