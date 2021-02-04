@@ -53,7 +53,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
-    'frontend',
     'invitations',
     'accounts',
     # 'files', #practice용

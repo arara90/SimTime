@@ -3,7 +3,7 @@ const path = require("path");
 console.log("webpack.start");
 module.exports = {
   entry: {
-    main: "./Simtime/frontend/src/index.js",
+    main: "./frontend/src/index.js",
   },
   module: {
     rules: [

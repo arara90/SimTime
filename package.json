@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode development --watch ./Simtime/frontend/src/index.js --output ./Simtime/frontend/static/frontend/main.js",
-    "build": "webpack --mode production --watch ./Simtime/frontend/src/index.js --output ./Simtime/frontend/static/frontend/main.js",
+    "dev": "webpack --mode development --watch ./frontend/src/index.js --output ./frontend/main.js",
+    "build": "webpack --mode production --watch ./frontend/src/index.js --output ./frontend/main.js",
     "start": "webpack-dev-server --hotonly"
   },
   "keywords": [],
