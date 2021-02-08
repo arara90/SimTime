@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # 'files', #practice용
     'storages',
     'imagekit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -100,7 +101,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
 
+CORS_ORIGIN_WHITELIST = [ 
+    # 허용할 프론트엔드 도메인 추가 EX: 'http://localhost:3000', 
+    'https://localhost:8080', 
+    'https://127.0.0.1:8080', 
+    'http://localhost:8080', 
+    'http://127.0.0.1:8080',
 ]
 
 INTERNAL_IPS = ('127.0.0.1')
