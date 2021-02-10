@@ -135,7 +135,7 @@ function Calendar(props) {
   useEffect(()=>{
     function renderContext(){
       if(modalContent=="EventMaker"){
-        return <EventMaker eventSubmitHandler={eventSubmitHandler} />
+        return <EventMaker eventSubmitHandler={eventSubmitHandler} closeModal={closeModal}/>
       }else if(modalContent=="Dialog"){
         return <YNDialogModal leftBtnClickHandler={dialogSubmitHandler} rightBtnClickHandler={closeContextModal} closeModal={closeContextModal}> 지금 친구들을 초대하시겠습니까? </YNDialogModal>
       }else if(modalContent=="InviteFriends"){

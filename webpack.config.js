@@ -31,7 +31,7 @@ module.exports = {
     contentBase: path.resolve(__dirname, 'frontend/dev'),
     hot: true,
     // host: "dev.domain.com",
-    port: 8080,
+    port: 3000,
     // proxy: "http://localhost:8000"
     proxy: {
       "/static":"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static",

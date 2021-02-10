@@ -128,7 +128,6 @@ export const selectInvitation = (invitation) => (dispatch) => {
 
 
 export const getHosts = () => async (dispatch) => {
-  alert('hepp')
   return axiosInstance
     .get(`/api/hosts`)
     .then((res) => {
