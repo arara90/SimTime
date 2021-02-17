@@ -172,6 +172,9 @@ dmypy.json
 
 # Pyre type checker
 
+### webpack ###
+.env.*
+
 ### react ###
 .DS_*
 logs
