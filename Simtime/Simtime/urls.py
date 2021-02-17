@@ -20,7 +20,6 @@ from django.conf.urls import url
 from django.conf import settings
 
 urlpatterns = [
-    path('', include('frontend.urls')),
     path('', include('invitations.urls')),
     path('', include('accounts.urls')),
     # path('', include('files.urls')),

@@ -53,12 +53,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
-    'frontend',
     'invitations',
     'accounts',
     # 'files', #practice용
     'storages',
     'imagekit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,7 +101,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
 
+CORS_ORIGIN_WHITELIST = [ 
+    # 허용할 프론트엔드 도메인 추가 EX: 'http://localhost:3000', 
+    'https://localhost:3000', 
+    'https://127.0.0.1:3000', 
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
 ]
 
 INTERNAL_IPS = ('127.0.0.1')
