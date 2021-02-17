@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import Thumbnail
 
@@ -30,12 +31,10 @@ class Gender(models.TextChoices):
     Custom = "custom"  # Custom
     Unknwon = "unknwon"
 
+
 # Create your models here.
-
-
 class Account(AbstractUser):
-    gender = models.CharField(
-        max_length=7, choices=Gender.choices, default=Gender.Unknwon)
+    gender = models.CharField(max_length=7, choices=Gender.choices, default=Gender.Unknwon)
     birthday = models.CharField(max_length=4, null=True)  # 0906
     brthyear = models.CharField(max_length=4, null=True)  # 1990
     # +00 00-0000-0000 또는 +00 00 0000 0000
@@ -49,6 +48,40 @@ class Account(AbstractUser):
         format='JPEG',					# 최종 저장 포맷
         options={'quality': 60}
     )  		# 저장 옵션
+
+
+# class FriendshipStatus(models.IntegerChoices):
+#     # Status = 0;본인 1;request 2.confirm 3; A blocks B 4;B blocks A 5; block each others.
+#     MUTUAL     =  0, _('MUTUAL')
+#     A_ONLY     =  1, _('A_ONLY')     #A만 B를 친구로 등록
+#     B_ONLY     =  2, _('B_ONLY')     #B만 A를 친구로 등록
+#     A_REQUEST  =  3, _('A_REQUEST')     #A만 B를 친구로 등록, B에게 요청한 상태
+#     B_REQUEST  =  4, _('B_REQUEST')     #B만 A를 친구로 등록, A에게 요청한 상태
+#     ACCOUNT    =  5, _('ACCOUNT')
+#     __empty__ = _('Unknown')
+    
+        
+class Friendship(models.Model):
+    #account_A가 account_B보다 항상 작은 ID를 갖는다.
+    account_A = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendship_A')
+    account_B = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friendship_B')
+    status = models.IntegerField(default=999, null=False)
+
+    # A-side(수신/발신/Block)
+    A_subscribe_B = models.BooleanField(null=True, default=True)   # A는 B의 초대장을 수신 or not.
+    A_dispatch_B = models.BooleanField(null=True, default=True)    # A가 B에게 초대장을 발신 or not. (false면 보내지않음)
+    A_block_B = models.BooleanField(null=True, default=False)         # A가 B를 Block or not.
+   
+    # B-side(수신/발신/Block)
+    B_subscribe_A = models.BooleanField(null=True, default=True)   # B는 A를 수신 or not.
+    B_dispatch_A = models.BooleanField(null=True, default=True)    # B가 A에게 발신 or not (false면 보내지않음)
+    B_block_A = models.BooleanField(null=True, default=False)         # B가 A를 Block or not
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['account_A', 'account_B'], name='friendship_compositeKey')]
 
 
 class FriendGroup(models.Model):
@@ -69,6 +102,16 @@ class FriendGroup(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(
             fields=['account', 'groupname'], name='group_name_unique')]
+            
+# 한 명의 친구는 여러 그룹을 가질 수 있음
+class FriendshipGroupMap(models.Model):  # Which Group
+    group = models.ForeignKey(FriendGroup, on_delete=models.CASCADE, related_name='friendships')
+    friend = models.ForeignKey(Account, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['group', 'friend'], name='gf_compositeKey')]
 
 
 class Relationship(models.Model):
@@ -84,19 +127,15 @@ class Relationship(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Status = 0;본인 1;request 2.confirm 3; A blocks B 4;B blocks A 5; block each others.
 
-    class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['account_id', 'friend_id'], name='af_compositeKey')]
-
 
 # 한 명의 친구는 여러 그룹을 가질 수 있음
-class Relationship_FriendGroup_MAP(models.Model):  # Which Group
-    group = models.ForeignKey(
-        FriendGroup, on_delete=models.CASCADE, related_name='relationships')
-    relationship = models.ForeignKey(
-        Relationship, on_delete=models.CASCADE, related_name='groups')
-    created_at = models.DateTimeField(auto_now_add=True)
+# class Relationship_FriendGroup_MAP(models.Model):  # Which Group
+#     group = models.ForeignKey(
+#         FriendGroup, on_delete=models.CASCADE, related_name='friendships')
+#     relationship = models.ForeignKey(
+#         Relationship, on_delete=models.CASCADE, related_name='groups')
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['group', 'relationship'], name='gr_compositeKey')]
+#     class Meta:
+#         constraints = [models.UniqueConstraint(
+#             fields=['group', 'relationship'], name='gr_compositeKey')]

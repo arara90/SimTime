@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='relationships', to='accounts.FriendGroup')),
+                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='friendships', to='accounts.FriendGroup')),
                 ('relationship', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='groups', to='accounts.Relationship')),
             ],
         ),
