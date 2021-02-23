@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+# from django.contrib.postgres.fields import JSONField
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 # from django.contrib.auth.models import User as User
@@ -63,7 +63,7 @@ class Event(CustomizedModel):
                              on_delete=models.CASCADE, related_name='events')
     event_name = models.CharField(max_length=200, blank=False)
     event_time = models.DateTimeField(blank=False, null=False)
-    event_place = JSONField(default=default_place_dict)
+    event_place = models.JSONField(default=default_place_dict)
     tags = ArrayField(models.CharField(max_length=200),
                       null=True, blank=True, default=list)  # 미구현
     status = models.CharField(max_length=10,
