@@ -43,7 +43,7 @@ const StyledContent = styled(Header)`
   }
 `;
 
-function MenuInActive(props) {
+function MenuInactive(props) {
   return (
     <Wrap>
       <ContentWrap>
@@ -56,4 +56,4 @@ function MenuInActive(props) {
   );
 }
 
-export default MenuInActive;
+export default MenuInactive;

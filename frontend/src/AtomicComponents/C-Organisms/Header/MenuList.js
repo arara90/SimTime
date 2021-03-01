@@ -7,7 +7,7 @@ import { MenuContext } from "../../../contexts/menuContext";
 //component
 import { MAIN_COLOR, ST_GRAY } from "../../Colors";
 import MenuActive from "../../A-Atomics/Menu/MenuActive";
-import MenuInActive from "../../A-Atomics/Menu/MenuInActive";
+import MenuInactive from "../../A-Atomics/Menu/MenuInactive";
 import MenuLink from "../../A-Atomics/Menu/MenuLink";
 
 const Wrap = styled.div`

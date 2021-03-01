@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    main: "./frontend/src/index.js",
+    main: "/home/ubuntu/Simtime/frontend/src/index.js",
   },
   module: {
     rules: [
@@ -20,15 +20,15 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, 'frontend/dist'),
+    path: path.resolve(__dirname,'dist'),
   },
   plugins:[
     new CleanWebpackPlugin(), 
-    new HtmlWebpackPlugin({template: './frontend/template/index.html'})
+    new HtmlWebpackPlugin({template: path.resolve(__dirname, 'template', 'index.html')})
     ],
 
   devServer: {
-    contentBase: path.resolve(__dirname, 'frontend/dev'),
+    contentBase: path.resolve(__dirname, 'dev'),
     hot: true,
     // host: "dev.domain.com",
     port: 3000,
@@ -40,3 +40,4 @@ module.exports = {
   },
 
 };
+
