@@ -32,7 +32,7 @@ function MenuList(props) {
   };
 
   const InavtiveMenuRender = (name) => {
-    return <MenuInavtive>{name}</MenuInavtive>;
+    return <MenuInactive>{name}</MenuInactive>;
   };
 
   const renderMenus = (menus) => {
