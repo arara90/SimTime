@@ -152,6 +152,7 @@ function SearchBox(props) {
     options,
     name,
     desc,
+    value,
     arrow,
     cursor,
     search,
@@ -162,8 +163,8 @@ function SearchBox(props) {
   const [optionDatas, setOptionDatas] = useState(options);
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState(defaultOption);
-  const [currInput, setCurrInput] = useState("");
-  const [isValid, setIsValid] = useState(false);
+  const [currInput, setCurrInput] = useState(value?value:"");
+  const [isValid, setIsValid] = useState(value?true:false);
 
   const startSearch = (keyword) => {
     return new Promise(function (resolve, reject) {

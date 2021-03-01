@@ -54,7 +54,8 @@ export const getEvent = (id) => (dispatch) => {
 export const addEvent =  (event, img) => async (dispatch) =>{
   const SUCCEESS = 'ADD_EVENT_SUCCESS'
   const FAILURE = 'ADD_EVENT_FAILURE'
-
+  
+  console.log(event, img)
   try{
     if(img) {
       console.log('img')

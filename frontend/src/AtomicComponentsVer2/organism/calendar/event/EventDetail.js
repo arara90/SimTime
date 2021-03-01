@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -6,8 +6,11 @@ import { connect } from "react-redux";
 import { deleteEvent } from "../../../../redux/actions/events"
 import { toggleInvitations, deleteInvitation } from "../../../../redux/actions/invitations"
 
+import {ModalContext} from "../../../../contexts/modalContext"
+
 import EventDetailHeader from "../../../molecule/event/EventDetailHeader"
 import EventDetailContent from "../../../molecule/event/EventDetailContent"
+import EventMaker from "../../../../AtomicComponents/D-Templates/Event/EventMaker"
 import SolidButton from "../../../atom/buttons/SolidButton"
 import TextButton from "../../../atom/buttons/TextButton"
 
@@ -44,14 +47,45 @@ const DeleteButton = styled(TextButton)``
 
 
 function EventDetail(props) {
+  const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
+
   const {isHost, invitation, toggleInvitations} = props;
   const {id, attendance, show, like, event} = invitation;
   const {event_name, event_date, tags, host} = event;
+  const [isEdit, setIsEdit] = useState(false)
+
+
+  //// change modals
+  useEffect(()=>{
+    if(isEdit) handleContextModal(<EventMaker eventToEdit={event} isEdit eventSubmitHandler={eventSubmitHandler} closeModal={()=>setIsEdit(false)}/>)
+  }, [isEdit])
+
+  const eventSubmitHandler = (event, image) =>{
+    console.log(event, image)
+
+  }
+
+  // //// submit new event
+  // const eventSubmitHandler = async (event, image) =>{
+  //   console.log('done')
+  //   // try{
+  //   //   //event  수정
+  //   //   var res = await editEvent(event, image); 
+
+  //   //   //modal 변경
+  //   //   await closeContextModal()
+  //   //   setIsEdit(false)
+  //   // }catch(e){
+  //   //   console.log("Error", e); 
+  //   // }
+  // }
+    //// submit new event
 
   const deleteEventHandler=(eventId, date)=>{
     props.deleteEvent(eventId, date);
     props.backHandler();
   }
+
 
   const deleteInvitationHandler=(invitationId, date)=>{
     props.deleteInvitation(invitationId, date);
@@ -66,7 +100,7 @@ function EventDetail(props) {
           <Buttons>
             <JoinButton color={attendance? "ST_RED" :"ST_BLUE"} onClick={()=>toggleInvitations(invitation,'attendance')} > {attendance?"Cancel":"Join"} </JoinButton>
             {isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteEventHandler(event.id, event_date)}>delete</DeleteButton>}
-            {isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>edit</DeleteButton>}
+            {isHost && <DeleteButton color="ST_GRAY" onClick={()=>setIsEdit(true)}>edit</DeleteButton>}
             {!isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>hide</DeleteButton>}
           </Buttons>
         </Wrap>
@@ -77,8 +111,10 @@ function EventDetail(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteEvent: (id,date) => dispatch(deleteEvent(id,date)),
+    // editEvent: (event, image) => dispatch(editEvent(event, image)),
     // deleteInvitation: (id,date) => dispatch(deleteInvitation(id,date)),
     toggleInvitations: (invitation, key)=>dispatch(toggleInvitations(invitation, key))
+
   };
 };
 

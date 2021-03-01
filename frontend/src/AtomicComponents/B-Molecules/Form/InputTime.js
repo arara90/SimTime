@@ -62,9 +62,9 @@ const StyledSelectBox = styled(SelectBoxRef)`
 
 function InputTime(props) {
   const { width, height, label, name, value, cursor, changeTime } = props;
-  const [hour, setHour] = useState("");
-  const [min, setMin] = useState("");
-  const [meridiem, setMeridiem] = useState("AM");
+  const [hour, setHour] = useState(props.hour? props.hour : "");
+  const [min, setMin] = useState(props.min? props.min :"");
+  const [meridiem, setMeridiem] = useState(props.meridiem? props.meridiem :"AM");
   const [param, setParam] = useState("");
 
   const hourRef = useRef();

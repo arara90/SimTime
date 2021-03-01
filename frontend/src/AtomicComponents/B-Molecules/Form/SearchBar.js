@@ -34,6 +34,7 @@ function SearchBar(props) {
     name,
     label,
     desc,
+    value,
     width,
     height,
     search,
@@ -49,6 +50,7 @@ function SearchBar(props) {
           <MyOptions
             name={name}
             desc={desc}
+            value={value}
             options={options}
             width={"100%"}
             height={height}

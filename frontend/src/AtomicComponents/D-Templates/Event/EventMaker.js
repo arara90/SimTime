@@ -58,21 +58,30 @@ const MyDatePicker = styled(DatePicker)`
 
 function EventMaker(props) {
   const palette = Object.values(Colors.Palette) ;
-  const {closeModal, user, editEvent, addEvent, eventSubmitHandler } = props;
+  const {closeModal, user, editEvent, addEvent, eventSubmitHandler, eventToEdit, isEdit } = props;
+
   const today = new Date();
   const [datePicker, setDatePicker] = useState(false);
   const [page, setPage] = useState(0);
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [place, setPlace] = useState({});
-  const [tags, setTags] = useState(null);
-  const [color, setColor] = useState(palette[Math.floor(Math.random() * palette.length)],);
-  const [fontColor, setFontColor] = useState();
-  const [message, setMessage] = useState("");
+  const [name, setName] = useState(isEdit ? eventToEdit.event_name : "");
+  const [date, setDate] = useState(isEdit ? eventToEdit.event_date : "");
+  const [time, setTime] = useState(isEdit ? eventToEdit.event_time : "");
+  const [place, setPlace] = useState(isEdit ? eventToEdit.event_place : {});
+  const [message, setMessage] = useState(isEdit ? eventToEdit.message :"");
+  const [color, setColor] = useState( isEdit ? eventToEdit.color : palette[Math.floor(Math.random() * palette.length)], );
+  const [imgBase64, setImgBase64] = useState(isEdit ? eventToEdit.photo :""); // 파일 base64
+  const [image, setImage] = useState( isEdit ? eventToEdit.photo :null); //파일
 
-  const [imgBase64, setImgBase64] = useState(""); // 파일 base64
-  const [image, setImage] = useState(null); //파일
+  // //not yet
+  const [tags, setTags] = useState(null);
+  const [fontColor, setFontColor] = useState();
+
+  
+  // const [color, setColor] = useState( isEdit ? eventToEdit.color : palette[Math.floor(Math.random() * palette.length)],);
+  // const [message, setMessage] = useState( isEdit ? eventToEdit.message : "");
+  // const [imgBase64, setImgBase64] = useState(""); // 파일 base64
+  // const [image, setImage] = useState( isEdit ? eventToEdit.photo : null); //파일
+
 
   const [event, setEvent] = useState({
     eId: null,
@@ -85,10 +94,6 @@ function EventMaker(props) {
     eHost_id: "unknown",
     
   });
-
-  useEffect(()=>{
-    console.log(color)
-  },[])
 
 
   const showDatePicker = () => setDatePicker(!datePicker);
@@ -186,9 +191,12 @@ function EventMaker(props) {
           label="Time"
           cursor="pointer"
           changeTime={changeTime}
+          hour={isEdit ? eventToEdit.event_time.split(":")[0] : null}
+          min={isEdit ? eventToEdit.event_time.split(":")[1] : null}
+          meridiem = {isEdit ? (eventToEdit.event_time.split(":")[0]<12?"AM":"PM") : null}
         />
         {/* <MyInput label="Location" name="eLocation" desc="Search Location" /> */}
-        <SearchLocation name="ePlace" onChange={placeChange} />
+        <SearchLocation placeToEdit={isEdit?eventToEdit.event_place:null} name="ePlace" onChange={placeChange} />
       </PageWrap>
     );
   };
@@ -296,6 +304,8 @@ EventMaker.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   selectedDate: PropTypes.string,
+  event: PropTypes.object,
+  isEdit: PropTypes.bool
 };
 
 EventMaker.defaultProps = {
@@ -303,6 +313,8 @@ EventMaker.defaultProps = {
   height: "548px",
   width: "320px",
   selectedDate: null,
+  event: {},
+  isEdit: false
 };
 
 

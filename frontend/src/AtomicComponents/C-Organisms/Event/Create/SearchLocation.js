@@ -23,8 +23,9 @@ const MySearchBar = styled(SearchBar)`
 const StyledMap = styled(Map)``;
 
 function SearchLocation(props) {
-  const { width, height, mapId } = props;
-  const [location, setLocation] = useState({ lat: 0, lng: 0, name: "현위치", address:"" });
+  const { name, mapId, placeToEdit, onChange } = props;
+  
+  const [location, setLocation] = useState( placeToEdit? placeToEdit : { lat: 0, lng: 0, name: "현위치", address:"" });
 
   //현재 위치 얻어오기
   useEffect(() => {
@@ -38,13 +39,18 @@ function SearchLocation(props) {
       setLocation(curr);
     }
 
-    if (!navigator.geolocation) {
-      console.log("Geolocation is not supported by your browser");
-    } else {
-      var a = navigator.geolocation.getCurrentPosition(success, () => {
-        console.log("Unable to retrieve your location");
-      });
+    if(!placeToEdit){
+      if (!navigator.geolocation) {
+        console.log("Geolocation is not supported by your browser");
+      } else {
+        var a = navigator.geolocation.getCurrentPosition(success, () => {
+          console.log("Unable to retrieve your location");
+        });
+      }
     }
+
+
+    
   }, []);
 
   const saveLocation = (option) => {
@@ -57,15 +63,16 @@ function SearchLocation(props) {
     }
 
     setLocation(data);
-    props.onChange(data);
+    onChange(data);
   };
 
   return (
     <Wrap {...props}>
       <MySearchBar
         label="Place"
-        name={props.name}
+        name={name}
         desc="Event Place"
+        value={placeToEdit? location.name:null }
         width="100%"
         search={searchPlaces}
         doAfterSelect={saveLocation}
@@ -73,7 +80,7 @@ function SearchLocation(props) {
       <StyledMap
         width="100%"
         height="164px"
-        mapId={props.mapId}
+        mapId={mapId}
         name={location.name}
         lng={location.lng}
         lat={location.lat}
