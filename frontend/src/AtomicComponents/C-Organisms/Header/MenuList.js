@@ -31,8 +31,8 @@ function MenuList(props) {
     return <MenuActive>{name}</MenuActive>;
   };
 
-  const InActiveMenuRender = (name) => {
-    return <MenuInActive>{name}</MenuInActive>;
+  const InavtiveMenuRender = (name) => {
+    return <MenuInavtive>{name}</MenuInavtive>;
   };
 
   const renderMenus = (menus) => {
@@ -42,7 +42,7 @@ function MenuList(props) {
         <MenuLink key={src} src={src} handleClick={() => handleMenu(src)}>
           {activeMenu == src
             ? ActiveMenuRender(name)
-            : InActiveMenuRender(name)}
+            : InavtiveMenuRender(name)}
         </MenuLink>
       );
     });

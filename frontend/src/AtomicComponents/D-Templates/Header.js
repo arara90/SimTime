@@ -79,8 +79,8 @@ export default Header;
   //   return <MenuActive>{menuName}</MenuActive>
   // };
 
-  // const InActiveMenuRender = (menuName) => {
-  //   return <MenuInActive>{menuName}</MenuInActive>
+  // const InavtiveMenuRender = (menuName) => {
+  //   return <MenuInavtive>{menuName}</MenuInavtive>
   //   }
 
   // return (
@@ -92,9 +92,9 @@ export default Header;
   //         </StyledLink>
   //       </LogoWrap>
   //       <MenuList>
-  //         <StyledLink to={"/"} onClick={e=>handleClick(e, 0)}>{ activeMenu == 0 ? ActiveMenuRender("CALENDAR") : InActiveMenuRender("CALENDAR") }</StyledLink>
-  //         <StyledLink to={"/mysimtime"} onClick={e=>handleClick(e, 1)}>{activeMenu == 1 ? ActiveMenuRender("MY SIMTIME") : InActiveMenuRender("MY SIMTIME") }</StyledLink>
-  //         <StyledLink to={"/friends"} onClick={e=>handleClick(e, 2)}>{ activeMenu == 2 ? ActiveMenuRender("FRIENDS") : InActiveMenuRender("FRIENDS") }</StyledLink>
+  //         <StyledLink to={"/"} onClick={e=>handleClick(e, 0)}>{ activeMenu == 0 ? ActiveMenuRender("CALENDAR") : InavtiveMenuRender("CALENDAR") }</StyledLink>
+  //         <StyledLink to={"/mysimtime"} onClick={e=>handleClick(e, 1)}>{activeMenu == 1 ? ActiveMenuRender("MY SIMTIME") : InavtiveMenuRender("MY SIMTIME") }</StyledLink>
+  //         <StyledLink to={"/friends"} onClick={e=>handleClick(e, 2)}>{ activeMenu == 2 ? ActiveMenuRender("FRIENDS") : InavtiveMenuRender("FRIENDS") }</StyledLink>
   //       </MenuList>
   //       <AccountWrap>
   //         <Account username={user ? user.username : "unknown"} />
