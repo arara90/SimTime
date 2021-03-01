@@ -4,6 +4,7 @@
 
 ### Security ###
 secrets.json
+venv/
 ##.env.development
 ##.env.production
 
