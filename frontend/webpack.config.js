@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    main: "/home/ubuntu/Simtime/frontend/src/index.js",
+    main: path.resolve(__dirname, 'src', 'index.js')
   },
   module: {
     rules: [

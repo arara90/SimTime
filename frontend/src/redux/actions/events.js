@@ -54,18 +54,17 @@ export const getEvent = (id) => (dispatch) => {
 export const addEvent =  (event, img) => async (dispatch) =>{
   const SUCCEESS = 'ADD_EVENT_SUCCESS'
   const FAILURE = 'ADD_EVENT_FAILURE'
-  
-  console.log(event, img)
+  const timeISO = new Date(event.event_date + " " + event.event_time.split(" ")[0]).toISOString()
+  event['event_time'] = timeISO;
+
   try{
     if(img) {
-      console.log('img')
       const formData = new FormData();
       formData.append("photo", img);
       formData.append("color", event.color);
       formData.append("host", event.host);
       formData.append("event_name", event.event_name);
       formData.append("event_time", event.event_time);
-      formData.append("status", event.status);
       formData.append("event_place", JSON.stringify(event.event_place) );
       formData.append("message", event.message);
   
@@ -119,16 +118,70 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     });
 };
 
-export const editEvent = (event) => (dispatch) => {
-  axiosFormInstance
-    .put(`/api/events/${event.id}`, event)
-    .then((res) => {
-      dispatch({type: EDIT_EVENT, payload: res.data});
-    })
-    .catch((err) => {
-      dispatch(returnErrors(err, err.response.status));
-      console.log(err)
-    });
-};
 
+// export const editEvent = (event) => (dispatch) => {
+//   axiosFormInstance
+//     .put(`/api/events/${event.id}`, event)
+//     .then((res) => {
+//       dispatch({type: EDIT_EVENT, payload: res.data});
+//     })
+//     .catch((err) => {
+//       dispatch(returnErrors(err, err.response.status));
+//       console.log(err)
+//     });
+// };
+
+
+export const editEvent =  (event, img) => async (dispatch) =>{
+  const SUCCEESS = 'EDIT_EVENT_SUCCESS'
+  const FAILURE = 'EDIT_EVENT_FAILURE'
+  
+  try{
+    if(img) {
+      console.log('img')
+      const formData = new FormData();
+      formData.append("photo", img);
+      formData.append("color", event.color);
+      formData.append("host", event.host);
+      formData.append("event_name", event.event_name);
+      formData.append("event_time", event.event_time);
+      formData.append("status", event.status);
+      formData.append("event_place", JSON.stringify(event.event_place) );
+      formData.append("message", event.message);
+  
+      return axiosFormInstance
+        .put(`/api/events/${event.id}`, formData)
+        .then((response) => {
+          //본인 to 본인 invitation 보내기
+          return dispatch(addInvitations(response.data.id, [response.data.host.id]))
+        })
+        .then((res)=>{
+          dispatch(createMessage({ editEvent: "Event Edited" }));
+          return res.event.id
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }else{
+      return axiosInstance
+        .put(`/api/events/${event.id}`, event)
+        .then((response) => {
+          //본인 to 본인 invitation 보내기
+          var resEvent = response.data
+          return dispatch(addInvitations(resEvent.id, [resEvent.host.id]))
+        })
+        .then((res)=>{
+          console.log('eventres', res)
+          dispatch(createMessage({ editEvent: "Event Edited" }));
+          return res.event.id
+        })
+        .catch((err) => {
+          dispatch(returnErrors(err, err.response.status));
+          console.log(err)
+        });
+    }
+  }catch(e){
+    dispatch({type:FAILURE,payload: e,error: true});
+  }
+}
 

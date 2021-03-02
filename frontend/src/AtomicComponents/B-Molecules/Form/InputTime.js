@@ -1,7 +1,4 @@
-import React, {
-  useState,
-  useRef,
-} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Input from "./Input";
@@ -61,10 +58,10 @@ const StyledSelectBox = styled(SelectBoxRef)`
 `;
 
 function InputTime(props) {
-  const { width, height, label, name, value, cursor, changeTime } = props;
-  const [hour, setHour] = useState(props.hour? props.hour : "");
-  const [min, setMin] = useState(props.min? props.min :"");
-  const [meridiem, setMeridiem] = useState(props.meridiem? props.meridiem :"AM");
+  const { width, height, label, name, value, cursor, changeTime, time } = props;
+  const [hour, setHour] = useState("");
+  const [min, setMin] = useState("");
+  const [meridiem, setMeridiem] = useState("AM");
   const [param, setParam] = useState("");
 
   const hourRef = useRef();
@@ -72,6 +69,15 @@ function InputTime(props) {
   const meridiemRef = useRef(); //meridiem
 
   var minAsParam = 0; //24시기준
+
+  useEffect(()=>{
+    console.log('InputTime, ', time)
+    if(time){
+      setHour(time.split(":")[0])
+      setMin((time.split(" ")[0]).split(":")[1])
+      setMeridiem(time.split(":")[0]<12?"AM":"PM")
+    }
+  },[])
 
   const meridiemChange = (meridiem) => {
     if (meridiem == "AM" && hour > 12) hourRef.current.focus();

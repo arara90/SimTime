@@ -82,7 +82,7 @@ const Host = styled(ImageUser)`
 const Content = styled.div`
   flex: 1;
   min-width: 0px;
-  margin-left: 4px;
+  margin-left: 2px;
   text-align: left;
 `
 
