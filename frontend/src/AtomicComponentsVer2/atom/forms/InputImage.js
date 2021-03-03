@@ -36,21 +36,8 @@ function InputImage(props) {
 
   React.useEffect(()=>{
    if(src) setImgBase64(src)
-   
+  
   },[])
-
-  React.useEffect(()=>{
-    console.log('src,', src)
-    
-   },[src])
- 
-   React.useEffect(()=>{
-    console.log('imgBase64,', imgBase64)
-    
-   },[imgBase64])
- 
-
-
 
   const readImageFile = (e) => {
     var reader = new FileReader();
@@ -76,7 +63,7 @@ function InputImage(props) {
 
   return (
     <Wrap {...props}> 
-      <MyInputImage type="file" name="imgFile" id="imgFile" onChange={readImageFile} /> 
+      <MyInputImage type="file" accept="img/*" required multiple name="imgFile" id="imgFile" onChange={readImageFile} /> 
       <PreviewWrap>
         <Preview className="profile_preview" src={imgBase64.toString()} className={imgRatio}  />
       </PreviewWrap>
