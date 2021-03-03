@@ -63,8 +63,7 @@ function DefaultModal(props) {
 
   const clickHandler = (e, newPage) => {
     e.preventDefault();
-    pageChangeHandler();
-    setPage(newPage);
+    if(pageChangeHandler()) setPage(newPage);
   }
 
   const renderPages = (page) => {
@@ -126,7 +125,7 @@ DefaultModal.defaultProps = {
   height: "500px",
   width: "320px",
   pages: [<div>page1</div>, <div>page2</div>],
-  pageChangeHandler:()=>{},
+  pageChangeHandler:()=>{return true},
   submitHandler:()=>{},
   title: null,
   closeModal:()=>{},

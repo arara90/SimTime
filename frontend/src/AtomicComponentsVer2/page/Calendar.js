@@ -226,6 +226,7 @@ function Calendar(props) {
     try{
       //event 추가
       var res = await addEvent(event, image); 
+      console.log(event)
       setNewEvent(res)
       //modal 변경
       await closeContextModal()

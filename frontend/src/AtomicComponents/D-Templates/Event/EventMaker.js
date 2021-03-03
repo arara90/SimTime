@@ -110,7 +110,7 @@ function EventMaker(props) {
   const initEvent = {
     event_name: name,
     event_date: getStrFullDate(today, "yyyy-mm-dd"),
-    event_time: time,
+    event_time: time, //14:00 PM
     event_place: place,
     tags: tags,
     message: message,
@@ -133,6 +133,10 @@ function EventMaker(props) {
     // e.preventDefault();
     // e.stopPropagation();
 
+    if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
+      event['event_time'] = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
+    }
+
     if(isEdit){
       try{
         var resStatus = await editEvent(event, imgFile); 
@@ -144,7 +148,6 @@ function EventMaker(props) {
         console.log("Error", e); 
       }
     }
-    
     eventSubmitHandler(event, imgFile)
   };
 
@@ -155,7 +158,6 @@ function EventMaker(props) {
   const changeDate = useCallback((strDate) => setDate(strDate));
   const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => setTime(time));
-
 
   //pages
   const firstPage = () => {

@@ -18,8 +18,9 @@ import {
 function separateTime(data){
   var res = {...data}
   var event_at = new Date(Date.parse(res.event_time))
+  const meridiem = getFullTime(event_at).split(":")[0]<12?"AM":"PM"
   res['event_date'] = getStrFullDate(event_at, "yyyy-mm-dd")
-  res['event_time'] = getFullTime(event_at)
+  res['event_time'] = getFullTime(event_at)  + ' ' + meridiem;
   return res
 }
 
