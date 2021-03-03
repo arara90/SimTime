@@ -71,7 +71,6 @@ function InputTime(props) {
   var minAsParam = 0; //24시기준
 
   useEffect(()=>{
-    console.log('InputTime, ', time)
     if(time){
       setHour(time.split(":")[0])
       setMin((time.split(" ")[0]).split(":")[1])

@@ -57,9 +57,7 @@ function DefaultModal(props) {
   const [page, setPage] = useState(0);
 
   const submitHandler = (e) => {
-    console.log('submitHandler')
     e.preventDefault();
-
     props.handleSubmit();
   };
 
@@ -128,8 +126,8 @@ DefaultModal.defaultProps = {
   height: "500px",
   width: "320px",
   pages: [<div>page1</div>, <div>page2</div>],
-  pageChangeHandler: null,
-  submitHandler: null,
+  pageChangeHandler:()=>{},
+  submitHandler:()=>{},
   title: null,
-  closeModal: () => {},
+  closeModal:()=>{},
 };

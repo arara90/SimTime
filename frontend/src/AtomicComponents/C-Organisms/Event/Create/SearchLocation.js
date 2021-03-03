@@ -54,7 +54,7 @@ function SearchLocation(props) {
   }, []);
 
   const saveLocation = (option) => {
-    console.log('op', option)
+    // console.log('op', option)
     const data = {
       lat: parseFloat(option.lat),
       lng: parseFloat(option.lan),

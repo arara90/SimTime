@@ -77,13 +77,6 @@ const Button = styled(SolidButton)`
 
 function YNDialogModal(props) {
   const { rightBtnClickHandler, leftBtnClickHandler, closeModal, title, leftButtonText, rightButtonText } = props;
-
-  useEffect(
-    ()=>console.log('open invite')
-    , [] 
-  )
-
-
   return (
     <Wrap {...props}>
       {title && (

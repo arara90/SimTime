@@ -4,13 +4,12 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-
+import {ModalContext} from "../../../contexts/modalContext"
 import DefaultModal from "../../../AtomicComponentsVer2/molecule/modal/DefaultModal"
 import Label from "../../../AtomicComponentsVer2/atom/forms/Label"
 import InputColor from "../../../AtomicComponentsVer2/atom/forms/InputColor"
 import InputImage from "../../../AtomicComponentsVer2/atom/forms/InputImage"
 import CalendarEventLabel from "../../../AtomicComponentsVer2/molecule/calendar/CalendarEventLabel"
-
 
 import Input from "../../B-Molecules/Form/Input";
 import TextArea from "../../B-Molecules/Form/TextArea";
@@ -20,7 +19,7 @@ import DatePicker from "../../D-Templates/Calendar/DatePicker";
 import SearchLocation from "../../C-Organisms/Event/Create/SearchLocation";
 
 import { getStrFullDate, getFullTime } from "../Calendar/Generator";
-import { addEvent, getEvent, editEvent } from "../../../redux/actions/events";
+import { getEvent, editEvent } from "../../../redux/actions/events";
 
 import * as Colors from "../../Colors"
 
@@ -90,26 +89,25 @@ const MyInputImage = styled(InputImage)`
 
 function EventMaker(props) {
   const palette = Object.values(Colors.Palette) ;
-  const {closeModal, user, editEvent, addEvent, eventSubmitHandler, eventToEdit, isEdit } = props;
+  const {closeContextModal } = React.useContext(ModalContext);
+  const {closeModal, user, editEvent, eventSubmitHandler, eventToEdit, isEdit } = props;
   const today = new Date();
 
   //states
   const [datePicker, setDatePicker] = useState(false);
-
   const [name, setName] = useState(isEdit ? eventToEdit.event_name : "");
   const [date, setDate] = useState(isEdit ? eventToEdit.event_date : "");
   const [time, setTime] = useState(isEdit ? eventToEdit.event_time : "");
   const [place, setPlace] = useState(isEdit ? eventToEdit.event_place : {});
   const [message, setMessage] = useState(isEdit ? eventToEdit.message :"");
   const [color, setColor] = useState( isEdit ? eventToEdit.color : palette[Math.floor(Math.random() * palette.length)], );
-  const [ imgFile, setImgFile] = useState( isEdit ? eventToEdit.photo :null); //파일
+  const [imgFile, setImgFile] = useState( null); //파일
 
   // //not yet
   const [tags, setTags] = useState([]);
   const [fontColor, setFontColor] = useState();
 
   const initEvent = {
-    id: null,
     event_name: name,
     event_date: getStrFullDate(today, "yyyy-mm-dd"),
     event_time: time,
@@ -119,32 +117,34 @@ function EventMaker(props) {
     host: user.id,
     photo: imgFile
   }
-  const [event, setEvent] = useState( isEdit ? eventToEdit : initEvent);
+  const [event, setEvent] = useState(isEdit? {...eventToEdit,host: user.id,} : initEvent);
+
+  useEffect(()=>setEvent({...event, event_name: name}),[name]);
+  useEffect(()=>setEvent({...event, event_date: date}),[date]);
+  useEffect(()=>setEvent({...event, event_time: time}),[time]);
+  useEffect(()=>setEvent({...event, event_place: place}),[place]);
+  useEffect(()=>setEvent({...event, message: message}),[message]);
+  useEffect(()=>setEvent({...event, tags: tags}),[tags]);
+  useEffect(()=>setEvent({...event, color: color}),[color]);
+  useEffect(()=>setEvent({...event, photo: imgFile}),[imgFile]);
 
   const showDatePicker = () => setDatePicker(!datePicker);
-
-  const handleClick = () => {
-    // e.preventDefault();
-    const dt = new Date(date + " " + time)
-    const currEvent = {
-      host: user.id,
-      event_name: name,
-      event_date: date,
-      event_time: getFullTime(dt),
-      event_place: place,
-      message: message,
-      tags: tags,
-      color: color,
-      photo: imgFile
-    };
-
-    setEvent(currEvent);
-  };
-
-  const hadleSubmit = () => {
+  const hadleSubmit = async () => {
     // e.preventDefault();
     // e.stopPropagation();
-    console.log('imgFile,', imgFile)
+
+    if(isEdit){
+      try{
+        var resStatus = await editEvent(event, imgFile); 
+        if(resStatus=='200') {
+          closeContextModal()
+          closeModal() //modal 변경
+        }
+      }catch(e){
+        console.log("Error", e); 
+      }
+    }
+    
     eventSubmitHandler(event, imgFile)
   };
 
@@ -155,28 +155,6 @@ function EventMaker(props) {
   const changeDate = useCallback((strDate) => setDate(strDate));
   const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => setTime(time));
-
-  useEffect(() => {
-    if(isEdit){
-      const currEvent = {
-        host: user.id,
-        event_name: eventToEdit.event_name,
-        event_date: eventToEdit.event_date,
-        event_time: eventToEdit.event_time,
-        event_place: eventToEdit.event_place,
-        message: eventToEdit.message,
-        tags: tags,
-        color: color,
-        photo: eventToEdit.photo,
-      };
-  
-      setEvent(currEvent);
-    }
-  },[]);
-
-  useEffect(() => {
-  console.log('eventMaker', time)
-  }, [time]);
 
 
   //pages
@@ -217,7 +195,7 @@ function EventMaker(props) {
           /> 
           </ColorLabel>
           <ImageLabel htmlFor ="imgFile"> Photo
-            <MyInputImage handleImageFile={setImgFile} src={imgFile}  />
+            <MyInputImage handleImageFile={setImgFile} src={isEdit?eventToEdit.photo:null}  />
           </ImageLabel>
       </PageWrap>
     );
@@ -230,7 +208,6 @@ function EventMaker(props) {
       <DefaultModal
         title="New Event"
         pages={[firstPage(), secondPage(), thirdPage()]}
-        pageChangeHandler={handleClick}
         handleSubmit={hadleSubmit}
         height="auto"
         closeModal={closeModal}
@@ -248,9 +225,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch)=> {
  return {
-  addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
+  // addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
   getEvent: getEvent(),
-  editEvent: editEvent()
+  editEvent: (event, img)=>dispatch(editEvent(event, img)),
 }
 }
 
@@ -274,77 +251,3 @@ EventMaker.defaultProps = {
   event: {},
   isEdit: false
 };
-
-
-
-
-  // const handleChangeFile = (e) => {
-  //   let reader = new FileReader();
-
-  //   if (e.target.files[0]) {
-  //     reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
-  //     setImgFile(e.target.files[0]); // 파일 상태 업데이트
-  //   }
-
-  //   reader.onload = () => {
-  //     var preview = new Image();      
-  //     var base64 = reader.result;
-
-  //     if (base64) {
-  //       setImgBase64(base64);
-  //       preview.src = base64;
-      
-  //       preview.onload = () => {
-  //         var w = preview.width;
-  //         var h = preview.height;
-  //         console.log(w>h)
-  //         setIsLandscape(w>h)
-  //       }
-  //     }
-  //   };
-  // };
-  // const thirdPage = () => {
-  //   let profile_preview = null;
-  //   if (imgBase64 !== "") {
-
-
-  //     profile_preview = (
-  //       <img className="profile_preview" src={imgBase64.toString()} style={{width:"100%"}} />
-  //     );
-  //   }
-
-  //   return (
-  //     <PageWrap {...props} isActivePage={page == 2}>
-  //         <ColorLabel htmlFor ="LabelColor"> Color
-  //           <MyInputColor value={color} changeHandler={setColor} type="color" name="LabelColor"/> 
-  //           <MyCalendarEventLabel color={color}
-  //            title={name || user.username}
-  //            time={time}
-  //            location={place.name}
-  //            host={user}
-  //         /> 
-  //         </ColorLabel>
-          
-  //         <ImageLabel htmlFor ="imgFile"> Photo
-  //           <input type="file" name="imgFile" id="imgFile" onChange={handleChangeFile} /> 
-  //           <div>{profile_preview}</div>
-  //         </ImageLabel>
-          
-  //     </PageWrap>
-  //   );
-  // };
-
-  // const handleClickColorBtn  = (event) => {
-  //   console.log('handleClickColorBtn');
-  // };
-  // useEffect(() => {
-  //   // window.addEventListener('click', handleClickColorBtn);
-
-  //   // // cleanup this component
-  //   // return () => {
-  //   //   window.removeEventListener('click', handleClickColorBtn);
-  //   // };
-
-  //   console.log('imgRef,' )
-  //   console.log(imgRef )
-  // });
