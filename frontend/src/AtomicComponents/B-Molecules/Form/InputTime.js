@@ -78,15 +78,15 @@ function InputTime(props) {
     }
   },[])
 
-  const meridiemChange = (meridiem) => {
-    if (meridiem == "AM" && hour > 12) hourRef.current.focus();
-    changeTime(
-      hour.toString().padStart(2, "0") +
-        ":" +
-        min.toString().padStart(2, "0") +
-        " " +
-        meridiem
-    );
+  const meridiemChange = (currMeridiem) => {
+    if (currMeridiem == "AM" && hour > 12) {
+      var resTime =  "00" + ":" + min.toString().padStart(2, "0") + " " + currMeridiem
+      setHour("00")
+      changeTime(resTime);
+      hourRef.current.focus();
+    }else{
+      changeTime(hour.toString().padStart(2, "0") +":"+min.toString().padStart(2, "0")+" "+currMeridiem);
+    }
   };
 
   const handleChange = (e) => {
@@ -109,20 +109,18 @@ function InputTime(props) {
     res = inputValue <= max && inputValue >= 0 ? inputValue : newValue;
 
     if (e.target.name == "hour") {
-      setHour(res);
-      if (res == 0 && selectedMerdiem == "PM") setMeridiem("AM");
-      else if (res < 12 && selectedMerdiem == "PM") res = res + 12;
+      if (res == 0 && selectedMerdiem == "PM") res = res + 12
+      else if (res < 12 && selectedMerdiem == "PM") res = res
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
-      else if (res > 12 && selectedMerdiem == "AM") setMeridiem("PM");
-
-      var resTime =  res.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
-      changeTime(resTime);
+      else if (res > 12 && selectedMerdiem == "AM") res = newValue
+      setHour(res);
 
     } else {
       setMin(res);
-      var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
-      changeTime(resTime);
     }
+    var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
+    changeTime(resTime);
+    
   };
 
   return (

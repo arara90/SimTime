@@ -29,6 +29,7 @@ const Colored = styled(SolidButton)`
   font-size: 0.9em;
   line-height: 1.15em;
   padding: 1px 2px;
+
 `
 
 const Bordered = styled(BorderButton)`
@@ -102,18 +103,19 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, attendance, fontColor, color, title, time, location, tags, host} = props;
-  const Button = solid ? Colored: Bordered ; 
+  const {solid, attendance, fontColor, color, name, title, time, location, tags, host} = props;
+  const Button = solid ? Colored : Bordered ; 
 
   return (
       <Wrap {...props}>
         {attendance? <Checked className='check' color={color}/> : null}
-        <Button fontColor={solid? fontColor: color} color={color}> 
+        <Button fontColor={solid? fontColor: color} color={color} customColor > 
           <Host url={host.profile_image} />
           <Content>
-            <Title>{title}</Title>
+            <Title>{name}</Title>
             <StyledTag color={solid ? fontColor : color+"_DARK"}>
-              {tags? tags.map((tag)=> {return '#'+tag+" "}) : time + " " + location}
+              {/* {tags ? tags.map((tag)=> {return '#'+tag+" "}) : time + " | " + location} */}
+              {time.split(' ')[0] + " | " + location}
             </StyledTag>
             {/* <StyledTag color={solid ? fontColor : color+"_DARK"}>{time} {location}</StyledTag> */}
           </Content>
@@ -129,6 +131,7 @@ CalendarEventLabel.propTypes = {
   color: PropTypes.string,
   fontColor: PropTypes.string,
   join: PropTypes.bool,
+  name : PropTypes.string,
   title: PropTypes.string,
   tags: PropTypes.array,
   time: PropTypes.string,
@@ -137,11 +140,12 @@ CalendarEventLabel.propTypes = {
   };
   
 CalendarEventLabel.defaultProps = {
-  solid: null,
+  solid: false,
   color: "#fff",
   fontColor: "#fff",
   join: false,
-  title: "Chickenkkkkk",
+  name: "Chickenkkkkk",
+  title: "00:00 AM | 송내역",
   time: "00:00 AM",
   location: "",
   tags: [],

@@ -21,14 +21,15 @@ import {
 function separateEventTime(data){
   var res = {...data}
   var event_at = new Date(Date.parse(res.event_time))
+  const meridiem = getFullTime(event_at).split(":")[0]<12?"AM":"PM"
   res['event_date'] = getStrFullDate(event_at, "yyyy-mm-dd")
-  res['event_time'] = getFullTime(event_at)
+  res['event_time'] = getFullTime(event_at)  + ' ' + meridiem;
   return res
 }
 
 function convertEventTimeToISO(event){
   const timeISO = new Date(event.event_date + " " + event.event_time.split(" ")[0]).toISOString()
-  event['event_time'] = timeISO;
+  event['event_time'] = timeISO
   delete event['event_date']
 }
 
@@ -63,7 +64,7 @@ export const addEvent =  (event, img) => async (dispatch) =>{
   const FAILURE = 'ADD_EVENT_FAILURE'
   //date+time
   convertEventTimeToISO(event)
-
+  console.log(event.event_time)
   try{
     if(img) {
       const formData = new FormData();

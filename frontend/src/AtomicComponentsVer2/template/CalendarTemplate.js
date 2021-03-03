@@ -37,6 +37,7 @@ const RightSection = styled.section`
 
   @media only screen and (max-width: 920px) {
     width: 100%;
+    margin-left: 0px; 
   }
 
   @media only screen and (max-width: 680px) {
