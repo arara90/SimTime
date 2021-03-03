@@ -110,6 +110,12 @@ class InvitationAPI(APIView):
         invitations = request.user.invitations\
             .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
 
+        for item in invitations:
+            if(item.event.host.id > request.user.id):
+                print('B_subscribe_A', item.event.host)
+            else:
+                print('A_subscribe_B', item.event.host)
+
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)
 

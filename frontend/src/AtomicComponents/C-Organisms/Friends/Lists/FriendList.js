@@ -23,7 +23,7 @@ const Buttons = styled.div`
   width: ${buttonsWidth}px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-end;
 `;
 
@@ -43,19 +43,11 @@ const StyledButtonWithImage = styled(ButtonWithImage)`
 `;
 
 function FriendList(props) {
-  const renderButton = useCallback(
-    (fn, status, content = "차단", color = "TEXT_LINK") => {
+  const renderButton = useCallback((fn, status, content = "차단", color = "TEXT_LINK")=>{
       if (status) {
         return (
           <ButtonWrap>
-            <TextButton
-              color={color}
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                fn();
-              }}
-            >
+            <TextButton color={color} type="button" onClick={(e)=>{ e.preventDefault(); fn();}}> 
               {content}
             </TextButton>
           </ButtonWrap>
@@ -63,73 +55,31 @@ function FriendList(props) {
       } else {
         return (
           <ButtonWrap width={buttonDefaultSize + buttonMargin + 2 + "px"}>
-            <StyledButtonWithImage
-              width="auto"
-              button = {{
-                content: "차단",
-                url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png"}
-              }
-              imgLocation="right"
+            <StyledButtonWithImage width="auto" imgLocation="right"
+              button = {{ content: "차단", url: "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/check.png"}}
               onClick={(e) => {
                 e.preventDefault();
                 fn();
-              }}
-            />
-
+              }} />
           </ButtonWrap>
-        );
+        ); 
       }
-    },
-    []
-  );
+    },[]);
 
   const renderRows = (friendships = []) => {
     return friendships.map((friendship, index) => {
       return (
         <TableRow rowNum={index} key={friendship.friend.username}>
-          <UserCard
-            username={friendship.friend.username}
-            imageSize="32px"
-            url={friendship.friend.profile_image}
-          ></UserCard>
+          <UserCard username={friendship.friend.username} imageSize="32px" url={friendship.friend.profile_image} />
           <Buttons>
-            {renderButton(
-              () => {
-                props.editFriend({
-                  id: friendship.id,
-                  key: 'subscribe',
-                  value: !friendship.subscribe,
-                });
-              },
-              friendship.subscribe,
-              "수신차단"
-            )}
-            {renderButton(
-              () => {
-                props.editFriend({
-                  id: friendship.id,
-                  key: 'dispatch',
-                  value: !friendship.dispatch,
-                });
-              },
-              friendship.dispatch,
-
-              "발신차단"
-            )}
-            {renderButton(
-              () => {
-                props.deleteFriend(friendship.id);
-              },
-              1,
-              "삭제",
-              "TEXT_WARNING"
-            )}
+            {renderButton(()=>{props.editFriend({id:friendship.id,key:'subscribe',value:!friendship.subscribe})}, friendship.subscribe, "수신차단")}
+            {/* {renderButton(()=>{props.editFriend({id:friendship.id,key:'dispatch',value:!friendship.dispatch,})}, friendship.dispatch,"발신차단")} */}
+            {renderButton(()=>{props.deleteFriend(friendship.id)},1,"삭제","TEXT_WARNING")}
           </Buttons>
         </TableRow>
       );
     });
   };
-
   return <Fragment>{renderRows(props.friendships)}</Fragment>;
 }
 
