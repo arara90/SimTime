@@ -3,7 +3,6 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../redux/actions/auth";
-// import { actions as ModalActions } from "react-redux-modal-flex";
 
 export class Login extends Component {
   state = {
@@ -63,21 +62,6 @@ export class Login extends Component {
                 Login
               </button>
             </div>
-            {/* 
-            <button
-              onClick={() =>
-                this.props.toggleModal({
-                  component: LoginModal,
-                  ok: {
-                    text: "Login",
-                    action: () => alert("submit form")
-                  }
-                })
-              }
-            >
-              Open modal login
-            </button> */}
-
             <p>
               Don't have an account? <Link to="/register">Register</Link>
             </p>
@@ -93,7 +77,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { login })(Login);
-// export default connect(mapStateToProps, {
-//   login,
-//   toggleModal: ModalActions.toggleModal
-// })(Login);

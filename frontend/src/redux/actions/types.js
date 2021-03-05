@@ -15,6 +15,9 @@ export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 
+export const UPDATE_SUCCESS = "UPDATE_SUCCESS";
+export const UPDATE_FAIL = "UPDATE_FAIL"
+
 //Account
 // export const SEARCH_USER ="SEARCH_USER";
 

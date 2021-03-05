@@ -40,6 +40,7 @@ class EventAPI(APIView):
 
     def post(self, request):
         serializer = EventSerializer(data=request.data)
+        print(request.data)
         if(serializer.is_valid()):
             serializer.save(host=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -112,10 +113,11 @@ class InvitationAPI(APIView):
 
 
         from django.db import connection
+
         def my_custom_sql():
             with connection.cursor() as cursor:
                 cursor.execute(
-                '''select invitations_invitation.*
+                    '''select invitations_invitation.*
                 from public.invitations_invitation
                 left join public.accounts_friendship
                 on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_A_id"
@@ -130,7 +132,7 @@ class InvitationAPI(APIView):
                 on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_B_id"
                     and  "accounts_friendship"."B_subscribe_A" )
                 where "invitations_invitation"."guest_id" = 1''')
-                
+
                 columns = [col[0] for col in cursor.description]
                 return [dict(zip(columns, row)) for row in cursor.fetchall()]
 

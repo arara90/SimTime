@@ -11,7 +11,7 @@ import loading from "./loading"
 
 // import { reducer as modal } from "react-redux-modal-flex";
 
-export default combineReducers({
+var appReducer = combineReducers({
   errors,
   messages,
   auth,
@@ -22,3 +22,28 @@ export default combineReducers({
   invitations,
   loading
 });
+
+
+var rootReducer = (state, action)=>{
+  if (action.type === 'LOGOUT') {
+    state = undefined
+  }
+  return appReducer(state, action)
+  
+}
+
+
+// export default combineReducers({
+//   errors,
+//   messages,
+//   auth,
+//   account,
+//   friends,
+//   groups,
+//   events,
+//   invitations,
+//   loading
+// });
+
+
+export default rootReducer

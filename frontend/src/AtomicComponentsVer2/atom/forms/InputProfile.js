@@ -15,7 +15,6 @@ const MyInputProfile = styled.input`
 `
 
 
-
 const Preview = styled.div`
     margin: auto;
     position: absolute;
@@ -76,8 +75,8 @@ function InputProfile(props) {
 
   return (
     <Wrap {...props}> 
-      <MyInputProfile id="imgFileUploader"  type="file" accept="img/*" required multiple name="imgFile" onChange={readImageFile} /> 
-        <Preview id="profile_preview" className="profile_preview" src={imgBase64.toString()} className={imgRatio}  />
+      <MyInputProfile id="imgFileUploader"  type="file" accept="img/*"  multiple name="imgFile" onChange={readImageFile} /> 
+        <Preview id="profile_preview" className="profile_preview" src={imgBase64?imgBase64.toString():"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/media/user-basic.png"} className={imgRatio}  />
     </Wrap>
   )
 }

@@ -46,7 +46,7 @@ function Account(props) {
         <MenuLink src="/friends">
           <Image url={image} width={props.imageSize} height={props.imageSize} />
         </MenuLink>
-        <MenuLink src="/friends">
+        <MenuLink src="/profile">
           <Name color="ST_GRAY" fontSize="13px" height={props.imageSize}>
             {props.user.username}
           </Name>

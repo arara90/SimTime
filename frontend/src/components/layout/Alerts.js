@@ -29,6 +29,7 @@ export class Alerts extends Component {
 
       //auth
       if (message.logout) alert.success(message.logout);
+      if (message.register) alert.success(message.register);
       if (message.passwordsNotMatch) alert.error(message.passwordsNotMatch);
 
       //event
