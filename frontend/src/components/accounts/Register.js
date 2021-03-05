@@ -8,7 +8,6 @@ import { register } from "../../redux/actions/auth";
 import { createMessage } from "../../redux/actions/messages";
 import InputProfile from "../../AtomicComponentsVer2/atom/forms/InputProfile"
 
-
 const Image = styled(InputProfile)`
 
 `
@@ -20,9 +19,8 @@ export class Register extends Component {
     email: "",
     password: "",
     password2: "",
-    profile_image: "https://www.flaticon.com/svg/vstatic/svg/401/401061.svg?token=exp=1614873285~hmac=731b5d19b44d0d3f0560489be2357ed2",
-
-    
+    profile_image: null,
+    isDone: false
   };
 
   static propTypes = {
@@ -31,98 +29,108 @@ export class Register extends Component {
   };
 
 
-  componentDidUpdate(){
-    console.log(this.state)
-  }
-
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault();
     const { username, email, password, password2, profile_image} = this.state;
     if (password != password2) {
       this.props.createMessage({ passwordsNotMatch: "Passwords do not match" });
-    } else {
+    } 
+
+    else {
       const newUser = {
         username,
         email,
         password,
         profile_image
       };
-
-      this.props.register(newUser);
+      var res = await this.props.register(newUser);
+      if(res=='201') this.setState({ isDone: true})
     }
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-  handleImageFile = img => this.setState({ profile_image : img })
+  onChange = e => {
+    console.log(this.state)
+    this.setState({ [e.target.name]: e.target.value })
+  };
+
+  handleImageFile = img => {
+    console.log(img)
+    this.setState({ ...this.state, profile_image : img })
+  }
 
   render() {
-    const { username, email, password, password2,profile_image } = this.state;
+    const { username, email, password, password2, profile_image } = this.state;
+    const isEdit = this.props.isAuthenticated;
+
     if (this.props.isAuthenticated) {
       return <Redirect to="/" />;
     }
+
+    if(this.state.isDone){
+      return <Redirect to="/login" />
+    }
+  
     return (
-      <div className="col-md-6 m-auto">
-        <div className="card card-body mt-5">
-          <h2 className="text-center" style={{"margin-bottom": "10px"}}>Register</h2>
-          <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-          <label>Profile Image</label>
-             <Image src={profile_image} handleImageFile={this.handleImageFile}/>
-            </div>
+        <div className="col-md-6 m-auto">
+          <div className="card card-body mt-5">
+            <h2 className="text-center" style={{marginBottom: "10px"}}>Register</h2>
+            <form onSubmit={this.onSubmit}>
             <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                className="form-control"
-                name="username"
-                onChange={this.onChange}
-                value={username}
-              />
+              <label>Profile Image</label>
+              <Image src={profile_image} handleImageFile={this.handleImageFile}/>
             </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                onChange={this.onChange}
-                value={email}
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                onChange={this.onChange}
-                value={password}
-              />
-            </div>
-            <div className="form-group">
-              <label>Confirm Password</label>
-              <input
-                type="password"
-                className="form-control"
-                name="password2"
-                onChange={this.onChange}
-                value={password2}
-              />
-            </div>
+              <div className="form-group">
+                <label>Username</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="username"
+                  onChange={this.onChange}
+                  value={username}
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="email"
+                  onChange={this.onChange}
+                  value={email}
+                />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  onChange={this.onChange}
+                  value={password}
+                />
+              </div>
+              <div className="form-group">
+                <label>Confirm Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password2"
+                  onChange={this.onChange}
+                  value={password2}
+                />
+              </div>
 
-
-
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary">
-                Register
-              </button>
-            </div>
-          </form>
-          <p>
-            Already have an account? <Link to="/login">Login</Link>
-          </p>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Register
+                </button>
+              </div>
+            </form>
+            <p>
+              Already have an account? <Link to="/login">Login</Link>
+            </p>
+          </div>
         </div>
-      </div>
     );
   }
 }
