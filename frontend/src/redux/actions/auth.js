@@ -50,12 +50,12 @@ export const loadUser = () => (dispatch) => {
 
 // LOGIN USER
 export const login = (username, password) => dispatch => {
-  console.log("??")
     // Request Body
     const body = JSON.stringify({ username, password });
     axiosInstance
       .post('api/token/obtain/', body)
       .then(res => {
+        console.log(res)
         //쿠키 저장
         setCookie('access', res.data.access, 10 );
         setCookie('refresh', res.data.refresh, 10 );

@@ -1,12 +1,11 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenVerifySerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import UntypedToken
+from .serializers import UserSerializer, AccountSerializer
 from jwt import decode as jwt_decode
 
 from rest_framework.response import Response
 from rest_framework import exceptions, serializers
-
-
 from django.conf import settings
 
 
@@ -30,11 +29,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
 
         # # Add extra responses here
-        userInfo = {"username": self.user.username,
-                    "id": self.user.id, "email": self.user.email}
-        print(self.user.profile_image)
-        data['user'] = userInfo
-
+        data['user'] = AccountSerializer(self.user).data
         return data
 
 # https://github.com/SimpleJWT/django-rest-framework-simplejwt/issues/118
@@ -45,7 +40,8 @@ class MyTokenVerifySerializer(TokenVerifySerializer):
 
     def validate(self, attrs):
         # UntypedToken(attrs['token'])
-        data = jwt_decode(
-            attrs['token'], settings.SECRET_KEY, algorithms=['HS256'])
+        data = jwt_decode(attrs['token'], settings.SECRET_KEY, algorithms=['HS256'])
         data = {'id': data['user_id']}
+
+    
         return data
