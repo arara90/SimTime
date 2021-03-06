@@ -67,7 +67,7 @@ const Checked = styled.div`
   top: 0;
   right: 0;
 
-  z-index: 9;
+  z-index: 2;
   background-color: white;
 
   border: solid 5px ${({color})=>color};

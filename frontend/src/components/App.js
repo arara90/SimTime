@@ -93,7 +93,7 @@ class App extends Component {
                     <Header/>
                     <Alerts />
                     <Switch>
-                      <PrivateRoute exact path="/" component={Components} />
+                      <PrivateRoute exact path="/" component={Calendar} />
                       <PrivateRoute
                         exact
                         path="/calendar"

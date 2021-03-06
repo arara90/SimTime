@@ -13,14 +13,18 @@ import MenuLink from "../../A-Atomics/Menu/MenuLink";
 const Wrap = styled.div`
   // // border: solid 1px blue;
   display: flex;
-  flex-grow: 1;
+  // flex-grow: 1;
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
 
   padding-left: 15px;
   padding-right: 15px;
-}
+
+  @media only screen and (max-width: 560px) {
+    justify-content: flex-start;
+    padding-left: 20px;
+  }
 
 `;
 

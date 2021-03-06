@@ -49,7 +49,7 @@ function Friends(props) {
   useEffect(() => {
     async function getDatas() {
       await props.getFriends();
-      await props.getHosts();
+      // await props.getHosts();
       await props.getGroups();
     }
 
@@ -114,7 +114,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),
-    getHosts: () => dispatch(getHosts())
+    // getHosts: () => dispatch(getHosts())
   };
 };
 

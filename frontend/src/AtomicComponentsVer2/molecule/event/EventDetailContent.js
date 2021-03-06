@@ -88,7 +88,7 @@ const StyledTag = styled(Tag)``
 
 function EventDetailContent(props) {
 
-    const { host, event_place, event_date, event_time, participants, message, tags, like, likeBtnClick} = props;
+    const { photo, host, event_place, event_date, event_time, participants, message, tags, like, likeBtnClick} = props;
     return (
         <Wrap className="event-detail">
             <Detail>
@@ -109,7 +109,8 @@ function EventDetailContent(props) {
             </Users>
             <Map mapId="event-detail-map" location={event_place} />
             <Message line={6}>{message}</Message>
-            {tags ? <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> : null}
+            {/* {tags ? <StyledTag multiple line={2}> {tags.map((tag)=> {return '#'+ tag+" "})}</StyledTag> : null}*/}
+            {photo && <img src={photo} style={{width: "100%", height:"auto"}}></img>}
         </Wrap>
     )
 }

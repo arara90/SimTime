@@ -49,7 +49,8 @@ class AccountDetailAPI(APIView):
 
     def put(self, request, pk):
         account = self.get_object(pk)
-        serializer = AccountSerializer(account, data=request.data)
+        print(request.data)
+        serializer = AccountSerializer(account, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -11,7 +11,6 @@ import DisplaySelections from "../B-Molecules/Filter/DisplaySelections"
 
 const Wrap = styled.div`
   background-color: ${BG_INACTIVE_LIGHT};
-
   width: ${props=> props.width};
   height: ${props=> props.height};
 

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import * as Colors from "../../Colors";
 import {getStringDate} from "../../../redux/actions/calendar"
 import CalendarHeader from "../../molecule/calendar/CalendarHeader"
+import Toggle from "../../atom/forms/Toggle" 
 
 
 const Wrap = styled.div`
@@ -18,12 +19,12 @@ const Wrap = styled.div`
 `
 
 const Left = styled.div`
-  // border: solid 1px ${Colors.MAIN_COLOR};
   flex: 1;
+  padding: 0px 20px;
 `
 
 const Center = styled.div`
-  // border: solid 1px ${Colors.MAIN_COLOR};
+  border: solid 1px ${Colors.MAIN_COLOR};
   flex: 0.5;
 `
 
@@ -32,8 +33,12 @@ const STCalendarHeader = styled(CalendarHeader)`
 `
 
 const Right = styled.div`
-  // border: solid 1px ${Colors.MAIN_COLOR};
+  // border: solid 1px blue;
   flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
   
 `
 
@@ -43,13 +48,16 @@ function Filters(props) {
 
     return (
       <Wrap {...props}>
-      <Left></Left>
-      <Center>
+      {/* <Left></Left> */}
+      <Left>
         <STCalendarHeader size="1.2em" type="month" current={current} clickHandler={dateHandler} >
           {getStringDate(current,"month")}
         </STCalendarHeader>
-        </Center>
-      <Right></Right>
+        </Left>
+      <Right>
+        <Toggle id='filterLike'></Toggle>
+
+      </Right>
       </Wrap>
     )
 }
