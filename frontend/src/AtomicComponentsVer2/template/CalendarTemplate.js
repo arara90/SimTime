@@ -40,8 +40,14 @@ const RightSection = styled.section`
   }
 
   @media only screen and (max-width: 680px) {
-      top: 50px;
-    }
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    top: auto;
+    margin-left: 0;
+    height: auto;
+    background-color: white;
+  }
 
 `
 const topCss = css`
