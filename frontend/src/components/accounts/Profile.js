@@ -57,7 +57,7 @@ export class Profile extends Component {
     }
     return (
       <div className="col-md-6 m-auto">
-        <div className="card card-body mt-5">
+        <div className="card card-body mt-3">
           <h2 className="text-center" style={{marginBottom: "10px"}}>My Info</h2>
           <form onSubmit={this.onSubmit}>
           <div className="form-group">

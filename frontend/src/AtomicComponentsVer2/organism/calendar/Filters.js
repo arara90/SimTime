@@ -6,7 +6,8 @@ import * as Colors from "../../Colors";
 import {getStringDate} from "../../../redux/actions/calendar"
 import CalendarHeader from "../../molecule/calendar/CalendarHeader"
 import Toggle from "../../atom/forms/Toggle" 
-
+import HeartIcon from "../../atom/icons/HeartIcon"
+import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
 
 const Wrap = styled.div`
   height: ${({height})=> height};
@@ -19,8 +20,8 @@ const Wrap = styled.div`
 `
 
 const Left = styled.div`
-  flex: 1;
-  padding: 0px 20px;
+
+  padding: 0px 10px;
 `
 
 const Center = styled.div`
@@ -29,22 +30,26 @@ const Center = styled.div`
 `
 
 const STCalendarHeader = styled(CalendarHeader)`
-  min-width: 128px;
+  min-width: 160px;
 `
 
 const Right = styled.div`
   // border: solid 1px blue;
+  padding-right: 10px;
   flex: 1;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  
+  height: inherit;
 `
 
+const FilterItem = styled(Toggle)`
+  margin-left: 10px;
+`
 
 function Filters(props) {
-  const { current, height,  nextHandler, prevHandler, dateHandler} = props;
+  const { current, height,  nextHandler, prevHandler, dateHandler, likeHandler, joinHandler} = props;
 
     return (
       <Wrap {...props}>
@@ -55,8 +60,8 @@ function Filters(props) {
         </STCalendarHeader>
         </Left>
       <Right>
-        <Toggle id='filterLike'></Toggle>
-
+        <FilterItem id='filterLike' color="ST_PINK" icon={<HeartIcon size="xs" />}  toggle={likeHandler}/>
+        <FilterItem id='filterJoin' color="ST_GREEN_NEON" icon={<CheckCircleIcon size="sm" />}  toggle={joinHandler}/> 
       </Right>
       </Wrap>
     )

@@ -25,6 +25,7 @@ import {getEvents, addEvent} from "../../redux/actions/events"
 import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
+import { faIgloo } from "@fortawesome/free-solid-svg-icons"
 
 
 const topHeight='2.5em';
@@ -72,6 +73,9 @@ function Calendar(props) {
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
 
   ////data
+  const [onlyLike, setOnlylike] =  useState(false)
+  const [onlyJoin, setOnlyJoin] =  useState(false)
+
   const [filteredInvitations, setFilteredInvitations] = useState({}) 
   // const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
@@ -108,13 +112,25 @@ function Calendar(props) {
     //filter 적용
     if(invitations){
       var filtered = {}
+
       for (var date in invitations) {
-        filtered[date] = invitations[date].filter(invitaion =>invitaion.show)
+        filtered[date] = invitations[date].filter(invitation => {
+          if(invitation.show){
+            if(onlyJoin && onlyLike){
+              return invitation.like && invitation.join
+            } else{
+              if(onlyLike) return invitation.like
+              if(onlyJoin) return invitation.attendance
+            }
+           
+            return true            
+          }
+        })
       }
       setFilteredInvitations(filtered)
     }
 
-  }, [invitations])
+  }, [invitations, onlyLike, onlyJoin])
 
   useEffect(()=>{ 
     if(selectedInvitation){
@@ -257,7 +273,7 @@ function Calendar(props) {
     <Fragment>
       {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
-        leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler}/>}  
+        leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler} joinHandler={setOnlyJoin} likeHandler={setOnlylike} />}  
         leftBottom  = {<EventCalendar 
                         ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
