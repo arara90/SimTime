@@ -9,9 +9,7 @@ const AccountWrap = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    @media only screen and (max-width: 560px) {
-        display: none;
-    }
+
 `;
 
 

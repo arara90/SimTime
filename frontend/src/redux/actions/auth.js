@@ -19,10 +19,17 @@ import {
 const makeFormData=(profile)=>{
   console.log('makeFormData', profile)
   const formData = new FormData();
-  formData.append("username", profile.username);
-  formData.append("email", profile.email);
-  formData.append("password", profile.password);
-  formData.append("profile_image", profile.profile_image);
+  // formData.append("username", profile.username);
+  // formData.append("email", profile.email);
+  // formData.append("password", profile.password);
+  // formData.append("profile_image", profile.profile_image);
+
+
+  if(profile.username) formData.append("username", profile.username);
+  if(profile.email) formData.append("email", profile.email);
+  if(profile.password) formData.append("password", profile.password);
+  if(profile.profile_image) formData.append("profile_image", profile.profile_image);
+
   return formData
 }
 
@@ -128,11 +135,13 @@ export const editProfile = ( profile ) => async dispatch => {
   }else{
     var body = profile
   }
+
   const axiosInstance = axios.create({
         timeout: 5000,
         headers: {
           baseURL: "/",
           "Content-Type": (profile.profile_image? "multipart/form-data": "application/json"),
+          'Authorization': "JWT " + getCookie('access')
         },
       });
 
@@ -140,6 +149,7 @@ export const editProfile = ( profile ) => async dispatch => {
   return axiosInstance
     .put(`/api/auth/${profile.id}`,  body)
     .then(res => {
+      console.log(res.data)
       dispatch({
         type: UPDATE_SUCCESS,
         payload: res.data

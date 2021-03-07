@@ -13,11 +13,10 @@ const Image = styled(InputProfile)`
 `
 export class Profile extends Component {
   state = {
-    username: this.props.user.username,
-    email: this.props.user.email,
-    password: "",
-    password2: "",
-    profile_image: this.props.user.profile_image
+    userInfo: { 
+      id: this.props.user.id,    
+    }
+
   };
 
   static propTypes = {
@@ -28,26 +27,30 @@ export class Profile extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { username, email, password, password2, profile_image} = this.state;
+    const { username, email, password, password2, profile_image} = this.state.userInfo;
     if (password != password2) {
       this.props.createMessage({ passwordsNotMatch: "Passwords do not match" });
     } else {
-      const newUser = {
-        username,
-        email,
-        password,
-        profile_image
-      };
-
-      this.props.editProfile(newUser);
+      // const newUser = { ...this.state.userInfo};
+      this.props.editProfile({ ...this.state.userInfo});
     }
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
-  handleImageFile = img => this.setState({ profile_image : img })
+  onChange = e => { 
+    var nextState = {userInfo: {...this.state.userInfo, [e.target.name]: e.target.value}}
+    this.setState(nextState)
+    }
+
+  handleImageFile = img =>{ 
+    var nextState = {userInfo: {...this.state.userInfo, profile_image: img}}
+    this.setState(nextState)
+    }
+  
+  
+  
 
   render() {
-    const { username, email, password, password2,profile_image } = this.state;
+    const { username, email, password, password2, profile_image } = this.props.user;
     const user = this.props.user;
     if (!this.props.isAuthenticated) {
       return <Redirect to="/login" />;

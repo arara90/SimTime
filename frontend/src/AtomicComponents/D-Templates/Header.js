@@ -29,20 +29,23 @@ const ContentWrap = styled.div`
   }
 
   @media only screen and (max-width: 560px) {
-    justify-content: center;
+    justify-content: space-between;
     height: 40px;
   }
 `;
 
 const SimtimeLogo= styled(Logo)`
   padding-left: 20px;
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     display: none;
   }
 `
 
 const Account = styled(AccountInfo)`
   padding-right: 20px;
+  // @media only screen and (max-width: 560px) {
+  //   display: none;
+  // }
 `
 
 function Header(props) {

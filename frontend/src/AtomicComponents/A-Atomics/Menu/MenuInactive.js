@@ -21,7 +21,7 @@ const ContentWrap = styled.div`
     max-width: 110px;
   }
 
-  min-width: 80px;
+  min-width: 100px;
   display: flex;
   flex-direction: column; 
   justify-content: center;
@@ -30,7 +30,7 @@ const ContentWrap = styled.div`
 
 const Bottom = styled.div`
   background-color: ${ST_WHITE};
-  border-radius: 80px 80px 20px 20px;
+  border-radius: 100px 100px 20px 100px;
   height: 5px;
   width: 64px;
 `;

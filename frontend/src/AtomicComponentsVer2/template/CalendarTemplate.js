@@ -40,7 +40,7 @@ const RightSection = styled.section`
     margin-left: 0px; 
   }
 
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
       top: 50px;
     }
 
@@ -51,7 +51,7 @@ const topCss = css`
   top: 60px;
   height: 4em;
 
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     top: 50px;
     height: 3em;
   }
