@@ -2,7 +2,7 @@ import React from 'react'
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-// import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
+import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
 import CheckIcon from "../../atom/icons/CheckIcon"
 import SolidButton from "../../atom/buttons/SolidButton"
 import BorderButton from "../../atom/buttons/BorderButton"
@@ -19,7 +19,7 @@ const Wrap = styled.li`
 `;
 
 const Colored = styled(SolidButton)`
-  border-radius: 0px;
+  border-radius: 10px;
   width:100%;
   display: flex;
   flex-direction: row;
@@ -27,13 +27,15 @@ const Colored = styled(SolidButton)`
   align-items: center;
 
   font-size: 0.9em;
-  line-height: 1.15em;
-  padding: 1px 2px;
+  line-height: 1em;
 
+  @media only screen and (max-width: 560px) {
+    height: auto;
+  }
 `
 
 const Bordered = styled(BorderButton)`
-  border-radius: 0px;
+  border-radius: 8px;
   width:100%;
   display: flex;
   flex-direction: row;
@@ -43,41 +45,61 @@ const Bordered = styled(BorderButton)`
   font-size: 0.9em;
   border-width: thin;
 
-  line-height: 1.15em;
-  padding: 0 2px;
+  line-height: 1em;
 
   &:hover {
     // background-color: ${({color}) => Colors["MAIN_COLOR_LIGHT"]};
   }
+
+
+  @media only screen and (max-width: 560px) {
+    height: auto;
+  }
+
 `
-// const Checked = styled(CheckIcon)`
-//     position: absolute;
-//     top: 50%;
-//     right: 50%;
-//     border-radius: 50%;
-//     z-index: 99;
-//     color: ${Colors["MAIN_COLOR"]}
 
-//   `
 
-const Checked = styled.div`
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  top: 0;
-  right: 0;
+const Checked = styled(CheckCircleIcon)`
+    position: absolute;
+    top: 3px;
+    right: 3px;
 
-  z-index: 2;
-  background-color: white;
+    border-radius: 50%;
+    z-index: 2;
+    color: ${Colors[ "ST_GREEN_NEON"]};
+    background-color: white;
 
-  border: solid 5px ${({color})=>color};
-  border-top: solid 5px ${Colors["ST_WHITE"]};
-  border-right: solid 5px ${Colors["ST_WHITE"]};
+    
+  @media only screen and (max-width: 560px) {
+    top: 1px;
+    right: 1px;
+  }
   `
+
+
+// const Checked = styled.div`
+//   position: absolute;
+//   width: 20px;
+//   height: 20px;
+//   top: 0;
+//   right: 0;
+
+//   z-index: 2;
+//   background-color: white;
+
+//   border: solid 5px ${({color})=>color};
+//   border-top: solid 5px ${Colors["ST_WHITE"]};
+//   border-right: solid 5px ${Colors["ST_WHITE"]};
+//   `
 
 const Host = styled(ImageUser)`
   width: 1.7em;
   height: 1.7em;
+
+  @media only screen and (max-width: 680px) {
+    display: none;
+  }
+
 `
 
 const Content = styled.div`
@@ -88,6 +110,7 @@ const Content = styled.div`
 `
 
 const Title = styled.strong`
+  font-size: 0.9em;
   display: block;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -100,6 +123,11 @@ const StyledTag = styled(Tag)`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+
+  @media only screen and (max-width: 560px) {
+    display: none;
+  }
+
 `
 
 function CalendarEventLabel(props) {
@@ -140,9 +168,9 @@ CalendarEventLabel.propTypes = {
   };
   
 CalendarEventLabel.defaultProps = {
-  solid: false,
+  solid: true,
   color: "#fff",
-  fontColor: "#fff",
+  fontColor: Colors["TEXT"],
   join: false,
   name: "Chickenkkkkk",
   title: "00:00 AM | 송내역",

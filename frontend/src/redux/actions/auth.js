@@ -154,7 +154,7 @@ export const editProfile = ( profile ) => async dispatch => {
         type: UPDATE_SUCCESS,
         payload: res.data
       });
-      dispatch(createMessage({ register : `Welcome!` }))
+      dispatch(createMessage({ editAccount : `수정완료!` }))
       return res.status
     })
     .catch(err => {
@@ -163,8 +163,7 @@ export const editProfile = ( profile ) => async dispatch => {
         type: UPDATE_FAIL
       });
     });
-};
-
+}
 
 
 
