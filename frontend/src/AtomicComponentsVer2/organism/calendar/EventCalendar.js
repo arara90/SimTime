@@ -87,7 +87,8 @@ function EventCalendar(props) {
         return (
           <CalendarEventLabel
             key={invitation.id}
-            attendance = {invitation.attendance}  
+            attendance = {invitation.attendance}
+            like={invitation.like}
             host = {invitation.event.host}
             name = {invitation.event.event_name}
             title={invitation.event.event_name + " | " + invitation.event.event_time + " | " + invitation.event.event_place.name}
