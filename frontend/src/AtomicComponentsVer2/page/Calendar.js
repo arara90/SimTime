@@ -117,7 +117,7 @@ function Calendar(props) {
         filtered[date] = invitations[date].filter(invitation => {
           if(invitation.show){
             if(onlyJoin && onlyLike){
-              return invitation.like && invitation.join
+              return invitation.like && invitation.attendance
             } else{
               if(onlyLike) return invitation.like
               if(onlyJoin) return invitation.attendance
@@ -176,7 +176,7 @@ function Calendar(props) {
     selectInvitation(null);
   }
 
- const monthClickHandler= (res)=> {
+ const monthClickHandler = (res) => {
   console.log('monthClickHandler', res)
 
   var newDate = new Date(getStrFullDate(res, 'date'))
@@ -232,10 +232,10 @@ function Calendar(props) {
 
 
 //// click invitation
-  const invitationClickHandler =  (e, invitation) =>{
+  const invitationClickHandler = React.useCallback( (e, invitation) =>{
   e.stopPropagation();
   selectInvitation(invitation)
-}
+}, [])
 
   //// submit new event
   const eventSubmitHandler = async (event, image) =>{
@@ -278,7 +278,7 @@ function Calendar(props) {
                         ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
                         invitationClickHandler={invitationClickHandler} 
-                        selectedInvitation={selectedInvitation} 
+                        // selectedInvitation={selectedInvitation} 
                         current={current} 
                         dates={weekDates} 
                         invitations={filteredInvitations} />

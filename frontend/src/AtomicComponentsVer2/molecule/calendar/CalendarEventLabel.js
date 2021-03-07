@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import CheckCircleIcon from "../../atom/icons/CheckCircleIcon"
-import CheckIcon from "../../atom/icons/CheckIcon"
+import HeartIcon from "../../atom/icons/HeartIcon"
 import SolidButton from "../../atom/buttons/SolidButton"
 import BorderButton from "../../atom/buttons/BorderButton"
 
@@ -51,30 +51,59 @@ const Bordered = styled(BorderButton)`
     // background-color: ${({color}) => Colors["MAIN_COLOR_LIGHT"]};
   }
 
-
   @media only screen and (max-width: 560px) {
     height: auto;
   }
 
 `
 
+const Badges = styled.div`
+  line-height: 1.25em;
+  position: absolute;
+  right: 3px;
+  top:3px;
+
+
+  @media only screen and (max-width: 560px) {
+    right: 1px;
+    top: 0.5px;
+  }
+
+
+
+`
 
 const Checked = styled(CheckCircleIcon)`
-    position: absolute;
-    top: 3px;
-    right: 3px;
-
     border-radius: 50%;
     z-index: 2;
     color: ${Colors[ "ST_GREEN_NEON"]};
     background-color: white;
 
-    
-  @media only screen and (max-width: 560px) {
-    top: 1px;
-    right: 1px;
-  }
   `
+
+  const Heart = styled(HeartIcon)`
+    z-index: 2;
+    color: ${Colors[ "ST_PINK"]};
+    background-color: transparent;
+  `
+
+
+// const Checked = styled(CheckCircleIcon)`
+//     position: absolute;
+//     top: 3px;
+//     right: 3px;
+
+//     border-radius: 50%;
+//     z-index: 2;
+//     color: ${Colors[ "ST_GREEN_NEON"]};
+//     background-color: white;
+
+    
+//   @media only screen and (max-width: 560px) {
+//     top: 1px;
+//     right: 1px;
+//   }
+//   `
 
 
 // const Checked = styled.div`
@@ -131,12 +160,16 @@ const StyledTag = styled(Tag)`
 `
 
 function CalendarEventLabel(props) {
-  const {solid, attendance, fontColor, color, name, title, time, location, tags, host} = props;
+  const {solid, attendance, like, fontColor, color, name, title, time, location, tags, host} = props;
   const Button = solid ? Colored : Bordered ; 
-
+  console.log(like)
   return (
       <Wrap {...props}>
+        <Badges>
+        {like? <Heart className='check' color={color}/> : null}
         {attendance? <Checked className='check' color={color}/> : null}
+        </Badges>
+        {/* {attendance? <Checked className='check' color={color}/> : null} */}
         <Button fontColor={solid? fontColor: color} color={color} customColor > 
           <Host url={host.profile_image} />
           <Content>
