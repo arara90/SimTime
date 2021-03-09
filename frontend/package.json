@@ -36,7 +36,7 @@
     "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^4.5.1",
-    "immer": "^6.0.9",
+    "immer": "^8.0.1",
     "minimist": "^1.2.5",
     "react-alert": "^6.0.0",
     "react-alert-template-basic": "^1.0.0",
