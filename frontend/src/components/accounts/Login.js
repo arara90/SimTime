@@ -50,8 +50,9 @@ export class Login extends Component {
               <label>Password</label>
               <input
                 type="password"
-                className="form-control"
                 name="password"
+                autoComplete="on"
+                className="form-control"
                 onChange={this.onChange}
                 value={password}
               />

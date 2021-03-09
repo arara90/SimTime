@@ -55,7 +55,7 @@ function Filters(props) {
       <Wrap {...props}>
       {/* <Left></Left> */}
       <Left>
-        <STCalendarHeader size="1.2em" type="month" current={current} clickHandler={dateHandler} >
+        <STCalendarHeader size="1.2em" type="month" current={getStringDate(current)} clickHandler={dateHandler} >
           {getStringDate(current,"month")}
         </STCalendarHeader>
         </Left>
