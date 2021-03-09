@@ -190,7 +190,7 @@ function EventMaker(props) {
           <ColorLabel htmlFor ="LabelColor"> Color
             <MyInputColor value={color} changeHandler={setColor} type="color" name="LabelColor"/> 
             <MyCalendarEventLabel color={color}
-             title={name || user.username}
+             name={name || user.username}
              time={time}
              location={place.name}
              host={user}

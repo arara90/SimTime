@@ -37,6 +37,7 @@ export default function(state = initialState, action) {
         ...state,
         datas: {...state.datas, [date]:newData}
       };
+
     case EDIT_INVITATION_EVENT:
       var date = action.payload['event_date']
       var newData = state.datas[date].map(invitation => 
@@ -44,6 +45,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         datas: {...state.datas, [date]: newData},
+        selected: {...state.selected, event: action.payload}
       };
       
 
