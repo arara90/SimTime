@@ -8,7 +8,6 @@
 >
 > 뭐?! 그때 너도 거기 있었다고?! 그때 알았으면 우리 만날 수 있었는데..!! :no_good: 
  
-
 ![simtime](https://github.com/arara90/images/blob/master/Simtime/readme/img001.png?raw=true)
 
   
@@ -56,12 +55,9 @@ Git, Figma
   
 
 ### Calendar
-
 Filter - 좋아요 / 참석여부
-
-날짜 이동
-<iframe width="640" height="360" src="https://youtu.be/BugwMZUyBGY" frameborder="0" gesture="media" allowfullscreen=""></iframe>
-
+날짜 이동  
+[![calendar](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/BugwMZUyBGY?t=0s) :point_left:Click!  
 
 #### 이벤트(event)
 * 추가/삭제/수정
@@ -69,10 +65,10 @@ Filter - 좋아요 / 참석여부
 
 #### 초대(invitations) 
 
-* 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌
+* 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌  
+[![addEvent](http://img.youtube.com/vi/jdDfMK4clwU/0.jpg)](https://youtu.be/jdDfMK4clwU?t=0s):point_left: Click!  
+[![editEvent](http://img.youtube.com/vi/UcQqXb_ZtuA/0.jpg)](https://youtu.be/UcQqXb_ZtuA?t=0s):point_left: Click!  
 
-<iframe width="640" height="360" src="https://youtu.be/jdDfMK4clwU" frameborder="0" gesture="media" allowfullscreen=""></iframe>
-<iframe width="640" height="360" src="https://youtu.be/UcQqXb_ZtuA" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 
 ### Friends
 #### 친구등록/관리
@@ -87,9 +83,9 @@ Filter - 좋아요 / 참석여부
 
 * 그룹목록
 * 그룹추가
-* 멤버관리 - 멤버 추가(검색) , 멤버삭제
+* 멤버관리 - 멤버 추가(검색) , 멤버삭제  
 
-<iframe width="640" height="360" src="https://youtu.be/BugwMZUyBGY" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+[![editEvent](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/BugwMZUyBGY?t=0s):point_left: Click!  
 
 ## What's Next?
 
