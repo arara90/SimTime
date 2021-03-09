@@ -62,6 +62,7 @@ Filter - 좋아요 / 참석여부
 #### 이벤트(event)
 * 추가/삭제/수정
 * 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌  
+  
 [![addEvent](http://img.youtube.com/vi/jdDfMK4clwU/0.jpg)](https://youtu.be/jdDfMK4clwU?t=0s):point_left:Click! -Event 추가 영상보기
 [![editEvent](http://img.youtube.com/vi/UcQqXb_ZtuA/0.jpg)](https://youtu.be/UcQqXb_ZtuA?t=0s):point_left:Click! -Event 수정 영상보기
 
@@ -80,7 +81,6 @@ Filter - 좋아요 / 참석여부
 * 그룹목록
 * 그룹추가
 * 멤버관리 - 멤버 추가(검색) , 멤버삭제
-
 [![editEvent](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/Ml1Wn07VXog?t=0s):point_left:Click! -Friend 페이지 영상보기  
 
 ## What's Next?
