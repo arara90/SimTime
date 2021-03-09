@@ -108,14 +108,9 @@ Filter - 좋아요 / 참석여부
 * 모바일 버전 완성하기
 
 
-
-
-
-
-7) 최적화 & 리팩토링
+3) 최적화 & 리팩토링
 
 * 버전별로 흩어진 코드 리팩토링 필요
   *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화함
 
-
-8) 태그 기능
+4) 태그 기능
