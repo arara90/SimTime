@@ -60,23 +60,21 @@ Git, Figma
 Filter - 좋아요 / 참석여부
 
 날짜 이동
-
+<iframe width="640" height="360" src="https://youtu.be/BugwMZUyBGY" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 
 
 #### 이벤트(event)
-
 * 추가/삭제/수정
 
-  
 
 #### 초대(invitations) 
 
 * 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌
 
-
+<iframe width="640" height="360" src="https://youtu.be/jdDfMK4clwU" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+<iframe width="640" height="360" src="https://youtu.be/UcQqXb_ZtuA" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 
 ### Friends
-
 #### 친구등록/관리
 
 * 친구목록
@@ -91,7 +89,7 @@ Filter - 좋아요 / 참석여부
 * 그룹추가
 * 멤버관리 - 멤버 추가(검색) , 멤버삭제
 
-
+<iframe width="640" height="360" src="https://youtu.be/BugwMZUyBGY" frameborder="0" gesture="media" allowfullscreen=""></iframe>
 
 ## What's Next?
 
