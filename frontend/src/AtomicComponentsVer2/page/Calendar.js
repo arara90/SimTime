@@ -264,6 +264,18 @@ function Calendar(props) {
     await addInvitations(newEvent, friendIds)
     closeContextModal()
   }
+  
+  // const fetchWhenScroll = () => {
+  // }
+  
+  // useEffect(() => {
+  //   window.addEventListener('scroll', e => {
+  //     console.log(e)
+  //     const windowScrollY = window.scrollY
+  //     const bodyHeight = document.querySelector('body').offsetHeight
+  //     console.log(windowScrollY, bodyHeight)
+  //   })
+  // }, [])
 
   return (
     <Fragment>

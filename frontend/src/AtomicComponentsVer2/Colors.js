@@ -47,9 +47,9 @@ export const ST_GREEN_DARK      = "#025424";
 export const ST_GREEN_NEON      = "#00C48C";
 
 export const ST_GRAY_LIGHT      = "#FBFBFB";
-export const ST_SEMI_GRAY       = "#ECEBED";
-export const ST_GRAY            = "#D0C9D6";
-export const ST_GRAY_DARK       = "#373a3c";
+export const ST_SEMI_GRAY       = "#EEEEEE";
+export const ST_GRAY            = "#C3C3C3";
+export const ST_GRAY_DARK       = "#434343";
 
 
 export const ST_WHITE           = "#FFFFFF";
@@ -67,7 +67,7 @@ export const TEXT_TAG = ST_GRAY;
 
 //BACKGROUND
 export const BG_WHITE = ST_WHITE;
-export const BG_INACTIVE_LIGHT = ST_GRAY_LIGHT;
+export const BG_INACTIVE_LIGHT = ST_SEMI_GRAY;
 export const BG_INACTIVE = ST_GRAY;
 export const BG_ACTIVE_LIGHT = ST_YELLOW_LIGHT;
 export const BG_ACTIVE = ST_YELLOW;

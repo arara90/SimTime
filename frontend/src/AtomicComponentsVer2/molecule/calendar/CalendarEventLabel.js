@@ -19,13 +19,16 @@ const Wrap = styled.li`
 `;
 
 const Colored = styled(SolidButton)`
-  border-radius: 10px;
-  width:100%;
+
   display: flex;
   flex-direction: row;
   justify-content:flex-start;
   align-items: center;
 
+  border-radius: 10px;
+  width:100%;
+
+  padding: 2px 2px;
   font-size: 0.9em;
   line-height: 1em;
   height: 2.25em;
@@ -45,6 +48,7 @@ const Bordered = styled(BorderButton)`
 
   font-size: 0.9em;
   border-width: thin;
+  padding: 2px 0 2px 0;
 
   line-height: 1em;
   height: 2.25em;
@@ -135,7 +139,7 @@ function CalendarEventLabel(props) {
         {attendance? <Checked className='check' color={color}/> : null}
         </Badges>
         {/* {attendance? <Checked className='check' color={color}/> : null} */}
-        <Button fontColor={solid? fontColor: color} color={color} customColor > 
+        <Button height="100%" fontColor={solid? fontColor: color} color={color} customColor > 
           <Host url={host.profile_image} />
           <Content>
             <Title>{name}</Title>
@@ -170,14 +174,14 @@ CalendarEventLabel.defaultProps = {
   color: "#fff",
   fontColor: Colors["TEXT"],
   join: false,
-  name: "Chickenkkkkk",
-  title: "00:00 AM | 송내역",
+  name: `이벤트명을 입력하세요`,
+  title: "00:00 AM | 서울역",
   time: "00:00 AM",
   location: "",
   tags: [],
   host: {
     profile_image: "https://dyl80ryjxr1ke.cloudfront.net/external_assets/hero_examples/hair_beach_v1785392215/original.jpeg",
-    id: "arara90"
+    username: "arara90"
   }
 };
 
