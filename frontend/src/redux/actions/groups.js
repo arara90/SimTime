@@ -34,7 +34,6 @@ export const getGroups = () => async (dispatch) => {
 };
 
 
-
 export const createGroup = (groupname) => (dispatch) => {
   return axiosInstance
     .post("/api/groups/create/", { groupname: groupname} )
@@ -43,7 +42,7 @@ export const createGroup = (groupname) => (dispatch) => {
         type: ADD_GROUP,
         payload: res.data,
       });
-      dispatch(createMessage({ addGroup: "Group Added" }));
+      dispatch(createMessage({ addGroup: "그룹 " + groupname + "이 추가됐습니다." }));
       return res.data;
     })
     .catch((err) => {
@@ -56,7 +55,7 @@ export const deleteGroup = (id) => (dispatch) => {
   axiosInstance
     .delete(`/api/group/${id}`)
     .then((res) => {
-      dispatch(createMessage({ deleteGroup: "Group Deleted" }));
+      dispatch(createMessage({ deleteGroup: "삭제했습니다." }));
       dispatch({
         type: DELETE_GROUP,
         payload: id,
@@ -82,7 +81,7 @@ export const editGroup = (group) => (dispatch) => {
   axiosInstance
     .put(`/api/group/${group.id}/`, group)
     .then((res) => {
-      dispatch(createMessage({ editGroup: "Group Edited" }));
+      dispatch(createMessage({ editGroup: "수정했습니다." }));
       dispatch({
         type: EDIT_GROUP,
         payload: res.data,
@@ -117,7 +116,7 @@ export const deleteMembers = (data) => (dispatch) => {
   return axiosInstance
     .delete(`/api/groupmember/${ids}`)
     .then((res) => {
-      dispatch(createMessage({ deleteMember: "Deleted" }));
+      dispatch(createMessage({ deleteMember: "삭제했습니다" }));
     })
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
@@ -128,7 +127,7 @@ export const deleteMember = (id) => (dispatch) => {
   return axiosInstance
     .delete(`/api/groupmember/${id}`)
     .then((res) => {
-      dispatch(createMessage({ deleteMember: "Deleted" }));
+      dispatch(createMessage({ deleteMember: "삭제했습니다" }));
       dispatch({ type: DELETE_GROUPMEMBER, payload: id });
     })
     .catch((err) => console.log(err));

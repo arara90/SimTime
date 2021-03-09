@@ -94,5 +94,5 @@ Account.defaultProps = {
   defaultUrl:
     "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets//assets/img/icons/add-yellow.png",
   username: "unknown",
-  imageSize: "40px",
+  imageSize: "38px",
 };

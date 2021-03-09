@@ -117,7 +117,7 @@ export const register = ( profile ) => async dispatch => {
         type: REGISTER_SUCCESS,
         payload: res.data
       });
-      dispatch(createMessage({ register : `Welcome!` }))
+      dispatch(createMessage({ register : `환영합니다! 가입 아이디로 로그인하세요.` }))
       return res.status
     })
     .catch(err => {
@@ -154,7 +154,7 @@ export const editProfile = ( profile ) => async dispatch => {
         type: UPDATE_SUCCESS,
         payload: res.data
       });
-      dispatch(createMessage({ editAccount : `수정완료!` }))
+      dispatch(createMessage({ editAccount : `수정완료` }))
       return res.status
     })
     .catch(err => {
