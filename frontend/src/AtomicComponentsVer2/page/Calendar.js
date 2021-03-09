@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState, useRef} from "react"
+import React, {Fragment, useEffect, useState, useCallback,  useRef} from "react"
 import styled from "styled-components"
 import {connect} from "react-redux"
 
@@ -167,18 +167,17 @@ function Calendar(props) {
 
   //5. functions
   //// modal
-  const closeModal = () => setModalContent(null)
+  const closeModal = useCallback(() => setModalContent(null), [])
+  
   //// click date cell
-  const dateClickHandler = (e, date) =>{
+  const dateClickHandler = useCallback((e, date) =>{
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
     selectInvitation(null);
-  }
+  }, [])
 
  const monthClickHandler = (res) => {
-  console.log('monthClickHandler', res)
-
   var newDate = new Date(getStrFullDate(res, 'date'))
   var { start, end, weeks } = generate(newDate, 6); 
   //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
@@ -230,9 +229,8 @@ function Calendar(props) {
  }
 
 
-
-//// click invitation
-  const invitationClickHandler = React.useCallback( (e, invitation) =>{
+// click invitation
+  const invitationClickHandler = React.useCallback((e, invitation) =>{
   e.stopPropagation();
   selectInvitation(invitation)
 }, [])
@@ -242,7 +240,6 @@ function Calendar(props) {
     try{
       //event 추가
       var res = await addEvent(event, image); 
-      console.log(event)
       setNewEvent(res)
       //modal 변경
       await closeContextModal()
@@ -269,16 +266,13 @@ function Calendar(props) {
   }
 
   return (
-
     <Fragment>
-      {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
         leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler} joinHandler={setOnlyJoin} likeHandler={setOnlylike} />}  
         leftBottom  = {<EventCalendar 
                         ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
                         invitationClickHandler={invitationClickHandler} 
-                        // selectedInvitation={selectedInvitation} 
                         current={current} 
                         dates={weekDates} 
                         invitations={filteredInvitations} />

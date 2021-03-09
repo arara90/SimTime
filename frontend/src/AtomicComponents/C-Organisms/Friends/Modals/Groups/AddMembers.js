@@ -40,7 +40,7 @@ const MyItem = styled(SelectedItem)`
 
 //search하기 위해 id를 index로
 const flatGroupMembers = (members) => {
-  console.log('flatGroupMembers members', members)
+  // console.log('flatGroupMembers members', members)
   return members.reduce(
     (acc, member) => ({
       ...acc,
@@ -76,7 +76,7 @@ function AddMembers(props) {
   const [tableData, setTableData] = useState(transformIntoTableData(nonMembers))
 
   React.useEffect(() => {
-    console.log('AddMembers useEffect', selectedFriends, tableData)
+    // console.log('AddMembers useEffect', selectedFriends, tableData)
     var newData = setTableData(tableData.filter(
       (data) => !selectedFriends.includes(data.id)
     ));
@@ -96,9 +96,9 @@ function AddMembers(props) {
     //멤버로 등록
     var res = await props.addToGroup(data);
     
-    if(res) {
-      console.log('dd');
-    }
+    // if(res) {
+    //   console.log('dd');
+    // }
   };
 
   //친구 내에서 검색

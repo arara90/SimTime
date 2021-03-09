@@ -18,7 +18,7 @@ export const addfriend = (friend) => async (dispatch) => {
       friend: friend.friend,
     })
     .then((res) => {
-      dispatch(createMessage({ addFriend: "Friend Added" }));
+      dispatch(createMessage({ addFriend: res.data.username + "님을 친구로 등록했습니다." }));
       dispatch({ type: ADD_FRIEND, payload: res.data });
       return res;
     })
@@ -33,7 +33,7 @@ export const deleteFriend = (id) => async (dispatch) => {
     .delete(`/api/friend/${id}`)
     .then((res) => {
       dispatch({ type: DELETE_FRIEND, payload: id });
-      dispatch(createMessage({ deleteFriend: "Friend Deleted" }));
+      dispatch(createMessage({ deleteFriend: "삭제했습니다." }));
     })
     .catch((err) => {
       dispatch(returnErrors(err.response, err.response.status));
@@ -44,6 +44,9 @@ export const deleteFriend = (id) => async (dispatch) => {
 export const editFriend = (data) => async (dispatch) => {
   // subscribe:true
   // dispatch:true
+  console.log(data)
+
+  var message = { editFriend: !data.value ? "차단 완료" : "차단 해제" }
   return axiosInstance
     .put(`/api/friend/${data.id}`, data)
     .then((res) => {
@@ -51,7 +54,7 @@ export const editFriend = (data) => async (dispatch) => {
         type: EDIT_FRIEND,
         payload: res.data,
       });
-      dispatch(createMessage({ editFriend: "Edited" }));
+      dispatch(createMessage(message));
     })
     .catch((err) => {
       dispatch(returnErrors(err.response, err.response.status));
@@ -83,7 +86,7 @@ export const addToGroup = (datas) => async (dispatch) => {
     .post("/api/friend/add-to-group/", datas)
     .then((res) => {
       dispatch({ type: ADD_TO_GROUP, payload: res.data });
-      dispatch(createMessage({ addToGroup: "Added to Group" }));
+      dispatch(createMessage({ addToGroup: "성공적으로 추가했습니다." }));
       console.log("addToGroup", res);
       return res
     })

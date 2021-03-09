@@ -28,6 +28,7 @@ const Colored = styled(SolidButton)`
 
   font-size: 0.9em;
   line-height: 1em;
+  height: 2.25em;
 
   @media only screen and (max-width: 560px) {
     height: auto;
@@ -46,6 +47,7 @@ const Bordered = styled(BorderButton)`
   border-width: thin;
 
   line-height: 1em;
+  height: 2.25em;
 
   &:hover {
     // background-color: ${({color}) => Colors["MAIN_COLOR_LIGHT"]};
@@ -54,7 +56,6 @@ const Bordered = styled(BorderButton)`
   @media only screen and (max-width: 560px) {
     height: auto;
   }
-
 `
 
 const Badges = styled.div`
@@ -68,9 +69,6 @@ const Badges = styled.div`
     right: 1px;
     top: 0.5px;
   }
-
-
-
 `
 
 const Checked = styled(CheckCircleIcon)`
@@ -86,40 +84,6 @@ const Checked = styled(CheckCircleIcon)`
     color: ${Colors[ "ST_PINK"]};
     background-color: transparent;
   `
-
-
-// const Checked = styled(CheckCircleIcon)`
-//     position: absolute;
-//     top: 3px;
-//     right: 3px;
-
-//     border-radius: 50%;
-//     z-index: 2;
-//     color: ${Colors[ "ST_GREEN_NEON"]};
-//     background-color: white;
-
-    
-//   @media only screen and (max-width: 560px) {
-//     top: 1px;
-//     right: 1px;
-//   }
-//   `
-
-
-// const Checked = styled.div`
-//   position: absolute;
-//   width: 20px;
-//   height: 20px;
-//   top: 0;
-//   right: 0;
-
-//   z-index: 2;
-//   background-color: white;
-
-//   border: solid 5px ${({color})=>color};
-//   border-top: solid 5px ${Colors["ST_WHITE"]};
-//   border-right: solid 5px ${Colors["ST_WHITE"]};
-//   `
 
 const Host = styled(ImageUser)`
   width: 1.7em;
@@ -162,7 +126,8 @@ const StyledTag = styled(Tag)`
 function CalendarEventLabel(props) {
   const {solid, attendance, like, fontColor, color, name, title, time, location, tags, host} = props;
   const Button = solid ? Colored : Bordered ; 
-  console.log(like)
+
+
   return (
       <Wrap {...props}>
         <Badges>
@@ -185,7 +150,7 @@ function CalendarEventLabel(props) {
   )
 }
 
-export default CalendarEventLabel
+export default React.memo(CalendarEventLabel);
 
 CalendarEventLabel.propTypes = {
   solid: PropTypes.bool,
@@ -215,3 +180,37 @@ CalendarEventLabel.defaultProps = {
     id: "arara90"
   }
 };
+
+
+// const Checked = styled(CheckCircleIcon)`
+//     position: absolute;
+//     top: 3px;
+//     right: 3px;
+
+//     border-radius: 50%;
+//     z-index: 2;
+//     color: ${Colors[ "ST_GREEN_NEON"]};
+//     background-color: white;
+
+    
+//   @media only screen and (max-width: 560px) {
+//     top: 1px;
+//     right: 1px;
+//   }
+//   `
+
+
+// const Checked = styled.div`
+//   position: absolute;
+//   width: 20px;
+//   height: 20px;
+//   top: 0;
+//   right: 0;
+
+//   z-index: 2;
+//   background-color: white;
+
+//   border: solid 5px ${({color})=>color};
+//   border-top: solid 5px ${Colors["ST_WHITE"]};
+//   border-right: solid 5px ${Colors["ST_WHITE"]};
+//   `

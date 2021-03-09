@@ -99,7 +99,7 @@ export const addEvent =  (event, img) => async (dispatch) =>{
         })
         .then((res)=>{
           // console.log('eventres', res)
-          dispatch(createMessage({ addEvent: "Event Added" }));
+          dispatch(createMessage({ addEvent: "이벤트를 추가했습니다." }));
           return res.event.id
         })
         .catch((err) => {
@@ -116,7 +116,7 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
   axiosInstance
     .delete(`/api/events/${id}`)
     .then(() => {
-      dispatch(createMessage({ deleteEvent: "Event Deleted" }));
+      dispatch(createMessage({ deleteEvent: "이벤트를 삭제했습니다." }));
       // dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
       dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
     })
@@ -152,7 +152,7 @@ export const editEvent =  (event, img) => async (dispatch) =>{
             type:EDIT_INVITATION_EVENT,
             payload: {...res.data, event_date:date, event_time:time}
           })
-          dispatch(createMessage({ editEvent: "Event Edited" }));
+          dispatch(createMessage({ editEvent: "이벤트를 수정했습니다." }));
           return res.status
         })
         .catch((err) => {
@@ -166,7 +166,7 @@ export const editEvent =  (event, img) => async (dispatch) =>{
             type:EDIT_INVITATION_EVENT,
             payload: {...res.data, event_date:date, event_time:time}
           })
-          dispatch(createMessage({ editEvent: "Event Edited" }));
+          dispatch(createMessage({ editEvent: "이벤트를 수정했습니다." }));
           return res.status
         })
         .catch((err) => {
