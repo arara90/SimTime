@@ -1,5 +1,152 @@
-# Simtime, 심탐
-불금에 심심할 예정? 갑작스런 칼퇴? 
-심심한 시간을 심탐(SimTime)에서 친구들과 공유하자! 친구들이 알아서 모이는 약속잡기 프로젝트.
+# Simtime
 
-* postgresql, django, react
+**친구들이 알아서 모이는 약속잡기 프로젝트**  
+
+**함께하면 더 즐거운 시간 :point_right: [SimTime](simti.me) :point_left:에서 공유해요!**  
+
+
+
+> 이번주 금요일.. 나만 약속없어..? :cry: 예상치 못한 칼퇴!  이대로 그냥 집에 못가! :beer:  
+>
+> 여의도 출장 잡혔습니다.  같이 점심 드실 분?:curry:  답답해.. hoxy.. 주말에 바다보러 같이 갈 사람있나? :bus:  
+>
+> 뭐?! 그때 너도 거기 있었다고?! 그때 알았으면 우리 만날 수 있었는데..!! :no_good:  
+  
+  
+
+메신저 친구 목록보면서 누가 시간이 될까? 누가 거기에 있나? 그만 고민하고 친구들에게 내 시간을 공유하세요. 
+
+혹시 알아요? 밥 한번 같이 먹자던 그 친구와 오늘 저녁 밥 한번 먹게 될지!!  Finally!!  
+  
+
+
+![simtime](https://github.com/arara90/images/blob/master/Simtime/readme/img001.png?raw=true)
+
+  
+  
+## 기술 스택
+
+### FrontEnd
+
+- React, Redux, webpack
+
+- Atomic Designs pattern 적용
+  
+  
+
+### BackEnd
+
+* Django, Postgresql
+
+
+
+### ETC
+
+Git, Figma
+
+
+
+### Architecture
+
+![architecture](https://github.com/arara90/images/blob/master/Simtime/readme/architecture.png?raw=true)
+
+
+
+
+
+## 기능상세
+
+### Accounts
+
+* Register / Login / 회원정보 수정 (jwt)
+
+  
+
+### Calendar
+
+Filter - 좋아요 / 참석여부
+
+날짜 이동
+
+
+
+#### 이벤트(event)
+
+* 추가/삭제/수정
+
+  
+
+#### 초대(invitations) 
+
+* 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌
+
+
+
+### Friends
+
+#### 친구등록/관리
+
+* 친구목록
+* 친구추가/삭제 - 친구검색 / 그룹에 추가
+* 수신거부 - 친구의 초대장 받지 않기
+
+
+
+#### 그룹등록/관리
+
+* 그룹목록
+* 그룹추가
+* 멤버관리 - 멤버 추가(검색) , 멤버삭제
+
+
+
+
+
+## What's Next?
+
+1) 카카오 API 활용 - 작업중
+
+	- 로그인
+	- 친구 목록 불러오기
+	- 메세지 보내기
+
+
+
+2) 반응형 - 작업중
+
+* 모바일 버전 완성하기
+
+
+
+3) 알람 기능 추가
+
+* 새롭게 초대된 이벤트 알림기능 추가
+
+
+
+4) 이벤트 등록말고 시간만 등록해서 보여주는 Page
+
+* User Profile Image/ 시간대(아침/점심/저녁) 만 표시해주는 달력
+  * Calandar Template 그대로 이용
+
+
+
+5) 이벤트 MAX인원 기능 추가(선착순) 
+
+- MAX 도달하면 참가 불가하고, host에게 알리기
+
+  
+
+6) 이벤트에 댓글달기 기능 추가
+
+
+
+
+
+7) 최적화 & 리팩토링
+
+* 버전별로 흩어진 코드 리팩토링 필요
+  *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화함
+
+
+8) 태그 기능
