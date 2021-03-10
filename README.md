@@ -24,7 +24,7 @@
 - React with JavaScript(styled-components)
 - Web Server: Nginx
 - State management: Redux
-- Etc: webpack, Atomic Design
+- etc: webpack, Atomic Design
  
 ### BackEnd
 - Django with Python
