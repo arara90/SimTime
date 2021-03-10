@@ -50,7 +50,8 @@ class AccountDetailAPI(APIView):
     def put(self, request, pk):
         account = self.get_object(pk)
         print(request.data)
-        serializer = AccountSerializer(account, data=request.data, partial=True)
+        serializer = AccountSerializer(
+            account, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -237,44 +238,52 @@ class FriendshipDetailAPI(APIView):
 
     def delete(self, request, pk):
         friendship = self.get_object(pk)
-        user = 'a' if friendship.account_A == self.request.user else 'b'
+        friend = friendship.account_B if friendship.account_A == self.request.user else friendship.account_A
         friendshipStatus = friendship.status
+        # 1. group에서 친구 삭제
+        groups = FriendshipGroupMap.objects.select_related('group')\
+            .filter(Q(group__account=request.user.id) & Q(friend=friend))
 
-        def do_delete(friendship):
+        def do_delete(friendship, groups):
             try:
                 friendship.delete()
+                groups.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except:
                 print('delete err')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        def do_update(friendship, newStatus):
+        def do_update(friendship, groups, newStatus):
             try:
                 # update
                 friendship.status = newStatus
                 friendship.save()
+                groups.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except:
                 print('update err')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        if(user == 'a'):
+
+        #. 친구 삭제 or state 변경
+        if(friendship.account_A == self.request.user):
             if(friendshipStatus == 0):
                 # update (status 0 ==>2) : (mutual ==> b_only')
-                return do_update(friendship, 2)
-            elif(friendshipStatus == 1 or friendshipStatus == 3):  # 'a_only인 경우'
-                return do_delete(friendship)
+                return do_update(friendship, groups, 2)
+            elif(friendshipStatus == 1 or friendshipStatus == 3):
+                return do_delete(friendship, groups)  # 'a_only인 경우'
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else:
             if(friendshipStatus == 0):
                 # update (status 0 ==>1) : (mutual ==> a_only')
-                return do_update(friendship, 1)
-            elif(friendshipStatus == 2 or friendshipStatus == 4):  # 'b_only인 경우'
-                return do_delete(friendship)
+                return do_update(friendship, groups, 1)
+            elif(friendshipStatus == 2 or friendshipStatus == 4):
+                return do_delete(friendship, groups)  # 'b_only인 경우'
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class GroupAPI(APIView):
@@ -349,7 +358,7 @@ class FGMapAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, ids):
-        #ids = "1 2 3"
+        # ids = "1 2 3"
         FriendshipGroupMap.filter()
         group.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -376,6 +385,7 @@ class GroupMemberAPI(APIView):
     def delete(self, request, pk):
         mapObj = self.get_object(pk)
         mapObj.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

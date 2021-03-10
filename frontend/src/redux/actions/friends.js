@@ -18,7 +18,7 @@ export const addfriend = (friend) => async (dispatch) => {
       friend: friend.friend,
     })
     .then((res) => {
-      dispatch(createMessage({ addFriend: res.data.username + "님을 친구로 등록했습니다." }));
+      dispatch(createMessage({ addFriend: res.data.friend.username + "님을 친구로 등록했습니다." }));
       dispatch({ type: ADD_FRIEND, payload: res.data });
       return res;
     })
