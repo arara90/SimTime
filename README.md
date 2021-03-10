@@ -21,22 +21,18 @@
 ## 기술 스택
 
 ### FrontEnd
-
-- React, Redux, webpack
-
-- Atomic Designs pattern 적용
-  
-  
-
+- React with JavaScript(styled-components)
+- Web Server: Nginx
+- State management: Redux
+- Etc: webpack, Atomic Design
+ 
 ### BackEnd
-
-* Django, Postgresql
-
-
+- Django with Python
+- DB : PostgreSQL (AWS RDS)
+- etc: DRF(djangorestframework), jwt
 
 ### ETC
-
-Git, Figma
+- Git, Figma
 
 
 
@@ -114,5 +110,6 @@ Filter - 좋아요 / 참석여부
 
 * 버전별로 흩어진 코드 리팩토링 필요
   *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화함
+*  code splitting
 
 4) 태그 기능
