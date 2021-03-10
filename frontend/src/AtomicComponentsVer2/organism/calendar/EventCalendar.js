@@ -49,7 +49,7 @@ const More = styled(SolidButton)`
 `
 
 function EventCalendar(props) {
-  const { innerRef, current, dateClickHandler, dates, invitations, moreClickHandler, scrollHandler } = props;
+  const { innerRef, current, invitationClickHandler,dateClickHandler, dates, invitations, moreClickHandler, scrollHandler } = props;
   
   const scrollToTargetAdjusted = React.useCallback(
     (target)=>{
@@ -87,7 +87,9 @@ function EventCalendar(props) {
             time={invitation.event.event_time}
             location={invitation.event.event_place.name}
             tags = {invitation.event.tags}
-            color={invitation.event.color}            />
+            color={invitation.event.color}            
+            onClick={(e)=>invitationClickHandler(e, invitation)}
+            />
           )}
         );
       }
