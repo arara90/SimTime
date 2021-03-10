@@ -1,8 +1,7 @@
 # Simtime
 
-**친구들이 알아서 모이는 약속잡기 프로젝트. 함께하면 더 즐거운 시간 :point_right: [SimTime](https://simti.me) :point_left:에서 공유해요!**  
+**친구들이 알아서 모이는 약속잡기 프로젝트. 함께하면 더 즐거운 시간 :point_right: [SimTime](https://simti.me)(https://simti.me) :point_left:에서 공유해요!**  
 
-site url : https://simti.me
 > 이번주 금요일.. 나만 약속없어..? :cry: 예상치 못한 칼퇴!  이대로 그냥 집에 못가! :beer:  
 >
 > 여의도 출장 잡혔습니다.  같이 점심 드실 분?:curry:  답답해.. hoxy.. 주말에 바다보러 같이 갈 사람있나? :bus:  
