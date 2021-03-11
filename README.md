@@ -112,4 +112,4 @@ Filter - 좋아요 / 참석여부
   *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화
 *  code splitting
 
-4) 태그 기능
+### 태그 기능
