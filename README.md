@@ -93,7 +93,7 @@ Filter - 좋아요 / 참석여부
 
 ## What's Next?
 
-1) 카카오 API 활용 - 작업중
+### 카카오 API 활용 - 작업중
 
 	- 로그인
 	- 친구 목록 불러오기
@@ -101,15 +101,15 @@ Filter - 좋아요 / 참석여부
 
 
 
-2) 반응형 - 작업중
+### 반응형 - 작업중
 
 * 모바일 버전 완성하기
 
 
-3) 최적화 & 리팩토링
+### 최적화 & 리팩토링
 
 * 버전별로 흩어진 코드 리팩토링 필요
-  *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화함
+  *  components -> AtomicComponents -> AtomicComponentsVer2 순으로 진화
 *  code splitting
 
 4) 태그 기능
