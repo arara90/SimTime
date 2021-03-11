@@ -16,6 +16,7 @@ import {
   START_LOADING,
   FINISH_LOADING
 } from "./types";
+import { object } from "prop-types";
 
 
 function separateEventTime(data){
@@ -126,25 +127,23 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     });
 };
 
-export const editEvent =  (event, img) => async (dispatch) =>{
+export const editEvent =  (event) => async (dispatch) =>{
   const SUCCEESS = 'EDIT_EVENT_SUCCESS'
   const FAILURE = 'EDIT_EVENT_FAILURE'
   const date = event.event_date;
   const time = event.event_time;
-  
+
   //date+time
-  convertEventTimeToISO(event)
+  if(event.hasOwnProperty('event_time')) convertEventTimeToISO(event)
   try{
-    if(img) {
+    if(event.hasOwnProperty('photo')) {
       const formData = new FormData();
-      formData.append("photo", img);
-      formData.append("color", event.color);
-      formData.append("host", event.host);
-      formData.append("event_name", event.event_name);
-      formData.append("event_time", event.event_time);
-      formData.append("status", event.status);
-      formData.append("event_place", JSON.stringify(event.event_place) );
-      formData.append("message", event.message);
+      for (const [key, value] of Object.entries(event)) {
+        if(typeof key=='object') value = JSON.stringify(value)
+        else formData.append(key, value);
+      }
+      
+
       return axiosFormInstance
         .put(`/api/events/${event.id}`, formData)
         .then((res)=>{
@@ -162,6 +161,7 @@ export const editEvent =  (event, img) => async (dispatch) =>{
       return axiosInstance
         .put(`/api/events/${event.id}`, event)
         .then((res)=>{
+          console.log('res', res)
           dispatch({
             type:EDIT_INVITATION_EVENT,
             payload: {...res.data, event_date:date, event_time:time}

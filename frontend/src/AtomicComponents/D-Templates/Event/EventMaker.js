@@ -88,10 +88,12 @@ const MyInputImage = styled(InputImage)`
 
 
 function EventMaker(props) {
-  const palette = Object.values(Colors.Palette) ;
+  // const palette = Object.values(Colors.Palette);
+  // const getColor = (palette)=> palette[Math.floor(Math.random() * palette.length)]
   const {closeContextModal } = React.useContext(ModalContext);
   const {closeModal, user, editEvent, eventSubmitHandler, eventToEdit, isEdit } = props;
   const today = new Date();
+
 
   //states
   const [datePicker, setDatePicker] = useState(false);
@@ -100,46 +102,59 @@ function EventMaker(props) {
   const [time, setTime] = useState(isEdit ? eventToEdit.event_time : "");
   const [place, setPlace] = useState(isEdit ? eventToEdit.event_place : {});
   const [message, setMessage] = useState(isEdit ? eventToEdit.message :"");
-  const [color, setColor] = useState( isEdit ? eventToEdit.color : palette[Math.floor(Math.random() * palette.length)], );
-  const [imgFile, setImgFile] = useState( null); //파일
+  const [color, setColor] = useState( isEdit ? eventToEdit.color : "");
+  const [imgFile, setImgFile] = useState(isEdit? eventToEdit.photo :null); //파일
 
   // //not yet
   const [tags, setTags] = useState([]);
   const [fontColor, setFontColor] = useState();
 
-  const initEvent = {
-    event_name: name,
-    event_date: getStrFullDate(today, "yyyy-mm-dd"),
-    event_time: time, //14:00 PM
-    event_place: place,
-    tags: tags,
-    message: message,
-    host: user.id,
-    photo: imgFile
-  }
-  const [event, setEvent] = useState(isEdit? {...eventToEdit,host: user.id,} : initEvent);
+
+  const [event, setEvent] = useState({});
 
   useEffect(()=>setEvent({...event, event_name: name}),[name]);
   useEffect(()=>setEvent({...event, event_date: date}),[date]);
   useEffect(()=>setEvent({...event, event_time: time}),[time]);
   useEffect(()=>setEvent({...event, event_place: place}),[place]);
   useEffect(()=>setEvent({...event, message: message}),[message]);
-  useEffect(()=>setEvent({...event, tags: tags}),[tags]);
   useEffect(()=>setEvent({...event, color: color}),[color]);
-  useEffect(()=>setEvent({...event, photo: imgFile}),[imgFile]);
+  useEffect(()=>setEvent({...event, tags: tags}),[tags]);
+  useEffect(()=>{setEvent({...event, photo: imgFile})},[imgFile]);
+
+  useEffect(()=>{
+    const initEvent = {
+      event_name: name,
+      event_date: getStrFullDate(today, "yyyy-mm-dd"),
+      event_time: time, //14:00 PM
+      event_place: place,
+      tags: tags,
+      message: message,
+      host: user.id,
+      photo: imgFile
+    }
+
+    setEvent(isEdit? {id: eventToEdit.id } : initEvent)
+  },[]);
+
 
   const showDatePicker = () => setDatePicker(!datePicker);
   const hadleSubmit = async () => {
     // e.preventDefault();
     // e.stopPropagation();
 
+    // if(event.hasOwnProperty('event_time') && time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
+    //   event['event_time'] = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
+    // }
+    
+    var fin_time = time
     if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
-      event['event_time'] = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
-    }
+      fin_time = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
+    } 
 
     if(isEdit){
       try{
-        var resStatus = await editEvent(event, imgFile); 
+
+        var resStatus = await editEvent({...event, 'event_date': date, 'event_time': fin_time}); 
         if(resStatus=='200') {
           closeContextModal()
           closeModal() //modal 변경
@@ -147,8 +162,9 @@ function EventMaker(props) {
       }catch(e){
         console.log("Error", e); 
       }
+    }else{
+      eventSubmitHandler({...event, 'event_time': fin_time} , imgFile)
     }
-    eventSubmitHandler(event, imgFile)
   };
 
 
@@ -229,7 +245,7 @@ const mapDispatchToProps = (dispatch)=> {
  return {
   // addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
   getEvent: getEvent(),
-  editEvent: (event, img)=>dispatch(editEvent(event, img)),
+  editEvent: (event)=>dispatch(editEvent(event)),
 }
 }
 
