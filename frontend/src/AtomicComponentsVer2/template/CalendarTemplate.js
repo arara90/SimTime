@@ -49,7 +49,7 @@ const RightSection = styled.section`
     height: auto;
     background-color: white;
 
-    max-height: 425px;
+    max-height:  calc(100vh - 215px);
     overflow-y: auto;
   }
 
