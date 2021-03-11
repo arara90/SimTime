@@ -16,7 +16,7 @@ from django.core.exceptions import ImproperlyConfigured
 from datetime import timedelta
 
 DEBUG = False
-ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = ['*']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,21 +44,17 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # KAKAO_KEY = get_secret("KAKAO_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
 INSTALLED_APPS = [
     'rest_framework',
-    'frontend',
     'invitations',
     'accounts',
     # 'files', #practice용
     'storages',
     'imagekit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,7 +65,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated', ],
-    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication', ]
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication', ],
+
 
 }
 
@@ -100,7 +97,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = [ 
+    # 허용할 프론트엔드 도메인 추가 EX: 'http://localhost:3000', 
+    'https://localhost:3000', 
+    'https://127.0.0.1:3000', 
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+]
+
+INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'Simtime.urls'
 
@@ -216,6 +224,3 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 MEDIA_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 DEFAULT_FILE_STORAGE = 'Simtime.storages.MediaStorage'
 MEDIAFILES_LOCATION = 'media'
-
-DEBUG = False
-ALLOWED_HOSTS = ['*']
