@@ -23,6 +23,7 @@ const Wrap = styled.div`
 const Section = styled.div`
   height: auto;
   margin: 1em auto;
+
 `;
 
 const SectionTitle = styled.div`
@@ -49,7 +50,7 @@ function Friends(props) {
   useEffect(() => {
     async function getDatas() {
       await props.getFriends();
-      await props.getHosts();
+      // await props.getHosts();
       await props.getGroups();
     }
 
@@ -70,14 +71,14 @@ function Friends(props) {
             friendships={friendships}
             rowNum={6}
             rowHeight="45px"
-            width="48%"
+            width="100%"
           />
-          <FriendSection
+          {/* <FriendSection
             friendships={hosts}
             rowNum={6}
             rowHeight="45px"
             width="48%"
-          />
+          /> */}
         </ContentWrap>
       </Section>
 
@@ -114,7 +115,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getGroups: () => dispatch(getGroups()),
     getFriends: () => dispatch(getFriends()),
-    getHosts: () => dispatch(getHosts())
+    // getHosts: () => dispatch(getHosts())
   };
 };
 

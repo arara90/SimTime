@@ -13,12 +13,9 @@ import MenuList from "../C-Organisms/Header/MenuList"
 import Logo from "../C-Organisms/Header/Logo"
 import AccountInfo from "../C-Organisms/Header/AccountInfo"
 
-const Wrap = styled.header`
-
-`;
+const Wrap = styled.header``;
 
 const ContentWrap = styled.div`
-
   width: 100%;
   max-width: 1464px;
   margin: 0 auto;
@@ -32,25 +29,26 @@ const ContentWrap = styled.div`
   }
 
   @media only screen and (max-width: 560px) {
-    justify-content: center;
+    justify-content: space-between;
     height: 40px;
   }
 `;
 
 const SimtimeLogo= styled(Logo)`
   padding-left: 20px;
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     display: none;
   }
 `
 
 const Account = styled(AccountInfo)`
   padding-right: 20px;
+  // @media only screen and (max-width: 560px) {
+  //   display: none;
+  // }
 `
 
-
 function Header(props) {
-
   return (
     <Wrap id="simtime-header">
       <ContentWrap>
@@ -63,44 +61,3 @@ function Header(props) {
 }
 
 export default Header;
-
-
-
-//  const { isAuthenticated, user } = props.auth;
-
-  // //ActiveMenu는 context로 하자.
-  // const [activeMenu, setActiveMenu] = useState(0);
-
-  // const handleClick = (e, menu) => {
-  //   setActiveMenu(menu);
-  // };
-
-  // const ActiveMenuRender = (menuName) => {
-  //   return <MenuActive>{menuName}</MenuActive>
-  // };
-
-  // const InActiveMenuRender = (menuName) => {
-  //   return <MenuInActive>{menuName}</MenuInActive>
-  //   }
-
-  // return (
-  //   <Wrap>
-  //     <ContentWrap>
-  //       <LogoWrap>
-  //         <StyledLink to={"/"} onClick={e=>handleClick(e, 0)}>
-  //         <LOGO />
-  //         </StyledLink>
-  //       </LogoWrap>
-  //       <MenuList>
-  //         <StyledLink to={"/"} onClick={e=>handleClick(e, 0)}>{ activeMenu == 0 ? ActiveMenuRender("CALENDAR") : InActiveMenuRender("CALENDAR") }</StyledLink>
-  //         <StyledLink to={"/mysimtime"} onClick={e=>handleClick(e, 1)}>{activeMenu == 1 ? ActiveMenuRender("MY SIMTIME") : InActiveMenuRender("MY SIMTIME") }</StyledLink>
-  //         <StyledLink to={"/friends"} onClick={e=>handleClick(e, 2)}>{ activeMenu == 2 ? ActiveMenuRender("FRIENDS") : InActiveMenuRender("FRIENDS") }</StyledLink>
-  //       </MenuList>
-  //       <AccountWrap>
-  //         <Account username={user ? user.username : "unknown"} />
-  //       </AccountWrap>
-  //     </ContentWrap>
-  //   </Wrap>
-  // );
-
-  

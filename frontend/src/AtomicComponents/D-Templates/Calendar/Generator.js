@@ -20,6 +20,11 @@ export function getStrDate(date, type = "dd") {
   }
 }
 
+export function getFullTime(date){
+  return ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2)
+}
+
+
 export function getStrFullDate(date, type = "yyyymmdd") {
   type.toLowerCase();
 

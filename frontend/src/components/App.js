@@ -4,8 +4,15 @@ import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 
 import Alerts from "./layout/Alerts";
+
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
+import Profile from "./accounts/Profile";
+
+import LoginPage from "../AtomicComponentsVer2/page/accounts/LoginPage"
+import RegisterPage from "../AtomicComponentsVer2/page/accounts/RegisterPage"
+import ProfilePage from "../AtomicComponentsVer2/page/accounts/ProfilePage"
+
 import PrivateRoute from "./common/privateRoute";
 
 //redux
@@ -86,7 +93,7 @@ class App extends Component {
                     <Header/>
                     <Alerts />
                     <Switch>
-                      <PrivateRoute exact path="/" component={Components} />
+                      <PrivateRoute exact path="/" component={Calendar} />
                       <PrivateRoute
                         exact
                         path="/calendar"
@@ -107,8 +114,12 @@ class App extends Component {
                         path="/component"
                         component={Components}
                       />
-                      <Route exact path="/register" component={Register} />
+                      {/* <Route exact path="/register" component={Register} />
                       <Route exact path="/login" component={Login} />
+                      <Route exact path="/Profile" component={Profile} /> */}
+                      <Route exact path="/register" component={RegisterPage} />
+                      <Route exact path="/login" component={LoginPage} />
+                      <Route exact path="/Profile" component={ProfilePage} />
                     </Switch>
                   </div>
                 </Fragment>

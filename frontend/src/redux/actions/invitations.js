@@ -18,8 +18,9 @@ import {
 function separateTime(data){
   var res = {...data}
   var event_at = new Date(Date.parse(res.event_time))
+  const meridiem = getFullTime(event_at).split(":")[0]<12?"AM":"PM"
   res['event_date'] = getStrFullDate(event_at, "yyyy-mm-dd")
-  res['event_time'] = getFullTime(event_at)
+  res['event_time'] = getFullTime(event_at)  + ' ' + meridiem;
   return res
 }
 
@@ -43,7 +44,7 @@ export const addInvitations = (event, friendIds) => async (dispatch) => {
 
       return resInvitation
       }else{
-        dispatch(createMessage({ addInvitations: 'Invited friends!' }));
+        dispatch(createMessage({ addInvitations: '친구를 초대했습니다' }));
       }
   })
   .catch((err) => {
@@ -83,7 +84,7 @@ export const toggleInvitations = (invitation, key) => async (dispatch) => {
   var message = {
     'like' : 'Like',
     'show' :  invitation[key] ? "Show":  "Hide" ,
-    'attendance' : invitation[key] ?  "Join the Event" : "Cancel" ,
+    'attendance' : invitation[key] ?  "이벤트에 참가합니다." : "이벤트 참가를 취소했습니다." ,
   }
 
   return axiosInstance
@@ -109,7 +110,7 @@ export const deleteInvitation= (id, event_date) => (dispatch) => {
   axiosInstance
     .delete(`/api/invitation/${id}`)
     .then(() => {
-      dispatch(createMessage({ deleteInvitation: "Invitation Deleted" }));
+      dispatch(createMessage({ deleteInvitation: "이벤트를 삭제했습니다." }));
       dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
     })
     .catch((err) => {

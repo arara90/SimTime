@@ -7,20 +7,24 @@ import { MenuContext } from "../../../contexts/menuContext";
 //component
 import { MAIN_COLOR, ST_GRAY } from "../../Colors";
 import MenuActive from "../../A-Atomics/Menu/MenuActive";
-import MenuInActive from "../../A-Atomics/Menu/MenuInActive";
+import MenuInactive from "../../A-Atomics/Menu/MenuInactive";
 import MenuLink from "../../A-Atomics/Menu/MenuLink";
 
 const Wrap = styled.div`
   // // border: solid 1px blue;
   display: flex;
-  flex-grow: 1;
+  // flex-grow: 1;
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
 
   padding-left: 15px;
   padding-right: 15px;
-}
+
+  @media only screen and (max-width: 560px) {
+    justify-content: flex-start;
+    padding-left: 20px;
+  }
 
 `;
 
@@ -31,8 +35,8 @@ function MenuList(props) {
     return <MenuActive>{name}</MenuActive>;
   };
 
-  const InActiveMenuRender = (name) => {
-    return <MenuInActive>{name}</MenuInActive>;
+  const InavtiveMenuRender = (name) => {
+    return <MenuInactive>{name}</MenuInactive>;
   };
 
   const renderMenus = (menus) => {
@@ -42,7 +46,7 @@ function MenuList(props) {
         <MenuLink key={src} src={src} handleClick={() => handleMenu(src)}>
           {activeMenu == src
             ? ActiveMenuRender(name)
-            : InActiveMenuRender(name)}
+            : InavtiveMenuRender(name)}
         </MenuLink>
       );
     });

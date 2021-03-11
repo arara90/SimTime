@@ -7,7 +7,7 @@ import * as Colors from "../../Colors";
 const MyInputColor = styled.input`
     cursor: pointer;
     width: 20px;
-    height: 20px;
+    height: 100%;
     padding: 0;
     border: 0px;
     outline:  none;
@@ -25,7 +25,6 @@ function InputColor(props) {
 
   const handleChange = (e) => {
     e.stopPropagation();
-    console.log(e.target.value)
     changeHandler(e.target.value); //props
     setMyValue(e.target.value);
   };

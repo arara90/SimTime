@@ -42,7 +42,7 @@ const TextButton = styled(Paragraph)`
 
 function MemberList(props) {
   const { selectedGroupMembers } = props;
-  console.log('selectedGroupMembers', selectedGroupMembers)
+  // console.log('selectedGroupMembers', selectedGroupMembers)
 
   // const selectedGroupMembers = selectedGroupMembers.reduce(
   //   (acc, item) => [
@@ -75,7 +75,7 @@ function MemberList(props) {
   }, []);
 
   const renderRows = (friends = []) => {
-    console.log('friends', friends)
+    // console.log('friends', friends)
     return friends.map((data, index) => {
       return (
         <TableRow rowNum={index} key={data.FGmapId}>

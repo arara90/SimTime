@@ -67,7 +67,7 @@ function CalendarHeader(props) {
 export default CalendarHeader
 
 CalendarHeader.propTypes = {
-    current: PropTypes.object,
+    current: PropTypes.string,
     type: PropTypes.oneOf(['year','month', 'date', 'day']),
     size: PropTypes.string
   };

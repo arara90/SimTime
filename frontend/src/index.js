@@ -1,5 +1,6 @@
-import App from "./components/APP";
+import App from "./components/App";
 
 if (module.hot) {
-  module.hot.accept("./components/APP", function () {});
+	  module.hot.accept("./components/App", function () {});
 }
+

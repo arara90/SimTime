@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as Colors   from "../../Colors"
 
 const MyFontAwesomeIcon = styled(FontAwesomeIcon)`
-  color: ${({color})=>Colors[color]};
+  // color: ${({color})=>Colors[color]};
 `
 
 export default function CheckCircleIcon(props) {

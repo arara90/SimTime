@@ -49,18 +49,21 @@ const More = styled(SolidButton)`
 `
 
 function EventCalendar(props) {
-  const { innerRef,current, dateClickHandler, invitationClickHandler, dates, invitations, moreClickHandler } = props;
-
-  function scrollToTargetAdjusted(target){
-    var targetElement = document.getElementById(target);
-    var headerOffset = document.getElementById('event-calendar').getBoundingClientRect().top + document.getElementById('simtime-header').getBoundingClientRect().top 
-    var elementPosition = targetElement.getBoundingClientRect().top;
-    var offsetPosition = elementPosition - headerOffset;
-    window.scrollTo({
-         top: offsetPosition,
-         behavior: "smooth"
-    });
-}
+  const { innerRef, current, invitationClickHandler,dateClickHandler, dates, invitations, moreClickHandler, scrollHandler } = props;
+  
+  const scrollToTargetAdjusted = React.useCallback(
+    (target)=>{
+      var targetElement = document.getElementById(target);
+      var headerOffset = document.getElementById('event-calendar').getBoundingClientRect().top + document.getElementById('simtime-header').getBoundingClientRect().top 
+      var elementPosition = targetElement.getBoundingClientRect().top;
+      var offsetPosition = elementPosition - headerOffset;
+      window.scrollTo({
+           top: offsetPosition,
+           behavior: "smooth"
+      });
+  },
+    [],
+  )
 
   useEffect(()=>{
     const {start} = generate(current, 1)
@@ -70,39 +73,30 @@ function EventCalendar(props) {
     }
   }, [current])
 
-  // useEffect(()=>{
-  //   const {start} = generate(current, 1)
-  //   const scrollAchor = getStrFullDate(start,"yyyy-mm-dd" )
-  //   if(!monthRefs.current.hasOwnProperty(scrollAchor)){
-  //     // monthRefs.current[scrollAchor] = null
-  //   }else{
-  //     // scrollToTargetAdjusted(getStrFullDate(start,"yyyy-mm-dd" ))
-  //     console.log('go to ', scrollAchor, monthRefs.current )
-  //   }
-  // }, [dates])
-
-  const renderEventLabel = (date)=>{
+  const renderEventLabel = React.useCallback((date)=>{
     if( invitations && date in invitations){
       return invitations[date].map((invitation)=>{
         return (
           <CalendarEventLabel
             key={invitation.id}
             attendance = {invitation.attendance}  
+            like={invitation.like}
             host = {invitation.event.host}
-            title={invitation.event.event_name}
+            name = {invitation.event.event_name}
+            title={invitation.event.event_name + " | " + invitation.event.event_time + " | " + invitation.event.event_place.name}
             time={invitation.event.event_time}
             location={invitation.event.event_place.name}
             tags = {invitation.event.tags}
-            color={invitation.event.color}
-            onClick={(e) => invitationClickHandler(e, invitation)}
+            color={invitation.event.color}            
+            onClick={(e)=>invitationClickHandler(e, invitation)}
             />
           )}
         );
       }
-    }
+    }, [dates, invitations])
 
 
-  const renderCalendarCells = (weeks, events={}) => {
+  const renderCalendarCells =  React.useCallback((weeks, events={}) => {
     var firstDaysOfweeks = [...weeks.keys()]
     return firstDaysOfweeks.map((firstDay, index) => {
       var days = weeks.get(firstDay)
@@ -132,16 +126,16 @@ function EventCalendar(props) {
           </Week>)
     
     });
-  };
+  },[invitations, dates])
   
     return (
-      <Wrap {...props} onScroll={props.scrollHandler} id="event-calendar">
+      <Wrap {...props} onScroll={scrollHandler} id="event-calendar">
         {renderCalendarCells(dates)}
       </Wrap>
     )
 }
 
-export default forwardRef((props, ref)=> <EventCalendar {...props} innerRef={ref} />)
+export default React.memo(forwardRef((props, ref)=> <EventCalendar {...props} innerRef={ref} />))
 
 EventCalendar.propTypes = {
   current: PropTypes.object

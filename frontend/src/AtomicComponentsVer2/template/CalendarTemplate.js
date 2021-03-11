@@ -37,11 +37,18 @@ const RightSection = styled.section`
 
   @media only screen and (max-width: 920px) {
     width: 100%;
+    margin-left: 0px; 
   }
 
-  @media only screen and (max-width: 680px) {
-      top: 50px;
-    }
+  @media only screen and (max-width: 560px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    margin-left: 0;
+    height: auto;
+    background-color: white;
+  }
 
 `
 const topCss = css`
@@ -50,7 +57,7 @@ const topCss = css`
   top: 60px;
   height: 4em;
 
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     top: 50px;
     height: 3em;
   }

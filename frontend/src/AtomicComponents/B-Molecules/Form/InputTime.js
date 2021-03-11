@@ -1,7 +1,4 @@
-import React, {
-  useState,
-  useRef,
-} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Input from "./Input";
@@ -61,7 +58,7 @@ const StyledSelectBox = styled(SelectBoxRef)`
 `;
 
 function InputTime(props) {
-  const { width, height, label, name, value, cursor, changeTime } = props;
+  const { width, height, label, name, value, cursor, changeTime, time } = props;
   const [hour, setHour] = useState("");
   const [min, setMin] = useState("");
   const [meridiem, setMeridiem] = useState("AM");
@@ -73,15 +70,23 @@ function InputTime(props) {
 
   var minAsParam = 0; //24시기준
 
-  const meridiemChange = (meridiem) => {
-    if (meridiem == "AM" && hour > 12) hourRef.current.focus();
-    changeTime(
-      hour.toString().padStart(2, "0") +
-        ":" +
-        min.toString().padStart(2, "0") +
-        " " +
-        meridiem
-    );
+  useEffect(()=>{
+    if(time){
+      setHour(time.split(":")[0])
+      setMin((time.split(" ")[0]).split(":")[1])
+      setMeridiem(time.split(":")[0]<12?"AM":"PM")
+    }
+  },[])
+
+  const meridiemChange = (currMeridiem) => {
+    if (currMeridiem == "AM" && hour > 12) {
+      var resTime =  "00" + ":" + min.toString().padStart(2, "0") + " " + currMeridiem
+      setHour("00")
+      changeTime(resTime);
+      hourRef.current.focus();
+    }else{
+      changeTime(hour.toString().padStart(2, "0") +":"+min.toString().padStart(2, "0")+" "+currMeridiem);
+    }
   };
 
   const handleChange = (e) => {
@@ -104,20 +109,18 @@ function InputTime(props) {
     res = inputValue <= max && inputValue >= 0 ? inputValue : newValue;
 
     if (e.target.name == "hour") {
-      setHour(res);
-      if (res == 0 && selectedMerdiem == "PM") setMeridiem("AM");
-      else if (res < 12 && selectedMerdiem == "PM") res = res + 12;
+      if (res == 0 && selectedMerdiem == "PM") res = res + 12
+      else if (res < 12 && selectedMerdiem == "PM") res = res
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
-      else if (res > 12 && selectedMerdiem == "AM") setMeridiem("PM");
-
-      var resTime =  res.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
-      changeTime(resTime);
+      else if (res > 12 && selectedMerdiem == "AM") res = newValue
+      setHour(res);
 
     } else {
       setMin(res);
-      var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
-      changeTime(resTime);
     }
+    var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
+    changeTime(resTime);
+    
   };
 
   return (

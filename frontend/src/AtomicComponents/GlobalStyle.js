@@ -101,7 +101,7 @@ button{
   display: flex;
   flex-direction: column;
                                       
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     margin-bottom: 0px;
     height: 50px;
   }
@@ -113,7 +113,7 @@ button{
   height: 100%;
   padding-top: 60px;
 
-  @media only screen and (max-width: 680px) {
+  @media only screen and (max-width: 560px) {
     padding-top: 50px;
   }
 }

@@ -43,10 +43,10 @@ function Account(props) {
   const renderUser = () => {
     return (
       <Fragment>
-        <MenuLink src="/friends">
+        <MenuLink src="/profile">
           <Image url={image} width={props.imageSize} height={props.imageSize} />
         </MenuLink>
-        <MenuLink src="/friends">
+        <MenuLink src="/profile">
           <Name color="ST_GRAY" fontSize="13px" height={props.imageSize}>
             {props.user.username}
           </Name>
@@ -77,32 +77,6 @@ function Account(props) {
   );
 }
 
-// import React, { Component } from "react";
-// import { Route, Redirect } from "react-router-dom";
-// import { connect } from "react-redux";
-
-// const PrivateRoute = ({ component: Component, auth, ...rest }) => {
-//   return (
-//     <Route
-//       {...rest}
-//       render={props => {
-//         if (auth.isLoading) {
-//           return <h2> Loading </h2>;
-//         } else if (!auth.isAuthenticated) {
-//           return <Redirect to="/login" />;
-//         } else {
-//           return <Component {...props}> </Component>;
-//         }
-//       }}
-//     />
-//   );
-// };
-
-// const mapStateToProps = state => ({
-//   { user, isAuthenticated } = state.auth
-// });
-
-// export default connect(mapStateToProps)(PrivateRoute);
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
@@ -120,5 +94,5 @@ Account.defaultProps = {
   defaultUrl:
     "https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets//assets/img/icons/add-yellow.png",
   username: "unknown",
-  imageSize: "40px",
+  imageSize: "38px",
 };

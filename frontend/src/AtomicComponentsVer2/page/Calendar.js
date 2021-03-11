@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState, useRef} from "react"
+import React, {Fragment, useEffect, useState, useCallback,  useRef} from "react"
 import styled from "styled-components"
 import {connect} from "react-redux"
 
@@ -25,6 +25,7 @@ import {getEvents, addEvent} from "../../redux/actions/events"
 import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
+import { faIgloo } from "@fortawesome/free-solid-svg-icons"
 
 
 const topHeight='2.5em';
@@ -72,6 +73,9 @@ function Calendar(props) {
   const [selectedDate, setSelectedDate] = useState( getStrFullDate(new Date(), "yyyy-mm-dd"))
 
   ////data
+  const [onlyLike, setOnlylike] =  useState(false)
+  const [onlyJoin, setOnlyJoin] =  useState(false)
+
   const [filteredInvitations, setFilteredInvitations] = useState({}) 
   // const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
@@ -108,13 +112,25 @@ function Calendar(props) {
     //filter 적용
     if(invitations){
       var filtered = {}
+
       for (var date in invitations) {
-        filtered[date] = invitations[date].filter(invitaion =>invitaion.show)
+        filtered[date] = invitations[date].filter(invitation => {
+          if(invitation.show){
+            if(onlyJoin && onlyLike){
+              return invitation.like && invitation.attendance
+            } else{
+              if(onlyLike) return invitation.like
+              if(onlyJoin) return invitation.attendance
+            }
+           
+            return true            
+          }
+        })
       }
       setFilteredInvitations(filtered)
     }
 
-  }, [invitations])
+  }, [invitations, onlyLike, onlyJoin])
 
   useEffect(()=>{ 
     if(selectedInvitation){
@@ -151,18 +167,17 @@ function Calendar(props) {
 
   //5. functions
   //// modal
-  const closeModal = () => setModalContent(null)
+  const closeModal = useCallback(() => setModalContent(null), [])
+  
   //// click date cell
-  const dateClickHandler = (e, date) =>{
+  const dateClickHandler = useCallback((e, date) =>{
     e.stopPropagation();
     setSelectedDate(date)
     setShowDetail(false);
     selectInvitation(null);
-  }
+  }, [])
 
- const monthClickHandler= (res)=> {
-  console.log('monthClickHandler', res)
-
+ const monthClickHandler = (res) => {
   var newDate = new Date(getStrFullDate(res, 'date'))
   var { start, end, weeks } = generate(newDate, 6); 
   //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
@@ -214,12 +229,11 @@ function Calendar(props) {
  }
 
 
-
-//// click invitation
-  const invitationClickHandler =  (e, invitation) =>{
+// click invitation
+  const invitationClickHandler = React.useCallback((e, invitation) =>{
   e.stopPropagation();
   selectInvitation(invitation)
-}
+}, [])
 
   //// submit new event
   const eventSubmitHandler = async (event, image) =>{
@@ -250,18 +264,27 @@ function Calendar(props) {
     await addInvitations(newEvent, friendIds)
     closeContextModal()
   }
+  
+  // const fetchWhenScroll = () => {
+  // }
+  
+  // useEffect(() => {
+  //   window.addEventListener('scroll', e => {
+  //     console.log(e)
+  //     const windowScrollY = window.scrollY
+  //     const bodyHeight = document.querySelector('body').offsetHeight
+  //     console.log(windowScrollY, bodyHeight)
+  //   })
+  // }, [])
 
   return (
-
     <Fragment>
-      {/* {loading&&<PencilIcon>Loading</PencilIcon>} */}
       <CalendarTemplate 
-        leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler}/>}  
+        leftTop     = {<MyFilter id='filter' height={'inherit'} current={current} dateHandler={monthClickHandler} joinHandler={setOnlyJoin} likeHandler={setOnlylike} />}  
         leftBottom  = {<EventCalendar 
                         ref = {monthRefs}
                         dateClickHandler={dateClickHandler}
                         invitationClickHandler={invitationClickHandler} 
-                        selectedInvitation={selectedInvitation} 
                         current={current} 
                         dates={weekDates} 
                         invitations={filteredInvitations} />
