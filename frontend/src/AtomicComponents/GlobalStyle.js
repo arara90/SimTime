@@ -43,8 +43,8 @@ h1, h2, h3, h4, h5, h6{
 }
 
 &::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  // width: 10px;
+  // height: 10px;
 }
 
 &::-webkit-scrollbar-thumb {

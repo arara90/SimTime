@@ -48,6 +48,9 @@ const RightSection = styled.section`
     margin-left: 0;
     height: auto;
     background-color: white;
+
+    max-height: 425px;
+    overflow-y: auto;
   }
 
 `
