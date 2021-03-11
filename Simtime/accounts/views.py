@@ -49,12 +49,19 @@ class AccountDetailAPI(APIView):
 
     def put(self, request, pk):
         account = self.get_object(pk)
-        print(request.data)
         serializer = AccountSerializer(
             account, data=request.data, partial=True)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request):
+        serializer = AccountSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
@@ -264,8 +271,7 @@ class FriendshipDetailAPI(APIView):
                 print('update err')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-        #. 친구 삭제 or state 변경
+        # . 친구 삭제 or state 변경
         if(friendship.account_A == self.request.user):
             if(friendshipStatus == 0):
                 # update (status 0 ==>2) : (mutual ==> b_only')
@@ -283,7 +289,6 @@ class FriendshipDetailAPI(APIView):
                 return do_delete(friendship, groups)  # 'b_only인 경우'
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class GroupAPI(APIView):
