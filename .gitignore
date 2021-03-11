@@ -4,6 +4,8 @@
 
 ### Security ###
 secrets.json
+##.env.development
+##.env.production
 
 
 ### Django ###
@@ -170,6 +172,9 @@ dmypy.json
 
 # Pyre type checker
 
+### webpack ###
+.env.*
+
 ### react ###
 .DS_*
 logs
@@ -195,6 +200,25 @@ sketch
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
+
+# Created by https://www.toptal.com/developers/gitignore/api/venv
+# Edit at https://www.toptal.com/developers/gitignore?templates=venv
+
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
 
 # End of https://www.gitignore.io/api/react,django,python,visualstudiocode
 Simtime/frontend/static/frontend/main.js

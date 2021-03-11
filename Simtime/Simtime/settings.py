@@ -15,9 +15,11 @@ import json
 from django.core.exceptions import ImproperlyConfigured
 from datetime import timedelta
 
+DEBUG = False
+ALLOWED_HOSTS = ['*']
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
 
 secret_file = os.path.join(BASE_DIR, 'secrets.json')
 
@@ -42,32 +44,29 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # KAKAO_KEY = get_secret("KAKAO_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
 INSTALLED_APPS = [
     'rest_framework',
-    'frontend',
     'invitations',
-    # 'knox',
     'accounts',
+    # 'files', #practice용
+    'storages',
+    'imagekit',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES':
-    ('rest_framework.permissions.IsAuthenticated', ), 'DEFAULT_AUTHENTICATION_CLASSES':
-    ('rest_framework_simplejwt.authentication.JWTAuthentication', )
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated', ],
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication', ],
+
 
 }
 
@@ -87,6 +86,8 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = "accounts.Account"
+AUTH_USER_RELATIONSHIP_MODEL = "accounts.Relationship"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,7 +97,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = [ 
+    # 허용할 프론트엔드 도메인 추가 EX: 'http://localhost:3000', 
+    'https://localhost:3000', 
+    'https://127.0.0.1:3000', 
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+]
+
+INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'Simtime.urls'
 
@@ -128,7 +140,7 @@ DATABASES = {
         'NAME': 'simtime',
         'USER': get_secret("DB_DEV").get("USER"),
         'PASSWORD': get_secret("DB_DEV").get("PASSWORD"),
-        'HOST': 'simtime-dev.c4kogceiqedh.us-east-2.rds.amazonaws.com'
+        'HOST': 'db-simtime.ck9ayn5ohacg.ap-northeast-2.rds.amazonaws.com'
     },
 
     'PROD': {
@@ -136,7 +148,7 @@ DATABASES = {
         'NAME': 'simtime',
         'USER': get_secret("DB_PROD").get("USER"),
         'PASSWORD': get_secret("DB_PROD").get("PASSWORD"),
-        'HOST': 'simtime.c4kogceiqedh.us-east-2.rds.amazonaws.com'
+        'HOST': 'db-simtime.ck9ayn5ohacg.ap-northeast-2.rds.amazonaws.com'
     }
 }
 
@@ -171,16 +183,44 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+# S3
+S3 = {
+    "AWS_UPLOAD_BUCKET": get_secret("AWS_UPLOAD_BUCKET"),
+    "AWS_UPLOAD_USERNAME": get_secret("AWS_UPLOAD_USERNAME"),
+    "AWS_UPLOAD_GROUP": get_secret("AWS_UPLOAD_GROUP"),
+    "AWS_UPLOAD_REGION": get_secret("AWS_UPLOAD_REGION"),
+    "AWS_UPLOAD_ACCESS_KEY_ID": get_secret("AWS_UPLOAD_ACCESS_KEY_ID"),
+    "AWS_UPLOAD_SECRET_KEY": get_secret("AWS_UPLOAD_SECRET_KEY"),
+    "AWS_S3_SIGNATURE_VERSION": get_secret('AWS_S3_SIGNATURE_VERSION'),
+}
 
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_HOST = 's3.%s.amazonaws.com' % S3["AWS_UPLOAD_REGION"]
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
+    S3["AWS_UPLOAD_BUCKET"], S3["AWS_UPLOAD_REGION"])
+
+
+# AWS Access
+AWS_ACCESS_KEY_ID = get_secret("AWS_UPLOAD_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = get_secret("AWS_UPLOAD_SECRET_KEY")
+AWS_STORAGE_BUCKET_NAME = get_secret("AWS_UPLOAD_BUCKET")
+AWS_LOCATION = "simtime"
+
+STATIC_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 STATIC_URL = '/static/'
+
+
+STATICFILES_STORAGE = 'Simtime.storages.StaticStorage'
+STATICFILES_LOCATION = 'static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Simtime', 'assets')
+    os.path.join(BASE_DIR, 'Simtime', 'assets'),
 ]
 
-# MEDIA_URL='/media/'
-# MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+MEDIA_ROOT = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+DEFAULT_FILE_STORAGE = 'Simtime.storages.MediaStorage'
+MEDIAFILES_LOCATION = 'media'
