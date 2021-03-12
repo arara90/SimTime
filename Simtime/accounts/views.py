@@ -110,7 +110,6 @@ class AccountLoadAPI(generics.RetrieveAPIView):
     def get_queryset(self):
         account = self.get_object()
         serializer = UserSerializer(account)
-        print(serializer.data)
         return Response(serializer.data)
 
 
@@ -124,7 +123,6 @@ class TokenVerify(TokenVerifyView):
     def get_queryset(self):
         account = self.get_object()
         serializer = UserSerializer(account)
-        print(serializer.data)
         return Response(serializer.data)
 
 
@@ -153,23 +151,19 @@ class FriendshipAPI(APIView):
 
     def post(self, request):
         a, b = self.get_ab(request)
-        print(a, b)
         account = 'A' if request.user.id == a else 'B'
         friend = 'B' if request.user.id == a else 'A'
 
         if(Friendship.objects.filter(account_A=a, account_B=b).exists()):
             # 이미 존재한다면 status UPDATE
-            print('exists')
             friendship = Friendship.objects.get(account_A=a, account_B=b)
             if(friendship.status == 1 or friendship.status == 2):
                 friendship.status = 0
                 friendship.save()
             # errors
             elif(friendship.status == 0):
-                print('already mutual')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             else:
-                print('incorrect status')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else:
@@ -237,8 +231,6 @@ class FriendshipDetailAPI(APIView):
         if serializer.is_valid():
             serializer.save()
             res = self.get_object_to_representation(pk, account, friend)
-
-            print('res', res)
             res_serializer = ResFriendSerializer(res)
             return Response(res_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -257,7 +249,6 @@ class FriendshipDetailAPI(APIView):
                 groups.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except:
-                print('delete err')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         def do_update(friendship, groups, newStatus):
@@ -268,7 +259,6 @@ class FriendshipDetailAPI(APIView):
                 groups.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             except:
-                print('update err')
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # . 친구 삭제 or state 변경
@@ -352,11 +342,9 @@ class FGMapAPI(APIView):
 
     # add-to-group
     def post(self, request):
-        print(request.data)
         serializer = FriendGroupMapSerializer(data=request.data,  many=True)
         # data = {{friend: 3, group: 34}}
         if(serializer.is_valid()):
-            print('is_valid')
             res = serializer.save()
             output = FriendGroupMapSerializer(res, many=True)
             return Response(output.data, status=status.HTTP_201_CREATED)
@@ -384,7 +372,6 @@ class GroupMemberAPI(APIView):
             serializer = GroupMemberSerializer(mapObjects, many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("nodata")
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):

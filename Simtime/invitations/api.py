@@ -40,7 +40,7 @@ class EventAPI(APIView):
 
     def post(self, request):
         serializer = EventSerializer(data=request.data)
-        print(request.data)
+        # print(request.data)
         if(serializer.is_valid()):
             serializer.save(host=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -62,7 +62,7 @@ class EventDetailAPI(APIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        print(pk)
+        # print(pk)
         event = self.get_object(pk)
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -96,7 +96,7 @@ class InvitationAPI(APIView):
     def post(self, request):
         serializer = InvitationSerializer(data=request.data, many=True)
         if(serializer.is_valid()):
-            print('is_valid')
+            # print('is_valid')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -111,30 +111,29 @@ class InvitationAPI(APIView):
         invitations = request.user.invitations\
             .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
 
+        # 수신거부 user Filtering - 작업중  21/03/13
+        # from django.db import connection
+        # def my_custom_sql():
+        #     with connection.cursor() as cursor:
+        #         cursor.execute(
+        #             '''select invitations_invitation.*
+        #         from public.invitations_invitation
+        #         left join public.accounts_friendship
+        #         on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_A_id"
+        #             and  "accounts_friendship"."A_subscribe_B" )
+        #         where "invitations_invitation"."guest_id" =1
 
-        from django.db import connection
+        #         union all
 
-        def my_custom_sql():
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    '''select invitations_invitation.*
-                from public.invitations_invitation
-                left join public.accounts_friendship
-                on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_A_id"
-                    and  "accounts_friendship"."A_subscribe_B" )
-                where "invitations_invitation"."guest_id" =1
+        #         select invitations_invitation.* 
+        #         from public.invitations_invitation
+        #         left join public.accounts_friendship
+        #         on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_B_id"
+        #             and  "accounts_friendship"."B_subscribe_A" )
+        #         where "invitations_invitation"."guest_id" = 1''')
 
-                union all
-
-                select invitations_invitation.* 
-                from public.invitations_invitation
-                left join public.accounts_friendship
-                on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_B_id"
-                    and  "accounts_friendship"."B_subscribe_A" )
-                where "invitations_invitation"."guest_id" = 1''')
-
-                columns = [col[0] for col in cursor.description]
-                return [dict(zip(columns, row)) for row in cursor.fetchall()]
+        #         columns = [col[0] for col in cursor.description]
+        #         return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
         serializer = InvitationSerializer(invitations, many=True)
         return Response(serializer.data)
@@ -149,19 +148,16 @@ class InvitationAPI(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# hosts 목록(나를 이벤트에 초대한 친구 보기) 
+# class HostAPI(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
 
-class HostAPI(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get(self, request):
-        # hosts = request.user.invitations.distinct("host").order_by('created_at')
-        import json
-        print('ji')
-        # hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id)\
-        #     .values('event__host__id', 'event__host__username','event__host__profile_image', 'event__host__email' ).distinct()
-        # print(hosts)
-        hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id).values(
-            "event__host_id").annotate(order_temp=Max("event__host_id")).order_by("-order_temp")
-        print(hosts)
-        # serializer = HostSerializer(hosts, many=True)
-        # return Response(serializer.data)
+#     def get(self, request):
+#         # hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id)\
+#         #     .values('event__host__id', 'event__host__username','event__host__profile_image', 'event__host__email' ).distinct()
+#         # print(hosts)
+#         hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id).values(
+#             "event__host_id").annotate(order_temp=Max("event__host_id")).order_by("-order_temp")
+#         print(hosts)
+#         # serializer = HostSerializer(hosts, many=True)
+#         # return Response(serializer.data)

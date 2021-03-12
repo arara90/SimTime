@@ -91,14 +91,14 @@ function EventMaker(props) {
   // const palette = Object.values(Colors.Palette);
   // const getColor = (palette)=> palette[Math.floor(Math.random() * palette.length)]
   const {closeContextModal } = React.useContext(ModalContext);
-  const {closeModal, user, editEvent, eventSubmitHandler, eventToEdit, isEdit } = props;
+  const {closeModal, user, editEvent, eventSubmitHandler, eventToEdit, isEdit, event_date } = props;
   const today = new Date();
 
 
   //states
   const [datePicker, setDatePicker] = useState(false);
   const [name, setName] = useState(isEdit ? eventToEdit.event_name : "");
-  const [date, setDate] = useState(isEdit ? eventToEdit.event_date : "");
+  const [date, setDate] = useState(isEdit ? eventToEdit.event_date : event_date);
   const [time, setTime] = useState(isEdit ? eventToEdit.event_time : "");
   const [place, setPlace] = useState(isEdit ? eventToEdit.event_place : {});
   const [message, setMessage] = useState(isEdit ? eventToEdit.message :"");

@@ -51,6 +51,12 @@ const RightSection = styled.section`
 
     max-height:  calc(100vh - 215px);
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+    
   }
 
 `
