@@ -149,15 +149,15 @@ class InvitationAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # hosts 목록(나를 이벤트에 초대한 친구 보기) 
-# class HostAPI(APIView):
-#     permission_classes = (permissions.IsAuthenticated,)
+class HostAPI(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
 
-#     def get(self, request):
-#         # hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id)\
-#         #     .values('event__host__id', 'event__host__username','event__host__profile_image', 'event__host__email' ).distinct()
-#         # print(hosts)
-#         hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id).values(
-#             "event__host_id").annotate(order_temp=Max("event__host_id")).order_by("-order_temp")
-#         print(hosts)
-#         # serializer = HostSerializer(hosts, many=True)
-#         # return Response(serializer.data)
+    def get(self, request):
+        # hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id)\
+        #     .values('event__host__id', 'event__host__username','event__host__profile_image', 'event__host__email' ).distinct()
+        # print(hosts)
+        hosts = Invitation.objects.select_related('event__host').filter(guest=request.user.id).values(
+            "event__host_id").annotate(order_temp=Max("event__host_id")).order_by("-order_temp")
+        print(hosts)
+        # serializer = HostSerializer(hosts, many=True)
+        return Response(serializer.data)

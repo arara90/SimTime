@@ -372,7 +372,7 @@ class GroupMemberAPI(APIView):
             serializer = GroupMemberSerializer(mapObjects, many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         mapObj = self.get_object(pk)
