@@ -25,6 +25,7 @@ export default function(state = initialState, action) {
       };
 
     case ADD_INVITATION:
+      // console.log(action.payload)
       var date = action.payload['event']['event_date']
       var newData = []
       if(state.datas[date]){
@@ -37,17 +38,6 @@ export default function(state = initialState, action) {
         ...state,
         datas: {...state.datas, [date]:newData}
       };
-
-    case EDIT_INVITATION_EVENT:
-      var date = action.payload['event_date']
-      var newData = state.datas[date].map(invitation => 
-        invitation.event.id == action.payload['id'] ? {...invitation,event:action.payload} : invitation)
-      return {
-        ...state,
-        datas: {...state.datas, [date]: newData},
-        selected: {...state.selected, event: action.payload}
-      };
-      
 
     case TOGGLE_INVITATION:
       var date = action.payload['event']['event_date']

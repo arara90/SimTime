@@ -14,7 +14,6 @@ const initialState = {
 
 
 function transformEvents(events, data){
-  console.log(events, data)
   data.map((d)=>{
     var date = d.event_date
     if( events[date]==undefined){

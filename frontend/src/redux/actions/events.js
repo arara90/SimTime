@@ -5,16 +5,20 @@ import {startLoading, finishLoading } from "./loading"
 import {addInvitations} from "./invitations"
 
 import {
+  //evnet
   GET_EVENTS,
   GET_EVENT,
   DELETE_EVENT,
   EDIT_EVENT,
-  EDIT_INVITATION_EVENT,
+  //invitation
+  ADD_INVITATION,
   DELETE_INVITATION,
+  SELECT_INVITATION,
+  //etc
   GET_ERRORS,
   CREATE_MESSAGE,
   START_LOADING,
-  FINISH_LOADING
+  FINISH_LOADING,
 } from "./types";
 import { object } from "prop-types";
 
@@ -120,6 +124,7 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
       dispatch(createMessage({ deleteEvent: "이벤트를 삭제했습니다." }));
       // dispatch({type: DELETE_EVENT, payload:{id:id, event_date:event_date}});
       dispatch({type: DELETE_INVITATION, payload:{id:id, event_date:event_date}});
+
     })
     .catch((err) => {
       // dispatch(returnErrors(err, err.response.status));
@@ -127,53 +132,50 @@ export const deleteEvent = (id, event_date) => (dispatch) => {
     });
 };
 
-export const editEvent =  (event) => async (dispatch) =>{
-  const SUCCEESS = 'EDIT_EVENT_SUCCESS'
+export const editEvent = (new_event, invitation) => async (dispatch) =>{
   const FAILURE = 'EDIT_EVENT_FAILURE'
-  const date = event.event_date;
-  const time = event.event_time;
+  var axios = axiosInstance
+  var requestData = new_event
 
-  //date+time
-  if(event.hasOwnProperty('event_time')) convertEventTimeToISO(event)
+  //date, time 합치고 ISO타입으로 변환  
+  convertEventTimeToISO(new_event)
+
   try{
-    if(event.hasOwnProperty('photo')) {
-      const formData = new FormData();
-      for (const [key, value] of Object.entries(event)) {
+    //img 파일 있으면 formData로 전송
+    if(new_event.hasOwnProperty('photo')) {
+      axios = axiosFormInstance //폼 형식 axios Instance로 변경
+      requestData = new FormData();
+      for (const [key, value] of Object.entries(new_event)) {
         if(typeof key=='object') value = JSON.stringify(value)
-        else formData.append(key, value);
+        else requestData.append(key, value);
       }
-      
-
-      return axiosFormInstance
-        .put(`/api/events/${event.id}`, formData)
-        .then((res)=>{
-          dispatch({
-            type:EDIT_INVITATION_EVENT,
-            payload: {...res.data, event_date:date, event_time:time}
-          })
-          dispatch(createMessage({ editEvent: "이벤트를 수정했습니다." }));
-          return res.status
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    }else{
-      return axiosInstance
-        .put(`/api/events/${event.id}`, event)
-        .then((res)=>{
-          console.log('res', res)
-          dispatch({
-            type:EDIT_INVITATION_EVENT,
-            payload: {...res.data, event_date:date, event_time:time}
-          })
-          dispatch(createMessage({ editEvent: "이벤트를 수정했습니다." }));
-          return res.status
-        })
-        .catch((err) => {
-          dispatch(returnErrors(err, err.response.status));
-          console.log(err)
-        });
     }
+
+    return axios.put(`/api/events/${new_event.id}`, requestData)
+    .then((res)=>{
+      //1. invitation삭제
+      dispatch({type: DELETE_INVITATION, payload:{id:invitation.event.id, event_date:invitation.event.event_date}});
+      //2. date, time 분리한 event/ status 전달
+      return {data: separateEventTime(res.data), status: res.status }
+    })
+    .then((res)=>{
+      //3. 새로운 invitaion추가
+      var new_invitation = {...invitation, event: res.data}
+      dispatch({type: ADD_INVITATION, payload: new_invitation});
+
+      //4. selected invitation에 반영
+      dispatch({
+        type: SELECT_INVITATION,
+        payload: new_invitation,
+      });
+
+      //4. 결과 return
+      console.log(res.status)
+      return res.status
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err, err.response.status));
+    });
   }catch(e){
     dispatch({type:FAILURE,payload: e,error: true});
   }

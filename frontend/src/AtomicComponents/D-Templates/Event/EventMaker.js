@@ -91,19 +91,19 @@ function EventMaker(props) {
   // const palette = Object.values(Colors.Palette);
   // const getColor = (palette)=> palette[Math.floor(Math.random() * palette.length)]
   const {closeContextModal } = React.useContext(ModalContext);
-  const {closeModal, user, editEvent, eventSubmitHandler, eventToEdit, isEdit, event_date } = props;
+  const {closeModal, user, editEvent, eventSubmitHandler, invitation, isEdit, selectedDate} = props;
   const today = new Date();
 
 
   //states
   const [datePicker, setDatePicker] = useState(false);
-  const [name, setName] = useState(isEdit ? eventToEdit.event_name : "");
-  const [date, setDate] = useState(isEdit ? eventToEdit.event_date : event_date);
-  const [time, setTime] = useState(isEdit ? eventToEdit.event_time : "");
-  const [place, setPlace] = useState(isEdit ? eventToEdit.event_place : {});
-  const [message, setMessage] = useState(isEdit ? eventToEdit.message :"");
-  const [color, setColor] = useState( isEdit ? eventToEdit.color : "");
-  const [imgFile, setImgFile] = useState(isEdit? eventToEdit.photo :null); //파일
+  const [name, setName] = useState(isEdit ? invitation.event.event_name : "");
+  const [date, setDate] = useState(isEdit ? invitation.event.event_date : selectedDate);
+  const [time, setTime] = useState(isEdit ? invitation.event.event_time : "");
+  const [place, setPlace] = useState(isEdit ? invitation.event.event_place : {});
+  const [message, setMessage] = useState(isEdit ? invitation.event.message :"");
+  const [color, setColor] = useState( isEdit ? invitation.event.color : "");
+  const [imgFile, setImgFile] = useState(isEdit? invitation.event.photo :null); //파일
 
   // //not yet
   const [tags, setTags] = useState([]);
@@ -133,7 +133,7 @@ function EventMaker(props) {
       photo: imgFile
     }
 
-    setEvent(isEdit? {id: eventToEdit.id } : initEvent)
+    setEvent(isEdit? {id: invitation.event.id } : initEvent)
   },[]);
 
 
@@ -142,10 +142,6 @@ function EventMaker(props) {
     // e.preventDefault();
     // e.stopPropagation();
 
-    // if(event.hasOwnProperty('event_time') && time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
-    //   event['event_time'] = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
-    // }
-    
     var fin_time = time
     if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
       fin_time = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
@@ -153,8 +149,12 @@ function EventMaker(props) {
 
     if(isEdit){
       try{
+        var newEvent = {...event, 'event_date': date, 'event_time': fin_time}
+        // var invitation = invitation
 
-        var resStatus = await editEvent({...event, 'event_date': date, 'event_time': fin_time}); 
+        console.log(newEvent, invitation)
+
+        var resStatus = await editEvent(newEvent, invitation); 
         if(resStatus=='200') {
           closeContextModal()
           closeModal() //modal 변경
@@ -185,7 +185,7 @@ function EventMaker(props) {
           <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
         </PositionWrap>
         <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
-        <SearchLocation placeToEdit={isEdit?eventToEdit.event_place:null} name="ePlace" onChange={placeChange} />
+        <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
       </PageWrap>
     );
   };
@@ -213,7 +213,7 @@ function EventMaker(props) {
           /> 
           </ColorLabel>
           <ImageLabel htmlFor ="imgFile"> Photo
-            <MyInputImage handleImageFile={setImgFile} src={isEdit?eventToEdit.photo:null}  />
+            <MyInputImage handleImageFile={setImgFile} src={isEdit?invitation.event.photo:null}  />
           </ImageLabel>
       </PageWrap>
     );
@@ -245,7 +245,7 @@ const mapDispatchToProps = (dispatch)=> {
  return {
   // addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
   getEvent: getEvent(),
-  editEvent: (event)=>dispatch(editEvent(event)),
+  editEvent: (event, invitation)=>dispatch(editEvent(event, invitation)),
 }
 }
 

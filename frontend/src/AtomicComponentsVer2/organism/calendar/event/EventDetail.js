@@ -57,7 +57,7 @@ function EventDetail(props) {
 
   //// change modals
   useEffect(()=>{
-    if(isEdit) handleContextModal(<EventMaker eventToEdit={event} isEdit eventSubmitHandler={eventSubmitHandler} closeModal={()=>setIsEdit(false)}/>)
+    if(isEdit) handleContextModal(<EventMaker invitation={invitation} isEdit eventSubmitHandler={eventSubmitHandler} closeModal={()=>setIsEdit(false)}/>)
   }, [isEdit])
 
   const eventSubmitHandler = (event, image) =>{
