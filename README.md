@@ -52,16 +52,16 @@ Test Account : [ ara / test1234 ] , [ park / test1234 ]
 
 
 ### Calendar
-날짜 이동 및 달력 화면 라이브러리 미사용하여 구현
-Filter - 좋아요 / 참석여부
-
+날짜 이동 및 달력 화면 라이브러리 미사용하여 구현  
+Filter - 좋아요 / 참석여부  
+  
 [![calendar](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/BugwMZUyBGY?t=0s)  
 ☝️ Click! -Clendar 페이지 영상보기  
 
 
 #### 이벤트(event)
-* 추가/삭제/수정
-* Modal(custum hook, context 사용), 지도 API, Date Picker 구현(라이브러리 미사용), 시간입력 등, 사진 파일 업로드 등
+* 추가/삭제/수정  
+* Modal(custum hook, context 사용), 지도 API, Date Picker 구현(라이브러리 미사용), 시간입력 등, 사진 파일 업로드 등  
 * 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌  
   
   
@@ -92,9 +92,9 @@ Filter - 좋아요 / 참석여부
 ## What's Next?
 
 ### 카카오 API 활용 - 작업중
-	- 로그인
-	- 친구 목록 불러오기
-	- 메세지 보내기
+	- 로그인  
+	- 친구 목록 불러오기  
+	- 메세지 보내기  
 
 ### 반응형 - 작업중
 
