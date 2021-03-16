@@ -52,7 +52,7 @@
 
 
 ### Calendar
-날짜 이동 및 달력 화면 라이브러리 미사용하여 구현([calendar.js](https://github.com/arara90/Simtime/blob/master/frontend/src/redux/actions/calendar.js))  
+날짜 이동 및 달력 화면 라이브러리 미사용하여 구현([calendar.js](https://github.com/arara90/Simtime/blob/master/frontend/src/util/calendar.js))  
 Filter - 좋아요 / 참석여부  
   
 [![calendar](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/BugwMZUyBGY?t=0s)  
