@@ -6,8 +6,8 @@ import { login } from "../../redux/actions/auth";
 
 export class Login extends Component {
   state = {
-    username: "",
-    password: ""
+    username: "ara",
+    password: "test1234"
   };
 
   static propTypes = {

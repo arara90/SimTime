@@ -88,8 +88,11 @@ const MyInputImage = styled(InputImage)`
 
 
 function EventMaker(props) {
-  // const palette = Object.values(Colors.Palette);
-  // const getColor = (palette)=> palette[Math.floor(Math.random() * palette.length)]
+  const getColor = React.useMemo(()=>{
+    const palette = Object.values(Colors.Palette)
+    return palette[Math.floor(Math.random() * palette.length)]
+  }, [])
+
   const {closeContextModal } = React.useContext(ModalContext);
   const {closeModal, user, editEvent, eventSubmitHandler, invitation, isEdit, selectedDate} = props;
   const today = new Date();
@@ -102,7 +105,7 @@ function EventMaker(props) {
   const [time, setTime] = useState(isEdit ? invitation.event.event_time : "");
   const [place, setPlace] = useState(isEdit ? invitation.event.event_place : {});
   const [message, setMessage] = useState(isEdit ? invitation.event.message :"");
-  const [color, setColor] = useState( isEdit ? invitation.event.color : "");
+  const [color, setColor] = useState( isEdit ? invitation.event.color : getColor);
   const [imgFile, setImgFile] = useState(isEdit? invitation.event.photo :null); //파일
 
   // //not yet
@@ -203,6 +206,9 @@ function EventMaker(props) {
   const thirdPage =() => {
     return (
       <PageWrap {...props}>
+        <ImageLabel htmlFor ="imgFile"> Photo
+            <MyInputImage handleImageFile={setImgFile} src={isEdit?invitation.event.photo:null}  />
+          </ImageLabel>
           <ColorLabel htmlFor ="LabelColor"> Color
             <MyInputColor value={color} changeHandler={setColor} type="color" name="LabelColor"/> 
             <MyCalendarEventLabel color={color}
@@ -212,9 +218,6 @@ function EventMaker(props) {
              host={user}
           /> 
           </ColorLabel>
-          <ImageLabel htmlFor ="imgFile"> Photo
-            <MyInputImage handleImageFile={setImgFile} src={isEdit?invitation.event.photo:null}  />
-          </ImageLabel>
       </PageWrap>
     );
   };

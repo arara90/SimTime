@@ -11,7 +11,8 @@ const MyInputImage = styled.input`
 
 const PreviewWrap = styled.div`
   width: 100%;
-  height : 260px;
+  height: 95%;
+  max-height : 260px;
   margin-top: 10px;
 `
 

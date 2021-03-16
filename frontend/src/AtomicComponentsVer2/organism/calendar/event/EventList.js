@@ -46,9 +46,7 @@ function EventList(props) {
           {getStringDate(current,"day")}
         </Header>
         <List isEmpty={!invitations}>
-          { invitations && invitations.map((invitation) => {
-            return <EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{itemClickHandler(e,invitation)}}  />})
-          }
+          { invitations ? invitations.map((invitation)=><EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{itemClickHandler(e,invitation)}}/>) : <EventListItem />}
         </List>
       </Wrap>
     )

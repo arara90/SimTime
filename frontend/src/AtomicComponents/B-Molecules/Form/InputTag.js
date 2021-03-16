@@ -89,6 +89,7 @@ function InputTag(props) {
   };
 
   const handleKeyPress = (e) => {
+    e.preventDefault();
     if (e.key == "Enter") {
       if( myTags.indexOf( e.target.value) == -1 ){
         let newItems = [...myTags, e.target.value];
