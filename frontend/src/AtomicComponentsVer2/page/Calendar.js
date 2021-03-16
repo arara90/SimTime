@@ -17,18 +17,11 @@ import EventList from "../organism/calendar/event/EventList"
 import InviteFriends from "../organism/calendar/modals/InviteFriends"
 import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
-
-import {MAIN_COLOR} from "../../AtomicComponents/Colors"
-
-import {generate, getStrFullDate, addDate, subWeek, getStringDate} from "../../util/calendar"
+import {generate, getStrFullDate, addDate} from "../../util/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
-import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
+import {getInvitations, addInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
-import { faIgloo } from "@fortawesome/free-solid-svg-icons"
-
-
-const topHeight='2.5em';
 
 const NewButton = styled(TextButton)`
   width: 100%;
@@ -42,11 +35,6 @@ const NewButton = styled(TextButton)`
   justify-content: center;
 `
 
-// const AddIcon = styled(PencilIcon)`
-//   transform: rotate(275deg);
-//   margin-right: 0.5em;
-//   font-size: 1rem;
-// `
 const AddIcon = styled(PlusCircleIcon)`
   margin-right: 0.5em;
   font-size: 1.2rem;
@@ -54,7 +42,6 @@ const AddIcon = styled(PlusCircleIcon)`
 
 const MyFilter = styled(Filters)`
 `
-
 
 
 function Calendar(props) {
@@ -164,6 +151,12 @@ function Calendar(props) {
     }
   }, [modalContent])
 
+    //// change modals
+    useEffect(()=>{
+      console.log(current)
+    }, [current])
+  
+
 
   //5. functions
   //// modal
@@ -206,9 +199,7 @@ function Calendar(props) {
       setWeekDates(newWeekDates)
       getInvitations(dataStart, dataEnd);
     }
-
-  }
-  else{
+  }else{
     //Next Month
     if(end > endDate.current ){
       //data 구간 구하기
@@ -224,8 +215,10 @@ function Calendar(props) {
       setWeekDates(newWeekDates)
     }
   }
-  setCurrent(res)
 
+
+  setCurrent(res)
+  
  }
 
 

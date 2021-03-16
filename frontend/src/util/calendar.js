@@ -52,7 +52,7 @@ export function getFullTime(date){
 
 export function getStrFullDate(date, type = "yyyymmdd") {
   type.toLowerCase();
-  console.log(date,type )
+  // console.log(date,type)
 
   if (type == "yyyymmdd") {
     return getStrYear(date) + getStrMonth(date) + getStrDate(date);
@@ -147,7 +147,7 @@ export function generate(currDate, num=0) {
       endDate = addDate(currDate, weekDay * -1);
       startDate = addDate(currDate, offset);
       
-      console.log('currDate, offset', currDate, offset, weekDay)
+      // console.log('currDate, offset', currDate, offset, weekDay)
     }
   }
 

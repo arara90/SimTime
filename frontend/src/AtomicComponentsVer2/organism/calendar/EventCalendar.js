@@ -126,7 +126,7 @@ function EventCalendar(props) {
           </Week>)
     
     });
-  },[invitations, dates])
+  },[invitations, dates, current])
   
     return (
       <Wrap {...props} onScroll={scrollHandler} id="event-calendar">
