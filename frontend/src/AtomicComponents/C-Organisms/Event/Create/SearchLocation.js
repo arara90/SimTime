@@ -23,23 +23,18 @@ const MySearchBar = styled(SearchBar)`
 const StyledMap = styled(Map)``;
 
 function SearchLocation(props) {
-  const { name, mapId, placeToEdit, onChange } = props;
+  const { name, mapId, currPlace, onChange } = props;
   
-  const [location, setLocation] = useState( placeToEdit? placeToEdit : { lat: 0, lng: 0, name: "현위치", address:"" });
+  const [location, setLocation] = useState(currPlace);
 
   //현재 위치 얻어오기
   useEffect(() => {
     function success(position) {
-      const curr = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        name: "현위치",
-      };
-
+      const curr = { lat:position.coords.latitude, lng:position.coords.longitude, name: "현위치"};
       setLocation(curr);
     }
 
-    if(!placeToEdit){
+    if(!currPlace.address){
       if (!navigator.geolocation) {
         console.log("Geolocation is not supported by your browser");
       } else {
@@ -48,9 +43,6 @@ function SearchLocation(props) {
         });
       }
     }
-
-
-    
   }, []);
 
   const saveLocation = (option) => {
@@ -71,8 +63,8 @@ function SearchLocation(props) {
       <MySearchBar
         label="Place"
         name={name}
-        desc="Event Place"
-        value={placeToEdit? location.name:null }
+        desc="장소 검색"
+        value={currPlace.name}
         width="100%"
         search={searchPlaces}
         doAfterSelect={saveLocation}

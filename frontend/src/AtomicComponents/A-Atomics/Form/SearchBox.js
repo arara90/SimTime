@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -157,7 +157,6 @@ function SearchBox(props) {
     cursor,
     search,
     doAfterSelect,
-    refName,
   } = props;
 
   const [optionDatas, setOptionDatas] = useState(options);
@@ -165,6 +164,13 @@ function SearchBox(props) {
   const [selectedOption, setSelectedOption] = useState(defaultOption);
   const [currInput, setCurrInput] = useState(value?value:"");
   const [isValid, setIsValid] = useState(value?true:false);
+  const searchRef = useRef();
+   
+
+  useEffect(() => {
+    window.addEventListener("click", (e)=>{if(e.target!=searchRef.current) setShowOptions(false)})
+    return window.removeEventListener("click", (e)=>{if(e.target!=searchRef.current) setShowOptions(false)})
+  }, [])
 
   const startSearch = (keyword) => {
     return new Promise(function (resolve, reject) {
@@ -262,7 +268,7 @@ function SearchBox(props) {
   return (
     <Wrap {...props}>
       <Select
-        ref={refName}
+        ref={searchRef}
         type="text"
         autoComplete="off"
         onChange={handleChange}

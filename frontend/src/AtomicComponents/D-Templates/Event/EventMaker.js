@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 
 import styled from "styled-components";
@@ -94,27 +94,28 @@ function EventMaker(props) {
   }, [])
 
   const {closeContextModal } = React.useContext(ModalContext);
-  const {closeModal, user, editEvent, eventSubmitHandler, invitation, isEdit, selectedDate} = props;
+  const {closeModal,user, editEvent, eventSubmitHandler, invitation, isEdit, selectedDate} = props;
   const today = new Date();
 
 
-  //states
+  //datePicker
   const [datePicker, setDatePicker] = useState(false);
+
+  //event관련 state
+  const [event, setEvent] = useState({});
   const [name, setName] = useState(isEdit ? invitation.event.event_name : "");
   const [date, setDate] = useState(isEdit ? invitation.event.event_date : selectedDate);
   const [time, setTime] = useState(isEdit ? invitation.event.event_time : "");
-  const [place, setPlace] = useState(isEdit ? invitation.event.event_place : {});
+  const [place, setPlace] = useState(isEdit ? invitation.event.event_place : { lat: 0, lng: 0, name:null, address:null });
   const [message, setMessage] = useState(isEdit ? invitation.event.message :"");
   const [color, setColor] = useState( isEdit ? invitation.event.color : getColor);
   const [imgFile, setImgFile] = useState(isEdit? invitation.event.photo :null); //파일
 
-  // //not yet
+  // 구현 예정
   const [tags, setTags] = useState([]);
   const [fontColor, setFontColor] = useState();
 
-
-  const [event, setEvent] = useState({});
-
+ //useEffect
   useEffect(()=>setEvent({...event, event_name: name}),[name]);
   useEffect(()=>setEvent({...event, event_date: date}),[date]);
   useEffect(()=>setEvent({...event, event_time: time}),[time]);
@@ -123,7 +124,6 @@ function EventMaker(props) {
   useEffect(()=>setEvent({...event, color: color}),[color]);
   useEffect(()=>setEvent({...event, tags: tags}),[tags]);
   useEffect(()=>{setEvent({...event, photo: imgFile})},[imgFile]);
-
   useEffect(()=>{
     const initEvent = {
       event_name: name,
@@ -135,8 +135,9 @@ function EventMaker(props) {
       host: user.id,
       photo: imgFile
     }
-
     setEvent(isEdit? {id: invitation.event.id } : initEvent)
+
+  
   },[]);
 
 
@@ -145,14 +146,17 @@ function EventMaker(props) {
     // e.preventDefault();
     // e.stopPropagation();
 
+    var newEvent = {}
     var fin_time = time
     if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
       fin_time = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
-    } 
+    }
+
 
     if(isEdit){
       try{
-        var newEvent = {...event, 'event_date': date, 'event_time': fin_time}
+       newEvent = {...event, 'event_date': date, 'event_time': fin_time}
+        if( newEvent.hasOwnProperty('event_name') && !name) newEvent['event_name'] = user.username + "님의 이벤트"
         // var invitation = invitation
         var resStatus = await editEvent(newEvent, invitation); 
         if(resStatus=='200') {
@@ -162,7 +166,9 @@ function EventMaker(props) {
       }catch(e){
         console.log("Error", e); 
       }
-    }else{
+    }else{  
+
+      if(!event['event_name']) event['event_name']=user.username + "님의 이벤트" 
       eventSubmitHandler({...event, 'event_time': fin_time} , imgFile)
     }
   };
@@ -171,13 +177,15 @@ function EventMaker(props) {
   //changeHandlers
   const nameChange = useCallback((e) => setName(e.target.value));
   const placeChange = useCallback((place) => setPlace(place));
-  const changeDate = useCallback((strDate) => setDate(strDate));
+  const changeDate = useCallback((strDate) => {
+    setDate(strDate)
+    setDatePicker(false)
+  });
   const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => setTime(time));
 
-  // //pages
+  // // //pages
   // const firstPage=React.useMemo(()=>{
-  //   console.log('reload')
   //   return (
   //     <PageWrap {...props} >
   //       <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
@@ -186,27 +194,26 @@ function EventMaker(props) {
   //         <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
   //       </PositionWrap>
   //       <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
-  //       <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
+  //       <SearchLocation currPlace={place} name="ePlace" onChange={placeChange} />
   //     </PageWrap>
   //   );
-  // }, [name,date,time, place, datePicker])
-    //pages
-    const firstPage=()=>{
-      console.log('reload')
-      return (
-        <PageWrap {...props} >
-          <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
-          <PositionWrap>
-            <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
-            <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
-          </PositionWrap>
-          <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
-          <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
-        </PageWrap>
-      )};
-    
+  // }, [name, date, time, place, datePicker])
+   // //pages
+  const firstPage=()=>{
+    return (
+      <PageWrap {...props} >
+        <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
+        <PositionWrap>
+          <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
+          <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
+        </PositionWrap>
+        <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
+        <SearchLocation currPlace={place} name="ePlace" onChange={placeChange} />
+      </PageWrap>
+    );
+  }
 
-  const secondPage=React.useCallback(()=>{
+  const secondPage=React.useMemo(()=>{
     return (
       <PageWrap {...props} >
         <MyTextArea label="Message" name="eMessage" value={message} desc="1000자 이내" height="200px" maxLength={1000}
@@ -216,7 +223,7 @@ function EventMaker(props) {
     );
   },[message])
   
-  const thirdPage =() => {
+  const thirdPage = React.useMemo(() => {
     return (
       <PageWrap {...props}>
         <ImageLabel htmlFor ="imgFile"> Photo
@@ -233,15 +240,15 @@ function EventMaker(props) {
           </ColorLabel>
       </PageWrap>
     );
-  };
+  }, [isEdit ,color, name, time, user, place ])
 
 
   return(
     //0128 <ContentWrap onSubmit={submitHandler} encType="multipart/form-data"> 
     // <ContentWrap onSubmit={submitHandler}>
       <DefaultModal
-        title="New Event"
-        pages={[firstPage(), secondPage(), thirdPage()]}
+        title={isEdit ? "Edit Event" : "New Event"}
+        pages={[firstPage(), secondPage, thirdPage]}
         handleSubmit={hadleSubmit}
         height="auto"
         closeModal={closeModal}

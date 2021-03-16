@@ -20,11 +20,12 @@ import {
 // cal_next_pate = [0]; -현재(오늘)로부터 미래로 load한 page
 
 const Wrap = styled.div`
-  background-color: ${ST_WHITE}
+  background-color: ${ST_WHITE};
   width: 100%;
-  height: 300px;
+  // height: 300px;
   padding-top: 5px;
-  padding-bottom: 3px;
+  padding-bottom: 15px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -80,7 +81,7 @@ const Day = styled(Paragraph)`
 
 const CalendarWrap = styled.div`
   width: 100%;
-  height: 260px;
+  // height: 260px;
   padding: 2px 2px 2px 2px;
   display: flex;
   flex-direction: column;
@@ -98,34 +99,14 @@ const CloseBtn = styled(Paragraph)`
 const Days = React.memo(() => {
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   return days.map((day, index) => {
-    return (
-      <Day key={day} color="ST_GRAY">
-        {day}
-      </Day>
-    );
+    return <Day key={day} color="ST_GRAY"> {day} </Day>
   });
 });
 
-//일자
-const Weeks = React.memo((props) => {
-  const { curr, selectDate, selectedDate } = props;
-  var dates = generate(curr, 0);
-  return dates.map((week, index) => {
-    return (
-      <Week
-        key={week.id}
-        id={week.id}
-        isDatePicker={true}
-        weekDates={week.weekDates}
-        selectDate={selectDate}
-        selectedDate={selectedDate}
-      />
-    );
-  });
-});
 
 function DatePicker(props) {
-  const [curr, setCurr] = useState(props.currDate);
+  const { currDate, selectDate, selectedDate, onClose, innerRef } = props;
+  const [curr, setCurr] = useState(currDate);
   const months = [
     "January",
     "February",
@@ -153,6 +134,24 @@ function DatePicker(props) {
       setCurr(new Date(curr.getFullYear(), curr.getMonth() - 1, 1));
     }
   };
+
+
+//일자
+const Weeks = React.useCallback(() => {
+  var dates = generate(curr, 0);
+  return dates.map((week, index) => {
+    return (
+      <Week
+        key={week.id}
+        id={week.id}
+        isDatePicker={true}
+        weekDates={week.weekDates}
+        selectDate={selectDate}
+        selectedDate={selectedDate}
+      />
+    );
+  });
+}, [selectedDate, curr]);
 
   return (
     <Wrap {...props}>
@@ -182,16 +181,17 @@ function DatePicker(props) {
         <Days />
       </DayWrap>
       <CalendarWrap>
-        <Weeks curr={curr} selectDate={props.selectDate} />
+        <Weeks curr={curr} selectDate={selectDate} />
       </CalendarWrap>
-      <CloseBtn onClick={props.onClose} color="MAIN_COLOR" fontSize="12px">
+      <CloseBtn onClick={onClose} color="MAIN_COLOR" fontSize="12px">
         닫기
       </CloseBtn>
     </Wrap>
   );
 }
 
-export default DatePicker;
+
+export default DatePicker
 
 DatePicker.propTypes = {
   height: PropTypes.string,

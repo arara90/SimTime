@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import CalDate from "../../A-Atomics/Calendar/CalDate";
-import ContextStore from "../../../contexts/contextStore";
 import { MAIN_COLOR, ST_WHITE, ST_YELLOW_LIGHT } from "../../Colors";
 
 const size = "32px";
@@ -25,13 +24,6 @@ const Wrap = styled.div`
     ${(props) => (props.isActive ? `border: solid 1px ${MAIN_COLOR}` : null)};
   }
 
-  // @media only screen and (max-width: 920px) {
-  //   margin-right: 2px;
-  //   margin-bottom: 2px;
-  //   ${(props) => (props.day == 0 ? "margin-left: 2px;" : "")};
-  // }
-
-  // border: solid 1px blue;
 `;
 
 const MyCalDate = styled(CalDate)`
@@ -41,16 +33,16 @@ const MyCalDate = styled(CalDate)`
 `;
 
 function Date(props) {
-  const { day, date, strDate, isActive, isActiveMonth, isToday } = props;
+  const { day, date, isActive, isActiveMonth, isSelected, isToday } = props;
   const contentHeight = size;
 
-  const renderDate = (store) => {
+  const renderDate = () => {
     return (
-      <Wrap {...props} isSelected={strDate == store}>
+      <Wrap {...props}>
         <MyCalDate
           isActive={isActive}
           isActiveMonth={isActiveMonth}
-          isSelected={strDate == store}
+          isSelected={isSelected}
           isToday={isToday}
           date={date}
           day={day}
@@ -63,9 +55,19 @@ function Date(props) {
   };
 
   return (
-    <ContextStore.Consumer>
-      {(store) => renderDate(store)}
-    </ContextStore.Consumer>
+    <Wrap {...props}>
+        <MyCalDate
+          isActive={isActive}
+          isActiveMonth={isActiveMonth}
+          isSelected={isSelected}
+          isToday={isToday}
+          date={date}
+          day={day}
+          contentHeight={contentHeight}
+        >
+          {date}
+        </MyCalDate>
+      </Wrap>
   );
 }
 
