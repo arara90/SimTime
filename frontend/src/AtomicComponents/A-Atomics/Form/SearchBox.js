@@ -209,7 +209,7 @@ function SearchBox(props) {
     setCurrInput(option.name);
     setIsValid(true);
     doAfterSelect(option);
-    console.log(option);
+    // console.log(option);
   };
 
   const renderOptions = (options) => {

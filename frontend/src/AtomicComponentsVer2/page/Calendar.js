@@ -151,13 +151,6 @@ function Calendar(props) {
     }
   }, [modalContent])
 
-    //// change modals
-    useEffect(()=>{
-      console.log(current)
-    }, [current])
-  
-
-
   //5. functions
   //// modal
   const closeModal = useCallback(() => setModalContent(null), [])
