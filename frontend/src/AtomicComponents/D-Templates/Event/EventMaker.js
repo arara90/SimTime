@@ -199,7 +199,7 @@ function EventMaker(props) {
   //   );
   // }, [name, date, time, place, datePicker])
    // //pages
-  const firstPage=()=>{
+  const firstPage=React.useMemo(()=>{
     return (
       <PageWrap {...props} >
         <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
@@ -211,7 +211,7 @@ function EventMaker(props) {
         <SearchLocation currPlace={place} name="ePlace" onChange={placeChange} />
       </PageWrap>
     );
-  }
+  }, [name, date, time, place, datePicker])
 
   const secondPage=React.useMemo(()=>{
     return (
@@ -248,7 +248,7 @@ function EventMaker(props) {
     // <ContentWrap onSubmit={submitHandler}>
       <DefaultModal
         title={isEdit ? "Edit Event" : "New Event"}
-        pages={[firstPage(), secondPage, thirdPage]}
+        pages={[firstPage, secondPage, thirdPage]}
         handleSubmit={hadleSubmit}
         height="auto"
         closeModal={closeModal}
