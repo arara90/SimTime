@@ -154,9 +154,6 @@ function EventMaker(props) {
       try{
         var newEvent = {...event, 'event_date': date, 'event_time': fin_time}
         // var invitation = invitation
-
-        console.log(newEvent, invitation)
-
         var resStatus = await editEvent(newEvent, invitation); 
         if(resStatus=='200') {
           closeContextModal()
@@ -178,22 +175,38 @@ function EventMaker(props) {
   const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => setTime(time));
 
-  //pages
-  const firstPage = () => {
-    return (
-      <PageWrap {...props} >
-        <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
-        <PositionWrap>
-          <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
-          <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
-        </PositionWrap>
-        <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
-        <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
-      </PageWrap>
-    );
-  };
+  // //pages
+  // const firstPage=React.useMemo(()=>{
+  //   console.log('reload')
+  //   return (
+  //     <PageWrap {...props} >
+  //       <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
+  //       <PositionWrap>
+  //         <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
+  //         <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
+  //       </PositionWrap>
+  //       <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
+  //       <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
+  //     </PageWrap>
+  //   );
+  // }, [name,date,time, place, datePicker])
+    //pages
+    const firstPage=()=>{
+      console.log('reload')
+      return (
+        <PageWrap {...props} >
+          <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
+          <PositionWrap>
+            <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
+            <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
+          </PositionWrap>
+          <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
+          <SearchLocation placeToEdit={isEdit?invitation.event.event_place:null} name="ePlace" onChange={placeChange} />
+        </PageWrap>
+      )};
+    
 
-  const secondPage = () => {
+  const secondPage=React.useCallback(()=>{
     return (
       <PageWrap {...props} >
         <MyTextArea label="Message" name="eMessage" value={message} desc="1000자 이내" height="200px" maxLength={1000}
@@ -201,7 +214,7 @@ function EventMaker(props) {
         <InputTag changeTags={changeTags} label="Tag" name="eTag" desc="Tag 입력"></InputTag>
       </PageWrap>
     );
-  };
+  },[message])
   
   const thirdPage =() => {
     return (

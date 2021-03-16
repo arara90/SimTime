@@ -97,12 +97,14 @@ export class SelectBoxRef extends Component {
     this.changeSelectedOptions = this.changeSelectedOptions.bind(this);
   }
   componentDidMount() {
-    document.querySelector("body").addEventListener("click", this.closeOptions);
+    // document.querySelector("body").addEventListener("click", this.closeOptions);
+    window.addEventListener("click", this.closeOptions);
   }
   componentWillUnmount() {
-    document
-      .querySelector("body")
-      .removeEventListener("click", this.closeOptions);
+    // document
+    //   .querySelector("body")
+    //   .removeEventListener("click", this.closeOptions);
+      window.removeEventListener("click", this.closeOptions);
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.defaultOption !== this.props.defaultOption) {

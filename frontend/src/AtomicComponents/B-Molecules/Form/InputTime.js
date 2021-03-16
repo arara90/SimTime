@@ -131,6 +131,14 @@ function InputTime(props) {
         </MyParagraph>
       )}
       <InnerWrap name={name}>
+      <StyledSelectBox
+          width="60px"
+          height="40px"
+          options={["AM", "PM"]}
+          defaultOption={meridiem}
+          handleOptionChange={meridiemChange}
+          ref={meridiemRef}
+        />
         <MyInput
           ref={hourRef}
           placeholder=""
@@ -146,14 +154,6 @@ function InputTime(props) {
           value={("00" + min).substr(("00" + min).length - 2, 2)}
           onChange={handleChange}
         ></MyInput>
-        <StyledSelectBox
-          width="60px"
-          height="40px"
-          options={["AM", "PM"]}
-          defaultOption={meridiem}
-          handleOptionChange={meridiemChange}
-          ref={meridiemRef}
-        />
       </InnerWrap>
     </Wrap>
   );
