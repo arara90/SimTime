@@ -1,7 +1,8 @@
 # Simtime
 
 **친구들이 알아서 모이는 약속잡기 프로젝트. 함께하면 더 즐거운 시간 :point_right: [SimTime](https://simti.me)(https://simti.me) :point_left:에서 공유해요!**  
-Test Account : [ ara / test1234 ] , [ park / test1234 ] 
+* 지원 브라우저 : Chrome
+* Test Account : [ ara | test1234 ] , [ park | test1234 ] 
 
 > 이번주 금요일.. 나만 약속없어..? :cry: 예상치 못한 칼퇴!  이대로 그냥 집에 못가! :beer:  
 >
@@ -44,25 +45,23 @@ Test Account : [ ara / test1234 ] , [ park / test1234 ]
 
 
 
-
 ## 기능상세
 
 ### Accounts
+* Register / Login / 회원정보 수정 (JWT 인증)
 
-* Register / Login / 회원정보 수정 (jwt)
-
-  
 
 ### Calendar
-Filter - 좋아요 / 참석여부
-날짜 이동  
+날짜 이동 및 달력 화면 라이브러리 미사용하여 구현([calendar.js](https://github.com/arara90/Simtime/blob/master/frontend/src/redux/actions/calendar.js))  
+Filter - 좋아요 / 참석여부  
   
 [![calendar](http://img.youtube.com/vi/BugwMZUyBGY/0.jpg)](https://youtu.be/BugwMZUyBGY?t=0s)  
 ☝️ Click! -Clendar 페이지 영상보기  
 
 
 #### 이벤트(event)
-* 추가/삭제/수정
+* 추가/삭제/수정  
+* Modal(custum hook, context 사용), 지도 API, Date Picker 구현(라이브러리 미사용), 시간입력 등, 사진 파일 업로드 등  
 * 초대장 보내기 - 친구의 달력에 나의 이벤트를 보여줌  
   
   
@@ -76,11 +75,9 @@ Filter - 좋아요 / 참석여부
 
 ### Friends
 #### 친구등록/관리
-
 * 친구목록
 * 친구추가/삭제 - 친구검색 / 그룹에 추가
 * 수신거부 - 친구의 초대장 받지 않기
-
 
 
 #### 그룹등록/관리
@@ -95,12 +92,9 @@ Filter - 좋아요 / 참석여부
 ## What's Next?
 
 ### 카카오 API 활용 - 작업중
-
-	- 로그인
-	- 친구 목록 불러오기
-	- 메세지 보내기
-
-
+	- 로그인  
+	- 친구 목록 불러오기  
+	- 메세지 보내기  
 
 ### 반응형 - 작업중
 
