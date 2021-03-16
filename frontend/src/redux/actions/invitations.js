@@ -1,6 +1,6 @@
 import { axiosInstance } from "./axiosApi";
 import { createMessage, returnErrors } from "./messages";
-import { getStrFullDate , getFullTime } from "./calendar"
+import { getStrFullDate , getFullTime } from  "../../util/calendar"
 
 import {
   GET_INVITATIONS,

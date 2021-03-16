@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 //redux-actions
 import { getEvents } from "../../redux/actions/events";
-import {generate, getStrFullDate, addDate} from "../../redux/actions/calendar"
+import {generate, getStrFullDate, addDate} from "../../util/calendar"
 
 const Wrap = styled.div`
   overflow: hidden;

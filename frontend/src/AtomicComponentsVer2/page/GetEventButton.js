@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { getEvents } from "../../redux/actions/events"
-// import {} from "../../redux/actions/calendar/"
+// import {} from "../../util/calendar/"
 
 
 const Wrap = styled.button`

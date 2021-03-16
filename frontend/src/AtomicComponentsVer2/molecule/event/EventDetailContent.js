@@ -17,7 +17,7 @@ import ImageUser from "../../atom/ImageUser"
 import Map from "../../atom/Map"
 import Tag from "../../atom/fonts/Tag"
 
-import {getStringDate} from "../../../redux/actions/calendar"
+import {getStringDate} from "../../../util/calendar"
 
 const Wrap = styled.div`
     width: 100%;

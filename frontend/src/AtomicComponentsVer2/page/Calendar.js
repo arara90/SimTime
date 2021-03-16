@@ -20,7 +20,7 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {MAIN_COLOR} from "../../AtomicComponents/Colors"
 
-import {generate, getStrFullDate, addDate, subWeek, getStringDate} from "../../redux/actions/calendar"
+import {generate, getStrFullDate, addDate, subWeek, getStringDate} from "../../util/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
 import {getInvitations, addInvitations, acceptInvitations, selectInvitation} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"

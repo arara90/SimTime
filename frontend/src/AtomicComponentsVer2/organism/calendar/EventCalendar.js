@@ -6,7 +6,7 @@ import * as Colors from "../../Colors"
 import CalendarMonthCell from "../../molecule/calendar/CalendarMonthCell" 
 import CalendarEventLabel from "../../molecule/calendar/CalendarEventLabel"
 import SolidButton from "../../atom/buttons/SolidButton"
-import {generate, getStrFullDate} from "../../../redux/actions/calendar"
+import {generate, getStrFullDate} from "../../../util/calendar"
 
 const Wrap = styled.div`
   width: 100%;

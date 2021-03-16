@@ -70,7 +70,7 @@ export function generate(currDate, num=0) {
   // type: n -- 특점 시점으로부터 n주씩,
   // type: 0 -- monthly 달력
   //00시로 맞추기위해 따로 new Date()를 "yyyy-m-d"형태로 변환해줌. 안해주면 간헐적으로 today의 id가 -1, 0 으로 간헐적으로 왔다갔다함.
-  const today = new Date(getStrFullDate(new Date(), "yyyy-m-d"));
+  const today = new Date(getStrFullDate(new Date(), "yyyy-mm-dd"));
   const firstDay = new Date(currDate.getFullYear(), currDate.getMonth(), 1); // 넘겨받은 달의 1일
   const lastDay = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0); // 넘겨받은 달의 말일
   
