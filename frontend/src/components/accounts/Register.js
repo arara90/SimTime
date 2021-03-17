@@ -19,7 +19,6 @@ export class Register extends Component {
     email: "",
     password: "",
     password2: "",
-    profile_image: null,
     isDone: false
   };
 
@@ -31,30 +30,29 @@ export class Register extends Component {
 
   onSubmit = async e => {
     e.preventDefault();
-    const { username, email, password, password2, profile_image} = this.state;
+    const { username, email, password, password2 } = this.state;
     if (password != password2) {
-      this.props.createMessage({ passwordsNotMatch: "Passwords do not match" });
+      this.props.createMessage({ passwordsNotMatch: "비밀번호가 일치하지 않습니다." });
     } 
 
     else {
-      const newUser = {
-        username,
-        email,
-        password,
-        profile_image
-      };
-      var res = await this.props.register(newUser);
+      // const newUser = {
+      //   username,
+      //   email,
+      //   password,
+      //   profile_image
+      // };
+
+      var res = await this.props.register(this.state);
       if(res=='201') this.setState({ isDone: true})
     }
   };
 
   onChange = e => {
-    console.log(this.state)
     this.setState({ [e.target.name]: e.target.value })
   };
 
   handleImageFile = img => {
-    console.log(img)
     this.setState({ ...this.state, profile_image : img })
   }
 
