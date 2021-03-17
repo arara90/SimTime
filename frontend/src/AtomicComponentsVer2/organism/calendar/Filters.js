@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import * as Colors from "../../Colors";
-import {getStringDate} from "../../../util/calendar"
+import {getStringDate, getStrFullDate} from "../../../util/calendar"
 import CalendarHeader from "../../molecule/calendar/CalendarHeader"
 import Toggle from "../../atom/forms/Toggle" 
 import HeartIcon from "../../atom/icons/HeartIcon"

@@ -29,30 +29,32 @@ export function getStrYear(date) {
 }
 
 export function getStrMonth(date, type = "mm") {
+  var pDate = new Date(date)
   type.toLowerCase();
   if (type == "mm") {
-    return ("0" + (date.getMonth() + 1).toString()).substr(-2);
+    return ("0" + (pDate.getMonth() + 1).toString()).substr(-2);
   } else {
-    return (date.getMonth() + 1).toString();
+    return (pDate.getMonth() + 1).toString();
   }
 }
 
 export function getStrDate(date, type = "dd") {
+  var pDate = new Date(date)
   type.toLowerCase();
   if (type == "dd") {
-    return ("0" + date.getDate().toString()).substr(-2);
+    return ("0" + pDate.getDate().toString()).substr(-2);
   } else {
-    return date.getDate().toString();
+    return pDate.getDate().toString();
   }
 }
 
 export function getFullTime(date){
-  return ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2)
+  var pDate = new Date(date)
+  return ('0'+pDate.getHours()).slice(-2) + ":" + ('0'+pDate.getMinutes()).slice(-2)
 }
 
 export function getStrFullDate(date, type = "yyyymmdd") {
   type.toLowerCase();
-  // console.log(date,type)
 
   if (type == "yyyymmdd") {
     return getStrYear(date) + getStrMonth(date) + getStrDate(date);
@@ -120,9 +122,10 @@ export function subWeek(date1, date2) {
 export function generate(currDate, num=0) {
   // type: n -- 특점 시점으로부터 n주씩,
   // type: 0 -- monthly 달력
+  const pDate = new Date(currDate)
   const today = new Date(getStrFullDate(new Date(), "yyyy-mm-dd"));
-  const firstDay = new Date(currDate.getFullYear(), currDate.getMonth(), 1); // 넘겨받은 달의 1일
-  const lastDay = new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0); // 넘겨받은 달의 말일
+  const firstDay = new Date(pDate.getFullYear(), pDate.getMonth(), 1); // 넘겨받은 달의 1일
+  const lastDay = new Date(pDate.getFullYear(), pDate.getMonth() + 1, 0); // 넘겨받은 달의 말일
   
   var weekDay = 0;
   var offset = 0;
@@ -136,16 +139,16 @@ export function generate(currDate, num=0) {
     startDate = addDate(firstDay, weekDay * -1);
     endDate = addDate(lastDay, offset < 7 ? offset : 0);
   }else {
-    weekDay = currDate.getDay();
+    weekDay = pDate.getDay();
 
     if(num>0){
       offset = ( (7 *( num -1 ))  + 6 - weekDay); // num weeks
-      startDate = addDate(currDate, weekDay * -1);
-      endDate = addDate(currDate, offset); 
+      startDate = addDate(pDate, weekDay * -1);
+      endDate = addDate(pDate, offset); 
     }else{
       offset = ( (7 *( num -1 ))  + 7 - weekDay); // num weeks
-      endDate = addDate(currDate, weekDay * -1);
-      startDate = addDate(currDate, offset);
+      endDate = addDate(pDate, weekDay * -1);
+      startDate = addDate(pDate, offset);
       
       // console.log('currDate, offset', currDate, offset, weekDay)
     }
@@ -211,7 +214,7 @@ export function generate(currDate, num=0) {
       isActive: getStrFullDate(curr) >= getStrFullDate(today),
       isActiveMonth:
         getStrFullDate(curr).substr(0, 6) ==
-        getStrFullDate(currDate).substr(0, 6),
+        getStrFullDate(pDate).substr(0, 6),
       date: curr.getDate().toString(), // "15"
     }
 

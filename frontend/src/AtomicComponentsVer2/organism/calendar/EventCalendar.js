@@ -6,7 +6,7 @@ import * as Colors from "../../Colors"
 import CalendarMonthCell from "../../molecule/calendar/CalendarMonthCell" 
 import CalendarEventLabel from "../../molecule/calendar/CalendarEventLabel"
 import SolidButton from "../../atom/buttons/SolidButton"
-import {generate, getStrFullDate} from "../../../util/calendar"
+import {generate, getStrFullDate, getStrMonth} from "../../../util/calendar"
 
 const Wrap = styled.div`
   width: 100%;
@@ -116,7 +116,7 @@ function EventCalendar(props) {
                   day={parseInt(date.day)}
                   isActive={date.isActive}
                   isToday={date.strDate == getStrFullDate(new Date(),"yyyy-mm-dd" )}
-                  isActiveMonth={ parseInt(date.month) == current.getMonth()+1}
+                  isActiveMonth={ parseInt(date.month) == getStrMonth(current)}
                   onClick={(e) =>dateClickHandler(e, date.strDate)}
                 >
                   {renderEventLabel(date.strDate)}
@@ -137,9 +137,6 @@ function EventCalendar(props) {
 
 export default React.memo(forwardRef((props, ref)=> <EventCalendar {...props} innerRef={ref} />))
 
-EventCalendar.propTypes = {
-  current: PropTypes.object
-};
-
+EventCalendar.propTypes = {};
 EventCalendar.defaultProps = {};
   

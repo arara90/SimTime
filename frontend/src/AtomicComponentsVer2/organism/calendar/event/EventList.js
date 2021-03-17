@@ -40,6 +40,9 @@ const List = styled.ul`
 
 function EventList(props) {
   const { invitations, current, itemClickHandler, dateHandler} = props;
+  // React.useEffect(()=>{
+  //   console.log(current)
+  // }, [current])
     return (
       <Wrap>
         <Header size="1.2em" type="date" current={current} clickHandler={dateHandler} >

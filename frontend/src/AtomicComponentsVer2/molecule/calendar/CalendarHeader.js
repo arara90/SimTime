@@ -50,7 +50,7 @@ function CalendarHeader(props) {
             res.setDate(curr.getDate() + num); 
         } 
 
-        clickHandler(getStrFullDate(new Date(res), "yyyy-mm-dd")) //res는 날짜 object
+        clickHandler(res) //res는 날짜 object
     }
 
     

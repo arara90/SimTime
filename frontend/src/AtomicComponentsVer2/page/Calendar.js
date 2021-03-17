@@ -82,18 +82,15 @@ function Calendar(props) {
   //// initialization
   useEffect(()=>{ 
     var {start, end, weeks} = generate(new Date(), 7);
-
     setCurrent(start)
     setWeekDates(weeks)
     startDate.current = start
     endDate.current = end
-
     // invitations 정보 받아오기
     getEvents(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
 
   }, [])
-
 
   useEffect(()=>{ 
     //filter 적용
@@ -125,11 +122,6 @@ function Calendar(props) {
     }
 
   }, [selectedInvitation])
-
-  useEffect(()=>{
-    console.log(selectedDate)
-
-  }, [selectedDate])
 
   //// update friends information
   useEffect(()=>{
@@ -169,7 +161,9 @@ function Calendar(props) {
   }, [])
 
  const monthClickHandler = (res) => {
-  var newDate = new Date(getStrFullDate(res, 'date'))
+  console.log('monthClickHandler', res)
+   //res는 Date객체
+  var newDate = getStrFullDate(res, "yyyy-mm-dd")
   var { start, end, weeks } = generate(newDate, 6); 
   //6주차에 해당하는 {첫날, 끝날, 해당기간 내 모든날}
   var newWeekDates = new Map()
@@ -211,9 +205,9 @@ function Calendar(props) {
       //set States
       endDate.current = end
       setWeekDates(newWeekDates)
+      getInvitations(dataStart, dataEnd);
     }
   }
-
 
   setCurrent(res)
   
