@@ -64,6 +64,7 @@ function Calendar(props) {
   const [onlyJoin, setOnlyJoin] =  useState(false)
 
   const [filteredInvitations, setFilteredInvitations] = useState({}) 
+  const [selectedDateInvList, setSelectedDateInvList] = useState([]) 
   // const [selectedInvitation, setSelectedInvitation] = useState({}) 
   const [newEvent, setNewEvent] = useState(null)
   //// modal
@@ -250,17 +251,10 @@ function Calendar(props) {
     closeContextModal()
   }
   
-  // const fetchWhenScroll = () => {
-  // }
-  
-  // useEffect(() => {
-  //   window.addEventListener('scroll', e => {
-  //     console.log(e)
-  //     const windowScrollY = window.scrollY
-  //     const bodyHeight = document.querySelector('body').offsetHeight
-  //     console.log(windowScrollY, bodyHeight)
-  //   })
-  // }, [])
+  React.useEffect(()=>{
+    var strDate = getStrFullDate(selectedDate,'yyyy-mm-dd')
+    setSelectedDateInvList(filteredInvitations[strDate])
+  }, [selectedDate, filteredInvitations])
 
   return (
     <Fragment>
@@ -281,9 +275,11 @@ function Calendar(props) {
         rightBottom = {showDetail ? 
                        <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
                        <EventList 
-                        invitations={filteredInvitations ? filteredInvitations[selectedDate] : [] }
+                        invitations={selectedDateInvList}
                         current={selectedDate}
-                        dateHandler={setSelectedDate}
+                        dateHandler={(date)=>{
+                          setSelectedDate(getStrFullDate(date, 'yyyy-mm-dd'))
+                        }}
                         itemClickHandler={(e, invitation)=>{
                           e.preventDefault();
                           setShowDetail(true);
