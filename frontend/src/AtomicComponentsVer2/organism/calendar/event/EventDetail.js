@@ -20,6 +20,15 @@ import * as Colors from "../../../Colors";
 const Wrap = styled.article`
   width: 100%;
   min-width: 245px;
+  max-height: calc(100vh - 121px); 
+  overflow-y : auto;
+
+  @media only screen and (max-width: 920px) {
+    width: 100%;
+    min-width: 245px;
+    max-height: calc(100vh - 215px); 
+  }
+
   border : solid 1px ${Colors.MAIN_COLOR};
 
   display: flex;
