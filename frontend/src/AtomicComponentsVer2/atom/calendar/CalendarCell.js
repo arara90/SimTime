@@ -11,14 +11,14 @@ const Wrap = styled.div`
   border: solid 1px  ${Colors.BG_INACTIVE_LIGHT};
 
   background-color: ${(props) => (props.isActive ? ( props.isActiveMonth ? Colors.BG_WHITE : Colors.BG_INACTIVE_LIGHT) : Colors.BG_INACTIVE)};
-  // ${(props) => (props.isToday ? `background-color: ${Colors.MAIN_COLOR_LIGHT}80;` : "")}
+  ${(props) => (props.isToday ? `background-color: ${Colors.MAIN_COLOR_LIGHT};` : "")}
 
   & .check{
     border-top-color: ${(props) => (props.isActive ? ( props.isActiveMonth ? Colors.BG_WHITE : Colors.BG_INACTIVE_LIGHT) : Colors.BG_INACTIVE)};
     border-right-color: ${(props) => (props.isActive ? ( props.isActiveMonth ? Colors.BG_WHITE : Colors.BG_INACTIVE_LIGHT) : Colors.BG_INACTIVE)};
 
-    // ${(props) => (props.isToday ? `border-top-color:${Colors.MAIN_COLOR_LIGHT}80;` : "")}
-    // ${(props) => (props.isToday ? `border-right-color: ${Colors.MAIN_COLOR_LIGHT}80;` : "")}
+    ${(props) => (props.isToday ? `border-top-color:${Colors.MAIN_COLOR_LIGHT};` : "")}
+    ${(props) => (props.isToday ? `border-right-color: ${Colors.MAIN_COLOR_LIGHT};` : "")}
   }
 
   &:hover{

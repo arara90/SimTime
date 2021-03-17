@@ -155,14 +155,12 @@ function Calendar(props) {
   //// click date cell
   const dateClickHandler = useCallback((e, date) =>{
     e.stopPropagation();
-    console.log(date)
     setSelectedDate(date)
     setShowDetail(false);
     selectInvitation(null);
   }, [])
 
  const monthClickHandler = (res) => {
-  console.log('monthClickHandler', res)
    //res는 Date객체
   var newDate = getStrFullDate(res, "yyyy-mm-dd")
   var { start, end, weeks } = generate(newDate, 6); 

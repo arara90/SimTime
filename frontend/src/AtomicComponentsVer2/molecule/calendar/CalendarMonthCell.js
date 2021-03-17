@@ -37,7 +37,7 @@ const CurrDate = styled(CalendarDateText)`
 
 
 function CalendarMonthCell(props) {
-  const { year, month, day, date, isHoliday, isActive, isActiveMonth, isToday } = props;
+  const { month, day, date } = props;
   return (
     <Wrap {...props} >
       <CurrDate date={date} day={day}>
