@@ -24,7 +24,7 @@ const Wrap = styled.div`
   width: 100%;
   // height: 300px;
   padding-top: 5px;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 
   display: flex;
   flex-direction: column;

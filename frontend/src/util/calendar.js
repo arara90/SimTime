@@ -2,7 +2,7 @@ export function getStringDate(date, type='month'){
   const now = new Date(date)
   var year = now.getFullYear().toString();
   var month = ('0'.concat(now.getMonth() + 1).toString()).slice(-2);
-  var date = now.getDate().toString();
+  var date =  ('0'.concat(now.getDate().toString()).slice(-2));
   var day = now.getDay().toString().substr(0,3);
 
   var koMonth = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];

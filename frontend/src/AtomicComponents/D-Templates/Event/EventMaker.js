@@ -127,12 +127,13 @@ function EventMaker(props) {
   useEffect(()=>{
     const initEvent = {
       event_name: name,
-      event_date: getStrFullDate(today, "yyyy-mm-dd"),
+      event_date: selectedDate,
       event_time: time, //14:00 PM
       event_place: place,
       tags: tags,
       message: message,
       host: user.id,
+      color: color,
       photo: imgFile
     }
     setEvent(isEdit? {id: invitation.event.id } : initEvent)
@@ -149,7 +150,7 @@ function EventMaker(props) {
     var newEvent = {}
     var fin_time = time
     if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
-      fin_time = (parseInt(time.split(':')[0]) + 12).toString() +":"+ time.split(':')[1]
+      fin_time = (parseInt(time.split(':')[0])).toString() +":"+ time.split(':')[1]
     }
 
 
@@ -168,8 +169,11 @@ function EventMaker(props) {
       }
     }else{  
 
+
       if(!event['event_name']) event['event_name']=user.username + "님의 이벤트" 
-      eventSubmitHandler({...event, 'event_time': fin_time} , imgFile)
+      newEvent = {...event, 'event_time': fin_time}
+      console.log(newEvent)
+      eventSubmitHandler(newEvent , imgFile)
     }
   };
 
@@ -184,21 +188,6 @@ function EventMaker(props) {
   const changeTags = useCallback((tags) => setTags(tags));
   const changeTime = useCallback((time) => setTime(time));
 
-  // // //pages
-  // const firstPage=React.useMemo(()=>{
-  //   return (
-  //     <PageWrap {...props} >
-  //       <MyInput label="Event" name="eName" desc="Event Name" value={name} onChange={nameChange} />
-  //       <PositionWrap>
-  //         <MyDateInput name="eDate" label="Date" desc={date} value={date} readOnly={true} cursor="pointer" onClick={showDatePicker} />
-  //         <MyDatePicker isShown={datePicker} selectDate={changeDate} selectedDate={date} onClose={()=>{setDatePicker(false);}} />
-  //       </PositionWrap>
-  //       <MyInputTime name="eTime" label="Time" cursor="pointer" changeTime={changeTime} time={time}/>
-  //       <SearchLocation currPlace={place} name="ePlace" onChange={placeChange} />
-  //     </PageWrap>
-  //   );
-  // }, [name, date, time, place, datePicker])
-   // //pages
   const firstPage=React.useMemo(()=>{
     return (
       <PageWrap {...props} >
@@ -240,12 +229,10 @@ function EventMaker(props) {
           </ColorLabel>
       </PageWrap>
     );
-  }, [isEdit ,color, name, time, user, place ])
+  }, [isEdit, color, name, time, user, place ])
 
 
   return(
-    //0128 <ContentWrap onSubmit={submitHandler} encType="multipart/form-data"> 
-    // <ContentWrap onSubmit={submitHandler}>
       <DefaultModal
         title={isEdit ? "Edit Event" : "New Event"}
         pages={[firstPage, secondPage, thirdPage]}
@@ -253,9 +240,7 @@ function EventMaker(props) {
         height="auto"
         closeModal={closeModal}
       />
-    // </ContentWrap>
   )
-
 }
 
 const mapStateToProps = (state) => ({
@@ -266,15 +251,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch)=> {
  return {
-  // addEvent: (myEvent)=>dispatch(addEvent(myEvent)),
   getEvent: getEvent(),
   editEvent: (event, invitation)=>dispatch(editEvent(event, invitation)),
 }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventMaker);
-
-// export default EventMaker;
 
 EventMaker.propTypes = {
   height: PropTypes.string,

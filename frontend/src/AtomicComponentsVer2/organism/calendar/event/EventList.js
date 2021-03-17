@@ -5,7 +5,7 @@ import * as Colors from "../../../Colors";
 
 import CalendarHeader from "../../../molecule/calendar/CalendarHeader"
 import EventListItem from "../../../molecule/event/EventListItem"
-import {getStringDate} from "../../../../util/calendar"
+import {getStringDate, getStrFullDate} from "../../../../util/calendar"
 
 const Wrap = styled.div`
   width: 100%;
@@ -45,7 +45,8 @@ function EventList(props) {
         <Header size="1.2em" type="date" current={current} clickHandler={dateHandler} >
           {getStringDate(current,"day")}
         </Header>
-        <List isEmpty={!invitations}>
+        {/* <List isEmpty={!invitations}> */}
+        <List>
           { invitations ? invitations.map((invitation)=><EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{itemClickHandler(e,invitation)}}/>) : <EventListItem />}
         </List>
       </Wrap>

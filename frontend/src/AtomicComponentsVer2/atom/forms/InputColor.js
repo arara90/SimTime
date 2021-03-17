@@ -26,6 +26,7 @@ function InputColor(props) {
   const handleChange = (e) => {
     e.stopPropagation();
     changeHandler(e.target.value); //props
+    console.log(e.target.value)
     setMyValue(e.target.value);
   };
 

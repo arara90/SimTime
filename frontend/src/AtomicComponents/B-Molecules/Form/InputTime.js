@@ -109,7 +109,7 @@ function InputTime(props) {
     res = inputValue <= max && inputValue >= 0 ? inputValue : newValue;
 
     if (e.target.name == "hour") {
-      if (res == 0 && selectedMerdiem == "PM") res = res + 12
+      if (res == 0 && selectedMerdiem == "PM") res = res
       else if (res < 12 && selectedMerdiem == "PM") res = res
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
       else if (res > 12 && selectedMerdiem == "AM") res = newValue

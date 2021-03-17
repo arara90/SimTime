@@ -109,14 +109,13 @@ function Calendar(props) {
               if(onlyLike) return invitation.like
               if(onlyJoin) return invitation.attendance
             }
-           
+          
             return true            
           }
         })
       }
       setFilteredInvitations(filtered)
     }
-
   }, [invitations, onlyLike, onlyJoin])
 
   useEffect(()=>{ 
@@ -126,6 +125,11 @@ function Calendar(props) {
     }
 
   }, [selectedInvitation])
+
+  useEffect(()=>{
+    console.log(selectedDate)
+
+  }, [selectedDate])
 
   //// update friends information
   useEffect(()=>{
@@ -158,6 +162,7 @@ function Calendar(props) {
   //// click date cell
   const dateClickHandler = useCallback((e, date) =>{
     e.stopPropagation();
+    console.log(date)
     setSelectedDate(date)
     setShowDetail(false);
     selectInvitation(null);
