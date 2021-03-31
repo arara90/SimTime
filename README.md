@@ -8,7 +8,7 @@
 >
 > 여의도 출장 잡혔습니다.  같이 점심 드실 분?:curry:  답답해.. hoxy.. 주말에 바다보러 같이 갈 사람있나? :bus:  
 >
-> 뭐?! 그때 너도 거기 있었다고?! 그때 알았으면 우리 만날 수 있었는데..!! :no_good: 
+> 뭐?! 그때 너도 거기 있었다고?! 야 나두! 그때 알았으면 우리 만날 수 있었는데..!! :no_good: 
  
 
 ![simtime](https://github.com/arara90/images/blob/master/Simtime/readme/img001.png?raw=true)
