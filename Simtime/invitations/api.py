@@ -4,7 +4,8 @@ import tempfile
 from datetime import datetime
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import Max, FilteredRelation, Q
+from django.db.models import Max, FilteredRelation, Q, F, Value, IntegerField, Subquery
+from django.db.models.query import EmptyQuerySet
 from .models import Invitation, Event
 from .serializers import InvitationSerializer, EventSerializer, HostSerializer
 from accounts.models import Friendship, Account
@@ -103,39 +104,48 @@ class InvitationAPI(APIView):
 
     def get(self, request, start, end):
         start_datetime = datetime.strptime(start, '%Y-%m-%d')
-        end_datetime = datetime.strptime(
-            f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
+        end_datetime = datetime.strptime(f'{end} 23:59:59', '%Y-%m-%d %H:%M:%S')
         start_datetime_aware = timezone.make_aware(start_datetime)
         end_datetime_aware = timezone.make_aware(end_datetime)
 
-        invitations = request.user.invitations\
-            .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
+        query_A = Friendship.objects.filter(Q(account_A=request.user.id) & Q(A_subscribe_B=True)).annotate(host=F('account_B')).values('host')
+        query_B = Friendship.objects.filter(Q(account_B=request.user.id) & Q(B_subscribe_A=True)).annotate(host=F('account_A')).values('host')
+        query_C = Account.objects.filter(id=request.user.id).annotate(host=F('id')).values('host') 
+        sub = query_A.union(query_B).union(query_C)
+        # print(query.query)
 
-        # 수신거부 user Filtering - 작업중  21/03/13
+        invitations = request.user.invitations\
+             .select_related('event').filter(event__event_time__range=[start_datetime_aware, end_datetime_aware])\
+             .filter(event__host_id__in=Subquery(sub))
+             
+        # 수신거부 user Filtering - 작업중  21/04/02 - in 말고 join으로 ㅠㅠ 
         # from django.db import connection
         # def my_custom_sql():
         #     with connection.cursor() as cursor:
-        #         cursor.execute(
-        #             '''select invitations_invitation.*
-        #         from public.invitations_invitation
-        #         left join public.accounts_friendship
-        #         on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_A_id"
-        #             and  "accounts_friendship"."A_subscribe_B" )
-        #         where "invitations_invitation"."guest_id" =1
+        #         cursor.execute(f'''
+        #            SELECT *
+                    # FROM "invitations_invitation" 
+                    # INNER JOIN "Event" ON ("invitations_invitation"."event_id" = "Event"."id" ) 
+                    # INNER JOIN (
+                    # 	SELECT "accounts_friendship"."account_B_id" AS "host" FROM "accounts_friendship" 
+                    # 	WHERE ("accounts_friendship"."account_A_id" = 1 AND "accounts_friendship"."A_subscribe_B")
+                    # 	UNION 
+                    # 	SELECT "accounts_friendship"."account_A_id" AS "host" FROM "accounts_friendship" 
+                    # 	WHERE ("accounts_friendship"."account_B_id" = 1 AND "accounts_friendship"."B_subscribe_A")
+                    # 	UNION
+                    # 	SELECT 1
+                    # ) as F ON (F."host" = "Event"."host_id")
+                    # WHERE "invitations_invitation"."guest_id" = 1
+        #             '''
+        #         )
 
-        #         union all
+                # columns = [col[0] for col in cursor.description]
+                # return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-        #         select invitations_invitation.* 
-        #         from public.invitations_invitation
-        #         left join public.accounts_friendship
-        #         on ( "invitations_invitation"."guest_id" = "accounts_friendship"."account_B_id"
-        #             and  "accounts_friendship"."B_subscribe_A" )
-        #         where "invitations_invitation"."guest_id" = 1''')
-
-        #         columns = [col[0] for col in cursor.description]
-        #         return [dict(zip(columns, row)) for row in cursor.fetchall()]
-
+        # print(invitations.query)
+                
         serializer = InvitationSerializer(invitations, many=True)
+        # serializer = InvitationSerializer(data=res, many=True)
         return Response(serializer.data)
 
     def put(self, request, pk):

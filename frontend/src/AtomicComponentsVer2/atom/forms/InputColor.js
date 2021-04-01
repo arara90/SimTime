@@ -23,12 +23,11 @@ function InputColor(props) {
 
   const [myValue, setMyValue] = useState(props.value);
 
-  const handleChange = (e) => {
+  const handleChange = React.useCallback((e) => {
     e.stopPropagation();
     changeHandler(e.target.value); //props
-    console.log(e.target.value)
     setMyValue(e.target.value);
-  };
+  },[]);
 
   return (
     <MyInputColor
