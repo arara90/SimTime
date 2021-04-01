@@ -83,7 +83,8 @@ function Calendar(props) {
   //// initialization
   useEffect(()=>{ 
     var {start, end, weeks} = generate(new Date(), 7);
-    setCurrent(start)
+    // console.log(start, end, weeks)
+    setCurrent(new Date())
     setWeekDates(weeks)
     startDate.current = start
     endDate.current = end
@@ -92,6 +93,13 @@ function Calendar(props) {
     getInvitations(getStrFullDate(start, "yyyy-mm-dd"), getStrFullDate(end, "yyyy-mm-dd"));
 
   }, [])
+
+  React.useEffect(()=>{
+    var strDate = getStrFullDate(selectedDate,'yyyy-mm-dd')
+    setSelectedDateInvList(filteredInvitations[strDate])
+    console.log(weekDates)
+  }, [selectedDate, filteredInvitations])
+
 
   useEffect(()=>{ 
     //filter 적용
@@ -249,11 +257,6 @@ function Calendar(props) {
     closeContextModal()
   }
   
-  React.useEffect(()=>{
-    var strDate = getStrFullDate(selectedDate,'yyyy-mm-dd')
-    setSelectedDateInvList(filteredInvitations[strDate])
-  }, [selectedDate, filteredInvitations])
-
   return (
     <Fragment>
       <CalendarTemplate 

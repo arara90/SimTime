@@ -78,6 +78,13 @@ function InputTime(props) {
     }
   },[])
 
+
+  useEffect(()=>{
+    if(time){
+
+    }
+  },[hour, min, meridium])
+
   const meridiemChange = (currMeridiem) => {
     if (currMeridiem == "AM" && hour > 12) {
       var resTime =  "00" + ":" + min.toString().padStart(2, "0") + " " + currMeridiem
@@ -118,8 +125,8 @@ function InputTime(props) {
     } else {
       setMin(res);
     }
-    var resTime =  hour.toString().padStart(2, "0") + ":" + res.toString().padStart(2, "0") + " " + selectedMerdiem
-    changeTime(resTime);
+    // var resTime =  hour.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
+    // changeTime(resTime);
     
   };
 
