@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         datas: {...state.datas, [date]: newData},
-        selected: action.payload
+        // selected: action.payload
       };
 
     case SELECT_INVITATION:

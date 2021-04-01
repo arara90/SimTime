@@ -19,7 +19,7 @@ import EventMaker from "../../AtomicComponents/D-Templates/Event/EventMaker"
 
 import {generate, getStrFullDate, addDate} from "../../util/calendar"
 import {getEvents, addEvent} from "../../redux/actions/events"
-import {getInvitations, addInvitations, selectInvitation} from "../../redux/actions/invitations"
+import {getInvitations, addInvitations, selectInvitation, toggleInvitations} from "../../redux/actions/invitations"
 import {getGroups} from "../../redux/actions/groups"
 import {getFriends} from "../../redux/actions/friends"
 
@@ -47,7 +47,7 @@ const MyFilter = styled(Filters)`
 function Calendar(props) {
   //1.props
   // const {getEvents, getFriends, getGroups, addEvent, getInvitations, addInvitations, groups, friendships ,invitations, loading} = props;
-  const {getFriends, getGroups, getInvitations, addInvitations, selectInvitation, addEvent
+  const {getFriends, getGroups, getInvitations, addInvitations, selectInvitation, addEvent, toggleInvitations
     , loading, user, groups, friendships, invitations, selectedInvitation } = props;
 
   //2.context
@@ -254,6 +254,8 @@ function Calendar(props) {
     await addInvitations(newEvent, friendIds)
     closeContextModal()
   }
+
+  const toggleInvitation = useCallback((invitation,key)=>{toggleInvitations(invitation, key)},[]);
   
   return (
     <Fragment>
@@ -272,18 +274,16 @@ function Calendar(props) {
                         </NewButton> 
                       }
         rightBottom = {showDetail ? 
-                       <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} /> : 
+                       <EventDetail isHost={selectedInvitation.event.host.id == user.id } invitation={selectedInvitation} backHandler={()=>{setShowDetail(false)}} toggleInvitation={toggleInvitation}/> : 
                        <EventList 
                         invitations={selectedDateInvList}
                         current={selectedDate}
-                        dateHandler={(date)=>{
-                          setSelectedDate(getStrFullDate(date, 'yyyy-mm-dd'))
-                        }}
-                        itemClickHandler={(e, invitation)=>{
-                          e.preventDefault();
+                        dateHandler={(date)=>{setSelectedDate(getStrFullDate(date, 'yyyy-mm-dd'))}}
+                        toggleInvitation={toggleInvitation}
+                        itemClickHandler={(invitation)=>{
                           setShowDetail(true);
-                          selectInvitation(invitation)} } /> 
-
+                          selectInvitation(invitation)}
+                        } /> 
                       }
       />
       </Fragment>
@@ -307,7 +307,8 @@ const mapDispatchToProps = (dispatch) => {
     addEvent: (myEvent, image) => dispatch(addEvent(myEvent, image)),
     getInvitations: (start, end)=>dispatch(getInvitations(start, end)),
     addInvitations: (event, friendIds) => dispatch(addInvitations(event, friendIds)),
-    selectInvitation: (invitation) => dispatch(selectInvitation(invitation))
+    selectInvitation: (invitation) => dispatch(selectInvitation(invitation)),
+    toggleInvitations: (invitation, key)=>dispatch(toggleInvitations(invitation, key))
   };
 };
 

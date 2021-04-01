@@ -39,7 +39,11 @@ const List = styled.ul`
 
 
 function EventList(props) {
-  const { invitations, current, itemClickHandler, dateHandler} = props;
+  const { invitations, current, itemClickHandler, dateHandler, toggleInvitation} = props;
+  const listClickHandler=React.useCallback((e, invitation)=>{
+    e.stopPropagation();
+    itemClickHandler(invitation);
+  },[])
 
     return (
       <Wrap>
@@ -49,7 +53,7 @@ function EventList(props) {
         {/* <List isEmpty={!invitations}> */}
         <List>
           { invitations 
-          ? invitations.map((invitation)=><EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{itemClickHandler(e,invitation)}}/>) 
+          ? invitations.map((invitation)=><EventListItem key={invitation.id} invitation={invitation} onClick={(e)=>{listClickHandler(e,invitation)}} toggleInvitation={toggleInvitation} />) 
           : <EventListItem />
           }
         </List>

@@ -113,17 +113,23 @@ const Empty = styled.li`
         font-size: 1.5rem;
         margin-bottom: 2em;
     }
-
 `
 
 function EventListItem(props) {
+    const {invitation, toggleInvitation} = props
+
+    const likeClickHandler= React.useCallback((e, invitation)=>{
+        e.stopPropagation()
+        toggleInvitation(invitation, 'like')
+    },[])
+    
     if(props.invitation){
-        const {id, like, join, event} = props.invitation;
+        const {id, like, join, event} = invitation;
         return(
             <EventList {...props} className='list-event-item'>
                 <Header>
                 <a href="#"><Title> {join? <CheckCircleIcon />: null} {event.event_name} </Title></a>
-                <Like selected={like} color="ST_PINK"><HeartIcon /></Like>
+                <Like color="ST_PINK" selected={like} onClick={(e)=>likeClickHandler(e, invitation)} ><HeartIcon /></Like>
                 </Header>
                 <Content href="#" className="event-list-content">
                     <Host url={event.host.profile_image}/>

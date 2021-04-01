@@ -80,7 +80,6 @@ export const getInvitations = (start, end) => (dispatch) => {
 
 export const toggleInvitations = (invitation, key) => async (dispatch) => {
   invitation[key] = !invitation[key]
-  // invitation['event'] = invitation.evnet.id
   var message = {
     'like' : 'Like',
     'show' :  invitation[key] ? "Show":  "Hide" ,
@@ -92,11 +91,11 @@ export const toggleInvitations = (invitation, key) => async (dispatch) => {
   .then((res) => {
     var separated = separateTime(res.data.event)
     res.data['event'] = separated
-
     dispatch({
       type: TOGGLE_INVITATION,
       payload: res.data,
     });
+
     dispatch(createMessage({ toggleInvitation: message[key] }));
   })
   .catch((err) => {

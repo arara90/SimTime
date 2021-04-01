@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { deleteEvent } from "../../../../redux/actions/events"
-import { toggleInvitations, deleteInvitation } from "../../../../redux/actions/invitations"
+import { deleteInvitation } from "../../../../redux/actions/invitations"
 
 import {ModalContext} from "../../../../contexts/modalContext"
 
@@ -58,7 +58,7 @@ const DeleteButton = styled(TextButton)``
 function EventDetail(props) {
   const { handleContextModal, closeContextModal, setContextModalContent } = React.useContext(ModalContext);
 
-  const {isHost, invitation, toggleInvitations} = props;
+  const {isHost, invitation, toggleInvitation} = props;
   const {id, attendance, show, like, event} = invitation;
   const {event_name, event_date, tags, host} = event;
   const [isEdit, setIsEdit] = useState(false)
@@ -90,9 +90,9 @@ function EventDetail(props) {
   return (
         <Wrap>
           <EventDetailHeader  host={host} event_name={event_name} tags={tags} backHandler={props.backHandler}/>
-          <EventDetailContent {...event} like={like} likeBtnClick={()=>toggleInvitations(invitation,'like')}/>
+          <EventDetailContent {...event} like={like} likeBtnClick={()=>toggleInvitation(invitation,'like')}/>
           <Buttons>
-            <JoinButton color={attendance? "ST_RED" :"ST_BLUE"} onClick={()=>toggleInvitations(invitation,'attendance')} > {attendance?"Cancel":"Join"} </JoinButton>
+            <JoinButton color={attendance? "ST_RED" :"ST_BLUE"} onClick={()=>toggleInvitation(invitation,'attendance')} > {attendance?"Cancel":"Join"} </JoinButton>
             {isHost && <DeleteButton color="ST_GRAY" onClick={() => deleteEventHandler(event.id, event_date)}>delete</DeleteButton>}
             {isHost && <DeleteButton color="ST_GRAY" onClick={()=>setIsEdit(true)}>edit</DeleteButton>}
             {/* {!isHost && <DeleteButton color="ST_GRAY" onClick={()=>toggleInvitations(invitation,'show')}>{ show ?'hide':'show'}</DeleteButton>} */}
@@ -105,8 +105,6 @@ function EventDetail(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteEvent: (id,date) => dispatch(deleteEvent(id,date)),
-    toggleInvitations: (invitation, key)=>dispatch(toggleInvitations(invitation, key))
-
   };
 };
 
@@ -129,12 +127,8 @@ EventDetail.defaultProps = {
       event_place: {name:"작업실(우리집)", address:"경기도 부천시"},
       event_time: "PM 19:00",
       tags: ["개발","test", "simtime", "반달", "test", "simtime", "반달"],
-  
       host: {name:"arra", url:"https://bucket-simtime.s3.ap-northeast-2.amazonaws.com/static/assets/img/icons/group_basic.png"},
     }
-
-
-  },
- 
+  }
   };
   
