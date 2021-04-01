@@ -74,21 +74,6 @@ function EventDetail(props) {
 
   }
 
-  // //// submit new event
-  // const eventSubmitHandler = async (event, image) =>{
-  //   console.log('done')
-  //   // try{
-  //   //   //event  수정
-  //   //   var res = await editEvent(event, image); 
-
-  //   //   //modal 변경
-  //   //   await closeContextModal()
-  //   //   setIsEdit(false)
-  //   // }catch(e){
-  //   //   console.log("Error", e); 
-  //   // }
-  // }
-    //// submit new event
 
   const deleteEventHandler=(eventId, date)=>{
     props.deleteEvent(eventId, date);
@@ -120,8 +105,6 @@ function EventDetail(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteEvent: (id,date) => dispatch(deleteEvent(id,date)),
-    // editEvent: (event, image) => dispatch(editEvent(event, image)),
-    // deleteInvitation: (id,date) => dispatch(deleteInvitation(id,date)),
     toggleInvitations: (invitation, key)=>dispatch(toggleInvitations(invitation, key))
 
   };

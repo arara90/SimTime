@@ -33,7 +33,6 @@ function separateEventTime(data){
 }
 
 function convertEventTimeToISO(event){
-  console.log(event)
   const timeISO = new Date(event.event_date + " " + event.event_time.split(" ")[0]).toISOString()
   event['event_time'] = timeISO
   delete event['event_date']

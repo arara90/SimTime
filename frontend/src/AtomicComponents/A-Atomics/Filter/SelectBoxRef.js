@@ -155,7 +155,6 @@ export class SelectBoxRef extends Component {
     }));
 
     if (this.props.handleOptionChange) {
-      console.log("handleOptionChange");
       this.props.handleOptionChange(option);
     }
   }

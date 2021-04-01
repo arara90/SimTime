@@ -80,19 +80,24 @@ function InputTime(props) {
 
 
   useEffect(()=>{
-    if(time){
 
-    }
-  },[hour, min, meridium])
+    var resHour = ("0"+hour).substr(1,2);
+    var resMin = ("0"+min).substr(1,2);
+    var resTime =  resHour + ":" + resMin + " " + meridiem
+
+    changeTime(resTime);
+  },[hour, min, meridiem])
 
   const meridiemChange = (currMeridiem) => {
     if (currMeridiem == "AM" && hour > 12) {
       var resTime =  "00" + ":" + min.toString().padStart(2, "0") + " " + currMeridiem
       setHour("00")
       changeTime(resTime);
+      setMeridiem(currMeridiem)
       hourRef.current.focus();
     }else{
       changeTime(hour.toString().padStart(2, "0") +":"+min.toString().padStart(2, "0")+" "+currMeridiem);
+      setMeridiem(currMeridiem)
     }
   };
 
@@ -121,12 +126,9 @@ function InputTime(props) {
       else if (res == 12 && selectedMerdiem == "AM") res = res - 12;
       else if (res > 12 && selectedMerdiem == "AM") res = newValue
       setHour(res);
-
     } else {
       setMin(res);
     }
-    // var resTime =  hour.toString().padStart(2, "0") + ":" + min.toString().padStart(2, "0") + " " + selectedMerdiem
-    // changeTime(resTime);
     
   };
 

@@ -144,15 +144,13 @@ function EventMaker(props) {
 
   const showDatePicker = () => setDatePicker(!datePicker);
   const hadleSubmit = async () => {
-    // e.preventDefault();
-    // e.stopPropagation();
-
     var newEvent = {}
     var fin_time = time
-    if(time.split(' ')[1] == "PM" && time.split(':')[0] < 13){
-      fin_time = (parseInt(time.split(':')[0])).toString() +":"+ time.split(':')[1]
-    }
 
+    //24시 기준으로 pm값 보정
+    if(time.split(' ')[1] == "PM" && time.split(':')[0] < 12){
+      fin_time = (parseInt(time.split(':')[0])+12).toString() +":"+ time.split(':')[1]
+    }
 
     if(isEdit){
       try{
@@ -168,15 +166,11 @@ function EventMaker(props) {
         console.log("Error", e); 
       }
     }else{  
-
-
       if(!event['event_name']) event['event_name']=user.username + "님의 이벤트" 
       newEvent = {...event, 'event_time': fin_time}
-      console.log(newEvent)
       eventSubmitHandler(newEvent , imgFile)
     }
   };
-
 
   //changeHandlers
   const nameChange = useCallback((e) => setName(e.target.value));

@@ -83,7 +83,6 @@ function Calendar(props) {
   //// initialization
   useEffect(()=>{ 
     var {start, end, weeks} = generate(new Date(), 7);
-    // console.log(start, end, weeks)
     setCurrent(new Date())
     setWeekDates(weeks)
     startDate.current = start
@@ -97,7 +96,6 @@ function Calendar(props) {
   React.useEffect(()=>{
     var strDate = getStrFullDate(selectedDate,'yyyy-mm-dd')
     setSelectedDateInvList(filteredInvitations[strDate])
-    console.log(weekDates)
   }, [selectedDate, filteredInvitations])
 
 
