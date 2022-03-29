@@ -38,7 +38,7 @@
     "core-js": "^3.9.1",
     "html-webpack-plugin": "^4.5.1",
     "immer": "^8.0.1",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "react-alert": "^6.0.0",
     "react-alert-template-basic": "^1.0.0",
     "react-redux": "^7.1.3",
